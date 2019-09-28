@@ -17,5 +17,5 @@ services:
       - ./website/siteConfig.js:/app/website/siteConfig.js
     working_dir: /app/website
     environment:
-      - VIRTUAL_HOST=d2s.semanticscience.org
+      - VIRTUAL_HOST=http://dsri.137.120.31.101.nip.io/dsri-documentation/
       - VIRTUAL_PORT=3000
