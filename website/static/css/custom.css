@@ -47,17 +47,23 @@ body {
 }
 
 /* Change color of Website logo title in left nav bar when hover */
-a .headerTitleWithLogo:hover {
-    color: #cfd8dc;
+.fixedHeaderContainer a:hover {
+    color: #e8eaf6;
 }
 
+/* Links color */
 a {
     color: #1565c0;
 }
-
+a:hover {
+    color: #c62828;
+    text-decoration: none;
+}
+/* Links color when dark background (index.js) */
 .darkBackground a:not(:hover) {
     color: #1565c0;
 }
+/* Maastricht Blue: 001f3e */
 
 /* Docs markdown images size */
 article img, article p img {
