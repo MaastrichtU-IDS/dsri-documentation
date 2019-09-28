@@ -106,20 +106,8 @@ class Index extends React.Component {
           Run your program as a [pod](https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/pods_and_services.html)
         </MarkdownBlock>
         <MarkdownBlock>
-          Combine multiple programs to build [workflows](https://argoproj.github.io/argo/)
+          Combine multiple programs to run [workflows](https://argoproj.github.io/argo/)
         </MarkdownBlock>
-        {/* <Block layout="twoColumn">
-        {[
-          {
-            image: `${baseUrl}img/argo-logo.png`,
-            imageAlign: 'top',
-          },
-          {
-            image: `${baseUrl}img/CWL_logo.png`,
-            imageAlign: 'top',
-          },
-        ]}
-      </Block> */}
       </div>
     );
 
@@ -143,7 +131,7 @@ class Index extends React.Component {
         {[
           {
             content:
-              'Run your jobs without worrying about the computing power required.\n \nDSRI will allocate as much as possible depending on availability.',
+              'Run your jobs without worrying about the resources required.\n \nThe DSRI cluster will allocate as much as possible depending on its availability.',
             image: `${baseUrl}img/kubernetes_diagram.png`,
             imageAlign: 'right',
             title: 'Get the computing power you need',
@@ -157,13 +145,13 @@ class Index extends React.Component {
       <Block layout="fourColumn">
         {[
           {
-            content: 'Using [MapR](https://mapr.com/) FileSystem to securely store and access your file on multiple nodes',
+            content: 'Using [MapR](https://mapr.com/) FileSystem to securely store and access your file on the DSRI cluster.',
             image: `${baseUrl}img/mapr_logo.png`,
             imageAlign: 'top',
             title: 'A distributed filesystem',
           },
           {
-            content: '[Kubernetes](https://kubernetes.io/) allows you to run containers started from [Docker](https://www.docker.com/) images on multiple nodes.',
+            content: '[Kubernetes](https://kubernetes.io/) allows you to run containers started from [Docker](https://www.docker.com/) images on the DSRI cluster.',
             image: `${baseUrl}img/Kubernetes.png`,
             imageAlign: 'top',
             title: 'To run anything',
@@ -178,8 +166,8 @@ class Index extends React.Component {
         {[
           {
             content:
-              'Data stored on the [MapR](https://mapr.com/) FileSystem are replicated over multiple nodes for high availability. \n \n' + 
-              'DSRI also offers to easily store and access backups to [DataHub](https://portal.datahubmaastricht.nl/)',
+              'Data stored on the [MapR](https://mapr.com/) FileSystem are replicated over multiple nodes for high availability and fault tolerance. \n \n' + 
+              'DSRI also offers to easily store and access backups to [iRODS](https://irods.org/) [DataHub](https://portal.datahubmaastricht.nl/)',
             image: `${baseUrl}img/DataHub_irods.png`,
             imageAlign: 'right',
             title: 'Securely store your data',
@@ -207,13 +195,7 @@ class Index extends React.Component {
       return (
         <div className="productShowcaseSection paddingBottom">
           <h2><a href={pageUrl('users')}>Who uses the Data Science Research Infrastructure?</a></h2>
-          {/* <p>This project is used by <a href={pageUrl('users')}>these people</a></p> */}
           <div className="logos">{showcase}</div>
-          {/* <div className="more-users">
-            <a className="button" href={pageUrl('users')}>
-              More {siteConfig.title} Users
-            </a>
-          </div> */}
         </div>
       );
     };
