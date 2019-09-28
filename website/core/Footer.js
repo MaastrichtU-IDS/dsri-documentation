@@ -41,7 +41,7 @@ class Footer extends React.Component {
               Get started
             </a>
             <a href={this.docUrl('openshift-login', this.props.language)}>
-              Run on OpenShift
+              Run with OpenShift
             </a>
             <a href={this.docUrl('argo-run', this.props.language)}>
               Argo workflows
