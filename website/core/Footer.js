@@ -134,7 +134,7 @@ class Footer extends React.Component {
         <section className="copyright">
           <div>
             <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank">
-              <img src="/img/cc-by.svg" alt="cc by license"/> 
+              <img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/> 
             </a>
           </div>
           {this.props.config.copyright}

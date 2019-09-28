@@ -3,7 +3,7 @@ id: openshift-load-data
 title: Load data
 ---
 
-[![OpenShift](/img/openshift-logo.png)](https://www.openshift.com/)
+[![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)
 
 ## Copy files
 

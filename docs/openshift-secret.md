@@ -3,7 +3,7 @@ id: openshift-secret
 title: Use secrets
 ---
 
-![OpenShift](/img/openshift-logo.png)
+![OpenShift](/dsri-documentation/img/openshift-logo.png)
 
 [OpenShift secrets](https://docs.openshift.com/enterprise/3.1/dev_guide/secrets.html) can be used to store confidential information required when the pods are running (such as passwords).
 

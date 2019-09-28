@@ -3,7 +3,7 @@ id: openshift-commands
 title: OpenShift commands
 ---
 
-[![OpenShift](/img/openshift-logo.png)](https://www.openshift.com/)
+[![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)
 
 
 

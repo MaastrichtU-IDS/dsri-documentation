@@ -3,7 +3,7 @@ id: openshift-debug
 title: Debug a pod
 ---
 
-![Argo project](/img/argo-logo.png)
+![Argo project](/dsri-documentation/img/argo-logo.png)
 
 To get into the container. Create a YAML with the command `tail /dev/null` to keep it hanging.
 
@@ -43,4 +43,4 @@ oc create -f archives/d2s-download-pod.yaml
 oc rsh d2s-download-pod
 ```
 
-![OpenShift](/img/openshift-logo.png)
+![OpenShift](/dsri-documentation/img/openshift-logo.png)

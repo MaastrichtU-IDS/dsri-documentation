@@ -3,7 +3,7 @@ id: openshift-login
 title: Login to OpenShift
 ---
 
-![OpenShift](/img/openshift-logo.png)
+![OpenShift](/dsri-documentation/img/openshift-logo.png)
 
 You will first need to authenticate to the [DSRI cluster](https://app.dsri.unimaas.nl:8443/) using the [OpenShift client](https://www.okd.io/download.html).
 
@@ -15,4 +15,4 @@ oc login https://openshift_cluster:8443 --token=MY_TOKEN
 
 > Paste the command in your terminal.
 
-<!-- ![](/img/getting-started-preparation-verify.png) -->
+<!-- ![](/dsri-documentation/img/getting-started-preparation-verify.png) -->

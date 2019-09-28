@@ -3,7 +3,7 @@ id: argo-commands
 title: Argo commands
 ---
 
-![Argo project](/img/argo-logo.png)
+![Argo project](/dsri-documentation/img/argo-logo.png)
 
 
 

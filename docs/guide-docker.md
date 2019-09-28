@@ -3,7 +3,7 @@ id: guide-docker
 title: Docker guide
 ---
 
-[![](/img/docker.png)](https://www.docker.com/)
+[![](/dsri-documentation/img/docker.png)](https://www.docker.com/)
 
 Use [Docker](https://www.docker.com/) on your computer to test containers.
 

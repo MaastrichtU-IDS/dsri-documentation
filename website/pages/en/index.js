@@ -143,7 +143,7 @@ class Index extends React.Component {
         {[
           {
             content:
-              'Run your jobs without worrying about the computing power required. DSRI will allocate as much as possible depending on availability.',
+              'Run your jobs without worrying about the computing power required.\n \nDSRI will allocate as much as possible depending on availability.',
             image: `${baseUrl}img/kubernetes_diagram.png`,
             imageAlign: 'right',
             title: 'Get the computing power you need',
@@ -178,7 +178,7 @@ class Index extends React.Component {
         {[
           {
             content:
-              'Data stored on the [MapR](https://mapr.com/) FileSystem are replicated over multiple nodes for high availability. ' + 
+              'Data stored on the [MapR](https://mapr.com/) FileSystem are replicated over multiple nodes for high availability. \n \n' + 
               'DSRI also offers to easily store and access backups to [DataHub](https://portal.datahubmaastricht.nl/)',
             image: `${baseUrl}img/DataHub_irods.png`,
             imageAlign: 'right',

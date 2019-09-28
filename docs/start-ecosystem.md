@@ -15,7 +15,7 @@ Build a container using a simple [Docker image](https://hub.docker.com/) .
 
 ### Jupyter lab
 
-[![RStudio](/img/jupyter_logo.png)](https://jupyter.org/)
+[![RStudio](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
 
 Use [amalic/jupyterlab](https://hub.docker.com/r/amalic/jupyterlab/) Docker image.
 
@@ -28,7 +28,7 @@ Use [amalic/jupyterlab](https://hub.docker.com/r/amalic/jupyterlab/) Docker imag
 
 ### RStudio
 
-[![RStudio](/img/rstudio_logo.png)](https://rstudio.com/)
+[![RStudio](/dsri-documentation/img/rstudio_logo.png)](https://rstudio.com/)
 
 Use [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio/) Docker image.
 
@@ -73,7 +73,7 @@ oc create -f d2s-pod-virtuoso.yaml
 
 ### Filebrowser
 
-[![filebrowser](/img/filebrowser_banner.svg)](https://filebrowser.xyz/)
+[![filebrowser](/dsri-documentation/img/filebrowser_banner.svg)](https://filebrowser.xyz/)
 
 Deploy [filebrowser](https://hub.docker.com/r/filebrowser/filebrowser) over [MapR](https://mapr.com/) to access storage volumes.
 

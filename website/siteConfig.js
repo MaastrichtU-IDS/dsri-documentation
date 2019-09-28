@@ -41,8 +41,8 @@ const users = [
 const siteConfig = {
   title: 'Data Science Research Infrastructure', // Title for your website.
   tagline: 'A scalable and user-friendly infrastructure to run your programs and deploy your services',
-  url: 'http://d2s.semanticscience.org/', // Your website URL
-  baseUrl: '/', // Base URL for your project */
+  url: 'https://maastrichtu-ids.github.io/', // Your website URL
+  baseUrl: '/dsri-documentation/', // Base URL for your project */
   // We deploy at https://data2services.github.io/data2services/
 
   projectName: 'dsri-documentation',  // The name of your GitHub project. Same as above.

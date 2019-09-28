@@ -7,7 +7,7 @@ sidebar_label: Installation
 
 ## Install the OpenShift client
 
-[![OpenShift](/img/openshift-logo.png)](https://www.openshift.com/)
+[![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)
 
 [Download the oc client](https://www.okd.io/download.html) to connect to the [DSRI OpenShift cluster](https://app.dsri.unimaas.nl:8443/).
 
@@ -23,7 +23,7 @@ sudo mv oc kubectl /usr/local/bin/
 
 ## Install Argo
 
-[![Argo project](/img/argo-logo.png)](https://argoproj.github.io/argo/)
+[![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
 
 [Argo](https://argoproj.github.io/argo/) allows you to describe and run workflows on [Kubernetes](https://kubernetes.io/) clusters.
 
@@ -50,9 +50,9 @@ Browse [Argo releases](https://github.com/argoproj/argo/releases).
 
   <!-- MapR            |  Kubernetes 
 :-------------------------:|:-------------------------:
-[![MapR](/img/mapr_logo.png)](https://mapr.com/) | [![Kubernetes](/img/Kubernetes.png)](https://kubernetes.io/) -->
+[![MapR](/dsri-documentation/img/mapr_logo.png)](https://mapr.com/) | [![Kubernetes](/dsri-documentation/img/Kubernetes.png)](https://kubernetes.io/) -->
 
 
-[![Kubernetes](/img/Kubernetes.png)](https://kubernetes.io/)
+[![Kubernetes](/dsri-documentation/img/Kubernetes.png)](https://kubernetes.io/)
 
-[![MapR](/img/mapr_logo.png)](https://mapr.com/)
+[![MapR](/dsri-documentation/img/mapr_logo.png)](https://mapr.com/)
