@@ -21,7 +21,7 @@ spec:
   volumes:
   - name: workdir
     persistentVolumeClaim:
-      claimName: data2services-storage
+      claimName: my-storage
   containers:
   - name: d2s-download
     image: maastrichtuids/d2s-download:latest

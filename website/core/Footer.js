@@ -62,7 +62,7 @@ class Footer extends React.Component {
               data-show-count="true"
               data-count-aria-label="# stargazers on GitHub"
               aria-label="Star this project on GitHub">
-              Data2Services
+              DSRI-documentation
             </a> */}
             <a href={this.props.config.repoUrl}
               target="_blank"

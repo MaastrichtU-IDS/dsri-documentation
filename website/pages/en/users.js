@@ -30,13 +30,9 @@ class Users extends React.Component {
         <Container padding={['bottom', 'top']}>
           <div className="showcaseSection">
             <div className="prose">
-              <h1>They use Data2Services</h1>
+              <h1>They use the Data Science Research Infrastructure</h1>
             </div>
             <div className="logos">{showcase}</div>
-            {/* <p>Are you using this project?</p>
-            <a href={editUrl} className="button">
-              Add your company
-            </a> */}
           </div>
         </Container>
       </div>
