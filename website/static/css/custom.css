@@ -1,0 +1,101 @@
+/* your custom css */
+
+@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+}
+
+@media only screen and (min-width: 1024px) {
+}
+
+@media only screen and (max-width: 1023px) {
+}
+
+@media only screen and (min-width: 1400px) {
+}
+
+@media only screen and (min-width: 1500px) {
+}
+
+/* Changing font don't work, no reason */
+/* body *:not(.hljs, .hljs-built_in, .hljs-code, .hljs-bullet, .hljs-addition) {
+    font-family: "Roboto", "Serif";
+} */
+body {
+    font-family: "Roboto", "Serif";
+}
+.homeContainer h2 {
+    font-weight: 300;
+}
+.projectTitle {
+    font-weight: 300;
+}
+.projectTitle > small {
+    font-weight: 300;
+}
+.homeContainer .promoSection .button {
+    font-weight: 300;
+    border-width: 1px;
+}
+.headerTitleWithLogo {
+    font-weight: 400;
+}
+a .headerTitleWithLogo:hover {
+    color: #cfd8dc;
+}
+
+a {
+    color: #1565c0;
+}
+
+.darkBackground a:not(:hover) {
+    color: #1565c0;
+}
+
+/* Docs markdown images size */
+article img, article p img {
+    max-width: 250px;
+    max-height: 80px;
+}
+
+.button {
+    text-transform: none;
+    padding: 1em;
+    border-radius: 7px;
+}
+
+.promoSection .button {
+    margin: 0.5em;
+    font-size: 20px;
+    border-width: 2px;
+    font-weight: 600;
+}
+
+.homeContainer .homeWrapper .projectLogo  {
+    position: inherit;
+    justify-content: center;
+}
+
+/* Resize index.js image */
+.imageAlignSide .blockImage {
+    flex: 0 1 700px;
+    max-width: 700px;
+}
+
+.imageAlignTop .blockImage {
+    max-width: 100%;
+}
+.gridBlock .fourByGridBlock img {
+    max-height: 100px;
+}
+
+/* .button {
+    position: relative;
+    min-width: 5em;
+    border-radius: 5em;
+    margin: 0.5em;
+    padding: 1em;
+    text-align: center;
+    transition: all 0.2s;
+    background: transparent;
+    border-color: #5645F5;
+    color: #5645F5;
+} */
