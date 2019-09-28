@@ -48,6 +48,8 @@ const siteConfig = {
   projectName: 'dsri-documentation',  // The name of your GitHub project. Same as above.
   organizationName: 'MaastrichtU-IDS', // Your GitHub username.
   repoUrl: 'https://github.com/MaastrichtU-IDS/dsri-documentation',
+  // URL for editing docs
+  editUrl: 'https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/',
 
   // Deploy to GitHub pages (first generate build dir)
   // npm run build
@@ -125,6 +127,48 @@ const siteConfig = {
         host: 'localhost', // The hrefs that you DON'T want to be external
       });
     },
+    /**
+     * Enable some defaults on the Markdown class
+     */
+    function enableInlineRuler(md) {
+      md.inline.ruler.enable([
+        'sub',
+        'sup'
+      ]);
+    },
+    /**
+     * Not working
+     * This will add a class to an image. To use structure as:
+     *   [<title>](<img path){: .<class>}
+     */
+    function addImageClass(md) {
+      // This takes a render method in as an arg.
+      const rule = (imageRule) => (tokens, idx, options, env) => {
+        // Get the default image
+        const img = imageRule(tokens, idx, options, env);
+
+        const clsTkn = tokens[idx+1];
+        // The token we are looking for will be text with content
+        if (!clsTkn || clsTkn.type !== 'text' || !clsTkn.content) {
+          return img;
+        }
+
+        //Finds the "{: .<className>}" and pulls out the className only
+        const getClassName = (name) => {
+          return name.match(/\{\:\s*\.[\w-]*\s*\}/g)
+            ? name.match(/(\w|\-)+/g)
+            : '';
+        }
+
+        const classString = ` class="${getClassName(clsTkn.content)}">`;
+        // Remove the special token or it will get rendered
+        clsTkn.content = '';
+
+        return img.slice(0, -1) + classString;
+      };
+
+      md.renderer.rules.image = rule(md.renderer.rules.image);
+    }
   ],
 
   // Show documentation's last contributor's name.
