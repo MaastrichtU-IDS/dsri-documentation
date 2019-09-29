@@ -1,6 +1,6 @@
 ---
 id: start-ecosystem
-title: DSRI Ecosystem
+title: The DSRI ecosystem
 ---
 
 Containers available for the **Data Science Research Infrastructure**.

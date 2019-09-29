@@ -10,7 +10,7 @@ title: Define volumes
 Go to https://app.dsri.unimaas.nl:8443/console/project/argo/create-pvc
 
 * Storage class > `maprfs-ephemeral`
-* Shared Acces (RWX)
+* Shared Access (RWX)
 
 ---
 
@@ -36,7 +36,7 @@ Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`
 
 ## Define a temporary volume for a workflow
 
-Temporary volumes can be defined at runtime and are removed when the workflow terminates.
+Temporary volumes can be defined in Argo at runtime and are removed when the workflow terminates.
 
 ```yaml
 volumeClaimTemplates:            # define volume, same syntax as k8s Pod spec

@@ -57,15 +57,7 @@ oc delete pod my-pod
 oc logs -f d2s-download-pod
 ```
 
-### Copy files
-
-```shell
-# From local to pod
-oc cp my-file my-pod:/data
-
-# From pod to local
-oc cp my-pod:/data/my-file .
-```
+> Get more details on how to [debug a pod](/dsri-documentation/docs/openshift-debug).
 
 ### Rsync
 
@@ -78,4 +70,16 @@ oc rsync /data my-pod:/data
 # From pod to local
 oc rsync my-pod:/data/my-file /data
 ```
+
+> See [Load data](/dsri-documentation/docs/openshift-load-data) for more details.
+
+### Remote shell connection
+
+Connect to a pod with [Bash](https://devhints.io/bash).
+
+```shell
+oc rsh my-pod
+```
+
+[![Bash](/dsri-documentation/img/bash_logo.png)](https://devhints.io/bash)
 

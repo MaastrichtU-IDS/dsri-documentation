@@ -115,11 +115,11 @@ class Index extends React.Component {
         {[
           {
             content:
-              '[OpenShift](https://www.openshift.com/) and [Kubernetes](https://kubernetes.io/) allow you to run any [Docker](https://www.docker.com/) container in parallele on multiple nodes.'
+              '[OpenShift](https://www.openshift.com/) and [Kubernetes](https://kubernetes.io/) allow you to run any [Docker](https://www.docker.com/) container in parallel on multiple nodes.'
               + '\n \n[OpenShift](https://www.openshift.com/) also enables you to leverage the power of [MapReduce](https://mapr.com/products/product-overview/mapreduce/) jobs.',
             image: `${baseUrl}img/openshift_kubernetes_docker.png`,
             imageAlign: 'left',
-            title: 'Run jobs in parallele on multiple nodes',
+            title: 'Run jobs in parallel on multiple nodes',
           },
         ]}
       </Block>
@@ -166,7 +166,7 @@ class Index extends React.Component {
           {
             content:
               'Data stored on the [MapR](https://mapr.com/) FileSystem are replicated over multiple nodes for high availability and fault tolerance. \n \n' + 
-              'DSRI also offers to easily store and access backups to [iRODS](https://irods.org/) [DataHub](https://portal.datahubmaastricht.nl/)',
+              'The DSRI also offers to easily store and access backups to [iRODS](https://irods.org/) [DataHub](https://portal.datahubmaastricht.nl/)',
             image: `${baseUrl}img/DataHub_irods.png`,
             imageAlign: 'right',
             title: 'Securely store your data',

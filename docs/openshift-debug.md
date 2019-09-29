@@ -5,7 +5,7 @@ title: Debug a pod
 
 ![Argo project](/dsri-documentation/img/argo-logo.png)
 
-To get into the container. Create a YAML with the command `tail /dev/null` to keep it hanging.
+Get into a container, to understand why it bugs, by creating a YAML with the command `tail /dev/null` to keep it hanging.
 
 > Example for [d2s-download](https://github.com/MaastrichtU-IDS/d2s-download):
 
@@ -31,13 +31,13 @@ spec:
       mountPath: /data
 ```
 
-> Then start the pod:
+Then start the pod:
 
 ```shell
 oc create -f archives/d2s-download-pod.yaml
 ```
 
-> Connect with the Shell:
+And connect with the Shell:
 
 ```shell
 oc rsh d2s-download-pod

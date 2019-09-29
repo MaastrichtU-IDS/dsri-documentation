@@ -40,7 +40,7 @@ const users = [
 
 const siteConfig = {
   title: 'Data Science Research Infrastructure', // Title for your website.
-  tagline: 'A scalable, distributed, and user-friendly infrastructure to run your programs and deploy your services',
+  tagline: 'A scalable, distributed, and user-friendly infrastructure to make Data Science easy',
   url: 'https://maastrichtu-ids.github.io/', // Your website URL
   baseUrl: '/dsri-documentation/', // Base URL for your project */
   // We deploy at https://maastrichtu-ids.github.io/dsri-documentation/
