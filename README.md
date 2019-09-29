@@ -18,6 +18,10 @@ We recommend using [Typora](https://typora.io/) to edit [markdown](https://githu
 
 > Main parameters of the website can be found in [website/siteConfig.js](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/website/siteConfig.js).
 
+* Static content (any resource to download, images, css, js) can be provided in [website/static](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/website/static).
+
+* HTML pages (other than docs markdown) are in [website/pages/en](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/website/pages/en).
+
 ## Run for development
 
 To run in the `/website` directory.
