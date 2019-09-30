@@ -55,9 +55,8 @@ body {
 a {
     color: #1565c0;
 }
-a:hover {
-    color: #ff2800; 
-    /* color: #c62828; Mat red         */
+a:hover { 
+    color: #c62828;
     text-decoration: none;
 }
 /* Links color when dark background (index.js) */
