@@ -14,13 +14,14 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 
 We recommend using [Typora](https://typora.io/) to edit [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) files on your computer.
 
-> Add new `docs` pages to [website/sidebars.json](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/website/sidebars.json).
+### Files locations
 
-> Main parameters of the website can be found in [website/siteConfig.js](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/website/siteConfig.js).
+- Add new `docs` pages to [website/sidebars.json](https://github.com/MaastrichtU-IDS/d2s-documentation/blob/master/website/sidebars.json).
 
-* Static content (any resource to download, images, css, js) can be provided in [website/static](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/website/static).
+- Main parameters of the website can be found in [website/siteConfig.js](https://github.com/MaastrichtU-IDS/d2s-documentation/blob/master/website/siteConfig.js).
 
-* HTML pages (other than docs markdown) are in [website/pages/en](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/website/pages/en).
+- Static content (any resource to download, images, css, js) can be provided in [website/static](https://github.com/MaastrichtU-IDS/d2s-documentation/tree/master/website/static)
+- HTML pages (other than docs markdown) are in [website/pages/en](
 
 ## Run for development
 
