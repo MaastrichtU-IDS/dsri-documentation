@@ -56,7 +56,8 @@ a {
     color: #1565c0;
 }
 a:hover {
-    color: #c62828;
+    color: #ff2800; 
+    /* color: #c62828; Mat red         */
     text-decoration: none;
 }
 /* Links color when dark background (index.js) */
