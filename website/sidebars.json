@@ -3,6 +3,7 @@
     "Get started": ["start-introduction", "start-install", "start-ecosystem"],
     "Run with OpenShift": ["openshift-login", "openshift-commands", "openshift-volume", "openshift-load-data", "openshift-secret", "openshift-debug"],
     "Argo workflows": ["argo-run", "argo-commands"],
+    "Examples": ["example-dockerfile-to-openshift"],
     "Guides": ["guide-docker"]
   }
 }
