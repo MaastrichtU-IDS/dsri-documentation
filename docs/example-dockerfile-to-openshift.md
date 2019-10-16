@@ -20,10 +20,17 @@ Create a new project if you don't have a project yet you can work with (change m
 oc new-project myproject
 ```
 
-Start by creating a new build configuration.
+---
+
+## Create new build configuration.
+
 ```shell
 oc new-build --name dockerfile-to-okd --binary
 ```
+
+---
+
+## Build image
 
 Start a new build with the example files we provided.
 
@@ -32,12 +39,22 @@ cd dockerfile-to-okd
 oc start-build dockerfile-to-okd --from-dir=. --follow --wait
 ```
 
+---
+
+## Create app
+
 Create a new app using the build we just created:
+
 ```shell
 oc new-app dockerfile-to-okd
 ```
 
+---
+
+## Expose app
+
 Expose the application so you can reach it from your browser and check the route that was created
+
 ```shell
 oc expose svc/dockerfile-to-okd
 oc get route

@@ -24,6 +24,15 @@ Use [amalic/jupyterlab](https://hub.docker.com/r/amalic/jupyterlab/) Docker imag
 * Environment variables:
   * `PASSWORD=my_password`
 
+Build using `oc` (in git repository)
+
+```shell
+oc new-build --name amalic-jupyterlab --binary
+oc start-build amalic-jupyterlab --from-dir=. --follow --wait
+oc new-app amalic-jupyterlab
+oc expose svc/amalic-jupyterlab
+```
+
 ---
 
 ### RStudio
