@@ -61,3 +61,16 @@ oc get route
 ```
 
 You can now visit the route shown in the HOST/PORT output of the 'oc get route' command and see if you have successfully converted the docker file. 
+
+---
+
+## Delete the created build
+
+```shell
+oc delete build dockerfile-to-okd
+
+# Test
+oc delete all brein-fastq-centos76-1
+```
+
+> [Not working](https://docs.openshift.com/enterprise/3.0/cli_reference/basic_cli_operations.html#application-modification-cli-operations).
