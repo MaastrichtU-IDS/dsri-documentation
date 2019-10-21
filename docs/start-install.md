@@ -11,6 +11,8 @@ sidebar_label: Installation
 
 [Download the oc client](https://www.okd.io/download.html) to connect to the [DSRI OpenShift cluster](https://app.dsri.unimaas.nl:8443/).
 
+See the [installation documentation](https://docs.okd.io/latest/cli_reference/get_started_cli.html).
+
 ### On Linux
 
 ```shell
@@ -19,6 +21,14 @@ tar xvf openshift-origin-client-tools*.tar.gz
 cd openshift-origin-client*/
 sudo mv oc kubectl /usr/local/bin/
 ```
+
+### On Mac
+
+```shell
+brew install openshift-cli
+```
+
+> For people that know what they are doing: download the `.zip` from [GitHub Releases](https://github.com/openshift/origin/releases) and unzip it in your path.
 
 ---
 
