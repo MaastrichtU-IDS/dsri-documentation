@@ -22,7 +22,7 @@ function Help(props) {
   const supportLinks = [
     {
       content: `Learn more using the [documentation.](${docUrl(
-        'getstarted',
+        'start-introduction',
       )})`,
       title: 'Browse the Docs',
     },
@@ -31,7 +31,7 @@ function Help(props) {
       title: 'GitHub',
     },
     {
-      content: "Feel free to [contact](mailto:vincent.emonet@maastrichtuniversity.nl) the main maintainers if you have any questions.",
+      content: "Feel free to contact [dsri-support@maastrichtuniversity.nl](mailto:dsri-support@maastrichtuniversity.nl) if you have any questions.",
       title: 'Contact us',
     },
   ];
@@ -45,6 +45,15 @@ function Help(props) {
           </header>
           <p>If you need help or have questions about the Data Science Research Infrastructure, try one of the mechanisms above.</p>
           <GridBlock contents={supportLinks} layout="threeColumn" />
+          <h1>The DSRI support team</h1>
+          <p>From the <a href="https://maastrichtuniversity.nl/ids">Institute of Data Science</a> (IDS) and <a href="https://maastrichtuniversity.nl/icts">Information and Communications Technology Services</a> (ICTS) at <a href="https://maastrichtuniversity.nl">Maastricht University</a>.</p>
+          <ul style={{listStyle: 'none'}}>
+            <li><a href="mailto:vincent.emonet@maastrichtuniversity.nl">Vincent Emonet</a> - Data Science engineer at <a href="https://maastrichtuniversity.nl/ids">IDS</a></li>
+            <li><a href="mailto:marcel.brouwers@maastrichtuniversity.nl">Brouwers Marcel</a> - System, Security and Network engineer at <a href="https://maastrichtuniversity.nl/icts">ICTS</a></li>
+            <li><a href="mailto:sebastiaan.nijhuis@maastrichtuniversity.nl">Sebastiaam Nijhuis</a> - System, Security and Network engineer at <a href="https://maastrichtuniversity.nl/icts">ICTS</a></li>
+            <li><a href="mailto:maurice.steyvers@maastrichtuniversity.nl">Maurice Steyvers</a> - ICT manager at <a href="https://maastrichtuniversity.nl/icts">ICTS</a></li>
+            <li><a href="mailto:michel.dumontier@maastrichtuniversity.nl">Michel Dumontier</a> - Project investigator from <a href="https://maastrichtuniversity.nl/ids">IDS</a></li>
+          </ul>
         </div>
       </Container>
     </div>
