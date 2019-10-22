@@ -48,10 +48,10 @@ function Help(props) {
           <h1>The DSRI support team</h1>
           <p>From the <a href="https://maastrichtuniversity.nl/ids">Institute of Data Science</a> (IDS) and <a href="https://maastrichtuniversity.nl/icts">Information and Communications Technology Services</a> (ICTS) at <a href="https://maastrichtuniversity.nl">Maastricht University</a>.</p>
           <ul style={{listStyle: 'none'}}>
-            <li><b>Vincent Emonet</b> - Data Science engineer at <a href="https://maastrichtuniversity.nl/ids">IDS</a></li>
             <li><b>Brouwers Marcel</b> - System, Security and Network engineer at <a href="https://maastrichtuniversity.nl/icts">ICTS</a></li>
             <li><b>Sebastiaam Nijhuis</b> - System, Security and Network engineer at <a href="https://maastrichtuniversity.nl/icts">ICTS</a></li>
             <li><b>Maurice Steyvers</b> - ICT manager at <a href="https://maastrichtuniversity.nl/icts">ICTS</a></li>
+            <li><b>Vincent Emonet</b> - Data Science engineer at <a href="https://maastrichtuniversity.nl/ids">IDS</a></li>
             <li><b>Michel Dumontier</b> - Project investigator from <a href="https://maastrichtuniversity.nl/ids">IDS</a></li>
           </ul>
         </div>
