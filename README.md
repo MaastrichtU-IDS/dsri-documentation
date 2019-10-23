@@ -1,4 +1,4 @@
-# DSRI documentation
+[![Gitter](https://badges.gitter.im/um-dsri/community.svg)](https://gitter.im/um-dsri/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Generated using [Docusaurus](https://docusaurus.io/).
 
