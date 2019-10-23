@@ -12,7 +12,7 @@ Editing a documentation file is as easy as going to https://github.com/Maastrich
 
 Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/docs).
 
-We recommend using [Typora](https://typora.io/) to edit [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) files on your computer.
+> We recommend using [Typora](https://typora.io/) to edit [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) files on your computer.
 
 ### Files locations
 
