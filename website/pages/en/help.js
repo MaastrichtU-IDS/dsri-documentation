@@ -46,6 +46,7 @@ function Help(props) {
           <p>If you need help or have questions about the Data Science Research Infrastructure, try one of the mechanisms above.</p>
           <GridBlock contents={supportLinks} layout="threeColumn" />
           <h1>The DSRI support team</h1>
+          <p>Contact at [dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl).</p>
           <p>From the <a href="https://maastrichtuniversity.nl/ids">Institute of Data Science</a> (IDS) and <a href="https://maastrichtuniversity.nl/icts">Information and Communications Technology Services</a> (ICTS) at <a href="https://maastrichtuniversity.nl">Maastricht University</a>.</p>
           <ul style={{listStyle: 'none'}}>
             <li><b>Brouwers Marcel</b> - System, Security and Network engineer at <a href="https://maastrichtuniversity.nl/icts">ICTS</a></li>
