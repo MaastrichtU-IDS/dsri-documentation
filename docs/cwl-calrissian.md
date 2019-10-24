@@ -14,65 +14,39 @@ oc create rolebinding pod-manager-default-binding --role=pod-manager-role --serv
 oc create rolebinding log-reader-default-binding --role=log-reader-role --serviceaccount=test-vincent:default
 ```
 
-## Start pod
-
-You might need to give permissions: `chmod -R 777 /calrissian`
-
-```shell
-oc create -f run-cwl-calrissian.yaml
-```
-
-## Delete created pod
-
-```shell
-oc delete -f run-cwl-calrissian.yaml
-```
-
 ---
 
 ## Clone the repository
 
+Git clone in `/calrissian` from a terminal (e.g. [Jupyterlab](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods/jupyterlab-root-2-8w472?tab=terminal), shared in `/data/calrissian`).
+
 ```shell
-git clone --recursive https://github.com/MaastrichtU-IDS/d2s-transform-biolink.git
-cd d2s-transform-biolink
+cd /data/calrissian
+git clone --recursive https://github.com/MaastrichtU-IDS/d2s-transform-template.git
+cd d2s-transform-template
+```
+
+You might need to give permissions.
+
+```shell
+chmod -R 777 /data/calrissian
 ```
 
 ---
 
-## Workflow to convert XML to RDF
+## Start pod
 
-### Steps-based workflow
-
-```shell
-argo submit d2s-argo-workflows/d2s-workflow-transform-xml.yaml \
-  -f support/config/config-transform-xml-drugbank.yml
-```
-
-> *Reminder:* you need first to authenticate to the [OpenShift cluster](https://app.dsri.unimaas.nl:8443/) using `oc login` .
-
-### DAG workflow
+From your computer using the `oc` client.
 
 ```shell
-argo submit d2s-argo-workflows/d2s-workflow-transform-xml-dag.yaml \
-  -f support/config/config-transform-xml-drugbank.yml
+oc create -f d2s-cwl-workflows/support/run-cwl-calrissian.yaml
 ```
 
----
+> Browse running pods [here](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods).
 
-## Workflow to convert CSV to RDF
-
-### Steps-based workflow
+## Delete created pod
 
 ```shell
-argo submit d2s-argo-workflows/d2s-workflow-transform-csv.yaml \
-  -f support/config/config-transform-csv-stitch.yml
+oc delete -f d2s-cwl-workflows/support/run-cwl-calrissian.yaml
 ```
 
-### DAG workflow
-
-```shell
-argo submit d2s-argo-workflows/d2s-workflow-transform-csv-dag.yaml \
-  -f support/config/config-transform-csv-stitch.yml
-```
-
-![Argo project](/dsri-documentation/img/argo-logo.png)
