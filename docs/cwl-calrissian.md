@@ -3,7 +3,7 @@ id: cwl-calrissian
 title: Run CWL workflows
 ---
 
-[![BioLink model](/dsri-documentation/img/biolink-logo.png)](https://github.com/MaastrichtU-IDS/d2s-transform-biolink)
+![CWL workflows](/dsri-documentation/img/CWL_logo.png)
 
 ## Install CWL Calrissian
 
@@ -18,7 +18,7 @@ oc create rolebinding log-reader-default-binding --role=log-reader-role --servic
 
 ## Clone the repository
 
-Git clone in `/calrissian` from a terminal (e.g. [Jupyterlab](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods/jupyterlab-root-2-8w472?tab=terminal), shared in `/data/calrissian`).
+Git clone in `/calrissian` from a terminal. E.g. from [Jupyterlab](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods/jupyterlab-root-2-8w472?tab=terminal), shared in `/data/calrissian`.
 
 ```shell
 cd /data/calrissian
