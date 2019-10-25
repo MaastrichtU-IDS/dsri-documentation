@@ -2,7 +2,7 @@
   "docs": {
     "Get started": ["start-introduction", "start-install", "start-ecosystem"],
     "Run with OpenShift": ["openshift-login", "openshift-commands", "openshift-volume", "openshift-load-data", "openshift-secret", "openshift-debug"],
-    "Workflows": ["argo-run", "argo-commands", "cwl-calrissian"],
+    "Workflows": ["argo-install", "argo-run", "argo-commands", "cwl-calrissian"],
     "Examples": ["example-dockerfile-to-openshift"],
     "Guides": ["guide-docker"]
   }
