@@ -1,6 +1,6 @@
 ---
 id: argo-install
-title: Install Argo workflows
+title: Install Argo
 ---
 
 [![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
