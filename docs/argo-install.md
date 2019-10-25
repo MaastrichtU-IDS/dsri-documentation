@@ -7,8 +7,12 @@ title: Install Argo
 
 ## Install Argo on OpenShift
 
+Replace `namespace: argo` by your namespace in [namespace-install.yaml](https://github.com/argoproj/argo/blob/master/manifests/namespace-install.yaml#L165).
+
 ```shell
 oc apply -n test-vincent -f https://raw.githubusercontent.com/MaastrichtU-IDS/argo/master/manifests/namespace-install.yaml
+# Updated config
+oc apply -n test-vincent -f https://raw.githubusercontent.com/vemonet/argo/develop/manifests/namespace-install.yaml
 
 # Get cluster roles
 oc describe clusterrole.rbac | less
@@ -16,6 +20,7 @@ oc describe clusterrole.rbac | less
 # Config service account, see link below
 oc create rolebinding default-admin --clusterrole=admin --serviceaccount=default:default
 
+# Test it
 argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
 ```
 
