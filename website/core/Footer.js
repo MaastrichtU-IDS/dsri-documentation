@@ -73,17 +73,11 @@ class Footer extends React.Component {
 
           <div>
             <h5>Community</h5>
-            {this.props.config.twitterUsername && (
-              <div className="social">
-                <a
-                  href={`https://twitter.com/${
-                    this.props.config.twitterUsername
-                  }`}
-                  className="twitter-follow-button">
-                  Follow @{this.props.config.twitterUsername}
-                </a>
-              </div>
-            )}
+            <a href="https://twitter.com/MaastrichtU"
+              target="_blank" rel="noreferrer noopener"
+              aria-label="Follow on Twitter">
+              <img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/>
+            </a>
             <a href="https://www.facebook.com/maastricht.university/"
               target="_blank" rel="noreferrer noopener">
               Facebook
