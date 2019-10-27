@@ -13,6 +13,8 @@ Replace `namespace: argo` by your namespace in [namespace-install.yaml](https://
 oc apply -n test-vincent -f https://raw.githubusercontent.com/MaastrichtU-IDS/argo/master/manifests/namespace-install.yaml
 # Updated config
 oc apply -n test-vincent -f https://raw.githubusercontent.com/vemonet/argo/develop/manifests/namespace-install.yaml
+# Install 2.4.2 on test-vincent
+oc apply -n test-vincent -f https://raw.githubusercontent.com/vemonet/argo/vemonet-2.4.2/manifests/namespace-install.yaml
 
 # Get cluster roles
 oc describe clusterrole.rbac | less
