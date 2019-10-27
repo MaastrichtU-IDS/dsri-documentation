@@ -37,16 +37,16 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('start-introduction', this.props.language)}>
+            <a href={this.docUrl('start-introduction')}>
               Get started
             </a>
-            <a href={this.docUrl('openshift-login', this.props.language)}>
+            <a href={this.docUrl('openshift-login')}>
               Run with OpenShift
             </a>
-            <a href={this.docUrl('argo-run', this.props.language)}>
-              Argo workflows
+            <a href={this.docUrl('argo-run')}>
+              Run workflows
             </a>
-            <a href={this.docUrl('guide-docker', this.props.language)}>
+            <a href={this.docUrl('guide-docker')}>
               Guides
             </a>
           </div>
@@ -73,10 +73,15 @@ class Footer extends React.Component {
 
           <div>
             <h5>Community</h5>
+            <a href="https://gitter.im/um-dsri/community"
+              target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter">
+              <img alt="Chat on Gitter" 
+              src="https://img.shields.io/gitter/room/um-dsri/community"/>
+            </a>
             <a href="https://twitter.com/MaastrichtU"
-              target="_blank" rel="noreferrer noopener"
-              aria-label="Follow on Twitter">
-              <img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/>
+              target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter">
+              <img alt="Follow on Twitter"
+              src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/>
             </a>
             <a href="https://www.facebook.com/maastricht.university/"
               target="_blank" rel="noreferrer noopener">

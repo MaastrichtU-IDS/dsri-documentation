@@ -21,17 +21,25 @@ function Help(props) {
 
   const supportLinks = [
     {
-      content: `Learn more using the [documentation.](${docUrl(
-        'start-introduction',
-      )})`,
-      title: 'Browse the Docs',
+      content: `<a href="https://gitter.im/um-dsri/community"
+        target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter">
+        <img alt="Chat on Gitter" 
+        src="https://img.shields.io/gitter/room/um-dsri/community"/>
+      </a>
+      <p>Feel free to ask questions and get involved in the community.</p>`,
+      title: 'Join the DSRI community',
     },
     {
-      content: 'Browse and submit [issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) or [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) to fix or improve the documentation.',
+      content: `<a href="https://github.com/MaastrichtU-IDS/dsri-documentation"
+        target="_blank" aria-label="Star this project on GitHub">
+        <img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&style=social"/>
+      </a>
+      <p>Browse and submit [issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) or [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) 
+      to fix and improve the documentation.</p>`,
       title: 'GitHub',
     },
     {
-      content: "Feel free to contact [dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl) if you have any questions.",
+      content: "Feel free to contact <br/>[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl)<br/>if you have any questions.",
       title: 'Contact us',
     },
   ];
