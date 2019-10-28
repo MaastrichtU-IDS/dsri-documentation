@@ -82,11 +82,11 @@ oc create -f d2s-pod-drill.yaml
 oc create -f d2s-service-drill.yaml
 ```
 
-> OpenShift should already [propose Apache Drill](https://thenewstack.io/mapr-brings-apache-spark-and-apache-drill-to-kubernetes/) deployment.
+> **TODO:** try the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-containers/tree/master/kubernetes) for Kubernetes.
 
 ### Start postgres
 
-> **TODO**
+> **TODO:** available in a catalog?
 
 ### Start Virtuoso
 
@@ -94,7 +94,7 @@ oc create -f d2s-service-drill.yaml
 oc create -f d2s-pod-virtuoso.yaml
 ```
 
-> **TODO**
+> **TODO:** use the [official OpenLink deployment](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/pods/d2s-pod-virtuoso7.yaml).
 
 ---
 
@@ -104,7 +104,7 @@ oc create -f d2s-pod-virtuoso.yaml
 
 [![filebrowser](/dsri-documentation/img/filebrowser_banner.svg)](https://filebrowser.xyz/)
 
-Deploy [filebrowser](https://hub.docker.com/r/filebrowser/filebrowser) over [MapR](https://mapr.com/) to access storage volumes.
+Deploy a [filebrowser](https://hub.docker.com/r/filebrowser/filebrowser) over [MapR](https://mapr.com/) to access storage volumes (browse, download, create, delete files).
 
 Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`.
 
