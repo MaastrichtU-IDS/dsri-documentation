@@ -1,5 +1,5 @@
 ---
-id: example-dockerfile-to-openshift
+id: guide-dockerfile-to-openshift
 title: Dockerfile on OpenShift
 ---
 

@@ -46,7 +46,7 @@ class Footer extends React.Component {
             <a href={this.docUrl('argo-run')}>
               Run workflows
             </a>
-            <a href={this.docUrl('guide-docker')}>
+            <a href={this.docUrl('guide-dockerfile-to-openshift')}>
               Guides
             </a>
           </div>

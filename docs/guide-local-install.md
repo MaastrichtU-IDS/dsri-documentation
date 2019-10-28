@@ -1,40 +1,9 @@
 ---
-id: argo-install
-title: Install Argo
+id: guide-local-install
+title: Install local Kubernetes
 ---
 
-[![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
-
-## Install Argo on OpenShift
-
-Replace `namespace: argo` by your namespace in [namespace-install.yaml](https://github.com/argoproj/argo/blob/master/manifests/namespace-install.yaml#L165).
-
-```shell
-oc apply -n test-vincent -f https://raw.githubusercontent.com/MaastrichtU-IDS/argo/master/manifests/namespace-install.yaml
-# Updated config
-oc apply -n test-vincent -f https://raw.githubusercontent.com/vemonet/argo/develop/manifests/namespace-install.yaml
-# Install 2.4.2 on test-vincent
-oc apply -n test-vincent -f https://raw.githubusercontent.com/vemonet/argo/vemonet-2.4.2/manifests/namespace-install.yaml
-
-# Get cluster roles
-oc describe clusterrole.rbac | less
-
-# Config service account, see link below
-oc create rolebinding default-admin --clusterrole=admin --serviceaccount=default:default
-
-# Test it
-argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
-```
-
-> [Configure service account](https://github.com/argoproj/argo/blob/master/demo.md#3-configure-the-service-account-to-run-workflows).
-
-## Install client on MacOS
-
-```shell
-brew install argoproj/tap/argo
-```
-
----
+[![Kubernetes](/dsri-documentation/img/Kubernetes.png)](https://kubernetes.io/)
 
 ## Install local Kubernetes
 
@@ -55,7 +24,7 @@ Included in [Docker installation](/docs/cwl-install#on-macos-windows).
 
 ---
 
-### Install Dashboard UI
+## Install Dashboard UI
 
 ```shell
 # Install Kubernetes UI
@@ -73,7 +42,9 @@ kubectl proxy
 
 ---
 
-### Install Argo
+## Install Argo
+
+[![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
 
 ```shell
 kubectl create ns argo
@@ -90,7 +61,7 @@ kubectl -n argo port-forward deployment/argo-ui 8002:8001
 
 ---
 
-### Create persistent volume
+## Create persistent volume
 
 ```shell
 # Create volume
@@ -98,6 +69,14 @@ kubectl apply -n argo -f d2s-argo-workflows/storage/storage-mac.yaml
 ```
 
 > **TODO:** Not working at the moment.
+
+---
+
+## Install client on MacOS
+
+```shell
+brew install argoproj/tap/argo
+```
 
 ---
 
@@ -113,4 +92,4 @@ kubectl delete -n kube-system sa argo argo-ui
 kubectl delete -n kube-system svc argo-ui
 ```
 
-[![Kubernetes](/dsri-documentation/img/Kubernetes.png)](https://kubernetes.io/)
+> **TODO:** test

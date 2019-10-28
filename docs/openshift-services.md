@@ -1,13 +1,13 @@
 ---
-id: start-ecosystem
-title: The DSRI ecosystem
+id: openshift-services
+title: Deploy services
 ---
 
-Containers available for the **Data Science Research Infrastructure**.
+Services available for the **Data Science Research Infrastructure**.
 
-Feel free to propose new containers using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls).
+Feel free to propose new services using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
-Build a container using a simple [Docker image](https://hub.docker.com/) .
+A service can be easily deployed services from a [Docker image](https://hub.docker.com/) .
 
 ---
 
