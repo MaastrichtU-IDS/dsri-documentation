@@ -5,6 +5,25 @@ title: Install Argo
 
 [![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
 
+## Install client
+
+See [official documentation](https://argoproj.github.io/docs/argo/demo.html#1-download-argo).
+
+### On Ubuntu
+
+```shell
+curl -sSL -o /usr/local/bin/argo https://github.com/argoproj/argo/releases/download/v2.2.1/argo-linux-amd64
+chmod +x /usr/local/bin/argo
+```
+
+### On MacOS
+
+```shell
+brew install argoproj/tap/argo
+```
+
+---
+
 ## Install Argo on OpenShift
 
 Replace `namespace: argo` by your namespace in [namespace-install.yaml](https://github.com/argoproj/argo/blob/master/manifests/namespace-install.yaml#L165).
@@ -27,12 +46,6 @@ argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examp
 ```
 
 > [Configure service account](https://github.com/argoproj/argo/blob/master/demo.md#3-configure-the-service-account-to-run-workflows).
-
-## Install client on MacOS
-
-```shell
-brew install argoproj/tap/argo
-```
 
 ---
 
