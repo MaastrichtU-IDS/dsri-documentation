@@ -15,14 +15,23 @@ A service can be easily deployed services from a [Docker image](https://hub.dock
 
 ### Jupyter lab
 
-[![RStudio](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
+[![Jupyterlab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
 
 Use [amalic/jupyterlab](https://hub.docker.com/r/amalic/jupyterlab/) Docker image.
 
-* Network port: `8888`
-* Mounted volume: `/notebooks`
+* Image name:
+  
+  ```
+  amalic/jupyterlab
+  ```
+  
 * Environment variables:
+  
   * `PASSWORD=my_password`
+  
+* Mounted volume: `/notebooks`
+
+> Network port: `8888`
 
 Build using `oc` (in git repository)
 
@@ -33,6 +42,8 @@ oc new-app amalic-jupyterlab
 oc expose svc/amalic-jupyterlab
 ```
 
+> Use [OpenShift secrets](/dsri-documentation/docs/openshift-secret) to provide password in a secure manner. (**TODO:** improve doc).
+
 ---
 
 ### RStudio
@@ -41,11 +52,20 @@ oc expose svc/amalic-jupyterlab
 
 Use [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio/) Docker image.
 
-* Network port: `8787`
-* Mounted volume: `/srv`
+* Image name:
+  
+  ```
+  rocker/rstudio
+  ```
+
 * Environment variables:
   * `ROOT=TRUE`
   * `PASSWORD=my_password`
+* Mounted path: `/home` (rstudio files goes to `/home/rstudio`)
+
+> Username: `rstudio`
+
+> Network port: `8787`
 
 ---
 
@@ -89,11 +109,21 @@ Deploy [filebrowser](https://hub.docker.com/r/filebrowser/filebrowser) over [Map
 Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`.
 
 - Add to Project: `argo`
-- Image Name: `filebrowser/filebrowser` 
+
+- Image Name:
+
+  ```
+  filebrowser/filebrowser 
+  ```
+
 - Give a name to your image: `filebrowser`
+
 - Click `Deploy`
+
 - Go to `argo` project > Click on latest deployment of the `filebrowser`
+
 - Delete the automatically mounted volume, and add the persistent volume (`my-storage`). Should be on `/srv`
+
 - Add route
 
 > Access on http://d2s-filebrowser-argo.app.dsri.unimaas.nl/files/
