@@ -1,5 +1,5 @@
 ---
-id: start-introduction
+id: openshift-introduction
 title: Introduction
 ---
 

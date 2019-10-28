@@ -4,7 +4,7 @@ Generated using [Docusaurus](https://docusaurus.io/).
 
 ## Edit documentation pages
 
-Editing a documentation file is as easy as going to https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/start-introduction.md.
+Editing a documentation file is as easy as going to https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/openshift-introduction.md.
 
 * Edit a page by login with an account that has edit permissions.
 

@@ -1,5 +1,5 @@
 ---
-id: start-install
+id: openshift-install
 title: Installation
 sidebar_label: Installation
 ---
