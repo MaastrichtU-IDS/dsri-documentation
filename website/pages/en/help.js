@@ -26,7 +26,7 @@ function Help(props) {
         <img alt="Chat on Gitter" 
         src="https://img.shields.io/gitter/room/um-dsri/community"/>
       </a>
-      <p>Feel free to ask questions and get involved in the community.</p>`,
+      <p>Feel free to ask questions on [Gitter](https://gitter.im/um-dsri/community) and get involved in the community.</p>`,
       title: 'Join the DSRI community',
     },
     {
