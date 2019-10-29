@@ -13,11 +13,11 @@ Go to the [Overview page](https://app.dsri.unimaas.nl:8443/console/projects) of 
 * Select to deploy from `Image Name`
   * Search `filebrowser/filebrowser` to test
   * Eventually change the `Name`.
-  * Click `Deploy`
+  * Click `Deploy`.
 
-> You should now see your pod deployed on the `Overview` page of your project.
+> You should now see your pod deployed on the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page of your project.
 
-> You can expose routes to this pod in the `Overview` page: `Create route`.
+> You can expose routes to this pod in the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page: `Create route`.
 
 ## Build from local Dockerfile
 
@@ -86,9 +86,6 @@ You can now visit the route shown in the HOST/PORT output of the 'oc get route' 
 
 ```shell
 oc delete build dockerfile-to-okd
-
-# Test
-oc delete all brein-fastq-centos76-1
 ```
 
-> [Not working](https://docs.openshift.com/enterprise/3.0/cli_reference/basic_cli_operations.html#application-modification-cli-operations).
+> See [oc delete documentation](https://docs.openshift.com/enterprise/3.0/cli_reference/basic_cli_operations.html#application-modification-cli-operations).

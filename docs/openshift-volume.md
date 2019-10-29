@@ -24,28 +24,34 @@ This example details how to deploy the [filebrowser UI](https://hub.docker.com/r
 
 Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`
 
-* Add to Project: `argo`
-
 * Image Name:
 
   ```
   filebrowser/filebrowser 
   ```
 
-* Give a name to your image: `filebrowser`
+* Give a name to your image: `my-filebrowser`
 
-* Click `Deploy`
+* Click `Deploy`.
 
-* Go to `argo` project > Click on latest deployment of the `filebrowser`
+* Click on the `my-filebrowser` deployment > `Configuration` tab
 
-* Delete the automatically mounted volume
+* Remove the automatically mounted volume `my-filebrowser-1` (type: `empty dir`)
 
-* Add the persistent volume (`my-storage`).
+* Click `Add Storage`
 
-  * It should be on `/srv`.
-  * You can define the `subpath` from the persistent volume that will be shared with the pod.
+  - Mount path: `/srv`
+  - Add the persistent volume (`my-storage`). Should be on `/srv`
 
-You can `Edit YAML` to define the pod in `Actions` top right of the filebrowser application page and edit the `DeploymentConfig` (don't go to `#1`, but its parent).
+  * You can also define the `subpath` from the persistent volume that will be shared with the pod.
+
+* `Create Route` from the application details in the Overview page.
+
+> Access on http://d2s-filebrowser-argo.app.dsri.unimaas.nl/files/
+
+> Login with `admin` / `admin`
+
+You can also set the mounted volumes via `Edit YAML` to define the pod in `Actions` top right of the filebrowser application page and edit the `DeploymentConfig` (don't go to `#1`, but its parent).
 
 It should look like this:
 
@@ -71,12 +77,6 @@ volumes:
     persistentVolumeClaim:
       claimName: my-pvc
 ```
-
-* `Create Route` from the application details in the Overview page.
-
-> Access on http://d2s-filebrowser-argo.app.dsri.unimaas.nl/files/
-
-> Login with `admin` / `admin`
 
 ---
 
