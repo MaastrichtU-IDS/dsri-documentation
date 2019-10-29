@@ -1,10 +1,11 @@
 {
   "docs": {
-    "OpenShift Services": ["openshift-introduction", "openshift-install", 
-      "openshift-login", "openshift-commands", 
-      "openshift-volume", "openshift-services", 
-      "openshift-load-data", "openshift-secret", "openshift-debug"],
-    "Workflows": ["argo-install", "argo-run", "argo-commands", "cwl-calrissian"],
-    "Guides": ["guide-dockerfile-to-openshift", "guide-local-install", "guide-docker"]
+    "OpenShift UI": ["introduction",
+      "openshift-services", "openshift-volume",
+      "openshift-secret"],
+    "Administration": ["openshift-install", 
+      "openshift-login", "openshift-commands", "guide-dockerfile-to-openshift", 
+      "openshift-load-data", "openshift-debug", "guide-local-install"],
+    "Workflows": ["argo-install", "argo-run", "argo-commands", "cwl-calrissian"]
   }
 }
