@@ -16,11 +16,11 @@ Go to https://app.dsri.unimaas.nl:8443/console/project/argo/create-pvc
 
 ---
 
-## Mount a filesystem UI
+## Mount a filesystem UI on a PVC
 
 [![filebrowser](/dsri-documentation/img/filebrowser_banner.svg)](https://filebrowser.xyz/)
 
-Deploy [filebrowser](https://hub.docker.com/r/filebrowser/filebrowser) on MapR to access volumes.
+This example details how to deploy the [filebrowser UI](https://hub.docker.com/r/filebrowser/filebrowser) on linked to a MapR Persistent Volume Claim (PVC) to browse files.
 
 Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`
 
@@ -38,37 +38,41 @@ Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`
 
 * Go to `argo` project > Click on latest deployment of the `filebrowser`
 
-* Delete the automatically mounted volume, and add the persistent volume (`my-storage`). Should be on `/srv`
+* Delete the automatically mounted volume
+
+* Add the persistent volume (`my-storage`).
+
+  * It should be on `/srv`.
+  * You can define the `subpath` from the persistent volume that will be shared with the pod.
 
 You can `Edit YAML` to define the pod in `Actions` top right of the filebrowser application page and edit the `DeploymentConfig` (don't go to `#1`, but its parent).
+
+It should look like this:
 
 ```yaml
 spec:
       containers:
         - image: [...]
-          imagePullPolicy: Always
-          name: filebrowser3
+          name: my-filebrowser
           ports:
             - containerPort: 80
               protocol: TCP
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
           volumeMounts:
-            - mountPath: /srv		# REMOVE
-              name: filebrowser3-1	# REMOVE
-            - mountPath: /data		# Change to /srv
-              name: volume-f1z33
+            - mountPath: /srv		# REMOVE, if present
+              name: filebrowser-1	# REMOVE, if present
+            - mountPath: /srv		# Sharing on /srv for filebrowser
+              name: d2s-filebrowser-pvc
+              subPath: path/in/pvc
 
 volumes:
-  - emptyDir: {}			# REMOVE
-    name: filebrowser3-1	# REMOVE
-  - name: volume-f1z33
+  - emptyDir: {}			# REMOVE, if present
+    name: filebrowser-1	# REMOVE, if present
+  - name: d2s-filebrowser-pvc
     persistentVolumeClaim:
-      claimName: d2s-filebrowser
+      claimName: my-pvc
 ```
 
-* Add route
+* `Create Route` from the application details in the Overview page.
 
 > Access on http://d2s-filebrowser-argo.app.dsri.unimaas.nl/files/
 
