@@ -12,8 +12,8 @@ See [official documentation](https://argoproj.github.io/docs/argo/demo.html#1-do
 ### On Ubuntu
 
 ```shell
-curl -sSL -o /usr/local/bin/argo https://github.com/argoproj/argo/releases/download/v2.2.1/argo-linux-amd64
-chmod +x /usr/local/bin/argo
+sudo curl -sSL -o /usr/local/bin/argo https://github.com/argoproj/argo/releases/download/v2.2.1/argo-linux-amd64
+sudo chmod +x /usr/local/bin/argo
 ```
 
 ### On MacOS
@@ -38,11 +38,13 @@ oc apply -n test-vincent -f https://raw.githubusercontent.com/vemonet/argo/vemon
 # Get cluster roles
 oc describe clusterrole.rbac | less
 
-# Config service account, see link below
+# Config service account (default on default namespace), see link below
 oc create rolebinding default-admin --clusterrole=admin --serviceaccount=default:default
+oc create rolebinding default-admin --clusterrole=admin --serviceaccount=argo:test-vincent
 
 # Test it
 argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
+
 ```
 
 > [Configure service account](https://github.com/argoproj/argo/blob/master/demo.md#3-configure-the-service-account-to-run-workflows).
