@@ -5,9 +5,9 @@ title: Install local Kubernetes
 
 [![Kubernetes](/dsri-documentation/img/Kubernetes.png)](https://kubernetes.io/)
 
-## Install local Kubernetes
+## Install kubectl
 
-### Install kubectl on Ubuntu
+### kubectl on Ubuntu
 
 ```shell
 sudo snap install microk8s --classic
@@ -16,7 +16,7 @@ mkdir -p ~/.kube
 microk8s.kubectl config view --raw > $HOME/.kube/config
 ```
 
-### Install kubectl on MacOS & Windows
+### kubectl on MacOS & Windows
 
 Included in [Docker installation](/docs/cwl-install#on-macos-windows).
 
@@ -24,7 +24,7 @@ Included in [Docker installation](/docs/cwl-install#on-macos-windows).
 
 ---
 
-## Install Dashboard UI
+## Install the Dashboard UI
 
 ```shell
 # Install Kubernetes UI
@@ -42,7 +42,7 @@ kubectl proxy
 
 ---
 
-## Install Argo
+## Install Argo workflows
 
 [![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
 
@@ -61,6 +61,25 @@ kubectl -n argo port-forward deployment/argo-ui 8002:8001
 
 ---
 
+## Install argo client
+
+See [official documentation](https://argoproj.github.io/docs/argo/demo.html#1-download-argo).
+
+### Argo on Ubuntu
+
+```shell
+sudo curl -sSL -o /usr/local/bin/argo https://github.com/argoproj/argo/releases/download/v2.2.1/argo-linux-amd64
+sudo chmod +x /usr/local/bin/argo
+```
+
+### Argo on MacOS
+
+```shell
+brew install argoproj/tap/argo
+```
+
+---
+
 ## Create persistent volume
 
 ```shell
@@ -69,14 +88,6 @@ kubectl apply -n argo -f d2s-argo-workflows/storage/storage-mac.yaml
 ```
 
 > **TODO:** Not working at the moment.
-
----
-
-## Install client on MacOS
-
-```shell
-brew install argoproj/tap/argo
-```
 
 ---
 
