@@ -38,7 +38,9 @@ oc rsync my-pod:/data /data/my-dir
 
 Copy a file, or directory, from your local filesystem to an OpenShift pod.
 
-> We recommend using `rsync` as it synchronizes the file if it already exists, preventing duplication and making synchronization faster. 
+We recommend using `rsync` as it synchronizes the file if it already exists, preventing duplication and making synchronization faster. 
+
+But `oc cp` can fix issues met with rsync, such as copying symlinks for example, file too huge.
 
 ### Copy local to pod
 
