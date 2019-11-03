@@ -79,3 +79,14 @@ oc create -f d2s-pod-virtuoso.yaml
 ```
 
 > **TODO:** use the [official OpenLink deployment](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/pods/d2s-pod-virtuoso7.yaml).
+
+---
+
+## Connect to DockerHub
+
+Create secret to pull private images.
+
+```shell
+oc create secret docker-registry docker-hub-secret --docker-server=docker.io --docker-username=your-dockerhub-username --docker-password=your-dockerhub-password --docker-email=your-dockerhub-email
+```
+
