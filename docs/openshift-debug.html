@@ -62,22 +62,22 @@
 <pre><code class="hljs css language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
 <span class="hljs-attr">metadata:</span>
-<span class="hljs-attr">  labels:</span>
-<span class="hljs-attr">    purpose:</span> <span class="hljs-string">download-data-files</span>
-<span class="hljs-attr">  name:</span> <span class="hljs-string">d2s-download-pod</span>
-<span class="hljs-attr">  namespace:</span> <span class="hljs-string">argo</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">purpose:</span> <span class="hljs-string">download-data-files</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">d2s-download-pod</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">argo</span>
 <span class="hljs-attr">spec:</span>
-<span class="hljs-attr">  volumes:</span>
-<span class="hljs-attr">  - name:</span> <span class="hljs-string">workdir</span>
-<span class="hljs-attr">    persistentVolumeClaim:</span>
-<span class="hljs-attr">      claimName:</span> <span class="hljs-string">my-storage</span>
-<span class="hljs-attr">  containers:</span>
-<span class="hljs-attr">  - name:</span> <span class="hljs-string">d2s-download</span>
-<span class="hljs-attr">    image:</span> <span class="hljs-string">maastrichtuids/d2s-download:latest</span>
-<span class="hljs-attr">    command:</span> <span class="hljs-string">[</span> <span class="hljs-string">"tail"</span><span class="hljs-string">,</span> <span class="hljs-string">"-f"</span><span class="hljs-string">,</span> <span class="hljs-string">"/dev/null"</span><span class="hljs-string">]</span>
-<span class="hljs-attr">    volumeMounts:</span>
-<span class="hljs-attr">    - name:</span> <span class="hljs-string">workdir</span>
-<span class="hljs-attr">      mountPath:</span> <span class="hljs-string">/data</span>
+  <span class="hljs-attr">volumes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">workdir</span>
+    <span class="hljs-attr">persistentVolumeClaim:</span>
+      <span class="hljs-attr">claimName:</span> <span class="hljs-string">my-storage</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">d2s-download</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">maastrichtuids/d2s-download:latest</span>
+    <span class="hljs-attr">command:</span> <span class="hljs-string">[</span> <span class="hljs-string">"tail"</span><span class="hljs-string">,</span> <span class="hljs-string">"-f"</span><span class="hljs-string">,</span> <span class="hljs-string">"/dev/null"</span><span class="hljs-string">]</span>
+    <span class="hljs-attr">volumeMounts:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">workdir</span>
+      <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/data</span>
 </code></pre>
 <p>Then start the pod:</p>
 <pre><code class="hljs css language-shell"><span class="hljs-keyword">oc </span><span class="hljs-built_in">create</span><span class="hljs-template-variable"> -f</span> archives/d2s-download-pod.yaml
