@@ -37,6 +37,42 @@ Use [amalic/jupyterlab](https://hub.docker.com/r/amalic/jupyterlab/) Docker imag
 
 ---
 
+### Anaconda and Tensorflow with Jupyter
+
+Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-notebook) official Docker image.
+
+* Image name:
+
+  ```shell
+  jupyter/tensorflow-notebook
+  ```
+  
+* Environment variables:
+
+  * `JUPYTER_ENABLE_LAB=yes` (optional)
+
+* Mounted path: `/home/jovyan`
+
+> Go to the `pod logs` to get the `login token`.
+
+Or build **Jupyter for OpenShift**:
+
+https://github.com/jupyter-on-openshift/jupyter-notebooks/tree/develop/tensorflow-notebook
+
+```shell
+oc new-build --name tensorflow-notebook --binary
+oc start-build tensorflow-notebook --from-dir=. --follow --wait
+oc new-app tensorflow-notebook
+oc expose svc/tensorflow-notebook
+oc get route
+# Delete build:
+oc delete build tensorflow-notebook
+```
+
+> To test
+
+---
+
 ### RStudio
 
 [![RStudio](/dsri-documentation/img/rstudio_logo.png)](https://rstudio.com/)
