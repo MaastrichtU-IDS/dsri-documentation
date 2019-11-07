@@ -100,6 +100,25 @@ Use [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio/) Docker image.
 
 From [d2s-argo-workflows](https://github.com/MaastrichtU-IDS/data2services-argo-workflows).
 
+### Blazegraph triplestore
+
+Use [lyrasis/blazegraph](lyrasis/blazegraph) Docker image.
+
+* Image Name:
+
+  ```
+  lyrasis/blazegraph:2.1.5
+  ```
+
+* Mounted path: `/data`.
+* Put files to load in the `/data` and send the [dataloader.txt](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/support/blazegraph-dataloader.txt) file to the API to run the bulk load.
+
+```shell
+wget https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-argo-workflows/master/support/blazegraph-dataloader.txt
+
+curl -X POST --data-binary @blazegraph-dataloader.txt --header 'Content-Type:text/plain' http://blazegraph-test-vincent.app.dsri.unimaas.nl/bigdata/dataloader
+```
+
 ### Start postgres
 
 > **TODO:** available in a catalog?
