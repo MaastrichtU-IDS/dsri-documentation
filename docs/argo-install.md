@@ -38,16 +38,28 @@ oc apply -n test-vincent -f https://raw.githubusercontent.com/vemonet/argo/vemon
 # Get cluster roles
 oc describe clusterrole.rbac | less
 
-# Config service account (default on default namespace), see link below
-oc create rolebinding default-admin --clusterrole=admin --serviceaccount=default:default
-oc create rolebinding default-admin --clusterrole=admin --serviceaccount=argo:test-vincent
+# Config service account, see link below
+# Add argo-role to argo serviceaccount on test-vincent namespace
+## kubernetes way (not recommended)
+oc create rolebinding argo-admin --role=argo-role --serviceaccount=test-vincent:argo
+## OpenShift policy way.
+oc policy add-role-to-user argo-role system:serviceaccount:test-vincent:argo -n test-vincent
+## Getting error
+Error from server (Forbidden): rolebindings.rbac.authorization.k8s.io "argo-admin" is forbidden: attempt to grant extra privileges
+
+# Cluster wide
+oc create rolebinding argo-admin --clusterrole=admin --serviceaccount=test-vincent:argo
+
+# Delete rolebinding
+oc delete rolebinding argo-admin
 
 # Test it
 argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
-
 ```
 
 > [Configure service account](https://github.com/argoproj/argo/blob/master/demo.md#3-configure-the-service-account-to-run-workflows).
+>
+> Go to `Cluster console` > `Administration` > `Role Bindings`. But same error as the other.
 
 ---
 

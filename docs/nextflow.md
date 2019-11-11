@@ -15,6 +15,14 @@ wget -qO- https://get.nextflow.io | bash
 
 ---
 
+## Give permission
+
+```shell
+oc policy add-role-to-user edit system:serviceaccount:showcase:default -n showcase
+```
+
+---
+
 ## Run workflow
 
 ```shell
