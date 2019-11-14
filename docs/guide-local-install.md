@@ -3,13 +3,13 @@ id: guide-local-install
 title: Install local Kubernetes
 ---
 
-[![Kubernetes](/dsri-documentation/img/Kubernetes.png)](https://kubernetes.io/)
+[![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)
 
 ## Install MiniShift
 
-Download [MiniShift](https://github.com/minishift/minishift/releases) and unzip it.
-
 You will need to install the [virtual environment](https://docs.okd.io/latest/minishift/getting-started/setting-up-virtualization-environment.html) before [installing MiniShift](https://docs.okd.io/latest/minishift/getting-started/installing.html).
+
+Download [MiniShift](https://github.com/minishift/minishift/releases) and unzip it.
 
 ```shell
 # For Ubuntu 18.04 and older
@@ -41,7 +41,7 @@ cp minishift-1.34.1-linux-amd64/minishift /usr/local/bin
 minishift start
 ```
 
-> Get URL and connection information after the command complete.
+> Get your local OpenShift cluster URL after the command complete.
 
 ### Login
 
@@ -73,6 +73,8 @@ minishift delete -f
 ---
 
 ## Install kubectl
+
+[![Kubernetes](/dsri-documentation/img/Kubernetes.png)](https://kubernetes.io/)
 
 ### kubectl on Ubuntu
 
@@ -165,3 +167,5 @@ sudo chmod +x /usr/local/bin/argo
 ```shell
 brew install argoproj/tap/argo
 ```
+
+[![Argo workflows](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/)
