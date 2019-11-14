@@ -76,16 +76,27 @@ oc </span>apply<span class="hljs-template-variable"> -n</span> <span class="hljs
 <span class="hljs-comment"># Get cluster roles</span><span class="hljs-keyword">
 oc </span>describe clusterrole.rbac | less
 
-<span class="hljs-comment"># Config service account (default on default namespace), see link below</span><span class="hljs-keyword">
-oc </span><span class="hljs-built_in">create</span> rolebinding default-admin<span class="hljs-template-variable"> --clusterrole</span>=admin<span class="hljs-template-variable"> --serviceaccount</span>=default:default<span class="hljs-keyword">
-oc </span><span class="hljs-built_in">create</span> rolebinding default-admin<span class="hljs-template-variable"> --clusterrole</span>=admin<span class="hljs-template-variable"> --serviceaccount</span>=argo:<span class="hljs-built_in">test</span>-vincent
+<span class="hljs-comment"># Config service account, see link below</span>
+<span class="hljs-comment"># Add argo-role to argo serviceaccount on test-vincent namespace</span>
+<span class="hljs-comment">## kubernetes way (not recommended)</span><span class="hljs-keyword">
+oc </span><span class="hljs-built_in">create</span> rolebinding argo-admin<span class="hljs-template-variable"> --role</span>=argo-role<span class="hljs-template-variable"> --serviceaccount</span>=<span class="hljs-built_in">test</span>-vincent:argo
+<span class="hljs-comment">## OpenShift policy way.</span><span class="hljs-keyword">
+oc </span>policy add-role-to-user argo-role system:serviceaccount:<span class="hljs-built_in">test</span>-vincent:argo<span class="hljs-template-variable"> -n</span> <span class="hljs-built_in">test</span>-vincent
+<span class="hljs-comment">## Getting error</span>
+Error from server (Forbidden): rolebindings.rbac.authorization.k8s.io <span class="hljs-string">"argo-admin"</span> is forbidden: attempt to grant extra privileges
+
+<span class="hljs-comment"># Cluster wide</span><span class="hljs-keyword">
+oc </span><span class="hljs-built_in">create</span> rolebinding argo-admin<span class="hljs-template-variable"> --clusterrole</span>=admin<span class="hljs-template-variable"> --serviceaccount</span>=<span class="hljs-built_in">test</span>-vincent:argo
+
+<span class="hljs-comment"># Delete rolebinding</span><span class="hljs-keyword">
+oc </span><span class="hljs-built_in">delete</span> rolebinding argo-admin
 
 <span class="hljs-comment"># Test it</span><span class="hljs-keyword">
 argo </span><span class="hljs-built_in">submit</span><span class="hljs-template-variable"> --watch</span> https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
-
 </code></pre>
 <blockquote>
 <p><a href="https://github.com/argoproj/argo/blob/master/demo.md#3-configure-the-service-account-to-run-workflows" target="_blank" rel="nofollow noreferrer noopener">Configure service account</a>.</p>
+<p>Go to <code>Cluster console</code> &gt; <code>Administration</code> &gt; <code>Role Bindings</code>. But same error as the other.</p>
 </blockquote>
 <hr>
 <h2><a class="anchor" aria-hidden="true" id="install-local-kubernetes"></a><a href="#install-local-kubernetes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install local Kubernetes</h2>
