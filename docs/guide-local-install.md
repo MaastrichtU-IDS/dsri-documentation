@@ -3,7 +3,7 @@ id: guide-local-install
 title: Install local Kubernetes
 ---
 
-[![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)
+[![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://docs.okd.io/latest/minishift/getting-started/installing.html)
 
 ## Install MiniShift
 
