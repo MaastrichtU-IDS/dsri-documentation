@@ -96,6 +96,21 @@ Use [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio/) Docker image.
 
 ---
 
+### Matlab
+
+Use the Dockerfile provided by IDS which includes a license.
+
+```shell
+oc new-build --name matlab-ids --binary
+oc start-build matlab-ids --from-dir=. --follow --wait
+oc new-app matlab-ids
+oc expose svc/matlab-ids
+```
+
+> Navigate to http://localhost:
+
+---
+
 ## Databases
 
 From [d2s-argo-workflows](https://github.com/MaastrichtU-IDS/data2services-argo-workflows).
