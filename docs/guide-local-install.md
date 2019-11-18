@@ -136,6 +136,8 @@ kubectl delete -n kube-system svc argo-ui
 
 [![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
 
+> **TODO:** update to do the global install through MiniShift (we don't need namespace install on local)
+
 ```shell
 kubectl create ns argo
 # On argo namespace
@@ -148,24 +150,5 @@ kubectl -n argo port-forward deployment/argo-ui 8002:8001
 ```
 
 > Argo UI on http://localhost:8002.
-
----
-
-## Install argo client
-
-See [official documentation](https://argoproj.github.io/docs/argo/demo.html#1-download-argo).
-
-### Argo on Ubuntu
-
-```shell
-sudo curl -sSL -o /usr/local/bin/argo https://github.com/argoproj/argo/releases/download/v2.2.1/argo-linux-amd64
-sudo chmod +x /usr/local/bin/argo
-```
-
-### Argo on MacOS
-
-```shell
-brew install argoproj/tap/argo
-```
 
 [![Argo workflows](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/)
