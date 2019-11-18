@@ -12,7 +12,7 @@ See [official documentation](https://argoproj.github.io/docs/argo/demo.html#1-do
 ### On Ubuntu
 
 ```shell
-sudo curl -sSL -o /usr/local/bin/argo https://github.com/argoproj/argo/releases/download/v2.4.2/argo-linux-amd64
+sudo curl -L -o /usr/local/bin/argo https://github.com/argoproj/argo/releases/download/v2.4.2/argo-linux-amd64
 sudo chmod +x /usr/local/bin/argo
 ```
 
@@ -35,3 +35,13 @@ argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examp
 ```
 
 > You will need to select a project where Argo workflow has been installed.
+
+## Uninstall Argo
+
+### On Ubuntu
+
+```shell
+sudo rm /usr/local/bin/argo
+```
+
+> You can now reinstall a newer version of Argo.
