@@ -107,7 +107,9 @@ oc new-app matlab-ids
 oc expose svc/matlab-ids
 ```
 
-> Navigate to http://localhost:
+> Navigate to the pod terminal.
+
+> Not working on DSRI at the moment, error at loading/unzipping the R2017b_glnxa64.tar.gz file during `oc start-build`.
 
 ---
 
