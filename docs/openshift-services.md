@@ -98,11 +98,17 @@ Use [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio/) Docker image.
 
 ### Matlab
 
+[Build image from Binary](https://docs.openshift.com/container-platform/3.3/dev_guide/builds.html#binary-source).
+
 Use the Dockerfile provided by IDS which includes a license.
 
 ```shell
 oc new-build --name matlab-ids --binary
+
 oc start-build matlab-ids --from-dir=. --follow --wait
+# Fail to copy the big .tar.gz
+oc start-build matlab-ids --from-archive=matlab.zip --follow --wait
+
 oc new-app matlab-ids
 oc expose svc/matlab-ids
 ```
