@@ -1,13 +1,13 @@
 ---
 id: guide-local-install
-title: Install local Kubernetes
+title: Install local MiniShift
 ---
 
 [![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://docs.okd.io/latest/minishift/getting-started/installing.html)
 
 ## Install MiniShift
 
-You will need to install the [virtual environment](https://docs.okd.io/latest/minishift/getting-started/setting-up-virtualization-environment.html) before [installing MiniShift](https://docs.okd.io/latest/minishift/getting-started/installing.html).
+You will need to [set up the virtualization environment](https://docs.okd.io/latest/minishift/getting-started/setting-up-virtualization-environment.html) before [installing MiniShift](https://docs.okd.io/latest/minishift/getting-started/installing.html).
 
 Download [MiniShift](https://github.com/minishift/minishift/releases) and unzip it.
 
