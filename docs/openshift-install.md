@@ -9,10 +9,6 @@ sidebar_label: Installation
 
 [![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)
 
-[Download the oc client](https://www.okd.io/download.html) to connect to the [DSRI OpenShift cluster](https://app.dsri.unimaas.nl:8443/).
-
-> See also the [official installation documentation](https://docs.okd.io/latest/cli_reference/get_started_cli.html).
-
 ### On Linux
 
 ```shell
@@ -22,6 +18,8 @@ cd openshift-origin-client*/
 sudo mv oc kubectl /usr/local/bin/
 ```
 
+> See the [official documentation](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-linux) for more details.
+
 ### On Mac
 
 ```shell
@@ -29,6 +27,12 @@ brew install openshift-cli
 ```
 
 > For people that know what they are doing: download the `.zip` from [GitHub Releases](https://github.com/openshift/origin/releases) and unzip it in your path.
+
+> See the [official documentation](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-mac) for more details.
+
+### On Windows
+
+Follow the [official documentation](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-windows) to install the `oc` client.
 
 ---
 
@@ -58,12 +62,3 @@ brew install argoproj/tap/argo
 Browse [Argo releases](https://github.com/argoproj/argo/releases).
 
 > [Download the latest release executable](https://github.com/argoproj/argo/releases/latest/download/argo-windows-amd64) for Windows.
-
-  <!-- MapR            |  Kubernetes 
-:-------------------------:|:-------------------------:
-[![MapR](/dsri-documentation/img/mapr_logo.png)](https://mapr.com/) | [![Kubernetes](/dsri-documentation/img/Kubernetes.png)](https://kubernetes.io/) -->
-
-
-[![Kubernetes](/dsri-documentation/img/Kubernetes.png)](https://kubernetes.io/)
-
-[![MapR](/dsri-documentation/img/mapr_logo.png)](https://mapr.com/)
