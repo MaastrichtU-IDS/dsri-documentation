@@ -26,7 +26,13 @@ git clone --recursive https://github.com/MaastrichtU-IDS/d2s-transform-template.
 cd d2s-transform-template
 ```
 
-You might need to give permissions.
+You will need to create the folder for the workflow output data, in our example it is `output-data`
+
+```shell
+mkdir /data/calrissian/output-data
+```
+
+You might need to give permissions (CWL execution will fail due to permissions issues otherwise).
 
 ```shell
 chmod -R 777 /data/calrissian
@@ -36,13 +42,15 @@ chmod -R 777 /data/calrissian
 
 ## Start pod
 
-From your computer using the `oc` client. Define the CWL command arguments to run in [run-cwl-calrissian.yaml](https://github.com/MaastrichtU-IDS/d2s-cwl-workflows/blob/master/support/run-cwl-calrissian.yaml).
+Start the CWL execution from your computer using the `oc` client. Define the CWL command arguments to run in [run-cwl-calrissian.yaml](https://github.com/MaastrichtU-IDS/d2s-cwl-workflows/blob/master/support/run-cwl-calrissian.yaml) (be careful to properly define the paths to the CWL files in the pod storage).
 
 ```shell
 oc create -f d2s-cwl-workflows/support/run-cwl-calrissian.yaml
 ```
 
 > Browse running pods [here](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods).
+
+> You will need to delete the pod if you want to re-create it.
 
 ## Delete created pod
 
