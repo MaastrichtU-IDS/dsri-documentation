@@ -5,17 +5,15 @@ title: OpenShift commands
 
 [![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)
 
-
-
 ## Projects
 
 ### List projects
 
 ```shell
-oc get projects
+oc projects
 ```
 
-### Get project
+### Connect to project
 
 ```shell
 oc project my-project
@@ -59,20 +57,6 @@ oc logs -f d2s-download-pod
 
 > Get more details on how to [debug a pod](/dsri-documentation/docs/openshift-debug).
 
-### Rsync
-
-Synchronizes directories with a pod.
-
-```shell
-# From local to pod
-oc rsync /data my-pod:/data
-
-# From pod to local
-oc rsync my-pod:/data/my-file /data
-```
-
-> See [Load data](/dsri-documentation/docs/openshift-load-data) for more details.
-
 ### Remote shell connection
 
 Connect to a pod with [Bash](https://devhints.io/bash).
@@ -80,6 +64,10 @@ Connect to a pod with [Bash](https://devhints.io/bash).
 ```shell
 oc rsh my-pod
 ```
+
+### Copy files
+
+See the [Load data](https://maastrichtu-ids.github.io/dsri-documentation/docs/openshift-load-data) page.
 
 [![Bash](/dsri-documentation/img/bash_logo.png)](https://devhints.io/bash)
 

@@ -52,6 +52,8 @@ oc create -f d2s-cwl-workflows/support/run-cwl-calrissian.yaml
 
 > You will need to delete the pod if you want to re-create it.
 
+> Make sure you are [on the right project](https://maastrichtu-ids.github.io/dsri-documentation/docs/openshift-commands#list-projects): `oc projects`
+
 ## Delete created pod
 
 ```shell
