@@ -5,7 +5,7 @@ title: Run Argo workflows
 
 [![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
 
-We will use [examples](https://github.com/MaastrichtU-IDS/d2s-transform-biolink/tree/master/support/config) from the [**d2s-transform-biolink**](https://github.com/MaastrichtU-IDS/d2s-transform-biolink) project.
+We will use examples from the [MaastrichtU-IDS/d2s-argo-workflows](https://github.com/MaastrichtU-IDS/d2s-argo-workflows) project.
 
 ## Clone the repository
 
@@ -26,6 +26,8 @@ Authenticate to the [OpenShift cluster](https://app.dsri.unimaas.nl:8443/) using
 argo submit d2s-argo-workflows/d2s-workflow-transform-xml.yaml \
   -f support/config/config-transform-xml-drugbank.yml
 ```
+
+> Config files can be provided using the `-f` arguments.
 
 ### DAG workflow
 
