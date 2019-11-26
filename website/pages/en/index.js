@@ -96,16 +96,16 @@ class Index extends React.Component {
         style={{textAlign: 'center'}}>
         <h2>Sustainable and scalable Data Science for everyone</h2>
         <MarkdownBlock>
-          Deploy a [Docker image](https://hub.docker.com/) for your program.
-        </MarkdownBlock>
-        <MarkdownBlock>
           Login to [OpenShift DSRI](https://app.dsri.unimaas.nl:8443/console/catalog)
         </MarkdownBlock>
         <MarkdownBlock>
-          Run your program as a [pod](https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/pods_and_services.html)
+          [Deploy your services](/dsri-documentation/docs/openshift-services) from the DSRI web interface in pods
         </MarkdownBlock>
         <MarkdownBlock>
-          Combine multiple programs to run [workflows](https://argoproj.github.io/argo/)
+          Or build from a [Docker image](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-dockerfile-to-openshift)
+        </MarkdownBlock>
+        <MarkdownBlock>
+          Combine multiple programs to run [workflows](/dsri-documentation/docs/argo-install)
         </MarkdownBlock>
       </div>
     );
