@@ -3,7 +3,7 @@ id: argo-run
 title: Run Argo workflows
 ---
 
-[![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
+![Argo project](/dsri-documentation/img/argo-logo.png)
 
 We will use examples from the [MaastrichtU-IDS/d2s-argo-workflows](https://github.com/MaastrichtU-IDS/d2s-argo-workflows) project.
 
@@ -55,3 +55,4 @@ argo submit d2s-argo-workflows/d2s-workflow-transform-csv-dag.yaml \
 ```
 
 > Try this to solve steps services IP: `{{steps.nginx-server.pod-ip}}`
+

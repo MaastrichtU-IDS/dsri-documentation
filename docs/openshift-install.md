@@ -7,7 +7,7 @@ sidebar_label: Installation
 
 ## Install the OpenShift client
 
-[![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)
+![OpenShift](/dsri-documentation/img/openshift-logo.png)
 
 ### On Linux
 

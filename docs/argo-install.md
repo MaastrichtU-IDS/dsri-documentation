@@ -3,7 +3,7 @@ id: argo-install
 title: Install Argo client
 ---
 
-[![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
+![Argo project](/dsri-documentation/img/argo-logo.png)
 
 ## Install client
 
@@ -36,7 +36,7 @@ argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examp
 
 > You will need to select a project where Argo workflow has been installed.
 
-## Uninstall Argo
+## Uninstall Argo client
 
 ### On Ubuntu
 
