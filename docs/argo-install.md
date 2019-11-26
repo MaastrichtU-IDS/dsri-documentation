@@ -5,7 +5,7 @@ title: Install Argo client
 
 ![Argo project](/dsri-documentation/img/argo-logo.png)
 
-## Install client
+## Install the client
 
 [Argo](https://argoproj.github.io/argo/) allows you to describe and run workflows on [Kubernetes](https://kubernetes.io/) clusters.
 
@@ -30,7 +30,7 @@ Get [Argo executable version 2.4.2](https://github.com/argoproj/argo/releases/do
 
 > See [official Argo documentation](https://argoproj.github.io/docs/argo/demo.html#1-download-argo).
 
-## Test argo
+## Test Argo
 
 Run Hello world workflow to test if argo has been properly installed.
 
@@ -40,7 +40,7 @@ argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examp
 
 > You will need to select a project where Argo workflow has been installed.
 
-## Install OpenShift client
+## Install the OpenShift client
 
 You will need to have the `oc` client installed, see the [install documentation page](/dsri-documentation/docs/openshift-install).
 
