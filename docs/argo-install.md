@@ -42,7 +42,9 @@ argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examp
 
 ## Install OpenShift client
 
-You might also need to install the `oc` client, see the [install documentation page](/dsri-documentation/docs/openshift-install).
+You will need to have the `oc` client installed, see the [install documentation page](/dsri-documentation/docs/openshift-install).
+
+> It will allow you to [authenticate to the OpenShift cluster](/dsri-documentation/docs/openshift-login) using `oc login` .
 
 ## Uninstall Argo client
 

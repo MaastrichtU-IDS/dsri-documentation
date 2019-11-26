@@ -18,7 +18,7 @@ cd d2s-transform-template
 
 ## Workflow to convert XML to RDF
 
-Authenticate to the [OpenShift cluster](https://app.dsri.unimaas.nl:8443/) using `oc login` .
+[Authenticate to the OpenShift cluster](/dsri-documentation/docs/openshift-login) using `oc login` .
 
 ### Steps-based workflow
 
