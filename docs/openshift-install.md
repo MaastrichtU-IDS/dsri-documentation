@@ -36,7 +36,39 @@ Follow the [official documentation](https://docs.okd.io/latest/cli_reference/get
 
 ---
 
-## Install Argo
+## Install the Helm client
+
+### On Linux
+
+```shell
+curl https://get.helm.sh/helm-v3.0.0-linux-amd64.tar.gz > helm-v3.0.0-linux-amd64.tar.gz
+tar -zxvf helm-v3.0.0-linux-amd64.tar.gz
+sudo mv linux-amd64/helm /usr/local/bin/helm
+```
+
+> See [Helm documentation](https://helm.sh/docs/intro/install/#from-the-binary-releases).
+
+### On MacOS
+
+```shell
+brew install helm
+```
+
+> See [Helm documentation](https://helm.sh/docs/intro/install/#from-homebrew-macos).
+
+### On Windows
+
+Install using [Chocolatey](https://chocolatey.org/).
+
+```shell
+choco install kubernetes-helm
+```
+
+> See [Helm documentation](https://helm.sh/docs/intro/install/#from-chocolatey-windows).
+
+---
+
+## Install the Argo client
 
 [![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
 
