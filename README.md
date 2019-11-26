@@ -28,6 +28,7 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 To run in the `/website` directory.
 
 ```shell
+cd website
 npm install
 npm start
 ```
