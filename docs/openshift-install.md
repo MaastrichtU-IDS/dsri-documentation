@@ -18,7 +18,7 @@ cd openshift-origin-client*/
 sudo mv oc kubectl /usr/local/bin/
 ```
 
-> See the [official documentation](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-linux) for more details.
+> See the [official documentation on Linux](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-linux) for more details.
 
 ### On Mac
 
@@ -28,15 +28,17 @@ brew install openshift-cli
 
 > For people that know what they are doing: download the `.zip` from [GitHub Releases](https://github.com/openshift/origin/releases) and unzip it in your path.
 
-> See the [official documentation](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-mac) for more details.
+> See the [official documentation on MacOS](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-mac) for more details.
 
 ### On Windows
 
-Follow the [official documentation](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-windows) to install the `oc` client.
+Follow the [official documentation on Windows](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-windows) to install the `oc` client.
 
 ---
 
 ## Install the Helm client
+
+[Helm](https://helm.sh/) is a popular package manager for [Kubernetes](https://kubernetes.io/). It allows you to easily deploy [Helm Charts](https://hub.helm.sh/) built by the community.
 
 ### On Linux
 
@@ -46,7 +48,7 @@ tar -zxvf helm-v3.0.0-linux-amd64.tar.gz
 sudo mv linux-amd64/helm /usr/local/bin/helm
 ```
 
-> See [Helm documentation](https://helm.sh/docs/intro/install/#from-the-binary-releases).
+> See [Helm documentation for Linux](https://helm.sh/docs/intro/install/#from-the-binary-releases).
 
 ### On MacOS
 
@@ -54,7 +56,7 @@ sudo mv linux-amd64/helm /usr/local/bin/helm
 brew install helm
 ```
 
-> See [Helm documentation](https://helm.sh/docs/intro/install/#from-homebrew-macos).
+> See [Helm documentation for MacOS](https://helm.sh/docs/intro/install/#from-homebrew-macos).
 
 ### On Windows
 
@@ -64,4 +66,4 @@ Install using [Chocolatey](https://chocolatey.org/).
 choco install kubernetes-helm
 ```
 
-> See [Helm documentation](https://helm.sh/docs/intro/install/#from-chocolatey-windows).
+> See [Helm documentation for Windows](https://helm.sh/docs/intro/install/#from-chocolatey-windows).
