@@ -32,7 +32,7 @@ Get [Argo executable version 2.4.2](https://github.com/argoproj/argo/releases/do
 
 ## Test Argo
 
-Run Hello world workflow to test if Argo has been properly installed. And take a look at the [examples provided by Argo](https://argoproj.github.io/docs/argo/examples/readme.html) to discover how to use the different features available.
+Run Hello world workflow to test if Argo has been properly installed. And take a look at the [examples provided in Argo documentation](https://argoproj.github.io/docs/argo/examples/readme.html) to discover how to use the different features available.
 
 ```shell
 argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
