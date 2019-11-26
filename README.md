@@ -34,7 +34,7 @@ npm start
 
 ## Deploy to GitHub pages
 
-To run in `/website` directory. Make sure the `/website/build` directory has been generated before deploying.
+Make sure the `/website/build` directory has been generated before deploying.
 
 ```shell
 ./publish-github-page.sh
@@ -43,9 +43,11 @@ To run in `/website` directory. Make sure the `/website/build` directory has bee
 Script details:
 
 ```shell
+cd website/
 npm install
 npm run build
 GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true npm run publish-gh-pages
+git pull
 ```
 
 ## Run with Docker
