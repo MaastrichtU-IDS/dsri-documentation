@@ -9,7 +9,7 @@ title: Install Argo client
 
 [Argo](https://argoproj.github.io/argo/) is a container native workflow engine for [Kubernetes](https://kubernetes.io/) supporting both DAG and step based workflows.
 
-Download the [Argo client](https://github.com/argoproj/argo/blob/master/demo.md#1-download-argo) to run workflows on the DSRI cluster, from your computer.
+Download the [Argo client](https://github.com/argoproj/argo/blob/master/demo.md#1-download-argo) to [run workflows](https://argoproj.github.io/docs/argo/examples/readme.html) on the DSRI cluster, from your computer.
 
 ### On Ubuntu
 
@@ -32,13 +32,13 @@ Get [Argo executable version 2.4.2](https://github.com/argoproj/argo/releases/do
 
 ## Test Argo
 
-Run Hello world workflow to test if argo has been properly installed.
+Run Hello world workflow to test if Argo has been properly installed. And take a look at the [examples provided by Argo](https://argoproj.github.io/docs/argo/examples/readme.html) to discover how to use the different features available.
 
 ```shell
 argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
 ```
 
-> You will need to select a project where Argo workflow has been installed.
+> You will need to be connected with the `oc` client, and select a project where Argo has been installed.
 
 ## Install the OpenShift client
 
