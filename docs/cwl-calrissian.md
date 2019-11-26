@@ -5,7 +5,9 @@ title: Run CWL workflows
 
 ![CWL workflows](/dsri-documentation/img/CWL_logo.png)
 
-The [Common Workflow Language](https://www.commonwl.org/) (CWL) is an open standard for describing analysis workflows and tools in a way that makes them portable and scalable across a variety of software and hardware environments
+The [Common Workflow Language](https://www.commonwl.org/) (CWL) is an open standard for describing analysis workflows and tools in a way that makes them portable and scalable across a variety of software and hardware environments.
+
+We use the [CWL Calrissian](https://github.com/Duke-GCB/calrissian) implementation, note that this project is young and still in development, feel free to report issues and contribute to its documentation.
 
 ## Clone the repository
 
