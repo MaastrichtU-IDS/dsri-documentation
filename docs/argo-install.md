@@ -7,7 +7,7 @@ title: Install Argo client
 
 ## Install the client
 
-[Argo](https://argoproj.github.io/argo/) is a container native workflow engine for [Kubernetes](https://kubernetes.io/) supporting both DAG and step based workflows.
+[Argo](https://argoproj.github.io/argo/) is a container native workflow engine for [Kubernetes](https://kubernetes.io/) supporting both [DAG](https://argoproj.github.io/docs/argo/examples/readme.html#dag) and [step based](https://argoproj.github.io/docs/argo/examples/readme.html#steps) workflows.
 
 Download the [Argo client](https://github.com/argoproj/argo/blob/master/demo.md#1-download-argo) to [run workflows](https://argoproj.github.io/docs/argo/examples/readme.html) on the DSRI cluster, from your computer.
 
