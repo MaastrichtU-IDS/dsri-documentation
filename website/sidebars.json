@@ -3,9 +3,9 @@
     "OpenShift UI": ["introduction",
       "openshift-services", "openshift-volume",
       "openshift-secret"],
+    "Workflows": ["argo-install", "argo-run", "argo-commands", "nextflow", "cwl-calrissian"],
     "Administration": ["openshift-install", 
       "openshift-login", "openshift-commands", "guide-dockerfile-to-openshift", 
-      "openshift-load-data", "openshift-debug", "guide-local-install"],
-    "Workflows": ["argo-install", "argo-run", "argo-commands", "nextflow", "cwl-calrissian"]
+      "openshift-load-data", "openshift-debug", "guide-local-install"]
   }
 }
