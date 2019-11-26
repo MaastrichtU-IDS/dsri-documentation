@@ -65,32 +65,3 @@ choco install kubernetes-helm
 ```
 
 > See [Helm documentation](https://helm.sh/docs/intro/install/#from-chocolatey-windows).
-
----
-
-## Install the Argo client
-
-[![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
-
-[Argo](https://argoproj.github.io/argo/) allows you to describe and run workflows on [Kubernetes](https://kubernetes.io/) clusters.
-
-Download the [Argo client](https://github.com/argoproj/argo/blob/master/demo.md#1-download-argo) to run workflows on the cluster, from your computer.
-
-### Install on Linux
-
-```shell
-curl -sSL -o /usr/local/bin/argo https://github.com/argoproj/argo/releases/download/v2.3.0/argo-linux-amd64
-chmod +x /usr/local/bin/argo
-```
-
-### Install on MacOS
-
-```shell
-brew install argoproj/tap/argo
-```
-
-### Install on Windows
-
-Browse [Argo releases](https://github.com/argoproj/argo/releases).
-
-> [Download the latest release executable](https://github.com/argoproj/argo/releases/latest/download/argo-windows-amd64) for Windows.
