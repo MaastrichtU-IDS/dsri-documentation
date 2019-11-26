@@ -1,4 +1,5 @@
 #!/bin/bash
+git push
 cd website/
 npm install
 npm run build
