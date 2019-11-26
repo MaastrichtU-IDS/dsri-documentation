@@ -5,9 +5,13 @@ title: Run CWL workflows
 
 ![CWL workflows](/dsri-documentation/img/CWL_logo.png)
 
+The [Common Workflow Language](https://www.commonwl.org/) (CWL) is an open standard for describing analysis workflows and tools in a way that makes them portable and scalable across a variety of software and hardware environments
+
 ## Clone the repository
 
-Git clone in `/calrissian` from a terminal. E.g. from [Jupyterlab](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods/jupyterlab-root-2-8w472?tab=terminal), shared in `/data/calrissian`.
+Git clone in `/calrissian` on a [persistent volume](/dsri-documentation/docs/openshift-volume) on the cluster from a terminal. 
+
+> E.g. from [this jupyterlab](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods/jupyterlab-root-2-8w472?tab=terminal), shared in `/data/calrissian`.
 
 ```shell
 cd /data/calrissian
@@ -26,8 +30,6 @@ You might need to give permissions (CWL execution will fail due to permissions i
 ```shell
 chmod -R 777 /data/calrissian
 ```
-
----
 
 ## Start pod
 
