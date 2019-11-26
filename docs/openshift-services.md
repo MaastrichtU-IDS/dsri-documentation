@@ -7,69 +7,17 @@ Services available for the **Data Science Research Infrastructure**.
 
 Feel free to propose new services using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
-A service can be easily deployed from a [Docker image](https://hub.docker.com/).
+A service can be easily deployed from a [Docker image](/dsri-documentation/docs/guide-dockerfile-to-openshift).
 
 ---
 
 ## Data Science
 
-### Jupyter lab
+### Jupyter notebooks
 
 [![Jupyterlab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
 
-Use [amalic/jupyterlab](https://hub.docker.com/r/amalic/jupyterlab/) Docker image.
-
-* Image name:
-  
-  ```
-  amalic/jupyterlab
-  ```
-  
-* Environment variables:
-  
-  * `PASSWORD=my_password`
-  
-* Mounted volume: `/notebooks`
-
-> Network port: `8888`
-
-> Use [OpenShift secrets](/dsri-documentation/docs/openshift-secret) to provide password in a secure manner. (**TODO:** improve doc).
-
----
-
-### Anaconda and Tensorflow with Jupyter
-
-Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-notebook) official Docker image.
-
-* Image name:
-
-  ```shell
-  jupyter/tensorflow-notebook
-  ```
-  
-* Environment variables:
-
-  * `JUPYTER_ENABLE_LAB=yes` (optional)
-
-* Mounted path: `/home/jovyan`
-
-> Go to the `pod logs` to get the `login token`.
-
-Or build **Jupyter for OpenShift**:
-
-https://github.com/jupyter-on-openshift/jupyter-notebooks/tree/develop/tensorflow-notebook
-
-```shell
-oc new-build --name tensorflow-notebook --binary
-oc start-build tensorflow-notebook --from-dir=. --follow --wait
-oc new-app tensorflow-notebook
-oc expose svc/tensorflow-notebook
-oc get route
-# Delete build:
-oc delete build tensorflow-notebook
-```
-
-> To test
+See the [Deploy Jupyter Notebooks](/dsri-documentation/docs/openshift-deploy-jupyter) page.
 
 ---
 
