@@ -3,24 +3,35 @@ id: openshift-volume
 title: Define volumes
 ---
 
-![OpenShift](/dsri-documentation/img/openshift-logo.png)
+## Define a dynamic persistent volume
 
-## Define persistent volume
+Dynamic persistent volumes can be created outside an application and can be mounted on any application run in the project the PVC has been created. 
 
-Go to https://app.dsri.unimaas.nl:8443/console/project/argo/create-pvc
+* Go to `Storage` on the left sidebar in a project
+  * Click`Create Storage` top right of the Storage page.
 
-* Storage class > `maprfs-dynamic`
-* Shared Access (RWX)
+* Storage class
+  * `dynamic-maprfs`
+* Access Mode
+  * `Single User (RWO)`: only the user who created this volume can read/write to this volume.
+  * `Shared Access (RWX)`: all users with access to the projects can read/write this volume.
+  * `Read Only (ROX)`: all users with access to the projects can read this volume.
 
-> Not working at the moment, [request](/dsri-documentation/help) a static volume.
+> Dynamic PVCs are only accessible in the project they have been created.
 
----
+> Not working on project with Root access enabled at the moment, request a static volume.
+
+## Request a static persistent volumes
+
+Static persistent volumes are mounted in a specific directory on the MapR storage, and provides a more sustainable storage over time. Static persistent volumes are not bind to a specific project, and can be accessed by different projects.
+
+It is recommended to use dynamic persistent volumes in priority, you can [request a static persistent volume](mailto:dsri-support-l@maastrichtuniversity.nl) if necessary.
 
 ## Mount a filesystem UI on a PVC
 
 [![filebrowser](/dsri-documentation/img/filebrowser_banner.svg)](https://filebrowser.xyz/)
 
-This example details how to deploy the [filebrowser UI](https://hub.docker.com/r/filebrowser/filebrowser) on linked to a MapR Persistent Volume Claim (PVC) to browse files.
+This example details how to deploy the [filebrowser UI](https://hub.docker.com/r/filebrowser/filebrowser) on linked to a MapR Persistent Volume Claim (PVC) to browse files stored in this volume.
 
 Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`
 
@@ -47,9 +58,9 @@ Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`
 
 * `Create Route` from the application details in the Overview page.
 
-> Access on http://d2s-filebrowser-argo.app.dsri.unimaas.nl/files/
+> Access the filebrowser at the URL provided on the pod details.
 
-> Login with `admin` / `admin`
+> Login with `admin` / `admin` (password can be changed in the filebrowser web UI)
 
 You can also set the mounted volumes via `Edit YAML` to define the pod in `Actions` top right of the filebrowser application page and edit the `DeploymentConfig` (don't go to `#1`, but its parent).
 
@@ -78,9 +89,9 @@ volumes:
       claimName: my-pvc
 ```
 
----
-
 ## Define a temporary volume for a workflow
+
+> TODO: not applicable anymore? Temporary volumes are `emptyDir: {}` ?
 
 Temporary volumes can be defined in Argo at runtime and are removed when the workflow terminates.
 
