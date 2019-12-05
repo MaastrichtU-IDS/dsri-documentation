@@ -96,4 +96,7 @@ Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-no
 
 > Go to the `pod logs` to get the `login token`.
 
+## Tensorflow with Jupyter on GPU
+
+> Started a pod [here](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/pods/pod-tensorflow-gpu.yaml). Still experimental.
 
