@@ -22,8 +22,9 @@ Multiple technologies are available to run workflows on OpenShift/Kubernetes clu
 
 ### Nextflow
 
-* Developed by the genomic research scientific community.
-* Don't need to create and use Docker container for Conda pipelines.
+[Nextflow](https://www.nextflow.io/) has been developed by the genomic research scientific community and is built to run bioinformatics pipeline.
+
+Define your workflow in a Bash script fashion, providing input, output and the command to run. Without the need to create and use Docker container for Conda pipelines.
 
 ### CWL
 
@@ -37,32 +38,28 @@ Multiple technologies are available to run workflows on OpenShift/Kubernetes clu
 
 ### Apache Spark
 
-Framework for Java, Python and Scala.
+Write programs running in parallel using Java, Python, R, Scala or SQL with the [Spark](https://spark.apache.org/) framework.
 
 ### Kubeflow
 
 Optimized for Tensorflow workflows on Kubernetes.
 
-* Write the pipelines using Python
+Pipelines written in Python.
 
 ### KubeGene
 
-A turn-key genome sequencing workflow management framework.
+[KubeGene](https://kubegene.io/) is a turn-key genome sequencing workflow management framework.
 
-https://kubegene.io/
+> See the [Workflow example](https://github.com/kubegene/kubegene/blob/master/example/simple-sample/simple-sample.yaml).
 
-[Workflow example](https://github.com/kubegene/kubegene/blob/master/example/simple-sample/simple-sample.yaml)
-
-How to [define a tool](https://kubegene.io/docs/guides/tool/).
+> And how to [define a tool](https://kubegene.io/docs/guides/tool/).
 
 ### Volcano
 
-https://volcano.sh/
-
-Run batch pipelines on Kubernetes. More a scheduler than a workflow engine. 
+Run batch pipelines on Kubernetes with [Volcano](https://volcano.sh/). More a scheduler than a workflow engine. 
 
 > Can be used to run Spark, Kubeflow or KubeGene workflows.
 
 ## Requests and questions
 
-Feel free to contact us if you have any questions about running workflows on DSRI or to request the support of a new technology.
+Feel free to [contact us](/dsri-documentation/help) if you have any questions about running workflows on DSRI or to request the support of a new technology.
