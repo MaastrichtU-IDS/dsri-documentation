@@ -87,16 +87,50 @@ Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-no
 
   * `JUPYTER_ENABLE_LAB=yes` (optional)
 
-* Mounted path: `/home/jovyan`
-
-* Add storage:
+* Mount storage:
 
   * Go to the deployments page > Click `Actions` > Select `Add Storage`
   * Mount the storage in `/home/jovyan`.
+
 
 > Go to the `pod logs` to get the `login token`.
 
 ## Tensorflow with Jupyter on GPU
 
 > Started a pod [here](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/pods/pod-tensorflow-gpu.yaml). Still experimental.
+
+Use [tensorflow/tensorflow:latest-gpu-py3-jupyter](https://hub.docker.com/r/tensorflow/tensorflow/) official Docker image.
+
+* Image name:
+
+  ```
+  tensorflow/tensorflow:latest-gpu-py3-jupyter
+  ```
+
+* Mount storage:
+
+  * Go to the deployments page > Click `Actions` > Select `Add Storage`
+
+  * Mount the storage in
+
+    ```
+    /tf/notebooks
+    ```
+
+* To run on the GPU node:
+
+  * `Edit YAML` of deployment to add `nodeSelector` under `spec` and `limits` under `resources`.
+
+    ```yaml
+    template:
+      spec:
+      	nodeSelector:
+          nvidia.com/gpu: 'true'
+        containers:
+          resources:
+            limits:
+              nvidia.com/gpu: '1'
+    ```
+
+> Get the token to access the notebook in the pod logs.
 
