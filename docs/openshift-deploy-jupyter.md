@@ -89,6 +89,11 @@ Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-no
 
 * Mounted path: `/home/jovyan`
 
+* Add storage:
+
+  * Go to the deployments page > Click `Actions` > Select `Add Storage`
+  * Mount the storage in `/home/jovyan`.
+
 > Go to the `pod logs` to get the `login token`.
 
 

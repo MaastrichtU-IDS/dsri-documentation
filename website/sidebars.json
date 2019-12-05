@@ -3,7 +3,7 @@
     "OpenShift UI": ["introduction",
       "openshift-services", "openshift-deploy-jupyter",
       "openshift-volume", "openshift-secret"],
-    "Workflows": ["workflows-introduction", "argo-install", "argo-run", "argo-commands", "nextflow", "cwl-calrissian", "workflows-spark", "workflows-kubeflow"],
+    "Workflows": ["tools-machine-learning" , "workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian", "workflows-spark", "workflows-kubeflow"],
     "Administration": ["openshift-install", 
       "openshift-login", "openshift-commands", "guide-dockerfile-to-openshift", 
       "openshift-load-data", "openshift-debug", "guide-local-install"]

@@ -1,5 +1,5 @@
 ---
-id: nextflow
+id: workflows-nextflow
 title: Run Nextflow workflows
 ---
 
