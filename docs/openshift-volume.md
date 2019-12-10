@@ -27,6 +27,12 @@ Static persistent volumes are mounted in a specific directory on the MapR storag
 
 It is recommended to use dynamic persistent volumes in priority, you can [request a static persistent volume](mailto:dsri-support-l@maastrichtuniversity.nl) if necessary.
 
+## Use the default ephemeral storage
+
+When creating a pod, OpenShift will by default use ephemeral storage. It creates a volumes bind to the pod. So the volume will be deleted.
+
+It is recommended to use dynamic provisioning for a more sustainable storage solution. But ephemeral storage can be sufficient for testing.
+
 ## Mount a filesystem UI on a PVC
 
 [![filebrowser](/dsri-documentation/img/filebrowser_banner.svg)](https://filebrowser.xyz/)

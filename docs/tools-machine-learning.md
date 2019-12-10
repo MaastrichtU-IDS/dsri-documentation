@@ -3,7 +3,15 @@ id: tools-machine-learning
 title: Tools for Machine Learning
 ---
 
-## Libraries and frameworks
+## Machine Learning libraries
+
+### SciKit Learn
+
+> https://scikit-learn.org/stable/
+
+## Deep Learning libraries
+
+### Deep Learning
 
 See [this article](https://towardsdatascience.com/top-10-best-deep-learning-frameworks-in-2019-5ccb90ea6de) for more details about modern Deep Learning libraries.
 
@@ -30,10 +38,6 @@ Layer on top of Tensorflow.
 Python library. Layer on top of Tensorflow, CNTK, Theano.
 
 > https://keras.io/
-
-### SciKit Learn
-
-> https://scikit-learn.org/stable/
 
 ### Metaflow
 
