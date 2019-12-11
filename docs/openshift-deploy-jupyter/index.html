@@ -112,28 +112,22 @@
 <blockquote>
 <p>Go to the <code>pod logs</code> to get the <code>login token</code>.</p>
 </blockquote>
-<h2><a class="anchor" aria-hidden="true" id="tensorflow-with-jupyter-on-gpu"></a><a href="#tensorflow-with-jupyter-on-gpu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tensorflow with Jupyter on GPU</h2>
-<blockquote>
-<p>Started a pod <a href="https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/pods/pod-tensorflow-gpu.yaml" target="_blank" rel="nofollow noreferrer noopener">here</a>. Still experimental.</p>
-</blockquote>
-<p>Use <a href="https://hub.docker.com/r/tensorflow/tensorflow/" target="_blank" rel="nofollow noreferrer noopener">tensorflow/tensorflow:latest-gpu-py3-jupyter</a> official Docker image.</p>
+<h2><a class="anchor" aria-hidden="true" id="tensorflow-on-gpu"></a><a href="#tensorflow-on-gpu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tensorflow on GPU</h2>
+<h3><a class="anchor" aria-hidden="true" id="nvidia-build"></a><a href="#nvidia-build" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Nvidia build</h3>
+<p>Using <a href="https://docs.nvidia.com/deeplearning/frameworks/tensorflow-user-guide/index.html" target="_blank" rel="nofollow noreferrer noopener">nvcr.io/nvidia/tensorflow</a> official Nvidia images.</p>
 <ul>
 <li><p>Image name:</p>
-<pre><code class="hljs">tensorflow/tensorflo<span class="hljs-variable">w:latest</span>-gpu-<span class="hljs-keyword">py3</span>-jupyter
-</code></pre>
-<ul>
-<li><p>Or</p>
-<pre><code class="hljs"></code></pre></li>
-</ul>
-<p>nvcr.io/nvidia/tensorflow:17.04</p>
-<pre><code class="hljs">
+<pre><code class="hljs">nvcr.io<span class="hljs-regexp">/nvidia/</span><span class="hljs-string">tensorflow:</span><span class="hljs-number">19.11</span>-tf2-py3
 </code></pre></li>
 <li><p>Mount storage:</p>
 <ul>
 <li><p>Go to the deployments page &gt; Click <code>Actions</code> &gt; Select <code>Add Storage</code></p></li>
 <li><p>Mount the storage in</p>
-<pre><code class="hljs"><span class="hljs-regexp">/tf/</span>notebooks
-</code></pre></li>
+<pre><code class="hljs">/<span class="hljs-keyword">workspace</span>/my-<span class="hljs-keyword">workspace</span>
+</code></pre>
+<blockquote>
+<p>Example folders can be found in <code>/workspace</code>.</p>
+</blockquote></li>
 </ul></li>
 <li><p>To run on the GPU node:</p>
 <ul>
@@ -148,6 +142,24 @@
           <span class="hljs-attr">nvidia.com/gpu:</span> <span class="hljs-string">'1'</span>
 </code></pre></li>
 </ul></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="jupyter-on-gpu"></a><a href="#jupyter-on-gpu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Jupyter on GPU</h3>
+<blockquote>
+<p><strong>Not working</strong>, use official Nvidia tensorflow image at the moment.</p>
+</blockquote>
+<p>Using <a href="https://hub.docker.com/r/tensorflow/tensorflow/" target="_blank" rel="nofollow noreferrer noopener">tensorflow/tensorflow:latest-gpu-py3-jupyter</a> official Docker image.</p>
+<ul>
+<li><p>Image name:</p>
+<pre><code class="hljs">tensorflow/tensorflo<span class="hljs-variable">w:latest</span>-gpu-<span class="hljs-keyword">py3</span>-jupyter
+</code></pre></li>
+<li><p>Mount storage:</p>
+<ul>
+<li><p>Go to the deployments page &gt; Click <code>Actions</code> &gt; Select <code>Add Storage</code></p></li>
+<li><p>Mount the storage in</p>
+<pre><code class="hljs"><span class="hljs-regexp">/tf/</span>notebooks
+</code></pre></li>
+</ul></li>
+<li><p>Add <code>nodeSelector</code> to run on GPU node (see the Nvidia build to do it).</p></li>
 </ul>
 <blockquote>
 <p>Get the token to access the notebook in the pod logs.</p>
@@ -186,7 +198,7 @@
 <blockquote>
 <p>Built from <a href="https://github.com/jupyter-on-openshift/jupyter-notebooks" target="_blank" rel="nofollow noreferrer noopener">jupyter-on-openshift</a>.</p>
 </blockquote>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/dsri-documentation/docs/openshift-services"><span class="arrow-prev">← </span><span>Deploy services</span></a><a class="docs-next button" href="/dsri-documentation/docs/openshift-volume"><span>Define volumes</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#jupyter-as-root-user">Jupyter as root user</a></li><li><a href="#anaconda-and-tensorflow-with-jupyter">Anaconda and Tensorflow with Jupyter</a></li><li><a href="#tensorflow-with-jupyter-on-gpu">Tensorflow with Jupyter on GPU</a></li><li><a href="#future-recommended-deployment">Future recommended deployment</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/openshift-login">Run with OpenShift</a><a href="/dsri-documentation/docs/argo-run">Run workflows</a><a href="/dsri-documentation/docs/guide-dockerfile-to-openshift">Guides</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a></div><div><h5>Community</h5><a href="https://gitter.im/um-dsri/community" target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter"><img alt="Chat on Gitter" src="https://img.shields.io/gitter/room/um-dsri/community"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2019 Institute of Data Science at Maastricht University</section><div><div class="gitter-open-chat-button">Chat with the community</div><script type="text/javascript">
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/dsri-documentation/docs/openshift-services"><span class="arrow-prev">← </span><span>Deploy services</span></a><a class="docs-next button" href="/dsri-documentation/docs/openshift-volume"><span>Define volumes</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#jupyter-as-root-user">Jupyter as root user</a></li><li><a href="#anaconda-and-tensorflow-with-jupyter">Anaconda and Tensorflow with Jupyter</a></li><li><a href="#tensorflow-on-gpu">Tensorflow on GPU</a><ul class="toc-headings"><li><a href="#nvidia-build">Nvidia build</a></li><li><a href="#jupyter-on-gpu">Jupyter on GPU</a></li></ul></li><li><a href="#future-recommended-deployment">Future recommended deployment</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/openshift-login">Run with OpenShift</a><a href="/dsri-documentation/docs/argo-run">Run workflows</a><a href="/dsri-documentation/docs/guide-dockerfile-to-openshift">Guides</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a></div><div><h5>Community</h5><a href="https://gitter.im/um-dsri/community" target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter"><img alt="Chat on Gitter" src="https://img.shields.io/gitter/room/um-dsri/community"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2019 Institute of Data Science at Maastricht University</section><div><div class="gitter-open-chat-button">Chat with the community</div><script type="text/javascript">
         ((window.gitter = {}).chat = {}).options = {
           showChatByDefault: false,
           activationElement: '.gitter-open-chat-button',
