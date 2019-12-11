@@ -5,6 +5,10 @@ title: Tools for Machine Learning
 
 ## Machine Learning libraries
 
+See [this vulgarisation article](https://www.saagie.com/blog/machine-learning-for-grandmas/) explaining the different principles of Machine Learning.
+
+The [Azure Machine Learning Algorithm Cheat Sheet](https://docs.microsoft.com/en-us/azure/machine-learning/algorithm-cheat-sheet) helps you choose the right algorithm for a predictive analytics model.
+
 ### SciKit Learn
 
 > https://scikit-learn.org/stable/
