@@ -74,6 +74,8 @@ Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-no
 
 ## Tensorflow on GPU
 
+> Running on GPU is still experimental. Please [contact us](mailto:dsri-support-l@maastrichtuniversity.nl) if you want to run jobs on GPU.
+
 ### Nvidia build
 
 Using [nvcr.io/nvidia/tensorflow](https://docs.nvidia.com/deeplearning/frameworks/tensorflow-user-guide/index.html) official Nvidia images.
