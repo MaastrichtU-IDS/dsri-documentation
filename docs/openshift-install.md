@@ -38,6 +38,8 @@ Follow the [official documentation on Windows](https://docs.okd.io/latest/cli_re
 
 ## Install the Helm client
 
+> This feature has not been tested at the moment. Please [contact us](mailto:dsri-support-l@maastrichtuniversity.nl) if you are interested in deploying Helm Charts.
+
 [Helm](https://helm.sh/) is a popular package manager for [Kubernetes](https://kubernetes.io/). It allows you to easily deploy [Helm Charts](https://hub.helm.sh/) built by the community.
 
 ### On Linux

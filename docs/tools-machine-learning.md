@@ -3,6 +3,8 @@ id: tools-machine-learning
 title: Tools for Machine Learning
 ---
 
+> This page is in development, feel free to [edit it](https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/tools-machine-learning.md) to add more informations.
+
 ## Machine Learning libraries
 
 See [this vulgarisation article](https://www.saagie.com/blog/machine-learning-for-grandmas/) explaining the different principles of Machine Learning.
