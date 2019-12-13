@@ -101,11 +101,13 @@ const siteConfig = {
   scripts: [
     'https://buttons.github.io/buttons.js',
     'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js',
-    '/js/code-blocks-buttons.js',
+    '/dsri-documentation/js/code-blocks-buttons.js',
   ],
   stylesheets: [
+    // TODO: warning to fix, remove '400i'?
+    // downloadable font: no supported format found (font-family: "Roboto" style:normal weight:400 stretch:100 src index:1) source: (end of source list)
     'https://fonts.googleapis.com/css?family=Roboto:200,300,400,400i,500,600,700',
-    '/css/code-blocks-buttons.css'
+    '/dsri-documentation/css/code-blocks-buttons.css'
   ],
 
   // On page navigation for the current documentation page.
