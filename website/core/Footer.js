@@ -40,14 +40,11 @@ class Footer extends React.Component {
             <a href={this.docUrl('introduction')}>
               Get started
             </a>
-            <a href={this.docUrl('openshift-login')}>
-              Run with OpenShift
-            </a>
-            <a href={this.docUrl('argo-run')}>
+            <a href={this.docUrl('workflows-introduction')}>
               Run workflows
             </a>
-            <a href={this.docUrl('guide-dockerfile-to-openshift')}>
-              Guides
+            <a href={this.docUrl('openshift-install')}>
+              Advanced use
             </a>
           </div>
 
