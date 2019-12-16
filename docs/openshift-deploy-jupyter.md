@@ -7,25 +7,6 @@ title: Deploy Jupyter Notebooks
 
 Feel free to propose new services using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
-### Use a persistent volume
-
-With `notebook-quickstart` deployment:
-
-* [Find your Pod](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods).
-* Click on `Actions` on the top right of your pod Details page.
-* Select `Add Storage`.
-* Select the Persistent Volume Claim (PVC) you want to use
-
-You will need to make sure the directory you point to in the PVC has been created and is accessible (`chmod -R 777`)
-
-> Add documentation for `notebook-workspace`.
-
-### Deploy Jupyter Hub
-
-To deploy multiple notebooks for multiples users we recommend to use Jupyter Hub.
-
-> TODO: develop.
-
 ## Jupyter as root user
 
 This method require to have enabled root user on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request root access.
@@ -161,3 +142,23 @@ Select `Jupyter Notebook Quickstart` from the [DSRI services catalog](https://ap
   * See [jupyter-on-openshift JupyterHub readme](https://github.com/jupyter-on-openshift/jupyterhub-quickstart#allocating-persistent-storage-to-users) and [OpenShift official documentation](https://blog.openshift.com/jupyter-on-openshift-part-4-adding-a-persistent-workspace/) to enable using persistent volumes.
 
 > Built from [jupyter-on-openshift](https://github.com/jupyter-on-openshift/jupyter-notebooks).
+
+
+### Use a persistent volume
+
+With `notebook-quickstart` deployment:
+
+* [Find your Pod](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods).
+* Click on `Actions` on the top right of your pod Details page.
+* Select `Add Storage`.
+* Select the Persistent Volume Claim (PVC) you want to use
+
+You will need to make sure the directory you point to in the PVC has been created and is accessible (`chmod -R 777`)
+
+> Add documentation for `notebook-workspace`.
+
+### Deploy Jupyter Hub
+
+To deploy multiple notebooks for multiples users we recommend to use Jupyter Hub.
+
+> TODO: develop.
