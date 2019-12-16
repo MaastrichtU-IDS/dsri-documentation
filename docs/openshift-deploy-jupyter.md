@@ -21,13 +21,13 @@ Use [amalic/jupyterlab](https://hub.docker.com/r/amalic/jupyterlab/) Docker imag
   
 * Environment variables:
   
-  * `PASSWORD=my_password`
+  * `PASSWORD` : `my_password`
   
 * Mounted volume: `/notebooks`
 
 > Network port: `8888`
 
-> Use [OpenShift secrets](/dsri-documentation/docs/openshift-secret) to provide password in a secure manner. (**TODO:** improve doc).
+> In development: [OpenShift secrets](/dsri-documentation/docs/openshift-secret) can be used to provide password in a secure manner.
 
 ## Anaconda and Tensorflow with Jupyter
 
@@ -43,7 +43,7 @@ Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-no
   
 * Environment variables:
 
-  * `JUPYTER_ENABLE_LAB=yes` (optional)
+  * `JUPYTER_ENABLE_LAB` : `yes` (optional)
 
 * Mount storage:
 

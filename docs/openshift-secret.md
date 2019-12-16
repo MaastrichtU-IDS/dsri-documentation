@@ -5,6 +5,8 @@ title: Use secrets
 
 ![OpenShift](/dsri-documentation/img/openshift-logo.png)
 
+> Feature still in development, only use it if you know how it works.
+
 [OpenShift secrets](https://docs.openshift.com/enterprise/3.1/dev_guide/secrets.html) can be used to store confidential information required when the pods are running (such as passwords).
 
 > Access [DSRI OpenShift](https://app.dsri.unimaas.nl:8443/). 

@@ -34,8 +34,8 @@ Use [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio/) Docker image.
   ```
 
 * Environment variables:
-  * `ROOT=TRUE`
-  * `PASSWORD=my_password`
+  * `ROOT` : `TRUE`
+  * `PASSWORD` : `my_password`
 * Mounted path: `/home` (rstudio files goes to `/home/rstudio`)
 
 > Username: `rstudio`
