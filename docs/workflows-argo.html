@@ -185,8 +185,8 @@ cd </span>d2s-transform-template
         <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/data</span>
         <span class="hljs-attr">subPath:</span> <span class="hljs-string">dqa-workspace</span>
 </code></pre>
-<p>Then start the pod:</p>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span> tests/<span class="hljs-built_in">test</span>-devnull-argo.yaml
+<p>Then start the workflow:</p>
+<pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span><span class="hljs-template-variable"> --serviceaccount</span><span class="hljs-keyword"> argo </span>tests/<span class="hljs-built_in">test</span>-devnull-argo.yaml
 </code></pre>
 <p>And connect with the Shell:</p>
 <pre><code class="hljs css language-shell"><span class="hljs-keyword">oc </span><span class="hljs-built_in">rsh</span> <span class="hljs-built_in">test</span>-devnull-argo-pod
