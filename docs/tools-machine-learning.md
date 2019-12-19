@@ -33,6 +33,12 @@ Python library developed by Facebook.
 
 > https://pytorch.org/
 
+### Deep Java Library
+
+Java library developed by Amazon.
+
+> https://djl.ai/
+
 ### Sonnet 
 
 Layer on top of Tensorflow.
