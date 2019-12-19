@@ -174,10 +174,10 @@ spec:
         subPath: dqa-workspace
 ```
 
-Then start the pod:
+Then start the workflow:
 
 ```shell
-argo submit tests/test-devnull-argo.yaml
+argo submit --serviceaccount argo tests/test-devnull-argo.yaml
 ```
 
 And connect with the Shell:
