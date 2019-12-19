@@ -15,19 +15,11 @@ A service can be easily deployed from a [Docker image](/dsri-documentation/docs/
 
 ### Jupyter notebooks
 
-[![Jupyterlab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
-
 See the [Deploy Jupyter Notebooks](/dsri-documentation/docs/openshift-deploy-jupyter) documentation page.
-
----
 
 ### RStudio
 
-[![RStudio](/dsri-documentation/img/rstudio_logo.png)](https://rstudio.com/)
-
 See the [Deploy RStudio](/dsri-documentation/docs/deploy-rstudio) documentation page.
-
----
 
 ### Matlab
 
@@ -36,8 +28,6 @@ See the [Deploy RStudio](/dsri-documentation/docs/deploy-rstudio) documentation 
 ---
 
 ## Databases
-
-From [d2s-argo-workflows](https://github.com/MaastrichtU-IDS/data2services-argo-workflows).
 
 ### Blazegraph triplestore
 
@@ -77,6 +67,8 @@ oc create -f d2s-pod-virtuoso.yaml
 ---
 
 ## Connect to DockerHub
+
+> To be tested.
 
 Create secret to pull private images.
 
