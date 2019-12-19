@@ -23,13 +23,13 @@ See [this article](https://towardsdatascience.com/top-10-best-deep-learning-fram
 
 ### Tensorflow
 
-Python library.
+Python library developed by Google.
 
 > https://www.tensorflow.org/
 
 ### PyTorch
 
-Python library.
+Python library developed by Facebook.
 
 > https://pytorch.org/
 
