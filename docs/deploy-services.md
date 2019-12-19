@@ -1,5 +1,5 @@
 ---
-id: openshift-services
+id: deploy-services
 title: Deploy services
 ---
 
@@ -17,7 +17,7 @@ A service can be easily deployed from a [Docker image](/dsri-documentation/docs/
 
 [![Jupyterlab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
 
-See the [Deploy Jupyter Notebooks](/dsri-documentation/docs/openshift-deploy-jupyter) page.
+See the [Deploy Jupyter Notebooks](/dsri-documentation/docs/openshift-deploy-jupyter) documentation page.
 
 ---
 
@@ -25,22 +25,7 @@ See the [Deploy Jupyter Notebooks](/dsri-documentation/docs/openshift-deploy-jup
 
 [![RStudio](/dsri-documentation/img/rstudio_logo.png)](https://rstudio.com/)
 
-Use [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio/) Docker image.
-
-* Image name:
-  
-  ```
-  rocker/rstudio
-  ```
-
-* Environment variables:
-  * `ROOT` : `TRUE`
-  * `PASSWORD` : `my_password`
-* Mounted path: `/home` (rstudio files goes to `/home/rstudio`)
-
-> Username: `rstudio`
-
-> Network port: `8787`
+See the [Deploy RStudio](/dsri-documentation/docs/deploy-rstudio) documentation page.
 
 ---
 

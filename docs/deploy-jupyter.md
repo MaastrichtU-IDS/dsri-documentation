@@ -1,5 +1,5 @@
 ---
-id: openshift-deploy-jupyter
+id: deploy-jupyter
 title: Deploy Jupyter Notebooks
 ---
 
