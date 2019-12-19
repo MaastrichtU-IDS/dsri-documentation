@@ -3,44 +3,47 @@ id: openshift-debug
 title: Debug a pod
 ---
 
-![Argo project](/dsri-documentation/img/argo-logo.png)
+Get into a container, to understand why it bugs, by creating a YAML with the command `tail -f /dev/null` to keep it hanging.
 
-Get into a container, to understand why it bugs, by creating a YAML with the command `tail /dev/null` to keep it hanging.
-
-> Example for [d2s-download](https://github.com/MaastrichtU-IDS/d2s-download):
+> See the [example in the d2s-argo-workflow repository](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-devnull-pod.yaml).
 
 ```yaml
 apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    purpose: download-data-files
-  name: d2s-download-pod
-  namespace: argo
+    purpose: test
+  name: test-devnull-pod
+  namespace: test-vincent
 spec:
   volumes:
   - name: workdir
     persistentVolumeClaim:
-      claimName: my-storage
+      claimName: pvc-mapr-projects-test-vincent
   containers:
-  - name: d2s-download
-    image: maastrichtuids/d2s-download:latest
+  - name: test-devnull
+    image: umids/rdfunit:latest
     command: [ "tail", "-f", "/dev/null"]
+    resources:
+      limits:
+        cpu: 1000m 
+        memory: 10Gi 
     volumeMounts:
     - name: workdir
       mountPath: /data
+      # subPath: dqa-workspace
 ```
 
 Then start the pod:
 
 ```shell
-oc create -f archives/d2s-download-pod.yaml
+oc create -f tests/test-devnull-pod.yaml
 ```
 
 And connect with the Shell:
 
 ```shell
-oc rsh d2s-download-pod
+oc rsh test-devnull-pod
 ```
 
-![OpenShift](/dsri-documentation/img/openshift-logo.png)
+>Change the pod ID to the generated pod ID.

@@ -134,3 +134,56 @@ argo terminate my-workflow
 ```shell
 argo delete my-workflow
 ```
+
+---
+
+## Debug a workflow
+
+Get into a container, to understand why it bugs, by creating a YAML with the command `tail -f /dev/null` to keep it hanging.
+
+> See the [example in the d2s-argo-workflow repository](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-devnull-argo.yaml).
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: test-devnull-argo-
+spec:
+  entrypoint: execute-workflow
+
+  # Use existing volume
+  volumes:
+  - name: workdir
+    persistentVolumeClaim:
+      claimName: pvc-mapr-projects-test-vincent 
+
+  templates:
+  - name: execute-workflow
+    steps:
+    - - name: run-rdfunit
+        template: rdfunit
+   
+  - name: rdfunit
+    container:
+      image: umids/rdfunit:latest
+      command: [tail]
+      args: ["-f", "/dev/null"]
+      volumeMounts:
+      - name: workdir
+        mountPath: /data
+        subPath: dqa-workspace
+```
+
+Then start the pod:
+
+```shell
+argo submit tests/test-devnull-argo.yaml
+```
+
+And connect with the Shell:
+
+```shell
+oc rsh test-devnull-argo-pod
+```
+
+> Change the pod ID to the generated pod ID.
