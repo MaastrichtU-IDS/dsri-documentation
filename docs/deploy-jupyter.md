@@ -57,69 +57,6 @@ Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-no
 
 > Running on GPU is still experimental. Please [contact us](mailto:dsri-support-l@maastrichtuniversity.nl) if you want to run jobs on GPU.
 
-### Nvidia build
-
-Using [nvcr.io/nvidia/tensorflow](https://docs.nvidia.com/deeplearning/frameworks/tensorflow-user-guide/index.html) official Nvidia images.
-
-* Image name:
-
-  ```
-  nvcr.io/nvidia/tensorflow:19.11-tf2-py3
-  ```
-
-* Mount storage:
-
-  * Go to the deployments page > Click `Actions` > Select `Add Storage`
-
-  * Mount the storage in
-
-    ```
-    /workspace/my-workspace
-    ```
-    
-    > Example folders can be found in `/workspace`.
-
-* To run on the GPU node:
-
-  * `Edit YAML` of deployment to add `nodeSelector` under `spec` and `limits` under `resources`.
-
-    ```yaml
-    template:
-      spec:
-      	nodeSelector:
-          nvidia.com/gpu: 'true'
-        containers:
-          resources:
-            limits:
-              nvidia.com/gpu: '1'
-    ```
-
-### Jupyter on GPU
-
-> **Not working**, use official Nvidia tensorflow image at the moment.
-
-Using [tensorflow/tensorflow:latest-gpu-py3-jupyter](https://hub.docker.com/r/tensorflow/tensorflow/) official Docker image.
-
-* Image name:
-
-  ```
-  tensorflow/tensorflow:latest-gpu-py3-jupyter
-  ```
-
-* Mount storage:
-
-  * Go to the deployments page > Click `Actions` > Select `Add Storage`
-
-  * Mount the storage in
-
-    ```
-    /tf/notebooks
-    ```
-
-* Add `nodeSelector` to run on GPU node (see the Nvidia build to do it).
-
-> Get the token to access the notebook in the pod logs.
-
 ## Future recommended deployment
 
 > Still need some work to be able to install additional libraries at build time.
