@@ -17,8 +17,6 @@ The [Azure Machine Learning Algorithm Cheat Sheet](https://docs.microsoft.com/en
 
 ## Deep Learning libraries
 
-### Deep Learning
-
 See [this article](https://towardsdatascience.com/top-10-best-deep-learning-frameworks-in-2019-5ccb90ea6de) for more details about modern Deep Learning libraries.
 
 ### Tensorflow
@@ -35,7 +33,7 @@ Python library developed by Facebook.
 
 ### Deep Java Library
 
-Java library developed by Amazon.
+Java library developed by Amazon. See the [introduction article](https://towardsdatascience.com/introducing-deep-java-library-djl-9de98de8c6ca).
 
 > https://djl.ai/
 
@@ -53,6 +51,6 @@ Python library. Layer on top of Tensorflow, CNTK, Theano.
 
 ### Metaflow
 
-Layer on top of Tensorflow, PyTorch, SciKit Learn.
+Layer on top of Tensorflow, PyTorch, SciKit Learn developed by Netflix. 
 
 > https://metaflow.org/
