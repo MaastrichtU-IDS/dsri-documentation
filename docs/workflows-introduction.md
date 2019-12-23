@@ -54,6 +54,10 @@ Pipelines written in Python.
 
 > And how to [define a tool](https://kubegene.io/docs/guides/tool/).
 
+## Seldon
+
+[Open-source platform](https://www.seldon.io/tech/) for rapidly deploying machine learning models on Kubernetes. Manage, serve and scale models built in any framework on Kubernetes.
+
 ### Volcano
 
 Run batch pipelines on Kubernetes with [Volcano](https://volcano.sh/). More a scheduler than a workflow engine. 
