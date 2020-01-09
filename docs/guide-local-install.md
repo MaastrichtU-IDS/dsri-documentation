@@ -78,12 +78,21 @@ minishift delete -f
 
 ### kubectl on Ubuntu
 
+See the official [Kubernetes install documentation](https://ubuntu.com/kubernetes/install).
+
 ```shell
 sudo snap install microk8s --classic
-sudo snap alias microk8s.kubectl kubectl
+sudo usermod -a -G microk8s $USER
+# Restart your machine
 mkdir -p ~/.kube
 microk8s.kubectl config view --raw > $HOME/.kube/config
 ```
+
+> To do only if kubectl is not already installed on your machine:
+>
+> ```shell
+> sudo snap alias microk8s.kubectl kubectl
+> ```
 
 ### kubectl on MacOS & Windows
 
@@ -96,12 +105,28 @@ Included in [Docker installation](/docs/cwl-install#on-macos-windows).
 ```shell
 # Install Kubernetes UI
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
-kubectl apply -f d2s-argo-workflows/roles/dashboard-adminuser.yml
-kubectl apply -f d2s-argo-workflows/roles/admin-role-binding.yml
-# Get the Token
+kubectl apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-argo-workflows/87d5f31a8373926b9c0a1fb2a5e631c723e0f38a/roles/kube-dashboard-adminuser-sa.yml
+kubectl apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-argo-workflows/87d5f31a8373926b9c0a1fb2a5e631c723e0f38a/roles/kube-adminuser-rolebinding.yml
+# Get the Token to be used first time you access the dashboard
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 
-# Start proxy
+# Start the web UI
+kubectl proxy
+```
+
+> Then visit: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+>
+> And provide the previously obtained token.
+
+**Warning:** you will need to save the token to login again.
+
+## Run kubectl
+
+`kubectl` should be running at start.
+
+Just restart the web UI
+
+```shell
 kubectl proxy
 ```
 
@@ -138,17 +163,34 @@ kubectl delete -n kube-system svc argo-ui
 
 > **TODO:** update to do the global install through MiniShift (we don't need namespace install on local)
 
+### Install on your local Kubernetes
+
+Argo workflows will be installed on the `argo` namespace. See the [official Argo documentation](https://argoproj.github.io/docs/argo/demo.html#2-install-the-controller-and-ui) for more details.
+
 ```shell
 kubectl create ns argo
-# On argo namespace
-kubectl apply -n argo -f https://raw.githubusercontent.com/vemonet/argo/master/manifests/namespace-install.yaml
+kubectl apply -n argo -f https://raw.githubusercontent.com/argoproj/argo/v2.4.2/manifests/install.yaml
 
+# Configure service account to run workflow
 kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=default:default
 
 # Expose Argo UI
 kubectl -n argo port-forward deployment/argo-ui 8002:8001
+
+# Test run
+argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
 ```
 
 > Argo UI on http://localhost:8002.
+
+> See [custom configuration](https://raw.githubusercontent.com/vemonet/argo/master/manifests/namespace-install.yaml) for namespace install.
+>
+> ```shell
+> kubectl apply -n argo -f https://raw.githubusercontent.com/vemonet/argo/master/manifests/namespace-install.yaml
+> ```
+
+### Install the client
+
+See the [Argo workflows documentation](/dsri-documentation/docs/workflows-argo).
 
 [![Argo workflows](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/)
