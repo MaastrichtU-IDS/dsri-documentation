@@ -84,14 +84,30 @@
       <span class="hljs-comment"># subPath: dqa-workspace</span>
 </code></pre>
 <p>Then start the pod:</p>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">oc </span><span class="hljs-built_in">create</span><span class="hljs-template-variable"> -f</span> tests/<span class="hljs-built_in">test</span>-devnull-pod.yaml
+<ul>
+<li>On OpenShift</li>
+</ul>
+<pre><code class="hljs css language-shell"><span class="hljs-keyword">oc </span><span class="hljs-built_in">create</span><span class="hljs-template-variable"> -f</span> tests/<span class="hljs-built_in">test</span>-devnull-pod.yaml<span class="hljs-template-variable"> -n</span> <span class="hljs-built_in">test</span>-vincent
+</code></pre>
+<ul>
+<li>Or on local kubernetes (to test Argo)</li>
+</ul>
+<pre><code class="hljs css language-shell">kubectl<span class="hljs-built_in"> create </span>-f tests/<span class="hljs-built_in">test</span>-devnull-pod.yaml
 </code></pre>
 <p>And connect with the Shell:</p>
+<ul>
+<li>On OpenShift</li>
+</ul>
 <pre><code class="hljs css language-shell"><span class="hljs-keyword">oc </span><span class="hljs-built_in">rsh</span> <span class="hljs-built_in">test</span>-devnull-pod
 </code></pre>
 <blockquote>
 <p>Change the pod ID to the generated pod ID.</p>
 </blockquote>
+<ul>
+<li>Using local Kubernetes</li>
+</ul>
+<pre><code class="hljs css language-shell">kubectl <span class="hljs-built_in">exec</span><span class="hljs-template-variable"> -it</span> <span class="hljs-built_in">test</span>-devnull-pod<span class="hljs-template-variable"> --</span> /bin/bash
+</code></pre>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/dsri-documentation/docs/openshift-load-data"><span class="arrow-prev">← </span><span>Load data</span></a><a class="docs-next button" href="/dsri-documentation/docs/guide-local-install"><span class="function-name-prevnext">Install local MiniShift</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/workflows-introduction">Run workflows</a><a href="/dsri-documentation/docs/openshift-install">Advanced use</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a></div><div><h5>Community</h5><a href="https://gitter.im/um-dsri/community" target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter"><img alt="Chat on Gitter" src="https://img.shields.io/gitter/room/um-dsri/community"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2020 Institute of Data Science at Maastricht University</section><div><div class="gitter-open-chat-button">Chat with the community</div><script type="text/javascript">
         ((window.gitter = {}).chat = {}).options = {
           showChatByDefault: false,
