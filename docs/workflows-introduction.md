@@ -3,8 +3,6 @@ id: workflows-introduction
 title: Choose a workflow engine
 ---
 
-![Argo project](/dsri-documentation/img/argo-logo.png)
-
 ## Introduction
 
 Multiple technologies are available to run workflows on OpenShift/Kubernetes clusters. Each has its strengths and weaknesses in different areas.
@@ -54,7 +52,7 @@ Pipelines written in Python.
 
 > And how to [define a tool](https://kubegene.io/docs/guides/tool/).
 
-## Seldon
+### Seldon
 
 [Open-source platform](https://www.seldon.io/tech/) for rapidly deploying machine learning models on Kubernetes. Manage, serve and scale models built in any framework on Kubernetes.
 

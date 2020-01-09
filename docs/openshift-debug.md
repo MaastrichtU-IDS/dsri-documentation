@@ -36,14 +36,31 @@ spec:
 
 Then start the pod:
 
+* On OpenShift
+
 ```shell
-oc create -f tests/test-devnull-pod.yaml
+oc create -f tests/test-devnull-pod.yaml -n test-vincent
+```
+
+* Or on local kubernetes (to test Argo)
+
+```shell
+kubectl create -f tests/test-devnull-pod.yaml
 ```
 
 And connect with the Shell:
+
+* On OpenShift
 
 ```shell
 oc rsh test-devnull-pod
 ```
 
 >Change the pod ID to the generated pod ID.
+
+* Using local Kubernetes
+
+```shell
+kubectl exec -it test-devnull-pod -- /bin/bash
+```
+

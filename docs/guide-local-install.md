@@ -161,8 +161,6 @@ kubectl delete -n kube-system svc argo-ui
 
 [![Argo project](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/argo/)
 
-> **TODO:** update to do the global install through MiniShift (we don't need namespace install on local)
-
 ### Install on your local Kubernetes
 
 Argo workflows will be installed on the `argo` namespace. See the [official Argo documentation](https://argoproj.github.io/docs/argo/demo.html#2-install-the-controller-and-ui) for more details.
@@ -174,14 +172,9 @@ kubectl apply -n argo -f https://raw.githubusercontent.com/argoproj/argo/v2.4.2/
 # Configure service account to run workflow
 kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=default:default
 
-# Expose Argo UI
-kubectl -n argo port-forward deployment/argo-ui 8002:8001
-
 # Test run
 argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
 ```
-
-> Argo UI on http://localhost:8002.
 
 > See [custom configuration](https://raw.githubusercontent.com/vemonet/argo/master/manifests/namespace-install.yaml) for namespace install.
 >
@@ -193,4 +186,10 @@ argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examp
 
 See the [Argo workflows documentation](/dsri-documentation/docs/workflows-argo).
 
-[![Argo workflows](/dsri-documentation/img/argo-logo.png)](https://argoproj.github.io/)
+### Expose the UI
+
+```shell
+kubectl -n argo port-forward deployment/argo-ui 8002:8001
+```
+
+> Access on http://localhost:8002.
