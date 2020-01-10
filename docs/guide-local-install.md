@@ -118,9 +118,9 @@ kubectl proxy
 >
 > And provide the previously obtained token.
 
-**Warning:** you will need to save the token to login again.
+**Warning:** you will need to save the token to login again next time (use the password save from your browser if possible).
 
-## Run kubectl
+### Run kubectl
 
 `kubectl` should be running at start.
 
