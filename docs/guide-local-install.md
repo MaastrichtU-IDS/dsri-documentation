@@ -78,7 +78,7 @@ minishift delete -f
 
 ### kubectl on Ubuntu
 
-See the official [Kubernetes install documentation](https://ubuntu.com/kubernetes/install).
+See the official [Ubuntu Kubernetes install documentation](https://ubuntu.com/kubernetes/install).
 
 ```shell
 sudo snap install microk8s --classic
@@ -96,9 +96,15 @@ microk8s.kubectl config view --raw > $HOME/.kube/config
 
 ### kubectl on MacOS & Windows
 
-Included in [Docker installation](/docs/cwl-install#on-macos-windows).
+Included in Docker installation. Use the installer provided by DockerHub.
 
 > Activate it in Docker Preferences > Kubernetes.
+
+For Windows you will need to download the `kubectl.exe` and place it in your PATH.
+
+* https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/windows/amd64/kubectl.exe
+
+We recommend to create a `kubectl` directory in `C:/` and add this `C:/kubectl` to the Path environment variable in System properties > Advanced > Environment Variables > Path
 
 ### Install the Dashboard UI
 
@@ -107,10 +113,20 @@ Included in [Docker installation](/docs/cwl-install#on-macos-windows).
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
 kubectl apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-argo-workflows/87d5f31a8373926b9c0a1fb2a5e631c723e0f38a/roles/kube-dashboard-adminuser-sa.yml
 kubectl apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-argo-workflows/87d5f31a8373926b9c0a1fb2a5e631c723e0f38a/roles/kube-adminuser-rolebinding.yml
-# Get the Token to be used first time you access the dashboard
+
+# Get the Token to access the dashboard
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 
-# Start the web UI
+
+# Windows user will need to execute the 2 commands manually:
+kubectl -n kube-system get secret 
+# And get the token containing 'admin-user'
+kubectl -n kube-system describe secret
+# For Windows: give the anonymous user global access
+kubectl create clusterrolebinding cluster-system-anonymous --clusterrole=admin --user=system:anonymous
+# Note: this could be improved. I think only the Dashboard UI didn't have the required permissions.
+
+# Finally, start the web UI, and chose the Token connection
 kubectl proxy
 ```
 
