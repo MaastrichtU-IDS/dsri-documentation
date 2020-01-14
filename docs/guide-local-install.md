@@ -78,7 +78,7 @@ minishift delete -f
 
 ### kubectl on Ubuntu
 
-See the official [Ubuntu Kubernetes install documentation](https://ubuntu.com/kubernetes/install).
+For more details: read the official [install Kubernetes on Ubuntu tutorial](https://tutorials.ubuntu.com/tutorial/install-a-local-kubernetes-with-microk8s#0) or see the official [Ubuntu Kubernetes install documentation](https://ubuntu.com/kubernetes/install).
 
 ```shell
 sudo snap install microk8s --classic
@@ -86,6 +86,9 @@ sudo usermod -a -G microk8s $USER
 # Restart your machine
 mkdir -p ~/.kube
 microk8s.kubectl config view --raw > $HOME/.kube/config
+
+# TODO: make sure this works for dashboard on Ubuntu
+microk8s.enable dashboard dns
 ```
 
 > To do only if kubectl is not already installed on your machine:
@@ -147,6 +150,33 @@ kubectl proxy
 ```
 
 > Then visit: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+### Enable internet
+
+[Debug DNS on Ubuntu](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)
+
+```shell
+microk8s.enable dns
+```
+
+> Restart your machine.
+
+You might need to change your firewall configuration
+
+* On Ubuntu
+
+```shell
+sudo ufw allow in on cni0
+sudo ufw allow out on cni0
+sudo ufw default allow routed
+```
+
+* Try to connect to the internet from Kubernetes with the [test-busybox pod](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-busybox.yaml).
+
+```shell
+kubectl exec -ti busybox -- /bin/sh
+ping google.com
+```
 
 ### Create persistent volume
 
