@@ -75,7 +75,7 @@ cd d2s-transform-template
 * Steps-based workflow for XML files
 
 ```shell
-argo submit d2s-argo-workflows/d2s-workflow-transform-xml.yaml \
+argo submit d2s-argo-workflows/workflows/d2s-workflow-transform-xml.yaml \
   -f support/config/config-transform-xml-drugbank.yml
 ```
 
@@ -87,7 +87,7 @@ argo submit d2s-argo-workflows/d2s-workflow-transform-xml.yaml \
 * DAG workflow  for XML files
 
 ```shell
-argo submit d2s-argo-workflows/d2s-workflow-transform-xml-dag.yaml \
+argo submit d2s-argo-workflows/workflows/d2s-workflow-transform-xml-dag.yaml \
   -f support/config/config-transform-xml-drugbank.yml
 ```
 
@@ -98,14 +98,14 @@ argo submit d2s-argo-workflows/d2s-workflow-transform-xml-dag.yaml \
 * Steps-based workflow for CSV files
 
 ```shell
-argo submit d2s-argo-workflows/d2s-workflow-transform-csv.yaml \
+argo submit d2s-argo-workflows/workflows/d2s-workflow-transform-csv.yaml \
   -f support/config/config-transform-csv-stitch.yml
 ```
 
 * DAG workflow for CSV files
 
 ```shell
-argo submit d2s-argo-workflows/d2s-workflow-transform-csv-dag.yaml \
+argo submit d2s-argo-workflows/workflows/d2s-workflow-transform-csv-dag.yaml \
   -f support/config/config-transform-csv-stitch.yml
 ```
 
