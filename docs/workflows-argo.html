@@ -102,7 +102,7 @@ cd </span>d2s-transform-template
 <ul>
 <li>Steps-based workflow for XML files</li>
 </ul>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span> d2s-argo-workflows/d2s-workflow-transform-xml.yaml \
+<pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span> d2s-argo-workflows/workflows/d2s-workflow-transform-xml.yaml \
  <span class="hljs-template-variable"> -f</span> support/config/config-transform-xml-drugbank.yml
 </code></pre>
 <blockquote>
@@ -114,7 +114,7 @@ cd </span>d2s-transform-template
 <ul>
 <li>DAG workflow  for XML files</li>
 </ul>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span> d2s-argo-workflows/d2s-workflow-transform-xml-dag.yaml \
+<pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span> d2s-argo-workflows/workflows/d2s-workflow-transform-xml-dag.yaml \
  <span class="hljs-template-variable"> -f</span> support/config/config-transform-xml-drugbank.yml
 </code></pre>
 <blockquote>
@@ -124,13 +124,13 @@ cd </span>d2s-transform-template
 <ul>
 <li>Steps-based workflow for CSV files</li>
 </ul>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span> d2s-argo-workflows/d2s-workflow-transform-csv.yaml \
+<pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span> d2s-argo-workflows/workflows/d2s-workflow-transform-csv.yaml \
  <span class="hljs-template-variable"> -f</span> support/config/config-transform-csv-stitch.yml
 </code></pre>
 <ul>
 <li>DAG workflow for CSV files</li>
 </ul>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span> d2s-argo-workflows/d2s-workflow-transform-csv-dag.yaml \
+<pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span> d2s-argo-workflows/workflows/d2s-workflow-transform-csv-dag.yaml \
  <span class="hljs-template-variable"> -f</span> support/config/config-transform-csv-stitch.yml
 </code></pre>
 <blockquote>
