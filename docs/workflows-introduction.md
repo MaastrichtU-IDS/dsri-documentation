@@ -28,9 +28,10 @@ Define your workflow in a Bash script fashion, providing input, output and the c
 
 * Developed by the genomic research scientific community.
 * Good support for provenance description (export as RDF).
-* Support on OpenShift still at its infancy (cwl-calrissian).
-* Verbose workflow definition
-* But provide a GUI to define the workflows (Rabix)
+* Support on OpenShift still in development
+  * [Apache Airflow](https://airflow.apache.org/docs/stable/kubernetes.html)
+  * [cwl-calrissian](https://github.com/Duke-GCB/calrissian/)
+* Propose a GUI to build the workflows: [Rabix Composer](https://rabix.io/)
 
 ## To be implemented
 
