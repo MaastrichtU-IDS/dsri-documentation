@@ -35,6 +35,12 @@ Define your workflow in a Bash script fashion, providing input, output and the c
 
 ## To be implemented
 
+### Apache Airflow
+
+Define, schedule and run workflows. See [this deployment for OpenShift](https://github.com/majordomusio/openshift-airflow).
+
+See also: Airflow on [Kubernetes blog](https://kubernetes.io/blog/2018/06/28/airflow-on-kubernetes-part-1-a-different-kind-of-operator/), and Kubernetes in [Airflow documentation](https://airflow.apache.org/docs/stable/kubernetes.html).
+
 ### Apache Spark
 
 Write programs running in parallel using Java, Python, R, Scala or SQL with the [Spark](https://spark.apache.org/) framework.
