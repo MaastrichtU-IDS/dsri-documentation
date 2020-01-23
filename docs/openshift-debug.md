@@ -3,6 +3,8 @@ id: openshift-debug
 title: Debug a pod
 ---
 
+## Debug pod
+
 Get into a container, to understand why it bugs, by creating a YAML with the command `tail -f /dev/null` to keep it hanging.
 
 > See the [example in the d2s-argo-workflow repository](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-devnull-pod.yaml).
@@ -19,10 +21,12 @@ spec:
   volumes:
   - name: workdir
     persistentVolumeClaim:
+      # Change you PVC here
       claimName: pvc-mapr-projects-test-vincent
   containers:
   - name: test-devnull
     image: umids/rdfunit:latest
+    # Change the container image to test here
     command: [ "tail", "-f", "/dev/null"]
     resources:
       limits:
@@ -31,7 +35,6 @@ spec:
     volumeMounts:
     - name: workdir
       mountPath: /data
-      # subPath: dqa-workspace
 ```
 
 Then start the pod:
@@ -62,5 +65,13 @@ oc rsh test-devnull-pod
 
 ```shell
 kubectl exec -it test-devnull-pod -- /bin/bash
+```
+
+## Debug an Argo workflow
+
+Pod can also be tested within an Argo workflow, see [tests/test-devnull-argo.yaml](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-devnull-argo.yaml).
+
+```shell
+argo submit tests/test-devnull-argo.yaml
 ```
 
