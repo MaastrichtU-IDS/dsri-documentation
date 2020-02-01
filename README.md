@@ -1,7 +1,5 @@
 [![Gitter](https://badges.gitter.im/um-dsri/community.svg)](https://gitter.im/um-dsri/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-Generated using [Docusaurus](https://docusaurus.io/).
-
 ## Edit documentation pages
 
 Editing a documentation file is as easy as going to https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/introduction.md.
@@ -21,7 +19,7 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 - Main parameters of the website can be found in [website/siteConfig.js](https://github.com/MaastrichtU-IDS/d2s-documentation/blob/master/website/siteConfig.js).
 
 - Static content (any resource to download, images, css, js) can be provided in [website/static](https://github.com/MaastrichtU-IDS/d2s-documentation/tree/master/website/static)
-- HTML pages (other than docs markdown) are in [website/pages/en](
+- HTML pages (other than docs markdown) are in [website/pages/en](https://github.com/MaastrichtU-IDS/d2s-documentation/tree/master/website/pages/en)
 
 ## Run for development
 
@@ -29,8 +27,8 @@ To run in the `/website` directory.
 
 ```shell
 cd website
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 ## Deploy to GitHub pages
@@ -45,9 +43,9 @@ Script details:
 
 ```shell
 cd website/
-npm install
-npm run build
-GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true npm run publish-gh-pages
+yarn install
+yarn run build
+GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true yarn run publish-gh-pages
 git pull
 ```
 
@@ -71,12 +69,6 @@ docker-compose up -d
 
 > Access at http://dsri.137.120.31.101.nip.io/dsri-documentation/
 
-## Search with Algolia
-
-https://community.algolia.com/docsearch/
-
-> Activate it in `siteConfig.js`
-
 ## Install Docusaurus boostrap tool
 
 ```shell
@@ -86,3 +78,6 @@ sudo npm install --global docusaurus-init
 npx docusaurus-init
 ```
 
+## Credits
+
+Generated using [Docusaurus](https://docusaurus.io/).
