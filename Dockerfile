@@ -1,4 +1,6 @@
-FROM node:8.11.4
+FROM node:12
+
+# Original Docusaurus image FROM node:8.11.4
 
 WORKDIR /app/website
 
