@@ -159,31 +159,31 @@ cd </span>d2s-transform-template
 <pre><code class="hljs css language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">argoproj.io/v1alpha1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Workflow</span>
 <span class="hljs-attr">metadata:</span>
-  <span class="hljs-attr">generateName:</span> <span class="hljs-string">test-devnull-argo-</span>
+<span class="hljs-attr">  generateName:</span> <span class="hljs-string">test-devnull-argo-</span>
 <span class="hljs-attr">spec:</span>
-  <span class="hljs-attr">entrypoint:</span> <span class="hljs-string">execute-workflow</span>
+<span class="hljs-attr">  entrypoint:</span> <span class="hljs-string">execute-workflow</span>
 
   <span class="hljs-comment"># Use existing volume</span>
-  <span class="hljs-attr">volumes:</span>
-  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">workdir</span>
-    <span class="hljs-attr">persistentVolumeClaim:</span>
-      <span class="hljs-attr">claimName:</span> <span class="hljs-string">pvc-mapr-projects-test-vincent</span> 
+<span class="hljs-attr">  volumes:</span>
+<span class="hljs-attr">  - name:</span> <span class="hljs-string">workdir</span>
+<span class="hljs-attr">    persistentVolumeClaim:</span>
+<span class="hljs-attr">      claimName:</span> <span class="hljs-string">pvc-mapr-projects-test-vincent</span> 
 
-  <span class="hljs-attr">templates:</span>
-  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">execute-workflow</span>
-    <span class="hljs-attr">steps:</span>
-    <span class="hljs-bullet">-</span> <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">run-rdfunit</span>
-        <span class="hljs-attr">template:</span> <span class="hljs-string">rdfunit</span>
+<span class="hljs-attr">  templates:</span>
+<span class="hljs-attr">  - name:</span> <span class="hljs-string">execute-workflow</span>
+<span class="hljs-attr">    steps:</span>
+<span class="hljs-attr">    - - name:</span> <span class="hljs-string">run-rdfunit</span>
+<span class="hljs-attr">        template:</span> <span class="hljs-string">rdfunit</span>
    
-  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">rdfunit</span>
-    <span class="hljs-attr">container:</span>
-      <span class="hljs-attr">image:</span> <span class="hljs-string">umids/rdfunit:latest</span>
-      <span class="hljs-attr">command:</span> <span class="hljs-string">[tail]</span>
-      <span class="hljs-attr">args:</span> <span class="hljs-string">["-f",</span> <span class="hljs-string">"/dev/null"</span><span class="hljs-string">]</span>
-      <span class="hljs-attr">volumeMounts:</span>
-      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">workdir</span>
-        <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/data</span>
-        <span class="hljs-attr">subPath:</span> <span class="hljs-string">dqa-workspace</span>
+<span class="hljs-attr">  - name:</span> <span class="hljs-string">rdfunit</span>
+<span class="hljs-attr">    container:</span>
+<span class="hljs-attr">      image:</span> <span class="hljs-string">umids/rdfunit:latest</span>
+<span class="hljs-attr">      command:</span> <span class="hljs-string">[tail]</span>
+<span class="hljs-attr">      args:</span> <span class="hljs-string">["-f",</span> <span class="hljs-string">"/dev/null"</span><span class="hljs-string">]</span>
+<span class="hljs-attr">      volumeMounts:</span>
+<span class="hljs-attr">      - name:</span> <span class="hljs-string">workdir</span>
+<span class="hljs-attr">        mountPath:</span> <span class="hljs-string">/data</span>
+<span class="hljs-attr">        subPath:</span> <span class="hljs-string">dqa-workspace</span>
 </code></pre>
 <p>Then start the workflow:</p>
 <pre><code class="hljs css language-shell"><span class="hljs-keyword">argo </span><span class="hljs-built_in">submit</span><span class="hljs-template-variable"> --serviceaccount</span><span class="hljs-keyword"> argo </span>tests/<span class="hljs-built_in">test</span>-devnull-argo.yaml
