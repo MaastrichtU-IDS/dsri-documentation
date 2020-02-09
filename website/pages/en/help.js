@@ -30,13 +30,13 @@ function Help(props) {
       title: 'Join the DSRI community',
     },
     {
-      content: `<a href="https://github.com/MaastrichtU-IDS/dsri-documentation"
-        target="_blank" aria-label="Star this project on GitHub">
-        <img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&style=social"/>
+      content: `<a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues"
+        target="_blank" aria-label="GitHub issues">
+        <img alt="GitHub issues" src="https://img.shields.io/github/issues/MaastrichtU-IDS/dsri-documentation?label=dsri-documentation"/>
       </a>
       <p>Browse and submit [issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) or [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) 
       to fix and improve the documentation.</p>`,
-      title: 'GitHub',
+      title: 'Submit issues',
     },
     {
       content: "Feel free to contact <br/>[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl)<br/>if you have any questions.",
