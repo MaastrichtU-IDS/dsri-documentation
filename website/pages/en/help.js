@@ -26,7 +26,7 @@ function Help(props) {
         <img alt="Chat on Gitter" 
         src="https://img.shields.io/gitter/room/um-dsri/community"/>
       </a>
-      <p>Feel free to ask questions on [Gitter](https://gitter.im/um-dsri/community) and get involved in the community.</p>`,
+      <p>Feel free to ask questions on [Gitter](https://gitter.im/um-dsri/community) and get involved in the community 💬</p>`,
       title: 'Join the DSRI community',
     },
     {
@@ -35,11 +35,11 @@ function Help(props) {
         <img alt="GitHub issues" src="https://img.shields.io/github/issues/MaastrichtU-IDS/dsri-documentation?label=dsri-documentation"/>
       </a>
       <p>Browse and submit [issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) or [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) 
-      to fix and improve the documentation.</p>`,
+      to fix and improve the documentation 🔧</p>`,
       title: 'Submit issues',
     },
     {
-      content: "Feel free to contact <br/>[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl)<br/>if you have any questions.",
+      content: "Feel free to contact <br/>[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl)<br/>if you have any questions 📬",
       title: 'Contact us',
     },
   ];
