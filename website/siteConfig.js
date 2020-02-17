@@ -60,7 +60,7 @@ const siteConfig = {
     // primaryColor: '#ef4c22', // Maastricht University Orange 
     // primaryColor: '#eb2126', // MapR light Red
     // primaryColor: '#db212e', // MapR Red
-    primaryColor: '#c62828', // Mat Red
+    primaryColor: '#c62828', // Mat Red (Fire Engine Red)
     // primaryColor: '#ff2800', // Fer Red
     // primaryColor: '#ba2133', // MapR Redder
     // primaryColor: '#ad213b', // MapR Reddest
