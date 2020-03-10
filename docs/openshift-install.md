@@ -1,5 +1,5 @@
 ---
-id: openshift-install
+ id: openshift-install
 title: Installation
 sidebar_label: Installation
 ---
@@ -32,7 +32,27 @@ brew install openshift-cli
 
 ### On Windows
 
+OC version: **3.11.0**
+
 Follow the [official documentation on Windows](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-windows) to install the `oc` client.
+
+First, head to this page  and look for the current [Windows client tools](https://github.com/openshift/origin/releases/tag/v3.11.0) release under "Assets"
+
+After downloading the `.zip` and extract all.
+
+Next set the system **PATH** environment variables for the directory containing `oc.exe`, which now resides in your newly created **OpenShift** folder inside of <span style='color:red'>*C:\Program Files (x86)\OpenShift*</span> 
+
+Open the Control Panel, and click on **System**. Click on **Advance system settings** on the left or open the **Advance** tab of *System Properties.* Click the button labeled **Environment Variables..** at the bottom. Look for the option in the *User variables* section for *Path.*
+
+<img src="\dsri-documentation\img\OC Path.png" alt="Set OC Path" style="zoom: 50%;" />
+
+This makes it easy to access OC Tools by simply opening up command prompt and typing in an `oc` command.
+
+```powershell
+oc version
+```
+
+
 
 ---
 
