@@ -54,7 +54,7 @@
                 };
               }
             });
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/openshift-debug.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Debug a pod</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="debug-pod"></a><a href="#debug-pod" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Debug pod</h2>
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/openshift-debug.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Debug a pod</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="debug-pod"></a><a href="#debug-pod" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Debug pod</h2>
 <p>Get into a container, to understand why it bugs, by creating a YAML with the command <code>tail -f /dev/null</code> to keep it hanging.</p>
 <blockquote>
 <p>See the <a href="https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-devnull-pod.yaml" target="_blank" rel="nofollow noreferrer noopener">example in the d2s-argo-workflow repository</a>.</p>
@@ -62,28 +62,28 @@
 <pre><code class="hljs css language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
 <span class="hljs-attr">metadata:</span>
-<span class="hljs-attr">  labels:</span>
-<span class="hljs-attr">    purpose:</span> <span class="hljs-string">test</span>
-<span class="hljs-attr">  name:</span> <span class="hljs-string">test-devnull-pod</span>
-<span class="hljs-attr">  namespace:</span> <span class="hljs-string">test-vincent</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">purpose:</span> <span class="hljs-string">test</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">test-devnull-pod</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">test-vincent</span>
 <span class="hljs-attr">spec:</span>
-<span class="hljs-attr">  volumes:</span>
-<span class="hljs-attr">  - name:</span> <span class="hljs-string">workdir</span>
-<span class="hljs-attr">    persistentVolumeClaim:</span>
+  <span class="hljs-attr">volumes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">workdir</span>
+    <span class="hljs-attr">persistentVolumeClaim:</span>
       <span class="hljs-comment"># Change you PVC here</span>
-<span class="hljs-attr">      claimName:</span> <span class="hljs-string">pvc-mapr-projects-test-vincent</span>
-<span class="hljs-attr">  containers:</span>
-<span class="hljs-attr">  - name:</span> <span class="hljs-string">test-devnull</span>
-<span class="hljs-attr">    image:</span> <span class="hljs-string">umids/rdfunit:latest</span>
+      <span class="hljs-attr">claimName:</span> <span class="hljs-string">pvc-mapr-projects-test-vincent</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">test-devnull</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">umids/rdfunit:latest</span>
     <span class="hljs-comment"># Change the container image to test here</span>
-<span class="hljs-attr">    command:</span> <span class="hljs-string">[</span> <span class="hljs-string">"tail"</span><span class="hljs-string">,</span> <span class="hljs-string">"-f"</span><span class="hljs-string">,</span> <span class="hljs-string">"/dev/null"</span><span class="hljs-string">]</span>
-<span class="hljs-attr">    resources:</span>
-<span class="hljs-attr">      limits:</span>
-<span class="hljs-attr">        cpu:</span> <span class="hljs-number">1000</span><span class="hljs-string">m</span> 
-<span class="hljs-attr">        memory:</span> <span class="hljs-number">10</span><span class="hljs-string">Gi</span> 
-<span class="hljs-attr">    volumeMounts:</span>
-<span class="hljs-attr">    - name:</span> <span class="hljs-string">workdir</span>
-<span class="hljs-attr">      mountPath:</span> <span class="hljs-string">/data</span>
+    <span class="hljs-attr">command:</span> <span class="hljs-string">[</span> <span class="hljs-string">"tail"</span><span class="hljs-string">,</span> <span class="hljs-string">"-f"</span><span class="hljs-string">,</span> <span class="hljs-string">"/dev/null"</span><span class="hljs-string">]</span>
+    <span class="hljs-attr">resources:</span>
+      <span class="hljs-attr">limits:</span>
+        <span class="hljs-attr">cpu:</span> <span class="hljs-string">1000m</span> 
+        <span class="hljs-attr">memory:</span> <span class="hljs-string">10Gi</span> 
+    <span class="hljs-attr">volumeMounts:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">workdir</span>
+      <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/data</span>
 </code></pre>
 <p>Then start the pod:</p>
 <ul>
