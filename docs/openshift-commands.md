@@ -40,19 +40,22 @@ oc get pod
 ### Get specific pod
 
 ```shell
-oc get pod | grep my-pod
+oc get pod | grep <pod_id>
 ```
 
 ### Delete pod
 
 ```shell
-oc delete pod my-pod
+oc delete pod <pod_id>
+
+# Force deletion
+oc delete pod --force --grace-period=0 <pod_id>
 ```
 
 ### Get logs
 
 ```shell
-oc logs -f d2s-download-pod
+oc logs -f <pod_id>
 ```
 
 > Get more details on how to [debug a pod](/dsri-documentation/docs/openshift-debug).
@@ -62,7 +65,7 @@ oc logs -f d2s-download-pod
 Connect to a pod with [Bash](https://devhints.io/bash).
 
 ```shell
-oc rsh my-pod
+oc rsh <pod_id>
 ```
 
 ### Copy files
