@@ -9,5 +9,5 @@ The DSRI provides a graphical user interface to easily run and manage services (
 
 See the [DSRI workshop presentation](/dsri-documentation/resource/dsri_openshift_workshop.pdf) or the [DSRI story presentation](/dsri-documentation/resource/dsri_story_201907.pdf) for more details.
 
-> TODO: develop
+[Contact us](/help) to request an account and run your services on the DSRI.
 
