@@ -61,6 +61,7 @@ function Help(props) {
             <li><b>Sebastiaam Nijhuis</b> - System, Security and Network engineer at <a href="https://maastrichtuniversity.nl/icts">ICTS</a></li>
             <li><b>Maurice Steyvers</b> - ICT manager at <a href="https://maastrichtuniversity.nl/icts">ICTS</a></li>
             <li><b>Vincent Emonet</b> - Data Science engineer at <a href="https://maastrichtuniversity.nl/ids">IDS</a></li>
+            <li><b>Binosha Weerarathna</b> - Data Science engineer at <a href="https://maastrichtuniversity.nl/ids">IDS</a></li>
             <li><b>Michel Dumontier</b> - Project investigator from <a href="https://maastrichtuniversity.nl/ids">IDS</a></li>
           </ul>
         </div>
