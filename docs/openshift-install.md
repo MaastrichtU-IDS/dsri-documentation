@@ -44,7 +44,7 @@ Next set the system **PATH** environment variables for the directory containing 
 
 Open the Control Panel, and click on **System**. Click on **Advance system settings** on the left or open the **Advance** tab of *System Properties.* Click the button labeled **Environment Variables..** at the bottom. Look for the option in the *User variables* section for *Path.*
 
-<img src="\dsri-documentation\img\OC Path.png" alt="Set OC Path" style="zoom: 50%;" />
+<img class="screenshot" src="/dsri-documentation/img/OC_Path.png" alt="Set OC Path" style="zoom: 100%; max-height: 500px; max-width: 500px;">
 
 This makes it easy to access OC Tools by simply opening up command prompt and typing in an `oc` command.
 
