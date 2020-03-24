@@ -41,11 +41,9 @@ Static persistent volumes are mounted in a specific directory on the MapR storag
 
 It is recommended to use dynamic persistent volumes in priority, you can [request a static persistent volume](/dsri-documentation/help) if necessary.
 
-## Mount a filesystem UI on a PVC
+## Mount a filebrowser on a PVC
 
-[![filebrowser](/dsri-documentation/img/filebrowser_banner.svg)](https://filebrowser.xyz/)
-
-This example details how to deploy the [filebrowser UI](https://hub.docker.com/r/filebrowser/filebrowser) on linked to a MapR Persistent Volume Claim (PVC) to browse files stored in this volume.
+This example details how to deploy a [filebrowser Web UI](https://hub.docker.com/r/filebrowser/filebrowser) on linked to a MapR Persistent Volume Claim (PVC) to browse files stored in this volume with authentication required.
 
 Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`
 

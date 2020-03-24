@@ -87,7 +87,7 @@ sudo usermod -a -G microk8s $USER
 mkdir -p ~/.kube
 microk8s.kubectl config view --raw > $HOME/.kube/config
 
-# TODO: make sure this works for dashboard on Ubuntu
+# Make sure this works for dashboard on Ubuntu
 microk8s.enable dashboard dns
 ```
 
@@ -185,7 +185,7 @@ ping google.com
 kubectl apply -n argo -f d2s-argo-workflows/storage/storage-mac.yaml
 ```
 
-> **TODO:** Not working at the moment.
+> Not working at the moment.
 
 ### Uninstall
 
@@ -198,8 +198,6 @@ kubectl delete -n kube-system deploy workflow-controller argo-ui
 kubectl delete -n kube-system sa argo argo-ui
 kubectl delete -n kube-system svc argo-ui
 ```
-
-> **TODO:** test
 
 ---
 

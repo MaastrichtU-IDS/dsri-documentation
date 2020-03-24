@@ -80,11 +80,11 @@ curl -X POST --data-binary @blazegraph-dataloader.txt --header 'Content-Type:tex
 
 ### Start postgres
 
-> **TODO:** available in a catalog?
+> Available in a catalog?
 
 ### Start apache-drill
 
-> **TODO:** try the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-containers/tree/master/kubernetes) for Kubernetes from MapR.
+> Try the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-containers/tree/master/kubernetes) for Kubernetes from MapR.
 
 ### Start Virtuoso
 
@@ -92,4 +92,4 @@ curl -X POST --data-binary @blazegraph-dataloader.txt --header 'Content-Type:tex
 oc create -f d2s-pod-virtuoso.yaml
 ```
 
-> **TODO:** use the [official OpenLink deployment](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/pods/d2s-pod-virtuoso7.yaml).
+> To be developed: use the [official OpenLink deployment](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/pods/d2s-pod-virtuoso7.yaml).

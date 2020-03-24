@@ -3,9 +3,9 @@ id: deploy-jupyter
 title: Deploy Jupyter Notebooks
 ---
 
-[![Jupyterlab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
-
 Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
+
+[![Jupyterlab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
 
 ## Recommended deployment
 
@@ -13,7 +13,7 @@ We recommend to use a [Source-to-Image (S2I)](https://docs.openshift.com/contain
 
 > **You will not be root user** once the container is started, so make sure to define all tools to install before build in the requirements.
 
-Those Jupyter S2I deployments, and the Root deployment described [below](/dsri-documentation/docs/deploy-jupyter#jupyter-as-root-user), can be deployed from the OpenShift web UI:
+The Jupyter S2I deployments, and the Root deployment described [below](/dsri-documentation/docs/deploy-jupyter#jupyter-as-root-user), can be deployed from the OpenShift web UI:
 
 <img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style="max-width: 100%; max-height: 100%;" />
 
@@ -33,12 +33,12 @@ The following parameters can to be provided:
   * `s2i-minimal-notebook:3.6` : minimal jupyter notebook
   * `s2i-scipy-notebook:3.6` : notebook with popular scientific libraries pre-installed
   * `s2i-tensorflow-notebook:3.6` : notebook with tensorflow libraries for machine learning.
-* Provide a URL to the Git repository with the requirements and the code to run. The repository should typically have a `requirements.txt` file at the root to install the libraries that will be used. See as examples:
-  * [https://github.com/marcelbrouwers/sample-notebooks](marcelbrouwers/sample-notebooks)
+* URL to the Git repository with the requirements and the code to run. The repository typically have a `requirements.txt` file at the root to install the libraries that will be used. See as examples:
+  * [marcelbrouwers/sample-notebooks](https://github.com/marcelbrouwers/sample-notebooks)
   * [vemonet/translator-sparql-notebook](https://github.com/vemonet/translator-sparql-notebook)
   * [jakevdp/PythonDataScienceHandbook](https://github.com/jakevdp/PythonDataScienceHandbook)
-* *Context_dir*: should enable to select working directory. But at the moment fails if directory doesn't exist.
-  * By default the working directory is `/opt/app-root/src`
+
+By default the working directory is `/opt/app-root/src`
 
 > Built from [jupyter-on-openshift](https://github.com/jupyter-on-openshift/jupyter-notebooks).
 
@@ -63,8 +63,6 @@ The following parameters can be provided:
 * `Storage subpath`: path to the Notebook folder in the Persistent Volume Claim storage
 
 This deployment require to have  root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request root access if you don't have them.
-
-> In development: [OpenShift secrets](/dsri-documentation/docs/openshift-secret) can be used to provide password in a more secure manner.
 
 > Built from [amalic/Jupyterlab](https://github.com/amalic/Jupyterlab).
 
@@ -102,4 +100,4 @@ Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-no
 
 To deploy multiple notebooks for multiples users we recommend to use Jupyter Hub.
 
-> TODO: develop.
+> To be developed.
