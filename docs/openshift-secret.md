@@ -14,9 +14,19 @@ title: Use secrets
 >  `Argo` project > `Resources` > `Secret`
 
 * `Secret Type`: Generic Secret
-* `Secret Name`: d2s-sparql-password
+* `Secret Name`: my-password
 * `Key`: password
 * Enter the password in the text box `Clean Value`
+
+The secret can now be used in pods. 
+
+## Manage Secrets
+
+Secrets cannot be read, but they can be changed through the OpenShift UI.
+
+## Use in Argo workflows
+
+Example to authenticate to a database to run an update query:
 
 ```yaml
 - name: d2s-sparql-operations
@@ -41,10 +51,10 @@ title: Use secrets
       "--var-output", "{{inputs.parameters.sparql-output-graph}}", 
       "--var-service", "{{inputs.parameters.sparql-service-url}}", ]
     env:
-    - name: SPARQLPASSWORD
+    - name: PASSWORD
       valueFrom:
         secretKeyRef:
-          name: d2s-sparql-password
+          name: my-password
           key: password
 ```
 

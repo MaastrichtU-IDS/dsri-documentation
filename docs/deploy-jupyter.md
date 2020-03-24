@@ -17,34 +17,47 @@ Those Jupyter S2I deployments, and the Root deployment described [below](/dsri-d
 
 <img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style="max-width: 100%; max-height: 100%;" />
 
-⚡ If you want to start a Notebook fast and do not mind of the persistence of your data choose the `Jupyter Notebook Quickstart` from the [DSRI services catalog](https://app.dsri.unimaas.nl:8443/console/catalog) web UI.
+Two deployments are available:
 
-🗄️ If you need a to use a PVC storage then use `Jupyter Notebook PVC Quickstart` from the Catalog.
+🦋 **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted.
+
+🗄️ **Persistent**: use a Persistent Volume Claim (PVC) for a persistent storage of the data.
 
 The following parameters can to be provided:
 
-* *Application_name*: the unique name of your application
-  * e.g. `nb-tensorflow-word2vec`
-* *Notebook_interface*
+* Provide a unique `Application name`
+* The `Password` is safely stored in a Secret.
   * `classic`: Jupyter notebook web UI.
   * `lab`: Jupyterlab web UI.
-* *Builder_image*
+* Provide the base image used by S2I to build your image with the provided requirements installed.
   * `s2i-minimal-notebook:3.6` : minimal jupyter notebook
   * `s2i-scipy-notebook:3.6` : notebook with popular scientific libraries pre-installed
   * `s2i-tensorflow-notebook:3.6` : notebook with tensorflow libraries for machine learning.
-* *Git_repository_url*: the notebook git repository. Place a `requirements.txt` file at the root to install additional libraries.
-  * See [jakevdp/PythonDataScienceHandbook](https://github.com/jakevdp/PythonDataScienceHandbook) as example.
+* Provide a URL to the Git repository with the requirements and the code to run. The repository should typically have a `requirements.txt` file at the root to install the libraries that will be used. See as examples:
+  * [https://github.com/marcelbrouwers/sample-notebooks](marcelbrouwers/sample-notebooks)
+  * [vemonet/translator-sparql-notebook](https://github.com/vemonet/translator-sparql-notebook)
+  * [jakevdp/PythonDataScienceHandbook](https://github.com/jakevdp/PythonDataScienceHandbook)
 * *Context_dir*: should enable to select working directory. But at the moment fails if directory doesn't exist.
-  * By default the working directory is `/opt/app-root/src` (TODO: try `/srv`)
-  * See [jupyter-on-openshift JupyterHub readme](https://github.com/jupyter-on-openshift/jupyterhub-quickstart#allocating-persistent-storage-to-users) and [OpenShift official documentation](https://blog.openshift.com/jupyter-on-openshift-part-4-adding-a-persistent-workspace/) to enable using persistent volumes.
+  * By default the working directory is `/opt/app-root/src`
 
 > Built from [jupyter-on-openshift](https://github.com/jupyter-on-openshift/jupyter-notebooks).
 
+> See [jupyter-on-openshift JupyterHub readme](https://github.com/jupyter-on-openshift/jupyterhub-quickstart#allocating-persistent-storage-to-users) and [OpenShift official documentation](https://blog.openshift.com/jupyter-on-openshift-part-4-adding-a-persistent-workspace/) for more details about persistent volumes.
+
 ## Jupyter as Root user
 
-If you need to have root access in your Jupyter Notebook container you can deploy it using the `JupyterLab as Root` solution in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog).
+If you need to have root access in your Jupyter Notebook container you can deploy it using the `Jupyter Notebook as Root` solution in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog) 🔓
+
+2 deployments are available:
+
+🦋 **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted.
+
+🗄️ **Persistent**: use a Persistent Volume Claim (PVC) for a persistent storage of the data.
+
+The following parameters can be provided:
 
 * Provide a unique `Application name`
+* The `Password` is safely stored in a Secret.
 * You can provide a `Git repository URL` with files to be downloaded and requirements to be installed at the start of the application. 
 * `Storage name`: the storage Persistent Volume Claim (PVC)
 * `Storage subpath`: path to the Notebook folder in the Persistent Volume Claim storage

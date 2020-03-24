@@ -1,14 +1,28 @@
 ---
 id: openshift-volume
-title: Define volumes
+title: Storage management
 ---
+
+Different storage can be used when running services on the DSRI:
+
+🦋 **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted (but this deployment does not require to request the creation of a PVC and is faster).
+
+🗄️ **Persistent**:  a Persistent Volume Claim (PVC) can be created by the DSRI team for a persistent storage of the data. [Contact the DSRI team](/dsri-documentation/help) to request a persistent storage. 
+
+⚡ **Dynamic**:  dynamically create a Persistent Volume Claim (PVC) in the OpenShift UI. Use the `dynamic-maprfs` Storage Class (`still a work in progress`)
+
+## Use the default ephemeral storage
+
+When creating a pod, OpenShift will by default use ephemeral storage. It creates a volumes bind to the pod. So the volume will be deleted.
+
+It is recommended to use dynamic provisioning for a more sustainable storage solution. But ephemeral storage can be sufficient for testing.
 
 ## Define a dynamic persistent volume
 
 Dynamic persistent volumes can be created outside an application and can be mounted on any application run in the project the PVC has been created. 
 
 * Go to `Storage` on the left sidebar in a project
-  * Click`Create Storage` top right of the Storage page.
+  * Click `Create Storage` top right of the Storage page.
 
 * Storage class
   * `dynamic-maprfs`
@@ -25,13 +39,7 @@ Dynamic persistent volumes can be created outside an application and can be moun
 
 Static persistent volumes are mounted in a specific directory on the MapR storage, and provides a more sustainable storage over time. Static persistent volumes are not bind to a specific project, and can be accessed by different projects.
 
-It is recommended to use dynamic persistent volumes in priority, you can [request a static persistent volume](mailto:dsri-support-l@maastrichtuniversity.nl) if necessary.
-
-## Use the default ephemeral storage
-
-When creating a pod, OpenShift will by default use ephemeral storage. It creates a volumes bind to the pod. So the volume will be deleted.
-
-It is recommended to use dynamic provisioning for a more sustainable storage solution. But ephemeral storage can be sufficient for testing.
+It is recommended to use dynamic persistent volumes in priority, you can [request a static persistent volume](/dsri-documentation/help) if necessary.
 
 ## Mount a filesystem UI on a PVC
 

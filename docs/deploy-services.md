@@ -1,6 +1,6 @@
 ---
 id: deploy-services
-title: Deploy services
+title: Deploy Services
 ---
 
 Services available for the **Data Science Research Infrastructure**.
@@ -25,7 +25,7 @@ RStudio can be deployed from the [OpenShift Catalog](https://app.dsri.unimaas.nl
 
 Two deployments are available:
 
-🗄️ **Persistent**: use a Persistent Volume Claim (PVC) for Storage.
+🗄️ **Persistent**: use a Persistent Volume Claim (PVC) for a persistent storage of the data.
 
 ⚡ **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted (but this deployment does not require to request the creation of a PVC)
 
@@ -36,6 +36,24 @@ Two deployments are available:
 ### Matlab
 
 > Work in progress at the moment. Please [let us know](mailto:dsri-support-l@maastrichtuniversity.nl) if you are interested in deploying Matlab on the DSRI.
+
+### Apache Flink
+
+[Apache Flink](https://flink.apache.org/) enables processing of Data Streams using languages such as Java or Scala .
+
+Run Apache Flink in your project using [vemonet/flink-on-openshift](https://github.com/vemonet/flink-on-openshift)
+
+⚠️ At the moment the PVC name needs to be changed before creating the deployment in files `jobmanager-deployment.yaml` and `taskmanager-deployment.yaml`
+
+```shell
+git clone https://github.com/vemonet/flink-on-openshift.git
+cd flink-on-openshift
+# Change the PVC name in YAML files
+oc project my-project
+./create_deployment.sh
+```
+
+> [Let us know](https://gitter.im/um-dsri/community) if you are interested in using it, so we could make the deployment easier.
 
 ---
 
