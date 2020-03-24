@@ -21,19 +21,25 @@ oc project my-project
 
 ---
 
-## Delete a deployment
+## Deployments
 
 Deleting deployments from the Web UI can be quite cumbersome and require multiple clicks. The best way to delete a services deployed using the UI Catalog is to use the `oc` command:
 
-```shell
-# Check all objects related to your deployment
-oc get all --selector app=my-deployment
+### Get deployment
 
-# Delete them
-oc delete all --selector app=my-deployment
+Get all objects related to a deployment:
+
+```shell
+oc get all --selector app=my-deployment
 ```
 
-### Get
+### Delete deployment
+
+Delete all objects related to a deployment:
+
+```shell
+oc delete all --selector app=my-deployment
+```
 
 ---
 
