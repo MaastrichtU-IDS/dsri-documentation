@@ -49,3 +49,13 @@ title: Use secrets
 ```
 
 > Now you can use the secret as environment variable in the workflow definition.
+
+## Connect to DockerHub
+
+> To be tested.
+
+Create secret to pull private images.
+
+```shell
+oc create secret docker-registry docker-hub-secret --docker-server=docker.io --docker-username=your-dockerhub-username --docker-password=your-dockerhub-password --docker-email=your-dockerhub-email
+```

@@ -19,7 +19,15 @@ See the [Deploy Jupyter Notebooks](/dsri-documentation/docs/openshift-deploy-jup
 
 ### RStudio
 
-See the [Deploy RStudio](/dsri-documentation/docs/deploy-rstudio) documentation page.
+RStudio can be deployed from the [OpenShift Catalog](https://app.dsri.unimaas.nl:8443/console/catalog):
+
+<img src="/dsri-documentation/img/screenshot-deploy-rstudio.png" alt="Deploy RStudio" style="max-width: 100%; max-height: 100%;" />
+
+This deployment uses a Persistent Volume Claim for Storage.
+
+> See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details.
+
+> See also this deployment for OpenShift: https://github.com/CSCfi/rstudio-openshift
 
 ### Matlab
 
@@ -63,16 +71,3 @@ oc create -f d2s-pod-virtuoso.yaml
 ```
 
 > **TODO:** use the [official OpenLink deployment](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/pods/d2s-pod-virtuoso7.yaml).
-
----
-
-## Connect to DockerHub
-
-> To be tested.
-
-Create secret to pull private images.
-
-```shell
-oc create secret docker-registry docker-hub-secret --docker-server=docker.io --docker-username=your-dockerhub-username --docker-password=your-dockerhub-password --docker-email=your-dockerhub-email
-```
-

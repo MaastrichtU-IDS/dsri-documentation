@@ -17,7 +17,7 @@ We recommend to use a [Source-to-Image (S2I)](https://docs.openshift.com/contain
 
 🗄️ If you need a to use a PVC storage then use `Jupyter Notebook PVC Quickstart` from the Catalog.
 
-Those S2I deployments, and the Root deployment described below, can be deployed from the OpenShift web UI:
+Those S2I deployments, and the Root deployment described [below](/dsri-documentation/docs/deploy-jupyter#jupyter-as-root-user), can be deployed from the OpenShift web UI:
 
 <img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style="max-width: 100%; max-height: 100%;" />
 

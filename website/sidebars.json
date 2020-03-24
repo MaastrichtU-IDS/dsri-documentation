@@ -1,7 +1,7 @@
 {
   "docs": {
     "OpenShift UI": ["introduction",
-      "deploy-services", "deploy-jupyter", "deploy-rstudio",
+      "deploy-services", "deploy-jupyter",
       "openshift-volume", "openshift-secret"],
     "Workflows": ["tools-machine-learning" , "workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"],
     "Administration": ["openshift-install", 
