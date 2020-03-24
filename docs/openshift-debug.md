@@ -3,6 +3,14 @@ id: openshift-debug
 title: Debug a pod
 ---
 
+## Debug build
+
+If a build or deployment if failing you can see the detail of the last events of the DSRI using
+
+```shell
+oc get events
+```
+
 ## Debug pod
 
 Get into a container, to understand why it bugs, by creating a YAML with the command `tail -f /dev/null` to keep it hanging.

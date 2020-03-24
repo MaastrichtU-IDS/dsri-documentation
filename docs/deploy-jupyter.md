@@ -50,7 +50,9 @@ Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-no
 
 ## Recommended deployment
 
-We recommend to use a Source-to-Image deployment. Provide the URL to a git repository containing your code and `requirements.txt` or `requirements.yml`, then provide the Git URL when starting the Notebook.
+We recommend to use a Source-to-Image OpenShift deployments. Provide the URL to a git repository containing your code and `requirements.txt` or `requirements.yml` to install at build, then provide the Git URL when starting the Notebook.
+
+> **You will not be root user** once the container is started, so make sure to define all tools to install before build.
 
 ⚡ If you want to start a Notebook fast and do not mind of the persistence of your data choose the `Jupyter Notebook Quickstart` from the [DSRI services catalog](https://app.dsri.unimaas.nl:8443/console/catalog) web UI.
 
