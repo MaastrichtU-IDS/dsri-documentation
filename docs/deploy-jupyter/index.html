@@ -56,54 +56,16 @@
             });
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/deploy-jupyter.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Deploy Jupyter Notebooks</h1></header><article><div><span><p><a href="https://jupyter.org/" target="_blank" rel="nofollow noreferrer noopener"><img src="/dsri-documentation/img/jupyter_logo.png" alt="Jupyterlab"></a></p>
 <p>Feel free to propose new services using <a href="https://github.com/MaastrichtU-IDS/dsri-documentation/pulls" target="_blank" rel="nofollow noreferrer noopener">pull requests</a> or request new ones by creating a <a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues" target="_blank" rel="nofollow noreferrer noopener">new issues</a>.</p>
-<h2><a class="anchor" aria-hidden="true" id="jupyter-as-root-user"></a><a href="#jupyter-as-root-user" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Jupyter as root user</h2>
-<p>This method require to have enabled root user on your project. Contact the <a href="mailto:dsri-support-l@maastrichtuniversity.nl" target="_blank" rel="nofollow noreferrer noopener">DSRI support team</a> to request root access.</p>
-<p>Use <a href="https://hub.docker.com/r/amalic/jupyterlab/" target="_blank" rel="nofollow noreferrer noopener">amalic/jupyterlab</a> Docker image.</p>
-<ul>
-<li><p>Image name:</p>
-<pre><code class="hljs">amalic/jupyterlab
-</code></pre></li>
-<li><p>Environment variables:</p>
-<ul>
-<li><code>PASSWORD</code> : <code>my_password</code></li>
-</ul></li>
-<li><p>Mounted volume: <code>/notebooks</code></p></li>
-</ul>
+<h2><a class="anchor" aria-hidden="true" id="recommended-deployment"></a><a href="#recommended-deployment" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Recommended deployment</h2>
+<p>We recommend to use a <a href="https://docs.openshift.com/container-platform/3.11/creating_images/s2i.html" target="_blank" rel="nofollow noreferrer noopener">Source-to-Image (S2I)</a> OpenShift deployments. Provide the URL to a git repository containing your code and <code>requirements.txt</code> or <code>requirements.yml</code> to install all your dependencies at build time.</p>
 <blockquote>
-<p>Network port: <code>8888</code></p>
+<p><strong>You will not be root user</strong> once the container is started, so make sure to define all tools to install before build in the requirements.</p>
 </blockquote>
-<blockquote>
-<p>In development: <a href="/dsri-documentation/docs/openshift-secret">OpenShift secrets</a> can be used to provide password in a secure manner.</p>
-</blockquote>
-<h2><a class="anchor" aria-hidden="true" id="anaconda-and-tensorflow-with-jupyter"></a><a href="#anaconda-and-tensorflow-with-jupyter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Anaconda and Tensorflow with Jupyter</h2>
-<p>Another option to run Jupyter notebooks with Anaconda and Tensorflow installed.</p>
-<p>Use <a href="https://hub.docker.com/r/jupyter/tensorflow-notebook" target="_blank" rel="nofollow noreferrer noopener">jupyter/tensorflow-notebook</a> official Docker image.</p>
-<ul>
-<li><p>Image name:</p>
-<pre><code class="hljs css language-shell">jupyter/tensorflow-notebook
-</code></pre></li>
-<li><p>Environment variables:</p>
-<ul>
-<li><code>JUPYTER_ENABLE_LAB</code> : <code>yes</code> (optional)</li>
-</ul></li>
-<li><p>Mount storage:</p>
-<ul>
-<li>Go to the deployments page &gt; Click <code>Actions</code> &gt; Select <code>Add Storage</code></li>
-<li>Mount the storage in <code>/home/jovyan</code>.</li>
-</ul></li>
-</ul>
-<blockquote>
-<p>Go to the <code>pod logs</code> to get the <code>login token</code>.</p>
-</blockquote>
-<h2><a class="anchor" aria-hidden="true" id="tensorflow-on-gpu"></a><a href="#tensorflow-on-gpu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tensorflow on GPU</h2>
-<blockquote>
-<p>Running on GPU is still experimental. Please <a href="mailto:dsri-support-l@maastrichtuniversity.nl" target="_blank" rel="nofollow noreferrer noopener">contact us</a> if you want to run jobs on GPU.</p>
-</blockquote>
-<h2><a class="anchor" aria-hidden="true" id="future-recommended-deployment"></a><a href="#future-recommended-deployment" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Future recommended deployment</h2>
-<blockquote>
-<p>Still need some work to be able to install additional libraries at build time.</p>
-</blockquote>
-<p>Select <code>Jupyter Notebook Quickstart</code> from the <a href="https://app.dsri.unimaas.nl:8443/console/catalog" target="_blank" rel="nofollow noreferrer noopener">DSRI services catalog</a> web UI while on the right project.</p>
+<p>⚡ If you want to start a Notebook fast and do not mind of the persistence of your data choose the <code>Jupyter Notebook Quickstart</code> from the <a href="https://app.dsri.unimaas.nl:8443/console/catalog" target="_blank" rel="nofollow noreferrer noopener">DSRI services catalog</a> web UI.</p>
+<p>🗄️ If you need a to use a PVC storage then use <code>Jupyter Notebook PVC Quickstart</code> from the Catalog.</p>
+<p>Those S2I deployments, and the Root deployment described below, can be deployed from the OpenShift web UI:</p>
+<p><img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style="max-width: 100%; max-height: 100%;" /></p>
+<p>The following parameters need to be provided:</p>
 <ul>
 <li><em>Application_name</em>: the unique name of your application
 <ul>
@@ -133,24 +95,51 @@
 <blockquote>
 <p>Built from <a href="https://github.com/jupyter-on-openshift/jupyter-notebooks" target="_blank" rel="nofollow noreferrer noopener">jupyter-on-openshift</a>.</p>
 </blockquote>
-<h3><a class="anchor" aria-hidden="true" id="use-a-persistent-volume"></a><a href="#use-a-persistent-volume" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Use a persistent volume</h3>
-<p>With <code>notebook-quickstart</code> deployment:</p>
+<h2><a class="anchor" aria-hidden="true" id="jupyter-as-root-user"></a><a href="#jupyter-as-root-user" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Jupyter as Root user</h2>
+<p>If you need to have root access in your Jupyter Notebook container you can deploy it using the <code>JupyterLab as Root</code> solution in the <a href="https://app.dsri.unimaas.nl:8443/console/catalog" target="_blank" rel="nofollow noreferrer noopener">Catalog web UI</a>.</p>
 <ul>
-<li><a href="https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods" target="_blank" rel="nofollow noreferrer noopener">Find your Pod</a>.</li>
-<li>Click on <code>Actions</code> on the top right of your pod Details page.</li>
-<li>Select <code>Add Storage</code>.</li>
-<li>Select the Persistent Volume Claim (PVC) you want to use</li>
+<li>Provide a unique <code>Application name</code></li>
+<li>You can provide a <code>Git repository URL</code> with files to be downloaded and requirements to be installed at the start of the application.</li>
+<li><code>Storage name</code>: the storage Persistent Volume Claim (PVC)</li>
+<li><code>Storage subpath</code>: path to the Notebook folder in the Persistent Volume Claim storage</li>
 </ul>
-<p>You will need to make sure the directory you point to in the PVC has been created and is accessible (<code>chmod -R 777</code>)</p>
+<p>This deployment require to have a PVC storage and root user enabled on your project. Contact the <a href="mailto:dsri-support-l@maastrichtuniversity.nl" target="_blank" rel="nofollow noreferrer noopener">DSRI support team</a> to request root access.</p>
 <blockquote>
-<p>Add documentation for <code>notebook-workspace</code>.</p>
+<p>In development: <a href="/dsri-documentation/docs/openshift-secret">OpenShift secrets</a> can be used to provide password in a more secure manner.</p>
 </blockquote>
-<h3><a class="anchor" aria-hidden="true" id="deploy-jupyter-hub"></a><a href="#deploy-jupyter-hub" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Deploy Jupyter Hub</h3>
+<blockquote>
+<p>Built from <a href="https://github.com/amalic/Jupyterlab" target="_blank" rel="nofollow noreferrer noopener">amalic/Jupyterlab</a>.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="anaconda-and-tensorflow-with-jupyter"></a><a href="#anaconda-and-tensorflow-with-jupyter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Anaconda and Tensorflow with Jupyter</h2>
+<p>Another option to run Jupyter notebooks with Anaconda and Tensorflow installed.</p>
+<p>Use <a href="https://hub.docker.com/r/jupyter/tensorflow-notebook" target="_blank" rel="nofollow noreferrer noopener">jupyter/tensorflow-notebook</a> official Docker image.</p>
+<ul>
+<li><p>Image name:</p>
+<pre><code class="hljs css language-shell">jupyter/tensorflow-notebook
+</code></pre></li>
+<li><p>Environment variables:</p>
+<ul>
+<li><code>JUPYTER_ENABLE_LAB</code> : <code>yes</code> (optional)</li>
+</ul></li>
+<li><p>Mount storage:</p>
+<ul>
+<li>Go to the deployments page &gt; Click <code>Actions</code> &gt; Select <code>Add Storage</code></li>
+<li>Mount the storage in <code>/home/jovyan</code>.</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>Go to the <code>pod logs</code> to get the <code>login token</code>.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="tensorflow-on-gpu"></a><a href="#tensorflow-on-gpu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tensorflow on GPU</h2>
+<blockquote>
+<p>Running on GPU is still experimental. Please <a href="mailto:dsri-support-l@maastrichtuniversity.nl" target="_blank" rel="nofollow noreferrer noopener">contact us</a> if you want to run jobs on GPU.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="deploy-jupyter-hub"></a><a href="#deploy-jupyter-hub" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Deploy Jupyter Hub</h2>
 <p>To deploy multiple notebooks for multiples users we recommend to use Jupyter Hub.</p>
 <blockquote>
 <p>TODO: develop.</p>
 </blockquote>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/dsri-documentation/docs/deploy-services"><span class="arrow-prev">← </span><span>Deploy services</span></a><a class="docs-next button" href="/dsri-documentation/docs/deploy-rstudio"><span>Deploy RStudio</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#jupyter-as-root-user">Jupyter as root user</a></li><li><a href="#anaconda-and-tensorflow-with-jupyter">Anaconda and Tensorflow with Jupyter</a></li><li><a href="#tensorflow-on-gpu">Tensorflow on GPU</a></li><li><a href="#future-recommended-deployment">Future recommended deployment</a><ul class="toc-headings"><li><a href="#use-a-persistent-volume">Use a persistent volume</a></li><li><a href="#deploy-jupyter-hub">Deploy Jupyter Hub</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/workflows-introduction">Run workflows</a><a href="/dsri-documentation/docs/openshift-install">Advanced use</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a></div><div><h5>Community</h5><a href="https://gitter.im/um-dsri/community" target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter"><img alt="Chat on Gitter" src="https://img.shields.io/gitter/room/um-dsri/community"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2020 Institute of Data Science at Maastricht University</section><div><div class="gitter-open-chat-button">Chat with the community</div><script type="text/javascript">
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/dsri-documentation/docs/deploy-services"><span class="arrow-prev">← </span><span>Deploy services</span></a><a class="docs-next button" href="/dsri-documentation/docs/deploy-rstudio"><span>Deploy RStudio</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#recommended-deployment">Recommended deployment</a></li><li><a href="#jupyter-as-root-user">Jupyter as Root user</a></li><li><a href="#anaconda-and-tensorflow-with-jupyter">Anaconda and Tensorflow with Jupyter</a></li><li><a href="#tensorflow-on-gpu">Tensorflow on GPU</a></li><li><a href="#deploy-jupyter-hub">Deploy Jupyter Hub</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/workflows-introduction">Run workflows</a><a href="/dsri-documentation/docs/openshift-install">Advanced use</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a></div><div><h5>Community</h5><a href="https://gitter.im/um-dsri/community" target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter"><img alt="Chat on Gitter" src="https://img.shields.io/gitter/room/um-dsri/community"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2020 Institute of Data Science at Maastricht University</section><div><div class="gitter-open-chat-button">Chat with the community</div><script type="text/javascript">
         ((window.gitter = {}).chat = {}).options = {
           showChatByDefault: false,
           activationElement: '.gitter-open-chat-button',
