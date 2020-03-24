@@ -5,7 +5,7 @@ title: Deploy Jupyter Notebooks
 
 [![Jupyterlab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
 
-Feel free to propose new services using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
+Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
 ## Recommended deployment
 
@@ -13,15 +13,15 @@ We recommend to use a [Source-to-Image (S2I)](https://docs.openshift.com/contain
 
 > **You will not be root user** once the container is started, so make sure to define all tools to install before build in the requirements.
 
+Those Jupyter S2I deployments, and the Root deployment described [below](/dsri-documentation/docs/deploy-jupyter#jupyter-as-root-user), can be deployed from the OpenShift web UI:
+
+<img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style="max-width: 100%; max-height: 100%;" />
+
 ⚡ If you want to start a Notebook fast and do not mind of the persistence of your data choose the `Jupyter Notebook Quickstart` from the [DSRI services catalog](https://app.dsri.unimaas.nl:8443/console/catalog) web UI.
 
 🗄️ If you need a to use a PVC storage then use `Jupyter Notebook PVC Quickstart` from the Catalog.
 
-Those S2I deployments, and the Root deployment described [below](/dsri-documentation/docs/deploy-jupyter#jupyter-as-root-user), can be deployed from the OpenShift web UI:
-
-<img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style="max-width: 100%; max-height: 100%;" />
-
-The following parameters need to be provided:
+The following parameters can to be provided:
 
 * *Application_name*: the unique name of your application
   * e.g. `nb-tensorflow-word2vec`
@@ -49,7 +49,7 @@ If you need to have root access in your Jupyter Notebook container you can deplo
 * `Storage name`: the storage Persistent Volume Claim (PVC)
 * `Storage subpath`: path to the Notebook folder in the Persistent Volume Claim storage
 
-This deployment require to have a PVC storage and root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request root access.
+This deployment require to have  root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request root access if you don't have them.
 
 > In development: [OpenShift secrets](/dsri-documentation/docs/openshift-secret) can be used to provide password in a more secure manner.
 
@@ -58,6 +58,8 @@ This deployment require to have a PVC storage and root user enabled on your proj
 ## Anaconda and Tensorflow with Jupyter
 
 Another option to run Jupyter notebooks with Anaconda and Tensorflow installed.
+
+This deployment needs to be done through the UI > `Deploy Image`
 
 Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-notebook) official Docker image.
 

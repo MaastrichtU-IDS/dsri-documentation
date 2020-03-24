@@ -21,6 +21,22 @@ oc project my-project
 
 ---
 
+## Delete a deployment
+
+Deleting deployments from the Web UI can be quite cumbersome and require multiple clicks. The best way to delete a services deployed using the UI Catalog is to use the `oc` command:
+
+```shell
+# Check all objects related to your deployment
+oc get all --selector app=my-deployment
+
+# Delete them
+oc delete all --selector app=my-deployment
+```
+
+### Get
+
+---
+
 ## Pods
 
 ### Create pod from YAML
@@ -52,7 +68,7 @@ oc delete pod <pod_id>
 oc delete pod --force --grace-period=0 <pod_id>
 ```
 
-### Get logs
+### Get pod logs
 
 ```shell
 oc logs -f <pod_id>

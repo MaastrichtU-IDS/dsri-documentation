@@ -23,11 +23,15 @@ RStudio can be deployed from the [OpenShift Catalog](https://app.dsri.unimaas.nl
 
 <img src="/dsri-documentation/img/screenshot-deploy-rstudio.png" alt="Deploy RStudio" style="max-width: 100%; max-height: 100%;" />
 
-This deployment uses a Persistent Volume Claim for Storage.
+Two deployments are available:
 
-> See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details.
+🗄️ **Persistent**: use a Persistent Volume Claim (PVC) for Storage.
 
-> See also this deployment for OpenShift: https://github.com/CSCfi/rstudio-openshift
+⚡ **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted (but this deployment does not require to request the creation of a PVC)
+
+> See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
+
+> To develop: this deployment for OpenShift: https://github.com/CSCfi/rstudio-openshift
 
 ### Matlab
 
