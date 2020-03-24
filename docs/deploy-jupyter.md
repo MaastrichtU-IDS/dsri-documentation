@@ -9,25 +9,16 @@ Feel free to propose new services using [pull requests](https://github.com/Maast
 
 ## Jupyter as root user
 
-This method require to have enabled root user on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request root access.
+If you need to have root access in your Jupyter Notebook container you can deploy it using the `JupyterLab as Root` solution in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog).
 
-Use [amalic/jupyterlab](https://hub.docker.com/r/amalic/jupyterlab/) Docker image.
+* Provide a unique `Application name`
+* You can provide a `Git repository URL` with files to be downloaded and requirements to be installed at the start of the application. 
+* `Storage name`: the storage Persistent Volume Claim (PVC)
+* `Storage subpath`: path to the Notebook folder in the Persistent Volume Claim storage
 
-* Image name:
-  
-  ```
-  amalic/jupyterlab
-  ```
-  
-* Environment variables:
-  
-  * `PASSWORD` : `my_password`
-  
-* Mounted volume: `/notebooks`
+This deployment require to have a PVC storage and root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request root access.
 
-> Network port: `8888`
-
-> In development: [OpenShift secrets](/dsri-documentation/docs/openshift-secret) can be used to provide password in a secure manner.
+> In development: [OpenShift secrets](/dsri-documentation/docs/openshift-secret) can be used to provide password in a more secure manner.
 
 ## Anaconda and Tensorflow with Jupyter
 
@@ -57,22 +48,32 @@ Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-no
 
 > Running on GPU is still experimental. Please [contact us](mailto:dsri-support-l@maastrichtuniversity.nl) if you want to run jobs on GPU.
 
-## Future recommended deployment
+## Recommended deployment
 
-> Still need some work to be able to install additional libraries at build time.
+We recommend to use a Source-to-Image deployment. Provide the URL to a git repository containing your code and `requirements.txt` or `requirements.yml`, then provide the Git URL when starting the Notebook.
 
-Select `Jupyter Notebook Quickstart` from the [DSRI services catalog](https://app.dsri.unimaas.nl:8443/console/catalog) web UI while on the right project.
+⚡ If you want to start a Notebook fast and do not mind of the persistence of your data choose the `Jupyter Notebook Quickstart` from the [DSRI services catalog](https://app.dsri.unimaas.nl:8443/console/catalog) web UI.
+
+🗄️ If you need a to use a PVC storage then use `Jupyter Notebook PVC Quickstart` from the Catalog.
+
+The following parameters need to be provided:
 
 * *Application_name*: the unique name of your application
+  
   * e.g. `nb-tensorflow-word2vec`
 * *Notebook_interface*
   * `classic`: Jupyter notebook web UI.
   * `lab`: Jupyterlab web UI.
 * *Builder_image*
   * `s2i-minimal-notebook:3.6` : minimal jupyter notebook
+  
   * `s2i-scipy-notebook:3.6` : notebook with popular scientific libraries pre-installed
+  
   * `s2i-tensorflow-notebook:3.6` : notebook with tensorflow libraries for machine learning.
+  
+  * > TODO: add sparks notebook 
 * *Git_repository_url*: the notebook git repository. Place a `requirements.txt` file at the root to install additional libraries.
+  
   * See [jakevdp/PythonDataScienceHandbook](https://github.com/jakevdp/PythonDataScienceHandbook) as example.
 * *Context_dir*: should enable to select working directory. But at the moment fails if directory doesn't exist.
   * By default the working directory is `/opt/app-root/src` (TODO: try `/srv`)
