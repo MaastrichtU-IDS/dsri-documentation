@@ -53,6 +53,16 @@ oc project my-project
 ./create_deployment.sh
 ```
 
+Use this command to get the Flink Jobmanager pod id and copy file to the pod.
+
+```shell
+oc get pod --selector app=flink --selector component=jobmanager --no-headers -o=custom-columns=NAME:.metadata.name
+
+# Example creating the workspace folder and copying the RMLStreamer.jar to the pod
+oc exec <pod_id> -- mkdir -p /mnt/workspace/resources
+oc cp workspace/resources/RMLStreamer.jar <pod_id>:/mnt/
+```
+
 > [Let us know](https://gitter.im/um-dsri/community) if you are interested in using it, so we could make the deployment easier.
 
 ---

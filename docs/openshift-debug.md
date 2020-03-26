@@ -1,7 +1,13 @@
 ---
 id: openshift-debug
-title: Debug a pod
+title: Debug a deployment
 ---
+
+If the pod you are running is not building and deploying properly take a look at the `Events` tab of the deployment.  It is a log of all events faced by the deployment (pull image, install, etc).
+
+You can also check the `Monitoring` page in the left side menu to see all events in a project.
+
+When a pod is running you can check its logs in the `Logs` tab of a pod web page.
 
 ## Debug build
 

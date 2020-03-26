@@ -65,6 +65,20 @@ oc get pod
 oc get pod | grep <pod_id>
 ```
 
+With selector, showing only the pod id without header:
+
+```bash
+oc get pod --selector app=flink --selector component=jobmanager --no-headers -o=custom-columns=NAME:.metadata.name
+```
+
+### Execute command in pod
+
+Example creating a folder:
+
+```shell
+oc exec <pod_id> -- mkdir -p /mnt/workspace/resources
+```
+
 ### Delete pod
 
 ```shell

@@ -7,9 +7,9 @@ Different storage can be used when running services on the DSRI:
 
 🦋 **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted (but this deployment does not require to request the creation of a PVC and is faster).
 
-🗄️ **Persistent**:  a Persistent Volume Claim (PVC) can be created by the DSRI team for a persistent storage of the data. [Contact the DSRI team](/dsri-documentation/help) to request a persistent storage. 
+⚡ **Dynamic**:  dynamically create a Persistent Volume Claim (PVC) in the OpenShift UI. Use the `dynamic-maprfs` Storage Class (not working with container running as root, use Jupyter S2I deployments with this storage)
 
-⚡ **Dynamic**:  dynamically create a Persistent Volume Claim (PVC) in the OpenShift UI. Use the `dynamic-maprfs` Storage Class (`still a work in progress`)
+🗄️ **Persistent**:  a Persistent Volume Claim (PVC) can be created by the DSRI team for a persistent storage of the data. [Contact the DSRI team](/dsri-documentation/help) to request a persistent storage. 
 
 ## Use the default ephemeral storage
 
@@ -18,6 +18,8 @@ When creating a pod, OpenShift will by default use ephemeral storage. It creates
 It is recommended to use dynamic provisioning for a more sustainable storage solution. But ephemeral storage can be sufficient for testing.
 
 ## Define a dynamic persistent volume
+
+> 🚫 Not working on project with Root access enabled at the moment, request a static volume for this.
 
 Dynamic persistent volumes can be created outside an application and can be mounted on any application run in the project the PVC has been created. 
 
@@ -32,8 +34,6 @@ Dynamic persistent volumes can be created outside an application and can be moun
   * `Read Only (ROX)`: all users with access to the projects can read this volume.
 
 > Dynamic PVCs are only accessible in the project they have been created.
-
-> Not working on project with Root access enabled at the moment, request a static volume.
 
 ## Request a static persistent volumes
 
@@ -103,7 +103,7 @@ volumes:
 
 ## Define a temporary volume for a workflow
 
-> TODO: not applicable anymore? Temporary volumes are `emptyDir: {}` ?
+> To be developed: not applicable anymore? Temporary volumes are `emptyDir: {}` ?
 
 Temporary volumes can be defined in Argo at runtime and are removed when the workflow terminates.
 

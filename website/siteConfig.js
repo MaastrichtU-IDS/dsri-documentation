@@ -55,12 +55,12 @@ const siteConfig = {
   // npm run build
   // GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true npm run publish-gh-pages
 
-  /* Colors for website */
+  /* Colors for website, see https://material.io/resources/color/#!/ */
   colors: {
     // primaryColor: '#ef4c22', // Maastricht University Orange 
     // primaryColor: '#eb2126', // MapR light Red
     // primaryColor: '#db212e', // MapR Red
-    primaryColor: '#c62828', // Mat Red (Fire Engine Red)
+    primaryColor: '#c62828', // Red 800 (Fire Engine Red)
     // primaryColor: '#ff2800', // Fer Red
     // primaryColor: '#ba2133', // MapR Redder
     // primaryColor: '#ad213b', // MapR Reddest
