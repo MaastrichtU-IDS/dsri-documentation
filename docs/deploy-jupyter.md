@@ -34,9 +34,10 @@ The following parameters can to be provided:
   * `s2i-scipy-notebook:3.6` : notebook with popular scientific libraries pre-installed
   * `s2i-tensorflow-notebook:3.6` : notebook with tensorflow libraries for machine learning.
 * URL to the Git repository with the requirements and the code to run. The repository typically have a `requirements.txt` file at the root to install the libraries that will be used. See as examples:
-  * [marcelbrouwers/sample-notebooks](https://github.com/marcelbrouwers/sample-notebooks)
-  * [vemonet/translator-sparql-notebook](https://github.com/vemonet/translator-sparql-notebook)
-  * [jakevdp/PythonDataScienceHandbook](https://github.com/jakevdp/PythonDataScienceHandbook)
+  * https://github.com/vemonet/PythonDataScienceHandbook
+  * https://github.com/marcelbrouwers/sample-notebooks
+  * https://github.com/vemonet/TensorFlow-Examples
+  * https://github.com/vemonet/translator-sparql-notebook
 
 By default the working directory is `/opt/app-root/src`
 
