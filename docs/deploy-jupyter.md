@@ -65,6 +65,9 @@ The following parameters can be provided:
 
 This deployment require to have  root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request root access if you don't have them.
 
+* Pip requirements, apt packages and Jupyterlab extensions are installed from `requirements.txt`, `packages.txt` and `extensions.txt` requirement files. Try the following Notebooks to work on a RDF Knwoledge Graph about COVID-19 related publications:
+  * https://github.com/vemonet/covid-kg-notebooks
+
 > Built from [amalic/Jupyterlab](https://github.com/amalic/Jupyterlab).
 
 ## Anaconda and Tensorflow with Jupyter
