@@ -75,8 +75,10 @@ const siteConfig = {
   headerLinks: [
     {doc: 'introduction', label: 'Documentation'},
     {page: 'help', label: 'Help'},
+    {href: 'https://github.com/MaastrichtU-IDS/dsri-documentation/issues', label: 'Issues'},
     // {blog: true, label: 'Blog'},
     { search: true },
+    // { languages: true }
   ],
 
   // For search: https://community.algolia.com/docsearch/documentation/
