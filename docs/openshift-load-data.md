@@ -11,10 +11,16 @@ For files that are updated regularly, we recommend using `rsync` (see [below](/d
 
 But `oc cp` can fix issues met with rsync, such as copying symlinks for example, or files too big.
 
+First get the `<pod_id>` using your application name:
+
+```shell
+oc get pod --selector app=<my_application_name>
+```
+
 ### Copy from local to pod
 
 ```shell
-oc cp <file_to_copy> <pod-id>:<copy_path_in_pod>
+oc cp <file_to_copy> <pod_id>:<copy_path_in_pod>
 ```
 
 > It will copy folders recursively by default.
