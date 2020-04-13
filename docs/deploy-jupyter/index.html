@@ -67,14 +67,15 @@
 <p>🦋 <strong>Ephemeral</strong>: volumes bind to the pod, data will be lost when the pod is deleted.</p>
 <p>🗄️ <strong>Persistent</strong>: use a Persistent Volume Claim (PVC) for a persistent storage of the data.</p>
 <p>The following parameters can to be provided:</p>
-<ul>
-<li>Provide a unique <code>Application name</code></li>
-<li>The <code>Password</code> is safely stored in a Secret.
+<ol>
+<li>Provide a unique <strong>Application name</strong></li>
+<li>The <strong>Password</strong> is safely stored in a secret.</li>
+<li>Choose the <strong>Notebook interface</strong>:
 <ul>
 <li><code>classic</code>: Jupyter notebook web UI.</li>
 <li><code>lab</code>: Jupyterlab web UI.</li>
 </ul></li>
-<li>Provide the base image used by S2I to build your image with the provided requirements installed.
+<li>Provide the base <strong>S2I Builder image</strong> used by S2I to build your image with the provided requirements installed:
 <ul>
 <li><code>s2i-minimal-notebook:3.6</code> : minimal jupyter notebook</li>
 <li><code>s2i-scipy-notebook:3.6</code> : notebook with popular scientific libraries pre-installed</li>
@@ -87,7 +88,7 @@
 <li><a href="https://github.com/vemonet/TensorFlow-Examples" target="_blank" rel="nofollow noreferrer noopener">https://github.com/vemonet/TensorFlow-Examples</a></li>
 <li><a href="https://github.com/vemonet/translator-sparql-notebook" target="_blank" rel="nofollow noreferrer noopener">https://github.com/vemonet/translator-sparql-notebook</a></li>
 </ul></li>
-</ul>
+</ol>
 <p>By default the working directory is <code>/opt/app-root/src</code></p>
 <blockquote>
 <p>Built from <a href="https://github.com/jupyter-on-openshift/jupyter-notebooks" target="_blank" rel="nofollow noreferrer noopener">jupyter-on-openshift</a>.</p>
@@ -101,20 +102,16 @@
 <p>🦋 <strong>Ephemeral</strong>: volumes bind to the pod, data will be lost when the pod is deleted.</p>
 <p>🗄️ <strong>Persistent</strong>: use a Persistent Volume Claim (PVC) for a persistent storage of the data.</p>
 <p>The following parameters can be provided:</p>
-<ul>
-<li>Provide a unique <code>Application name</code></li>
-<li>The <code>Password</code> is safely stored in a Secret.</li>
-<li>You can provide a <code>Git repository URL</code> with files to be downloaded and requirements to be installed at the start of the application.</li>
-<li><code>Storage name</code>: the storage Persistent Volume Claim (PVC)</li>
-<li><code>Storage subpath</code>: path to the Notebook folder in the Persistent Volume Claim storage</li>
-</ul>
+<ol>
+<li>Provide a unique <strong>Application name</strong></li>
+<li>The <strong>Password</strong> is safely stored in a Secret.</li>
+<li>You can provide a <strong>Git repository URL</strong> with files to be downloaded and requirements to be installed at the start of the application.</li>
+<li><strong>Storage name</strong>: the storage Persistent Volume Claim (PVC)</li>
+<li><strong>Storage subpath</strong>: path to the Notebook folder in the Persistent Volume Claim storage</li>
+</ol>
 <p>This deployment require to have  root user enabled on your project. Contact the <a href="mailto:dsri-support-l@maastrichtuniversity.nl" target="_blank" rel="nofollow noreferrer noopener">DSRI support team</a> to request root access if you don't have them.</p>
-<ul>
-<li>Pip requirements, apt packages and Jupyterlab extensions are installed from <code>requirements.txt</code>, <code>packages.txt</code> and <code>extensions.txt</code> requirement files. Try the following Notebooks to work on a RDF Knwoledge Graph about COVID-19 related publications:
-<ul>
-<li><a href="https://github.com/vemonet/covid-kg-notebooks" target="_blank" rel="nofollow noreferrer noopener">https://github.com/vemonet/covid-kg-notebooks</a></li>
-</ul></li>
-</ul>
+<p>Pip requirements, apt packages and Jupyterlab extensions are installed from <code>requirements.txt</code>, <code>packages.txt</code> and <code>extensions.txt</code> requirement files.</p>
+<p>Try the following Notebooks to work on a RDF Knowledge Graph about COVID-19 related publications: <a href="https://github.com/vemonet/covid-kg-notebooks" target="_blank" rel="nofollow noreferrer noopener">https://github.com/vemonet/covid-kg-notebooks</a></p>
 <blockquote>
 <p>Built from <a href="https://github.com/amalic/Jupyterlab" target="_blank" rel="nofollow noreferrer noopener">amalic/Jupyterlab</a>.</p>
 </blockquote>
@@ -132,7 +129,7 @@
 </ul></li>
 <li><p>Mount storage:</p>
 <ul>
-<li>Go to the deployments page &gt; Click <code>Actions</code> &gt; Select <code>Add Storage</code></li>
+<li>Go to the deployments page &gt; Click <strong>Actions</strong> &gt; Select <strong>Add Storage</strong></li>
 <li>Mount the storage in <code>/home/jovyan</code>.</li>
 </ul></li>
 </ul>
