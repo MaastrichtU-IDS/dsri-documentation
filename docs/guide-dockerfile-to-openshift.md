@@ -9,11 +9,11 @@ title: Dockerfile on OpenShift
 
 Go to the [Overview page](https://app.dsri.unimaas.nl:8443/console/projects) of your project.
 
-* `Add to Project` button top right > `Deploy Image`
-* Select to deploy from `Image Name`
+* Click the **Add to Project** button in top right corner > **Deploy Image**
+* Select to deploy from **Image Name**
   * Search `filebrowser/filebrowser` to test
-  * Eventually change the `Name`.
-  * Click `Deploy`.
+  * Eventually change the **Name**.
+  * Click **Deploy**.
 
 > You should now see your pod deployed on the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page of your project.
 

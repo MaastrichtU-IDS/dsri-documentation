@@ -3,7 +3,7 @@ id: openshift-volume
 title: Storage management
 ---
 
-Different storage can be used when running services on the DSRI:
+Different storages can be used when running services on the DSRI:
 
 🦋 **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted (but this deployment does not require to request the creation of a PVC and is faster).
 
@@ -23,15 +23,14 @@ It is recommended to use dynamic provisioning for a more sustainable storage sol
 
 Dynamic persistent volumes can be created outside an application and can be mounted on any application run in the project the PVC has been created. 
 
-* Go to `Storage` on the left sidebar in a project
-  * Click `Create Storage` top right of the Storage page.
+To create a dynamic volume go to **Storage** on the left sidebar in a project:
 
-* Storage class
-  * `dynamic-maprfs`
-* Access Mode
-  * `Single User (RWO)`: only the user who created this volume can read/write to this volume.
-  * `Shared Access (RWX)`: all users with access to the projects can read/write this volume.
-  * `Read Only (ROX)`: all users with access to the projects can read this volume.
+1. Click **Create Storage** top right of the Storage page.
+2. Storage class: **dynamic-maprfs**
+3. Access Mode:
+   * **Single User (RWO)**: only the user who created this volume can read/write to this volume.
+   * **Shared Access (RWX)**: all users with access to the projects can read/write this volume.
+   * **Read Only (ROX)**: all users with access to the projects can read this volume.
 
 > Dynamic PVCs are only accessible in the project they have been created.
 
@@ -45,7 +44,7 @@ It is recommended to use dynamic persistent volumes in priority, you can [reques
 
 This example details how to deploy a [filebrowser Web UI](https://hub.docker.com/r/filebrowser/filebrowser) on linked to a MapR Persistent Volume Claim (PVC) to browse files stored in this volume with authentication required.
 
-Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`
+Go to https://app.dsri.unimaas.nl:8443/console/catalog > click **Deploy image**
 
 * Image Name:
 
@@ -55,26 +54,26 @@ Go to https://app.dsri.unimaas.nl:8443/console/catalog > click `Deploy image`
 
 * Give a name to your image: `my-filebrowser`
 
-* Click `Deploy`.
+* Click **Deploy**.
 
-* Click on the `my-filebrowser` deployment > `Configuration` tab
+* Click on the **my-filebrowser** deployment > **Configuration** tab
 
 * Remove the automatically mounted volume `my-filebrowser-1` (type: `empty dir`)
 
-* Click `Add Storage`
+* Click **Add Storage**
 
   - Mount path: `/srv`
   - Add the persistent volume (`my-storage`). Should be on `/srv`
 
-  * You can also define the `subpath` from the persistent volume that will be shared with the pod.
+  * You can also define the **subpath** from the persistent volume that will be shared with the pod.
 
-* `Create Route` from the application details in the Overview page.
+* **Create Route** from the application details in the Overview page.
 
 > Access the filebrowser at the URL provided on the pod details.
 
 > Login with `admin` / `admin` (password can be changed in the filebrowser web UI)
 
-You can also set the mounted volumes via `Edit YAML` to define the pod in `Actions` top right of the filebrowser application page and edit the `DeploymentConfig` (don't go to `#1`, but its parent).
+You can also set the mounted volumes via **Edit YAML** to define the pod in **Actions**, top right of the filebrowser application page, and edit the `DeploymentConfig` (don't go to **#1**, but its parent).
 
 It should look like this:
 

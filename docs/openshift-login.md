@@ -5,14 +5,16 @@ title: Login to OpenShift
 
 ![OpenShift](/dsri-documentation/img/openshift-logo.png)
 
-You will first need to authenticate to the [DSRI cluster](https://app.dsri.unimaas.nl:8443/) using the [OpenShift client](https://www.okd.io/download.html).
+To use the `oc` command line tool, you will need to authenticate to the [DSRI](https://app.dsri.unimaas.nl:8443/console):
 
-Get the command from the `Copy Login Command` button, in the user details, at the top right of the [OpenShift webpage](https://app.dsri.unimaas.nl:8443/) (your token is automatically provided).
+1. Go to the [DSRI OpenShift web UI](https://app.dsri.unimaas.nl:8443/console).
+2. Click on the **Copy Login Command** button (in the top right of the page).
+3. Paste the copied command in your terminal.
+
+The command should look like this:
 
 ```shell
 oc login https://openshift_cluster:8443 --token=MY_TOKEN
 ```
-
-> Paste the command in your terminal.
 
 <!-- ![](/dsri-documentation/img/getting-started-preparation-verify.png) -->
