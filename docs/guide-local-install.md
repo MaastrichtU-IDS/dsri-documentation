@@ -114,8 +114,8 @@ We recommend to create a `kubectl` directory in `C:/` and add this `C:/kubectl` 
 ```shell
 # Install Kubernetes UI
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
-kubectl apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-argo-workflows/87d5f31a8373926b9c0a1fb2a5e631c723e0f38a/roles/kube-dashboard-adminuser-sa.yml
-kubectl apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-argo-workflows/87d5f31a8373926b9c0a1fb2a5e631c723e0f38a/roles/kube-adminuser-rolebinding.yml
+kubectl apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-core/master/argo/roles/kube-dashboard-adminuser-sa.yml
+kubectl apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-core/master/argo/roles/kube-adminuser-rolebinding.yml
 
 # Get the Token to access the dashboard
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
@@ -171,7 +171,7 @@ sudo ufw allow out on cni0
 sudo ufw default allow routed
 ```
 
-* Try to connect to the internet from Kubernetes with the [test-busybox pod](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-busybox.yaml).
+* Try to connect to the internet from Kubernetes with the [test-busybox pod](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/tests/test-busybox.yaml).
 
 ```shell
 kubectl exec -ti busybox -- /bin/sh
@@ -182,7 +182,7 @@ ping google.com
 
 ```shell
 # Create volume
-kubectl apply -n argo -f d2s-argo-workflows/storage/storage-mac.yaml
+kubectl apply -n argo -f d2s-core/argo/storage/storage-mac.yaml
 ```
 
 > Not working at the moment.

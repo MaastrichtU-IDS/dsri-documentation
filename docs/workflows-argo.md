@@ -59,7 +59,7 @@ sudo rm /usr/local/bin/argo
 
 ## Run workflows to convert structured data to RDF
 
-We will use examples from the [MaastrichtU-IDS/d2s-argo-workflows](https://github.com/MaastrichtU-IDS/d2s-argo-workflows) project.
+We will use examples from the [MaastrichtU-IDS/d2s-core](https://github.com/MaastrichtU-IDS/d2s-core) project.
 
 ### Clone the repository
 
@@ -75,37 +75,37 @@ cd d2s-transform-template
 * Steps-based workflow for XML files
 
 ```shell
-argo submit d2s-argo-workflows/workflows/d2s-workflow-transform-xml.yaml \
+argo submit d2s-core/argo/workflows/d2s-workflow-transform-xml.yaml \
   -f support/config/config-transform-xml-drugbank.yml
 ```
 
 > Config files can be provided using the `-f` arguments, but are not necessary.
 
-> See the example workflow [YAML file on GitHub](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/d2s-workflow-xml.yaml).
+> See the example workflow [YAML file on GitHub](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/d2s-workflow-xml.yaml).
 
 
 * DAG workflow  for XML files
 
 ```shell
-argo submit d2s-argo-workflows/workflows/d2s-workflow-transform-xml-dag.yaml \
+argo submit d2s-core/argo/workflows/d2s-workflow-transform-xml-dag.yaml \
   -f support/config/config-transform-xml-drugbank.yml
 ```
 
-> See the [YAML file on GitHub](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/d2s-workflow-xml-dag.yaml).
+> See the [YAML file on GitHub](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/d2s-workflow-xml-dag.yaml).
 
 ### Workflow to convert CSV files to RDF
 
 * Steps-based workflow for CSV files
 
 ```shell
-argo submit d2s-argo-workflows/workflows/d2s-workflow-transform-csv.yaml \
+argo submit d2s-core/argo/workflows/d2s-workflow-transform-csv.yaml \
   -f support/config/config-transform-csv-stitch.yml
 ```
 
 * DAG workflow for CSV files
 
 ```shell
-argo submit d2s-argo-workflows/workflows/d2s-workflow-transform-csv-dag.yaml \
+argo submit d2s-core/argo/workflows/d2s-workflow-transform-csv-dag.yaml \
   -f support/config/config-transform-csv-stitch.yml
 ```
 
@@ -141,7 +141,7 @@ argo delete my-workflow
 
 Get into a container, to understand why it bugs, by creating a YAML with the command `tail -f /dev/null` to keep it hanging.
 
-> See the [example in the d2s-argo-workflow repository](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-devnull-argo.yaml).
+> See the [example in the d2s-argo-workflow repository](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/tests/test-devnull-argo.yaml).
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1

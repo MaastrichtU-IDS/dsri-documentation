@@ -21,7 +21,7 @@ oc get events
 
 Get into a container, to understand why it bugs, by creating a YAML with the command `tail -f /dev/null` to keep it hanging.
 
-> See the [example in the d2s-argo-workflow repository](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-devnull-pod.yaml).
+> See the [example in the d2s-argo-workflow repository](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/tests/test-devnull-pod.yaml).
 
 ```yaml
 apiVersion: v1
@@ -83,7 +83,7 @@ kubectl exec -it test-devnull-pod -- /bin/bash
 
 ## Debug an Argo workflow
 
-Pod can also be tested within an Argo workflow, see [tests/test-devnull-argo.yaml](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-devnull-argo.yaml).
+Pod can also be tested within an Argo workflow, see [tests/test-devnull-argo.yaml](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/tests/test-devnull-argo.yaml).
 
 ```shell
 argo submit tests/test-devnull-argo.yaml

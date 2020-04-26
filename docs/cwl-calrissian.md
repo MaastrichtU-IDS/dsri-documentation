@@ -35,10 +35,10 @@ chmod -R 777 /data/calrissian
 
 ## Start pod
 
-Start the CWL execution from your computer using the `oc` client. Define the CWL command arguments to run in [run-cwl-calrissian.yaml](https://github.com/MaastrichtU-IDS/d2s-cwl-workflows/blob/master/support/run-cwl-calrissian.yaml) (be careful to properly define the paths to the CWL files in the pod storage).
+Start the CWL execution from your computer using the `oc` client. Define the CWL command arguments to run in [run-cwl-calrissian.yaml](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/support/run-cwl-calrissian.yaml) (be careful to properly define the paths to the CWL files in the pod storage).
 
 ```shell
-oc create -f d2s-cwl-workflows/support/run-cwl-calrissian.yaml
+oc create -f d2s-core/support/run-cwl-calrissian.yaml
 ```
 
 > Browse running pods [here](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods).
@@ -50,5 +50,5 @@ oc create -f d2s-cwl-workflows/support/run-cwl-calrissian.yaml
 ## Delete created pod
 
 ```shell
-oc delete -f d2s-cwl-workflows/support/run-cwl-calrissian.yaml
+oc delete -f d2s-core/support/run-cwl-calrissian.yaml
 ```

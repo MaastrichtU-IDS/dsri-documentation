@@ -51,7 +51,7 @@ oc delete all --selector app=my-deployment
 oc create -f my-pod.yaml
 ```
 
-> E.g. [d2s-pod-virtuoso.yaml](https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/d2s-pod-virtuoso.yaml).
+> E.g. [d2s-pod-virtuoso.yaml](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/d2s-pod-virtuoso.yaml).
 
 ### List pods
 
