@@ -136,8 +136,8 @@ microk8s.enable dashboard dns
 <h3><a class="anchor" aria-hidden="true" id="install-the-dashboard-ui"></a><a href="#install-the-dashboard-ui" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install the Dashboard UI</h3>
 <pre><code class="hljs css language-shell"><span class="hljs-comment"># Install Kubernetes UI</span>
 kubectl apply<span class="hljs-template-variable"> -f</span> https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
-kubectl apply<span class="hljs-template-variable"> -f</span> https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-argo-workflows/87d5f31a8373926b9c0a1fb2a5e631c723e0f38a/roles/kube-dashboard-adminuser-sa.yml
-kubectl apply<span class="hljs-template-variable"> -f</span> https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-argo-workflows/87d5f31a8373926b9c0a1fb2a5e631c723e0f38a/roles/kube-adminuser-rolebinding.yml
+kubectl apply<span class="hljs-template-variable"> -f</span> https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-core/master/argo/roles/kube-dashboard-adminuser-sa.yml
+kubectl apply<span class="hljs-template-variable"> -f</span> https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-core/master/argo/roles/kube-adminuser-rolebinding.yml
 
 <span class="hljs-comment"># Get the Token to access the dashboard</span>
 kubectl<span class="hljs-template-variable"> -n</span> kube-system describe secret $(kubectl<span class="hljs-template-variable"> -n</span> kube-system<span class="hljs-built_in"> get </span>secret | grep admin-user | awk <span class="hljs-string">'{print $1}'</span>)
@@ -183,14 +183,14 @@ sudo </span>ufw allow out on cni0<span class="hljs-meta">
 sudo </span>ufw default allow routed
 </code></pre>
 <ul>
-<li>Try to connect to the internet from Kubernetes with the <a href="https://github.com/MaastrichtU-IDS/d2s-argo-workflows/blob/master/tests/test-busybox.yaml" target="_blank" rel="nofollow noreferrer noopener">test-busybox pod</a>.</li>
+<li>Try to connect to the internet from Kubernetes with the <a href="https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/tests/test-busybox.yaml" target="_blank" rel="nofollow noreferrer noopener">test-busybox pod</a>.</li>
 </ul>
 <pre><code class="hljs css language-shell">kubectl <span class="hljs-built_in">exec</span><span class="hljs-template-variable"> -ti</span> busybox<span class="hljs-template-variable"> --</span> /bin/sh
 ping google.com
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="create-persistent-volume"></a><a href="#create-persistent-volume" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create persistent volume</h3>
 <pre><code class="hljs css language-shell"><span class="hljs-comment"># Create volume</span>
-kubectl apply<span class="hljs-template-variable"> -n</span><span class="hljs-keyword"> argo </span>-f d2s-argo-workflows/storage/storage-mac.yaml
+kubectl apply<span class="hljs-template-variable"> -n</span><span class="hljs-keyword"> argo </span>-f d2s-core/argo/storage/storage-mac.yaml
 </code></pre>
 <blockquote>
 <p>Not working at the moment.</p>
