@@ -15,6 +15,8 @@ Go to the [Overview page](https://app.dsri.unimaas.nl:8443/console/projects) of 
   * Eventually change the **Name**.
   * Click **Deploy**.
 
+<img src="/dsri-documentation/img/screenshot-deploy_image_from_ui.png" alt="Deploy image from UI" style="max-width: 100%; max-height: 100%;" />
+
 > You should now see your pod deployed on the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page of your project.
 
 > You can expose routes to this pod in the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page: `Create route`.
