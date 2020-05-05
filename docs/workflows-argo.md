@@ -64,8 +64,8 @@ We will use examples from the [MaastrichtU-IDS/d2s-core](https://github.com/Maas
 ### Clone the repository
 
 ```shell
-git clone --recursive https://github.com/MaastrichtU-IDS/d2s-transform-template.git
-cd d2s-transform-template
+git clone --recursive https://github.com/MaastrichtU-IDS/d2s-project-template.git
+cd d2s-project-template
 ```
 
 [Authenticate to the OpenShift cluster](/dsri-documentation/docs/openshift-login) using `oc login` .

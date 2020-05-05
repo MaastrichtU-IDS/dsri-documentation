@@ -17,8 +17,8 @@ Git clone in `/calrissian` on a [persistent volume](/dsri-documentation/docs/ope
 
 ```shell
 cd /data/calrissian
-git clone --recursive https://github.com/MaastrichtU-IDS/d2s-transform-template.git
-cd d2s-transform-template
+git clone --recursive https://github.com/MaastrichtU-IDS/d2s-project-template.git
+cd d2s-project-template
 ```
 
 You will need to create the folder for the workflow output data, in our example it is `output-data`
