@@ -21,7 +21,11 @@ The selector can easily be found in the template configuration:
 
 All object created by the template will be tagged with the labels defined at this step.
 
-In this example, with Apache Spark, the following selector can be used: `--selector app=spark`
+In this example, with Apache Spark, the following selector can be used to get all objects related to the `spark` deloyment:
+
+```shell
+oc get all --selector app=spark
+```
 
 ### Delete a deployment
 

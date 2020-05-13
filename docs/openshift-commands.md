@@ -21,28 +21,6 @@ oc project my-project
 
 ---
 
-## Deployments
-
-Deleting deployments from the Web UI can be quite cumbersome and require multiple clicks. The best way to delete a services deployed using the UI Catalog is to use the `oc` command:
-
-### Get deployment
-
-Get all objects related to a deployment:
-
-```shell
-oc get all --selector app=my-deployment
-```
-
-### Delete deployment
-
-Delete all objects related to a deployment:
-
-```shell
-oc delete all --selector app=my-deployment
-```
-
----
-
 ## Pods
 
 ### Create pod from YAML
@@ -65,10 +43,18 @@ oc get pod
 oc get pod | grep <pod_id>
 ```
 
-With selector, showing only the pod id without header:
+Using selector with Apache Flink as example, and showing only the pod id without header:
 
 ```bash
 oc get pod --selector app=flink --selector component=jobmanager --no-headers -o=custom-columns=NAME:.metadata.name
+```
+
+### Remote Shell connection
+
+Connect to a pod with [Bash](https://devhints.io/bash).
+
+```shell
+oc rsh <pod_id>
 ```
 
 ### Execute command in pod
@@ -95,14 +81,6 @@ oc logs -f <pod_id>
 ```
 
 > Get more details on how to [debug a pod](/dsri-documentation/docs/openshift-debug).
-
-### Remote shell connection
-
-Connect to a pod with [Bash](https://devhints.io/bash).
-
-```shell
-oc rsh <pod_id>
-```
 
 ### Copy files
 
