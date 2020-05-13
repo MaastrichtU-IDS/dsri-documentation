@@ -1,6 +1,6 @@
 ---
 id: guide-dockerfile-to-openshift
-title: Dockerfile on OpenShift
+title: Deploy a new service
 ---
 
 2 solutions are available to build pods from Docker images.

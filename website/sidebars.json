@@ -4,10 +4,8 @@
       "deploy-services", "deploy-jupyter",
       "openshift-secret"],
     "Command Line": ["openshift-install", 
-      "openshift-login", "openshift-commands", 
-      "openshift-load-data"],
-    "Workflows": ["tools-machine-learning" , "workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"],
-    "Administration": ["guide-dockerfile-to-openshift", 
-      "openshift-debug", "guide-local-install"]
+      "openshift-login", "guide-dockerfile-to-openshift", "openshift-commands", 
+      "openshift-load-data", "openshift-delete-services", "openshift-debug", "guide-local-install"],
+    "Workflows": ["tools-machine-learning" , "workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"]
   }
 }

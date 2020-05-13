@@ -1,11 +1,13 @@
 ---
 id: guide-local-install
-title: Install local MiniShift
+title: Install local OpenShift
 ---
 
-[![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://docs.okd.io/latest/minishift/getting-started/installing.html)
+OpenShift and Kubernetes can be installed locally on a single machine for test purpose. The installation requires knowledge of your OS administration, and can be quite complex. We recommend to install it locally only if really required. Otherwise we recommend you to simply use Docker to test images, then deploy them on the DSRI.
 
 ## Install MiniShift
+
+[![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://docs.okd.io/latest/minishift/getting-started/installing.html)
 
 You will need to [set up the virtualization environment](https://docs.okd.io/latest/minishift/getting-started/setting-up-virtualization-environment.html) before [installing MiniShift](https://docs.okd.io/latest/minishift/getting-started/installing.html).
 

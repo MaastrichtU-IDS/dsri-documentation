@@ -88,4 +88,3 @@ Pod can also be tested within an Argo workflow, see [tests/test-devnull-argo.yam
 ```shell
 argo submit tests/test-devnull-argo.yaml
 ```
-
