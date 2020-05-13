@@ -1,11 +1,11 @@
 {
   "docs": {
     "OpenShift UI": ["introduction", "openshift-volume",
-      "deploy-services", "deploy-jupyter",
-      "openshift-secret"],
+      "deploy-services", "deploy-jupyter"],
     "Command Line": ["openshift-install", 
       "openshift-login", "guide-dockerfile-to-openshift", "openshift-commands", 
-      "openshift-load-data", "openshift-delete-services", "openshift-debug", "guide-local-install"],
+      "openshift-load-data", "openshift-delete-services", 
+      "openshift-debug", "openshift-secret", "guide-local-install"],
     "Workflows": ["tools-machine-learning" , "workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"]
   }
 }
