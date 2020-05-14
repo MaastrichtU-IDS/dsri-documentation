@@ -42,7 +42,9 @@ oc create -f spark-template-dsri.yml
 
 ## Deploy a Spark cluster
 
-Go to the DSRI OpenShift web UI catalog and click on the **Apache Spark** application.
+Go to the DSRI OpenShift web UI catalog and click on the **Apache Spark (Persistent)** application.
+
+<img src="/dsri-documentation/img/screenshot-deploy-spark.png" alt="Deploy Apache Spark" style="max-width: 100%; max-height: 100%;" />
 
 You will be prompted various parameters to configure your Spark cluster resources.
 
