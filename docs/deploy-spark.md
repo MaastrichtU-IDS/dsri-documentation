@@ -5,9 +5,19 @@ title: Deploy a Spark cluster
 
 A [Apache Spark](https://spark.apache.org/) cluster can be deployed using a template in the [DSRI catalog](https://app.dsri.unimaas.nl:8443/console/catalog).
 
-Feel free to [contact us](/dsri-documentation/help) to help you create the template in your project.
+> You need to have access to a Persistent Volume Claim static storage in your project. 
+
+The following services are deployed:
+
+* a JupyterLab all-spark-notebook with `root` permissions from [vemonet/jupyterlab-spark 📖](https://github.com/vemonet/jupyterlab-spark)
+
+* a configurable Spark cluster from [CSCfi/spark-openshift 🗄️](https://github.com/CSCfi/spark-openshift)
+
+> Feel free to [contact us](/dsri-documentation/help) to help you add the Apache Spark template in your project.
 
 ## Create the template
+
+> You will need to have [the oc command line tool installed](/dsri-documentation/docs/openshift-install) to create the template.
 
 Clone the [vemonet/spark-openshift](https://github.com/vemonet/spark-openshift) repository:
 
@@ -25,10 +35,10 @@ oc project <my_project>
 Create the template:
 
 ```shell
-oc create -f spark-template-existing-pvc.yml
+oc create -f spark-template-dsri.yml
 ```
 
-> ⚠️ Root access is required to run Spark in your project.
+> ⚠️ Root access in your DSRI project is required to run Spark.
 
 ## Deploy a Spark cluster
 
@@ -59,6 +69,6 @@ oc delete configmaps --selector app=spark
 In case you want to delete or update the Spark template:
 
 ```shell
-oc delete -f spark-template-existing-pvc.yml
+oc delete -f spark-template-dsri.yml
 ```
 

@@ -1,7 +1,7 @@
 {
   "docs": {
     "OpenShift UI": ["introduction", "openshift-volume",
-      "deploy-services", "deploy-jupyter"],
+      "deploy-services", "deploy-jupyter", "deploy-spark"],
     "Command Line": ["openshift-install", 
       "openshift-login", "guide-dockerfile-to-openshift", "openshift-commands", 
       "openshift-load-data", "openshift-delete-services", 
