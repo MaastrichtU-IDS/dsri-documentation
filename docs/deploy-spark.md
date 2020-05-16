@@ -50,6 +50,28 @@ You will be prompted various parameters to configure your Spark cluster resource
 
 > 🚫 Only 1 Spark cluster should be deployed by project.
 
+## Run on Spark
+
+### Using PySpark
+
+Use local Spark for testing:
+
+```python
+import findspark
+findspark.init()
+import pyspark
+sc = pyspark.SparkContext(appName="Pi")
+```
+
+> It will use local[*] as Spark cluster
+
+Use DSRI spark cluster:
+
+```shell
+import pyspark
+sc = pyspark.SparkContext(appName="Pi", master="spark://my-spark-spark-master:7077")
+```
+
 ## Delete a running Spark cluster
 
 Get all objects part of the Spark cluster:
