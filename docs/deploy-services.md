@@ -1,6 +1,6 @@
 ---
 id: deploy-services
-title: Deploy Services
+title: Deploy custom DSRI services
 ---
 
 Services available for the **Data Science Research Infrastructure**.
