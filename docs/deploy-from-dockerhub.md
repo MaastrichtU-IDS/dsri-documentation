@@ -12,11 +12,35 @@ The easiest way to deploy a service on the DSRI is to use a Docker image from [D
 Search for an image for your service published on [DockerHub](https://hub.docker.com/)
 
 * [Google "dockerhub my_service_name"](https://www.google.com/search?q=dockerhub+python)
-* Sometime different users deployed a different image for your service. Take the most relevant one for your use-case.
+* Sometime multiple images can be found for your service. Take the most relevant one for your use-case.
 
-> If no suitable image can be found on [DockerHub](https://hub.docker.com/), it can be built from a Dockerfile.
+> If no suitable image can be found on [DockerHub](https://hub.docker.com/), it can be **built from a Dockerfile**. See above to do so.
 
-## Build and push a new image
+---
+
+## Deploy the image on OpenShift
+
+Once you have a Docker image for your application you can deploy it using the [DSRI web UI](https://app.dsri.unimaas.nl:8443/console/projects).
+
+Go to the [Overview page](https://app.dsri.unimaas.nl:8443/console/projects) of your project.
+
+* Click the **Add to Project** button in top right corner > **Deploy Image**
+* Select to deploy from **Image Name**
+  * Provide your image name, e.g. `umdsri/freesurfer`
+  * Eventually change the **Name**, it needs to be unique by project.
+  * Click **Deploy**.
+
+<img src="/dsri-documentation/img/screenshot-deploy_image_from_ui.png" alt="Deploy image from UI" style="max-width: 100%; max-height: 100%;" />
+
+> You should now see your pod deployed on the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page of your project.
+
+> You can expose routes to this pod in the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page: `Create route`.
+
+---
+
+## Build and push a new Docker image
+
+In case you there is no Docker image for your application you can build and push one.
 
 To build and push a Docker image you will need to have [Docker installed](https://docs.docker.com/get-docker/).
 

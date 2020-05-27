@@ -3,24 +3,6 @@ id: guide-dockerfile-to-openshift
 title: Deploy a new service
 ---
 
-2 solutions are available to build pods from Docker images.
-
-## Import from registry using OpenShift UI
-
-Go to the [Overview page](https://app.dsri.unimaas.nl:8443/console/projects) of your project.
-
-* Click the **Add to Project** button in top right corner > **Deploy Image**
-* Select to deploy from **Image Name**
-  * Search `filebrowser/filebrowser` to test
-  * Eventually change the **Name**.
-  * Click **Deploy**.
-
-<img src="/dsri-documentation/img/screenshot-deploy_image_from_ui.png" alt="Deploy image from UI" style="max-width: 100%; max-height: 100%;" />
-
-> You should now see your pod deployed on the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page of your project.
-
-> You can expose routes to this pod in the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page: `Create route`.
-
 ## Build from local Dockerfile
 
 This manual shows you an example of how to convert a dockerfile from your local machine to a running container on DSRI (openshift / okd). Start by cloning the example repository to your local machine.
