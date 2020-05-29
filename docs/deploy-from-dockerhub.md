@@ -12,7 +12,7 @@ The easiest way to deploy a service on the DSRI is to use a Docker image from [D
 Search for an image for your service published on [DockerHub](https://hub.docker.com/)
 
 * [Google "dockerhub my_service_name"](https://www.google.com/search?q=dockerhub+python)
-* Sometime multiple images can be found for your service. Take the most relevant one for your use-case.
+* Sometimes multiple images can be found for your service. Take the official image when possible, or the one most relevant to your use-case.
 
 > If no suitable image can be found on [DockerHub](https://hub.docker.com/), it can be **built from a Dockerfile**. See above to do so.
 
