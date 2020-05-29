@@ -1,0 +1,36 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Publish to GitHub Pages
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+
+    - name: Setup SSH
+      uses: MrSquaare/ssh-setup-action@v1
+      with:
+        host: github.com
+        private-key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+
+    # Runs a set of commands using the runners shell
+    - name: Build
+      run: |
+        cd website/
+        yarn install
+        yarn build
+        
+    - name: Publish
+      run: GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true yarn run publish-gh-pages
