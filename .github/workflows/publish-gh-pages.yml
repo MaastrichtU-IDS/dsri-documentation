@@ -26,11 +26,9 @@ jobs:
         private-key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
 
     # Runs a set of commands using the runners shell
-    - name: Build
+    - name: Build and publish
       run: |
-        cd website/
+        cd website
         yarn install
         yarn build
-        
-    - name: Publish
-      run: GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true yarn run publish-gh-pages
+        GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true yarn run publish-gh-pages
