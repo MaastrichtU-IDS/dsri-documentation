@@ -67,6 +67,7 @@ const siteConfig = {
     // secondaryColor: '#0277bd',  // Blue
     secondaryColor: '#1565c0',  // Bluer
     // secondaryColor: '#001f3e',  // Maastricht University Blue
+    // secondaryColor: '#1a237e',  // Mat close to Maastricht University Blue
   },
   // themes: ['@docusaurus/theme-live-codeblock'],
   // npm i @docusaurus/theme-live-codeblock
@@ -77,7 +78,7 @@ const siteConfig = {
     {page: 'help', label: 'Help'},
     {href: 'https://github.com/MaastrichtU-IDS/dsri-documentation/issues', label: 'Issues'},
     // {blog: true, label: 'Blog'},
-    { search: true },
+    { search: false },
     // { languages: true }
   ],
 
