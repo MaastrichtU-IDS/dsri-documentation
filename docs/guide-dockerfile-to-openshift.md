@@ -73,3 +73,28 @@ oc delete build dockerfile-to-okd
 ```
 
 > See [oc delete documentation](https://docs.openshift.com/enterprise/3.0/cli_reference/basic_cli_operations.html#application-modification-cli-operations).
+
+---
+
+### Deploy from local docker Image
+
+You can also deploy a local docker image from your machine.
+
+Check you have the image locally on your system:
+
+```shell
+docker images ls
+```
+
+You should have a docker image for your application:
+
+```bash
+REPOSITORY                                   TAG                 
+mydockerimage                                  latest
+```
+
+You can then deploy providing the docker image name and the name of the application to be deployed:
+
+```bash
+oc new-app <my_docker_image> --name <app_name_on_openshift>
+```
