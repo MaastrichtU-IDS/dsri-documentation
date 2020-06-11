@@ -14,12 +14,12 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 
 ### Files locations
 
-- Add new `docs` pages to [website/sidebars.json](https://github.com/MaastrichtU-IDS/d2s-documentation/blob/master/website/sidebars.json).
+- Add new `docs` pages to [website/sidebars.json](https://github.com/MaastrichtU-IDS/d2s-docs/blob/master/website/sidebars.json).
 
-- Main parameters of the website can be found in [website/siteConfig.js](https://github.com/MaastrichtU-IDS/d2s-documentation/blob/master/website/siteConfig.js).
+- Main parameters of the website can be found in [website/siteConfig.js](https://github.com/MaastrichtU-IDS/d2s-docs/blob/master/website/siteConfig.js).
 
-- Static content (any resource to download, images, css, js) can be provided in [website/static](https://github.com/MaastrichtU-IDS/d2s-documentation/tree/master/website/static)
-- HTML pages (other than docs markdown) are in [website/pages/en](https://github.com/MaastrichtU-IDS/d2s-documentation/tree/master/website/pages/en)
+- Static content (any resource to download, images, css, js) can be provided in [website/static](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/static)
+- HTML pages (other than docs markdown) are in [website/pages/en](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/pages/en)
 
 ## Run for development
 
