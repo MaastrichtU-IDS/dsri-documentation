@@ -98,30 +98,6 @@ Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-no
 
 > Go to the `pod logs` to get the `login token`.
 
-## Tensorflow on GPU
-
-Running on GPU is still experimental. Please [contact us](mailto:dsri-support-l@maastrichtuniversity.nl) if you want to run jobs on GPU.
-
-First get the `<pod_id>` using your application name:
-
-```shell
-oc get pod --selector app=nvidia-tensorflow-gpu-myapp
-```
-
-Connect to the pod:
-
-```shell
-oc rsh <pod_id>
-```
-
-Copy data to the pod:
-
-```shell
-oc cp local_folder/ <pod_id>:/workspace
-```
-
-> `/workspace` is the working directory in the pod.
-
 ## Deploy Jupyter Hub
 
 To deploy multiple notebooks for multiples users we recommend to use Jupyter Hub.
