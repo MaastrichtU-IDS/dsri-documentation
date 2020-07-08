@@ -32,4 +32,9 @@ Here a longer answer:
 
 [Contact us 📬](mailto:dsri-support-l@maastrichtuniversity.nl) to request an account, and run your services on the DSRI from the UM network.
 
-> See the [DSRI workshop presentation](/dsri-documentation/resource/dsri_openshift_workshop.pdf) or the [DSRI story presentation](/dsri-documentation/resource/dsri_story_201907.pdf) for more details.
+## History of the DSRI
+
+See the following presentation about the Data Science Research Infrastructure origins and background:
+
+* [DSRI Story presentation](/dsri-documentation/resource/dsri_story_201907.pdf) 
+* [DSRI Workshop presentation](/dsri-documentation/resource/dsri_openshift_workshop.pdf)
