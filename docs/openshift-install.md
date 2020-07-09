@@ -34,9 +34,7 @@ brew install openshift-cli
 
 OC version: **3.11.0**
 
-Follow the [official documentation on Windows](https://docs.openshift.com/container-platform/3.6/cli_reference/get_started_cli.html#cli-windows) to install the `oc` client.
-
-First, head to this page  and look for the current [Windows client tools](https://github.com/openshift/origin/releases/tag/v3.11.0) release under "Assets"
+Click on [Windows Client Tools](https://github.com/openshift/origin/releases/download/v3.7.2/openshift-origin-client-tools-v3.7.2-282e43f-windows.zip) to download OC tool zip file.
 
 After downloading the `.zip` and extract all.
 
