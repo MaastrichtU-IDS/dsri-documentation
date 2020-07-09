@@ -189,6 +189,9 @@ const siteConfig = {
   //   ]
   // },
 
+  // gaTrackingId: 'UA-12345678-9',
+  // Google Analytics tracking ID to track page views.
+
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
     // TODO: add SPARQL
