@@ -32,6 +32,25 @@ Here a longer answer:
 
 [Contact us 📬](mailto:dsri-support-l@maastrichtuniversity.nl) to request an account, and run your services on the DSRI from the UM network.
 
+## The DSRI specifications
+
+### Software
+
+* **[OKD 3.11](https://www.okd.io/)** (Open Source version of RedHat OpenShift) to run services and jobs.
+* **[MapR](https://mapr.com/)** for distributed storage.
+
+### Hardware
+
+* 15 CPU nodes
+
+|                | RAM (GB) | CPU (cores) | Storage (TB) |
+| -------------- | -------- | ----------- | ------------ |
+| Node capacity  | 512 GB   | 64 cores    | 120 TB       |
+| Total capacity | 7 680 GB | 960 cores   | 1800 TB      |
+
+* 1 GPU node
+  * Nvidia DGX1: **8x** Tesla V100 - 32GB GPU
+
 ## History of the DSRI
 
 See the following presentation about the Data Science Research Infrastructure origins and background:
