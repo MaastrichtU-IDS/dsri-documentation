@@ -3,15 +3,19 @@ id: introduction
 title: Introduction
 ---
 
-The Data Science Research Infrastructure is an [OpenShift](https://www.openshift.com/) cluster based on the [MapR](https://mapr.com/) Distributed FileSystem, using [Kubernetes](https://kubernetes.io/) containers orchestration.
+The Data Science Research Infrastructure is an [OpenShift](https://www.openshift.com/) cluster based on the [MapR](https://mapr.com/) Distributed File System, using [Kubernetes](https://kubernetes.io/) containers orchestration.
 
 The DSRI provides a graphical user interface to easily run and manage services ([OKD](https://www.okd.io/), the Open Source version of [OpenShift](https://www.openshift.com/)). 
 
 ## What can be done on the DSRI?
 
-Short answer is anything running in a Docker container 🐳 that does not need to be accessed from outside the UM network (or UM VPN) 🔒
+In short: 
 
-Here a longer answer:
+* any services or jobs running in a Docker container 🐳
+  * Any code can be easily executed in a Docker container (apart from some proprietary softwares)
+* which does not need to be accessed from outside the UM network (or the UM VPN) 🔒
+
+In more details:
 
 **What can be done easily on the DSRI ✔️**
 
@@ -36,8 +40,10 @@ Here a longer answer:
 
 ### Software
 
-* **[OKD 3.11](https://www.okd.io/)** (Open Source version of RedHat OpenShift) to run services and jobs.
-* **[MapR](https://mapr.com/)** for distributed storage.
+* **[OKD 3.11](https://www.okd.io/)** (Open Source version of [RedHat OpenShift](https://www.openshift.com/)) to run services and jobs.
+  * Working on upgrading to [OKD 4.5](https://github.com/openshift/okd/releases)
+* **[HP MapR](https://mapr.com/)** for distributed storage.
+  * [RedHat Ceph storage](https://www.redhat.com/fr/technologies/storage/ceph) also considered
 
 ### Hardware
 
