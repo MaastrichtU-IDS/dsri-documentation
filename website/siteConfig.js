@@ -189,7 +189,7 @@ const siteConfig = {
   //   ]
   // },
 
-  // gaTrackingId: 'UA-12345678-9',
+  gaTrackingId: 'UA-172146359-1',
   // Google Analytics tracking ID to track page views.
 
   highlight: {
