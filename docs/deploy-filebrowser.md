@@ -15,7 +15,7 @@ Deploy a filebrowser on your persistent volume. This will provide a web UI to up
 
 File browser can be deployed from the [OpenShift Catalog](https://app.dsri.unimaas.nl:8443/console/catalog):
 
-<img src="/dsri-documentation/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style="max-width: 100%; max-height: 100%;" />
+<img src="/dsri-documentation/website/static/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style="max-width: 100%; max-height: 100%;" />
 
 Two deployments are available:
 
@@ -39,4 +39,4 @@ Default credentials will be
 
   *Please change the password in the Filebrowser Web UI once it has been created.*
 
-<img src="/dsri-documentation/img/screenshot-filebrowser-login.png" alt="File browser Web UI" style="max-width: 100%; max-height: 100%;" />
+<img src="/dsri-documentation/website/static/img/screenshot-filebrowser-login.png" alt="File browser Web UI" style="max-width: 100%; max-height: 100%;" />
