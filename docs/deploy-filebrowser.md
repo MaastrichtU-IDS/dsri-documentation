@@ -39,4 +39,4 @@ Default credentials will be
 
   *Please change the password in the Filebrowser Web UI once it has been created.*
 
-<img src="/dsri-documentation/img/screenshot-filebrowser-login.png" alt="File browser Web UI" style="max-width: 100%; max-height: 100%;" />
+<img src="/dsri-documentation/img/screenshot-filebrowser-login.png" alt="File browser Web UI" style="max-width: 50%; max-height: 50%;" />
