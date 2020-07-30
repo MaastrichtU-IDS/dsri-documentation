@@ -17,7 +17,7 @@ File browser can be deployed from the [OpenShift Catalog](https://app.dsri.unima
 
 <img src="/dsri-documentation/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style="max-width: 100%; max-height: 100%;" />
 
-Two deployments are available:
+We can only deploy file browser as a Persistent deployment.
 
 🗄️ **Persistent**: use a Persistent Volume Claim (PVC) for a persistent storage of the data.
 
