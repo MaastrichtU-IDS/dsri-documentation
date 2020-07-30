@@ -6,6 +6,6 @@
       "openshift-login", "guide-dockerfile-to-openshift", "openshift-commands", 
       "openshift-load-data", "openshift-delete-services", 
       "openshift-debug", "openshift-secret", "guide-local-install"],
-    "Workflows": ["tools-machine-learning" , "workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"]
+    "Workflows": ["tools-machine-learning" , "workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian", "host-vs-code"]
   }
 }
