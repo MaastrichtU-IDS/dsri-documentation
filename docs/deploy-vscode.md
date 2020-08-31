@@ -1,10 +1,7 @@
 ---
-id: host-vs-code
-title: Run Visual Studio Code Server on the OC Cluster
+id: deploy-vscode
+title: Run VSCode server
 ---
-
-Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
-
 
 
 ## Setup on the OC Pod
