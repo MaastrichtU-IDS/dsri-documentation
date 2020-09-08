@@ -1,5 +1,7 @@
 [![Build](https://github.com/MaastrichtU-IDS/dsri-documentation/workflows/Publish%20to%20GitHub%20Pages/badge.svg)](https://github.com/MaastrichtU-IDS/dsri-documentation/actions?query=workflow%3A%22Publish+to+GitHub+Pages%22) [![Gitter](https://badges.gitter.im/um-dsri/community.svg)](https://gitter.im/um-dsri/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+The documentation website at [maastrichtu-ids.github.io/dsri-documentation](https://maastrichtu-ids.github.io/dsri-documentation/) is automatically updated by a [GitHub Action](/actions) at each push to this `master` branch.
+
 ## Edit documentation pages
 
 Editing a documentation file is as easy as going to https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/introduction.md.

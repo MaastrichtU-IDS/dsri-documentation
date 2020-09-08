@@ -11,6 +11,8 @@ Use the **VisualStudio Code (Persistent)** template to start a simple pod on a C
 
 > You will be able to access it directly on the DSRI using the generated URL.
 
+> We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
+
 ### VSCode for GPU
 
 To start VSCode on GPU 2 templates are available:
@@ -32,6 +34,8 @@ oc get pods
 ```bash
 oc port-forward <pod_id> 8080:8080
 ```
+
+> Access VisualStudio Code on http://localhost:8080
 
 ## Git login in VSCode
 

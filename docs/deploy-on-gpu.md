@@ -7,10 +7,6 @@ Feel free to propose new deployments using [pull requests](https://github.com/Ma
 
 To deploy applications on GPUs your project will need to be enabled for GPU. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request GPU access.
 
-## Deploy using JupyterLab
-
-
-
 ## JupyterLab on GPU
 
 Once your project has been granted access to GPUs:
@@ -55,3 +51,5 @@ oc get pods
 ```bash
 oc port-forward <pod_id> 8080:8080
 ```
+
+> Access VisualStudio Code on http://localhost:8080
