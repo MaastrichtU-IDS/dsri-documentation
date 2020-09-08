@@ -61,52 +61,51 @@
             });
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/deploy-on-gpu.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Deploy on GPU</h1></header><article><div><span><p>Feel free to propose new deployments using <a href="https://github.com/MaastrichtU-IDS/dsri-documentation/pulls" target="_blank" rel="nofollow noreferrer noopener">pull requests</a> or request new ones by creating a <a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues" target="_blank" rel="nofollow noreferrer noopener">new issues</a>.</p>
 <p>To deploy applications on GPUs your project will need to be enabled for GPU. Contact the <a href="mailto:dsri-support-l@maastrichtuniversity.nl" target="_blank" rel="nofollow noreferrer noopener">DSRI support team</a> to request GPU access.</p>
-<h2><a class="anchor" aria-hidden="true" id="pytorch-on-gpu"></a><a href="#pytorch-on-gpu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PyTorch on GPU</h2>
+<h2><a class="anchor" aria-hidden="true" id="deploy-using-jupyterlab"></a><a href="#deploy-using-jupyterlab" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Deploy using JupyterLab</h2>
+<h2><a class="anchor" aria-hidden="true" id="jupyterlab-on-gpu"></a><a href="#jupyterlab-on-gpu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JupyterLab on GPU</h2>
 <p>Once your project has been granted access to GPUs:</p>
 <ul>
 <li>Go to the <a href="https://app.dsri.unimaas.nl:8443/console/catalog" target="_blank" rel="nofollow noreferrer noopener">Catalog web UI</a>: <strong>Add to Project</strong> &gt; <strong>Browse Catalog</strong></li>
 <li><strong>Filter</strong> the catalog on the publisher &quot;<strong>Institute of Data Science, UM</strong>&quot;</li>
-<li>Click on the template <strong>Pytorch on GPU as Root (Persistent)</strong>.</li>
-</ul>
-<p>The following parameters can be provided:</p>
-<ol>
-<li>Provide a unique <strong>Application name</strong></li>
-<li>The <strong>number of GPUs</strong> used by the application.</li>
-<li><strong>Storage name</strong>: the storage Persistent Volume Claim (PVC)</li>
-<li><strong>Storage subpath</strong>: path to the Notebook folder in the Persistent Volume Claim storage</li>
-</ol>
-<p>Now that your template is created and its accessible from the <strong>Overview</strong> page of OpenShift web UI.</p>
-<h2><a class="anchor" aria-hidden="true" id="tensorflow-on-gpu"></a><a href="#tensorflow-on-gpu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tensorflow on GPU</h2>
-<p>Run JupyterLab with Tensorflow on GPU:</p>
+<li>Choose on the template:
 <ul>
-<li>Go to the <a href="https://app.dsri.unimaas.nl:8443/console/catalog" target="_blank" rel="nofollow noreferrer noopener">Catalog web UI</a>: <strong>Add to Project</strong> &gt; <strong>Browse Catalog</strong></li>
-<li><strong>Filter</strong> the catalog on the publisher &quot;<strong>Institute of Data Science, UM</strong>&quot;</li>
-<li>Click on the <strong>Tensorflow on GPU (Persistent)</strong> template.</li>
+<li><strong>Pytorch on GPU as Root (Persistent)</strong>.</li>
+<li><strong>Tensorflow on GPU (Persistent)</strong></li>
+</ul></li>
 </ul>
 <p>The following parameters can be provided:</p>
 <ol>
 <li>Provide a unique <strong>Application name</strong></li>
 <li>Provide a <strong>Notebook token</strong> (password to access the notebook)</li>
 <li>The <strong>number of GPUs</strong> used by the application.</li>
-<li>Provide the <strong>Docker image to deploy</strong>, by default we are using an image from nvidia: <code>nvcr.io/nvidia/tensorflow:19.11-tf2-py3</code></li>
 <li><strong>Storage name</strong>: the storage Persistent Volume Claim (PVC)</li>
 <li><strong>Storage subpath</strong>: path to the Notebook folder in the Persistent Volume Claim storage</li>
 </ol>
 <p>Now that your template is created and its accessible from the <strong>Overview</strong> page of OpenShift web UI.</p>
-<h2><a class="anchor" aria-hidden="true" id="connect-with-the-terminal"></a><a href="#connect-with-the-terminal" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Connect with the Terminal</h2>
-<p>First get the <code>&lt;pod_id&gt;</code> using your application name:</p>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">oc </span><span class="hljs-built_in">get</span> pod<span class="hljs-template-variable"> --selector</span> app=nvidia-tensorflow-gpu-myapp
+<h2><a class="anchor" aria-hidden="true" id="vscode-on-gpu"></a><a href="#vscode-on-gpu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>VSCode on GPU</h2>
+<p>2 templates are available to deploy VisualStudio Code on GPU:</p>
+<ul>
+<li>Go to the <a href="https://app.dsri.unimaas.nl:8443/console/catalog" target="_blank" rel="nofollow noreferrer noopener">Catalog web UI</a>: <strong>Add to Project</strong> &gt; <strong>Browse Catalog</strong></li>
+<li><strong>Filter</strong> the catalog on the publisher &quot;<strong>Institute of Data Science, UM</strong>&quot;</li>
+<li>Choose on the template:
+<ul>
+<li><strong>Tensorflow on GPU with VisualStudio (Persistent)</strong></li>
+<li><strong>PyTorch on GPU with VisualStudio (Persistent)</strong></li>
+</ul></li>
+</ul>
+<p>For those pods VSCode cannot be accessed directly on a DSRI URL, you will need to forward the port to your localhost:</p>
+<ol>
+<li><a href="/docs/openshift-login">Login to the DSRI</a> using <code>oc login</code></li>
+<li>Get the pod ID</li>
+</ol>
+<pre><code class="hljs css language-bash">oc get pods
 </code></pre>
-<p>Connect to the pod:</p>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">oc </span><span class="hljs-built_in">rsh</span> &lt;pod_id&gt;
+<ol start="3">
+<li>Forward VSCode to <a href="http://localhost:8080" target="_blank" rel="nofollow noreferrer noopener">http://localhost:8080</a></li>
+</ol>
+<pre><code class="hljs css language-bash">oc port-forward &lt;pod_id&gt; 8080:8080
 </code></pre>
-<p>Copy data to the pod:</p>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">oc </span>cp local_folder/ &lt;pod_id&gt;:/workspace
-</code></pre>
-<blockquote>
-<p><code>/workspace</code> is the working directory in the pod.</p>
-</blockquote>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/dsri-documentation/docs/deploy-jupyter"><span class="arrow-prev">← </span><span>Deploy Jupyter Notebooks</span></a><a class="docs-next button" href="/dsri-documentation/docs/deploy-spark"><span>Deploy a Spark cluster</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#pytorch-on-gpu">PyTorch on GPU</a></li><li><a href="#tensorflow-on-gpu">Tensorflow on GPU</a></li><li><a href="#connect-with-the-terminal">Connect with the Terminal</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/workflows-introduction">Run workflows</a><a href="/dsri-documentation/docs/openshift-install">Advanced use</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a></div><div><h5>Community</h5><a href="https://gitter.im/um-dsri/community" target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter"><img alt="Chat on Gitter" src="https://img.shields.io/gitter/room/um-dsri/community"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div style="margin-bottom:10px">We track page views and users demographics using Google Analytics to improve our users experience. <a href="https://policies.google.com/technologies/partner-sites">See how Google use collected informations</a>.<br/>You can prevent Google Analytics tracking by enabling <a href="https://blog.mozilla.org/blog/2019/06/04/firefox-now-available-with-enhanced-tracking-protection-by-default/">Firefox Tracking Protection</a>, installing <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=fr">uBlock Origin add-on</a>, or using the official <a href="https://tools.google.com/dlpage/gaoptout/">Google Analytics Opt-out add-on</a>.</div><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2020 Institute of Data Science at Maastricht University</section><div><div class="gitter-open-chat-button">Chat with the community</div><script type="text/javascript">
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/dsri-documentation/docs/deploy-jupyter"><span class="arrow-prev">← </span><span>Deploy Jupyter Notebooks</span></a><a class="docs-next button" href="/dsri-documentation/docs/deploy-spark"><span>Deploy a Spark cluster</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#deploy-using-jupyterlab">Deploy using JupyterLab</a></li><li><a href="#jupyterlab-on-gpu">JupyterLab on GPU</a></li><li><a href="#vscode-on-gpu">VSCode on GPU</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/workflows-introduction">Run workflows</a><a href="/dsri-documentation/docs/openshift-install">Advanced use</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a></div><div><h5>Community</h5><a href="https://gitter.im/um-dsri/community" target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter"><img alt="Chat on Gitter" src="https://img.shields.io/gitter/room/um-dsri/community"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div style="margin-bottom:10px">We track page views and users demographics using Google Analytics to improve our users experience. <a href="https://policies.google.com/technologies/partner-sites">See how Google use collected informations</a>.<br/>You can prevent Google Analytics tracking by enabling <a href="https://blog.mozilla.org/blog/2019/06/04/firefox-now-available-with-enhanced-tracking-protection-by-default/">Firefox Tracking Protection</a>, installing <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=fr">uBlock Origin add-on</a>, or using the official <a href="https://tools.google.com/dlpage/gaoptout/">Google Analytics Opt-out add-on</a>.</div><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2020 Institute of Data Science at Maastricht University</section><div><div class="gitter-open-chat-button">Chat with the community</div><script type="text/javascript">
         ((window.gitter = {}).chat = {}).options = {
           showChatByDefault: false,
           activationElement: '.gitter-open-chat-button',
