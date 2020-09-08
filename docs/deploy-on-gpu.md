@@ -7,60 +7,51 @@ Feel free to propose new deployments using [pull requests](https://github.com/Ma
 
 To deploy applications on GPUs your project will need to be enabled for GPU. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request GPU access.
 
-## PyTorch on GPU
+## Deploy using JupyterLab
+
+
+
+## JupyterLab on GPU
 
 Once your project has been granted access to GPUs:
 
 * Go to the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog): **Add to Project** > **Browse Catalog**
 * **Filter** the catalog on the publisher "**Institute of Data Science, UM**"
-* Click on the template **Pytorch on GPU as Root (Persistent)**.
-
-The following parameters can be provided:
-
-1. Provide a unique **Application name**
-3. The **number of GPUs** used by the application.
-4. **Storage name**: the storage Persistent Volume Claim (PVC)
-5. **Storage subpath**: path to the Notebook folder in the Persistent Volume Claim storage
-
-Now that your template is created and its accessible from the **Overview** page of OpenShift web UI.
-
-## Tensorflow on GPU
-
-Run JupyterLab with Tensorflow on GPU:
-
-* Go to the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog): **Add to Project** > **Browse Catalog**
-* **Filter** the catalog on the publisher "**Institute of Data Science, UM**"
-* Click on the **Tensorflow on GPU (Persistent)** template.
+* Choose on the template:
+  * **Pytorch on GPU as Root (Persistent)**.
+  * **Tensorflow on GPU (Persistent)**
 
 The following parameters can be provided:
 
 1. Provide a unique **Application name**
 2. Provide a **Notebook token** (password to access the notebook)
 3. The **number of GPUs** used by the application.
-4. Provide the **Docker image to deploy**, by default we are using an image from nvidia: `nvcr.io/nvidia/tensorflow:19.11-tf2-py3`
-5. **Storage name**: the storage Persistent Volume Claim (PVC)
-6. **Storage subpath**: path to the Notebook folder in the Persistent Volume Claim storage
+4. **Storage name**: the storage Persistent Volume Claim (PVC)
+5. **Storage subpath**: path to the Notebook folder in the Persistent Volume Claim storage
 
 Now that your template is created and its accessible from the **Overview** page of OpenShift web UI.
 
-## Connect with the Terminal
+## VSCode on GPU
 
-First get the `<pod_id>` using your application name:
+2 templates are available to deploy VisualStudio Code on GPU:
 
-```shell
-oc get pod --selector app=nvidia-tensorflow-gpu-myapp
+* Go to the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog): **Add to Project** > **Browse Catalog**
+* **Filter** the catalog on the publisher "**Institute of Data Science, UM**"
+* Choose on the template:
+  * **Tensorflow on GPU with VisualStudio (Persistent)**
+  * **PyTorch on GPU with VisualStudio (Persistent)**
+
+For those pods VSCode cannot be accessed directly on a DSRI URL, you will need to forward the port to your localhost:
+
+1. [Login to the DSRI](/docs/openshift-login) using `oc login`
+2. Get the pod ID
+
+```bash
+oc get pods
 ```
 
-Connect to the pod:
+3. Forward VSCode to http://localhost:8080
 
-```shell
-oc rsh <pod_id>
+```bash
+oc port-forward <pod_id> 8080:8080
 ```
-
-Copy data to the pod:
-
-```shell
-oc cp local_folder/ <pod_id>:/workspace
-```
-
-> `/workspace` is the working directory in the pod.
