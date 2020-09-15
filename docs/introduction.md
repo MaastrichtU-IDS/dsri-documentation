@@ -33,6 +33,7 @@ In more details:
 **What cannot be done ❌**
 
 * You cannot deploy services on the public Internet, the DSRI and services deployed on the **DSRI can only be accessed when on the UM network or using the UM VPN**.
+* Be careful to respect the host websites limitations when running applications to scrap data from the web, e.g. when retrieving publications from a scientific publisher.
 
 [Contact us 📬](mailto:dsri-support-l@maastrichtuniversity.nl) to request an account, and run your services on the DSRI from the UM network.
 
