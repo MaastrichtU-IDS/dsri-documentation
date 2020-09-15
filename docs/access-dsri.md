@@ -7,9 +7,9 @@ title: Access the DSRI
 
 1. You will need to have an account at Maastricht University with an email ending with `@maastrichtuniversity.nl` or `@maastro.nl`.
 
-2. Request access for your user [to the DSRI team 📬](mailto:dsri-support-l@maastrichtuniversity.nl).
+2. Request access to the DSRI for your account  [to the DSRI support team 📬](mailto:dsri-support-l@maastrichtuniversity.nl).
 
-3. Once the account will be created you will be able to login either using:
+3. Once the account will be created you will be able to login at **[https://app.dsri.unimaas.nl:8443](https://app.dsri.unimaas.nl:8443)** either using:
    * The **prefix of your UM email address** with the first letter capitalized, e.g. `Firstname.Lastname` or `F.Lastname`
    * Or your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`
 
