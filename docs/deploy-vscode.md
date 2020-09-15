@@ -1,6 +1,6 @@
 ---
 id: deploy-vscode
-title: Deploy VSCode server
+title: Start a VSCode server
 ---
 
 ## Start pod with VisualStudio Code

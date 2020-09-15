@@ -1,6 +1,6 @@
 ---
 id: deploy-rstudio
-title: Deploy RStudio
+title: Start RStudio
 ---
 
 RStudio can be deployed from the [OpenShift Catalog](https://app.dsri.unimaas.nl:8443/console/catalog):

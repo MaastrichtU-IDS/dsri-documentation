@@ -1,6 +1,6 @@
 ---
 id: deploy-spark
-title: Deploy a Spark cluster
+title: Start a Spark cluster
 ---
 
 A [Apache Spark](https://spark.apache.org/) cluster can be deployed using a template in the [DSRI catalog](https://app.dsri.unimaas.nl:8443/console/catalog).

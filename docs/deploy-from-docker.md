@@ -1,6 +1,6 @@
 ---
 id: deploy-from-docker
-title: Deploy from Docker image
+title: Start from Docker image
 ---
 
 The DSRI is an [OpenShift OKD](https://www.okd.io/) cluster, based on [Kubernetes](https://kubernetes.io/). It uses [Docker containers](https://www.docker.com) to deploy services and applications in **pods**.

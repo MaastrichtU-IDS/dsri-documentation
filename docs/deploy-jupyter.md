@@ -1,6 +1,6 @@
 ---
 id: deploy-jupyter
-title: Deploy Jupyter Notebooks
+title: Start Jupyter Notebooks
 ---
 
 Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).

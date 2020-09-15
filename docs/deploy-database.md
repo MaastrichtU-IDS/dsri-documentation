@@ -1,6 +1,6 @@
 ---
 id: deploy-database
-title: Deploy databases
+title: Start databases
 ---
 
 ## SQL databases
