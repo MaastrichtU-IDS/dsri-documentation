@@ -1,6 +1,6 @@
 ---
 id: openshift-delete-services
-title: Delete started application
+title: Delete started service
 ---
 
 [![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)

@@ -1,6 +1,6 @@
 ---
 id: openshift-debug
-title: Debug an application
+title: Debug a service
 ---
 
 ## Debug from the web UI
