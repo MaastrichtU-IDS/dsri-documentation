@@ -1,13 +1,13 @@
 ---
 id: openshift-load-data
-title: Load data
+title: Upload data
 ---
 
-## With JupyterLab and VSCode
+## In JupyterLab and VSCode
 
 If you are using JupyterLab or VSCode you should be able to load data to the container by simply **drag and drop the files to upload** in the JupyterLab/VSCode web UI.
 
-> If this solution don't work due to file size, try the solutions below.
+> If this solution doesn't work due to the files size, try one of the solutions below.
 
 ## Copy files
 
