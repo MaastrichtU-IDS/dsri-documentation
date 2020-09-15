@@ -51,3 +51,5 @@ oc port-forward <pod_id> 8080:8080
 ```
 
 > Access VisualStudio Code on http://localhost:8080
+
+> We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
