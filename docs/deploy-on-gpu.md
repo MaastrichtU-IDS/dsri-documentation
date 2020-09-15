@@ -1,11 +1,9 @@
 ---
 id: deploy-on-gpu
-title: Deploy on GPU
+title: Start on GPUs
 ---
 
-Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
-
-To deploy applications on GPUs your project will need to be enabled for GPU. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request GPU access.
+To deploy applications on GPUs you need to **request GPU quotas**. Contact the **[DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)** to request GPU access.
 
 ## JupyterLab on GPU
 
