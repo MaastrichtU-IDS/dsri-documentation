@@ -1,43 +1,16 @@
 ---
-id: deploy-services
-title: Deploy predefined services
+id: deploy-additional-services
+title: Additional services
 ---
 
-Services available for the **Data Science Research Infrastructure**.
+Additional services available with easy installation on the **Data Science Research Infrastructure**.
 
 Feel free to propose new services using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
 A service can be easily deployed from a [Docker image](/dsri-documentation/docs/guide-dockerfile-to-openshift).
 
----
 
-## Data Science
-
-### Jupyter notebooks
-
-See the [Deploy Jupyter Notebooks](/dsri-documentation/docs/openshift-deploy-jupyter) documentation page.
-
-### RStudio
-
-RStudio can be deployed from the [OpenShift Catalog](https://app.dsri.unimaas.nl:8443/console/catalog):
-
-<img src="/dsri-documentation/img/screenshot-deploy-rstudio.png" alt="Deploy RStudio" style="max-width: 100%; max-height: 100%;" />
-
-Two deployments are available:
-
-🗄️ **Persistent**: use a Persistent Volume Claim (PVC) for a persistent storage of the data.
-
-⚡ **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted (but this deployment does not require to request the creation of a PVC)
-
-> See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
-
-> To develop: this deployment for OpenShift: https://github.com/CSCfi/rstudio-openshift
-
-### Matlab
-
-> Work in progress at the moment. Please [let us know](mailto:dsri-support-l@maastrichtuniversity.nl) if you are interested in deploying Matlab on the DSRI.
-
-### Apache Flink
+## Apache Flink
 
 [Apache Flink](https://flink.apache.org/) enables processing of Data Streams using languages such as Java or Scala .
 
@@ -65,7 +38,7 @@ oc cp workspace/resources/RMLStreamer.jar <pod_id>:/mnt/
 
 > [Let us know](https://gitter.im/um-dsri/community) if you are interested in using it, so we could make the deployment easier.
 
-### OpenMPI
+## OpenMPI
 
 OpenMPI can be deployed and run on the DSRI. We use the [MPI Operator from Kubeflow](https://github.com/kubeflow/mpi-operator).
 
@@ -85,41 +58,34 @@ See the GPU benchmarks for examples of MPI job definitions:
 
 > [Contact us](mailto:dsri-support-l@maastrichtuniversity.nl) to get access to OpenMPI on the DSRI 📬
 
----
+## File Browser
 
-## Databases
+Deploy a filebrowser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume.
 
-### Blazegraph triplestore
+File browser can be deployed from the [OpenShift Catalog](https://app.dsri.unimaas.nl:8443/console/catalog):
 
-Use [lyrasis/blazegraph](lyrasis/blazegraph) Docker image.
+<img src="/dsri-documentation/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style="max-width: 100%; max-height: 100%;" />
 
-* Image Name:
+We can only deploy file browser as a Persistent deployment.
 
-  ```
-  lyrasis/blazegraph:2.1.5
-  ```
+🗄️ **Persistent**: use a Persistent Volume Claim (PVC) for a persistent storage of the data.
 
-* Mounted path: `/data`.
-* Put files to load in the `/data` and send the [dataloader.txt](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/support/blazegraph-dataloader.txt) file to the API to run the bulk load.
+The following parameters can be provided:
 
-```shell
-wget https://raw.githubusercontent.com/MaastrichtU-IDS/d2s-core/master/argo/support/blazegraph-dataloader.txt
+1. Provide a unique **Application name**. It will be used to generate the application URL.
+2. The **Storage name** of the Persistent Volume Claim  (PVC) that will be exposed by the filebrowser.
+3. **Storage subpath** in the the Persistent Volume Claim that will be exposed by the filebrowser. Let it empty to use the Root folder of the persistent volume.
 
-curl -X POST --data-binary @blazegraph-dataloader.txt --header 'Content-Type:text/plain' http://blazegraph-test-vincent.app.dsri.unimaas.nl/bigdata/dataloader
-```
+You can find the Storage name if you Go to the deployments page > Storage panel.
 
-### Start postgres
+This deployment require to have  root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)  or create a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) to request root access or to create persistent volume for your project if you don't have them .
 
-> Available in a catalog?
+Default credentials will be
 
-### Start apache-drill
+* login: "admin" 
 
-> Try the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-containers/tree/master/kubernetes) for Kubernetes from MapR.
+* password: "admin" 
 
-### Start Virtuoso
+  *Please change the password in the Filebrowser Web UI once it has been created.*
 
-```shell
-oc create -f d2s-pod-virtuoso.yaml
-```
-
-> To be developed: use the [official OpenLink deployment](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/pods/d2s-pod-virtuoso7.yaml).
+<img src="/dsri-documentation/img/screenshot-filebrowser-login.png" alt="File browser Web UI" style="max-width: 50%; max-height: 50%;" />

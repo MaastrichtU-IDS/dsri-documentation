@@ -1,11 +1,10 @@
 ---
  id: openshift-install
-title: Installation
-sidebar_label: Installation
+title: Install oc tool
 ---
 
 
-## Install the OpenShift client
+## Install the OpenShift commandline tool
 
 ![OpenShift](/dsri-documentation/img/openshift-logo.png)
 
@@ -33,6 +32,8 @@ brew install openshift-cli
 ### On Windows
 
 OC version: **3.11.0**
+
+> We strongly recommend to use the PowerShell to install and run the `oc` tool
 
 Click on [Windows Client Tools](https://github.com/openshift/origin/releases/download/v3.7.2/openshift-origin-client-tools-v3.7.2-282e43f-windows.zip) to download OC tool zip file.
 

@@ -1,12 +1,10 @@
 {
   "docs": {
-    "OpenShift UI": ["introduction", "openshift-volume", "deploy-from-dockerhub", 
-      "deploy-services", "deploy-jupyter", "deploy-on-gpu", "deploy-spark", 
-      "deploy-vscode", "deploy-filebrowser"],
-    "Command Line": ["openshift-install", 
-      "openshift-login", "guide-dockerfile-to-openshift", "openshift-commands", 
-      "openshift-load-data", "openshift-delete-services", 
-      "openshift-debug", "openshift-secret", "guide-local-install"],
-    "Workflows": ["tools-machine-learning" , "workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"]
+    "Get started": ["introduction", "access-dsri", "openshift-install", 
+      "openshift-login", "openshift-storage"],
+    "Deploy services": [ "deploy-on-gpu", "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-spark", "deploy-database", "deploy-additional-services", "deploy-from-docker", "guide-dockerfile-to-openshift"],
+    "Guides": [ "openshift-load-data", "openshift-commands", "openshift-delete-services", 
+      "openshift-debug", "openshift-secret", "tools-machine-learning"],
+    "Workflows": ["workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"]
   }
 }

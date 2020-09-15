@@ -1,6 +1,6 @@
 ---
-id: openshift-volume
-title: Storage management
+id: openshift-storage
+title: Storage on the DSRI
 ---
 
 Different storages can be used when running services on the DSRI:
@@ -38,7 +38,7 @@ To create a dynamic volume go to **Storage** on the left sidebar in a project:
 
 Static persistent volumes are mounted in a specific directory on the MapR storage, and provides a more sustainable storage over time. Static persistent volumes are not bind to a specific project, and can be accessed by different projects.
 
-It is recommended to use dynamic persistent volumes in priority, you can [request a static persistent volume](/dsri-documentation/help) if necessary.
+It is recommended to use dynamic persistent volumes in priority, you can [request a static persistent volume](/dsri-documentation/help) if necessary 📬
 
 ## Mount a filebrowser on a PVC
 

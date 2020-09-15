@@ -1,6 +1,6 @@
 ---
 id: tools-machine-learning
-title: Tools for Machine Learning
+title: Libraries for Machine Learning
 ---
 
 > This page is in development, feel free to [edit it](https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/tools-machine-learning.md) to add more informations.

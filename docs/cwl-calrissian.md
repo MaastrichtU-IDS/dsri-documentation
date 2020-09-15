@@ -11,7 +11,7 @@ We use the [CWL Calrissian](https://github.com/Duke-GCB/calrissian) implementati
 
 ## Clone the repository
 
-Git clone in `/calrissian` on a [persistent volume](/dsri-documentation/docs/openshift-volume) on the cluster from a terminal. 
+Git clone in `/calrissian` on a [persistent volume](/dsri-documentation/docs/openshift-storage) on the cluster from a terminal. 
 
 > E.g. from [this jupyterlab](https://app.dsri.unimaas.nl:8443/console/project/test-vincent/browse/pods/jupyterlab-root-2-8w472?tab=terminal), shared in `/data/calrissian`.
 

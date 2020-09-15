@@ -1,6 +1,6 @@
 ---
 id: deploy-vscode
-title: Run VSCode server
+title: Deploy VSCode server
 ---
 
 ## Start pod with VisualStudio Code
@@ -15,27 +15,7 @@ Use the **VisualStudio Code (Persistent)** template to start a simple pod on a C
 
 ### VSCode for GPU
 
-To start VSCode on GPU 2 templates are available:
-
-* **Tensorflow on GPU with VisualStudio (Persistent)**
-* **PyTorch on GPU with VisualStudio (Persistent)**
-
-For those pods VSCode cannot be accessed directly on a DSRI URL, you will need to forward the port to your localhost:
-
-1. [Login to the DSRI](/docs/openshift-login) using `oc login`
-2. Get the pod ID
-
-```bash
-oc get pods
-```
-
-3. Forward VSCode to http://localhost:8080
-
-```bash
-oc port-forward <pod_id> 8080:8080
-```
-
-> Access VisualStudio Code on http://localhost:8080
+See the [Deploy on GPU](/dsri-documentation/docs/deploy-on-gpu) page.
 
 ## Git login in VSCode
 
@@ -47,9 +27,9 @@ You can run this command to ask git to save your password:
 git config credential.helper cache
 ```
 
-## Install VisualStudio Code in another pod
+## Install VisualStudio Code in existing pod
 
-Installing VSCode in another pod requires to forward the port 8080 to your localhost
+Installing VSCode in another existing pod requires to forward the port 8080 to your localhost.
 
 ### Install VSCode
 
