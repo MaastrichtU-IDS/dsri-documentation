@@ -1,6 +1,6 @@
 ---
 id: deploy-on-gpu
-title: Start on GPUs
+title: Start on GPU
 ---
 
 To deploy applications on GPUs you need to **request GPU quotas**. Contact the **[DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)** to request GPU access.

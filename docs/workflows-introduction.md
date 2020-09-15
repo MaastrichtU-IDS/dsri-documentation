@@ -1,6 +1,6 @@
 ---
 id: workflows-introduction
-title: Choose a workflow engine
+title: Introduction to workflows
 ---
 
 ## Introduction
