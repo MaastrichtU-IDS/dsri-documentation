@@ -29,19 +29,19 @@ If your project is using a large amount of data that cannot be pushed to a git r
 
 Here are the options to upload your data to the DSRI storage:
 
-### Get data from your local machine
+### The data is on your local machine
 
-If the data is stored on a local machine, such as your laptop:
-* Drag and drop files in the VisualStudio Code or JupyterLab web UI, if applicable
-* Use the `oc cp` command to copy data to your application pod. See the [Load data](/dsri-documentation/docs/openshift-load-data) documentation page for more informations.
+If the data is stored on a local machine, such as your computer:
+* Drag and drop files from your computer to the VisualStudio Code or JupyterLab web UI, if applicable.
+* Otherwise, use the `oc cp` command to copy data to your application pod. See the [Load data](/dsri-documentation/docs/openshift-load-data) documentation page for more informations.
 
 > Make sure you **upload the data to a folder mounted on a persistent storage** in the pod to avoid losing your data if the pod restarts.
 
-### Get data from a server
+### The data is on a server
 
 Same as for your laptop, you will need to install and use the `oc cp` command to copy data to your application pod. See the [Load data](/dsri-documentation/docs/openshift-load-data) documentation page for more informations.
 
 
-### Get data from AWS S3 bucket
+### The data is in a AWS S3 bucket
 
 > To be developed
