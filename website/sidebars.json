@@ -4,7 +4,7 @@
       "openshift-login", "openshift-storage", "prepare-project-for-dsri"],
     "Start services": [ "deploy-on-gpu", "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-spark", "deploy-database", "deploy-additional-services", "deploy-from-docker", "guide-dockerfile-to-openshift"],
     "Guides": [ "openshift-load-data", "openshift-commands", "openshift-delete-services", 
-      "openshift-debug", "openshift-secret", "tools-machine-learning"],
+      "openshift-debug", "openshift-secret", "helm","tools-machine-learning"],
     "Workflows": ["workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"]
   }
 }

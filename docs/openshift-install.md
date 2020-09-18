@@ -3,12 +3,14 @@
 title: Install oc tool
 ---
 
-
-## Install the OpenShift commandline tool
-
 ![OpenShift](/dsri-documentation/img/openshift-logo.png)
 
-### On Linux
+Install the OpenShift command line tool to access the DSRI from your computer's terminal. It enable to:
+
+* Copy large files from/to the DSRI using `oc cp`
+* Connect to a pod terminal using `oc rsh`
+
+## On Linux
 
 ```shell
 wget https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
@@ -19,7 +21,7 @@ sudo mv oc kubectl /usr/local/bin/
 
 > See the [official documentation on Linux](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-linux) for more details.
 
-### On Mac
+## On Mac
 
 ```shell
 brew install openshift-cli
@@ -29,7 +31,7 @@ brew install openshift-cli
 
 > See the [official documentation on MacOS](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-mac) for more details.
 
-### On Windows
+## On Windows
 
 OC version: **3.11.0**
 
@@ -50,69 +52,3 @@ This makes it easy to access OC Tools by simply opening up command prompt and ty
 ```powershell
 oc version
 ```
-
----
-
-## Install the Helm client
-
-> This feature has not been tested at the moment. Please [contact us](mailto:dsri-support-l@maastrichtuniversity.nl) if you are interested in deploying Helm Charts.
-
-[Helm](https://helm.sh/) is a popular package manager for [Kubernetes](https://kubernetes.io/). It allows you to easily deploy [Helm Charts](https://hub.helm.sh/) built by the community. See [this documentation to deploy Helm 3 on OpenShift 4](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.3/html/cli_tools/helm-cli).
-
-### Install Golang
-
-Install `go 1.14.4` on Linux, you can find instructions for MacOS, Windows and newer versions at https://golang.org/dl
-
-```shell
-wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz
-
-# Extract to /usr/local
-tar -C /usr/local -xzf go1.14.4.linux-amd64.tar.gz
-
-# Add Go to path in .profile
-echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.profile
-```
-
-> Restart your laptop for the changes to take effects or execute `source ~/.profile`
-
-### Helm on Linux
-
-```shell
-curl https://get.helm.sh/helm-v3.2.2-linux-amd64.tar.gz > helm-v3.2.2-linux-amd64.tar.gz
-tar -zxvf helm-v3.2.2-linux-amd64.tar.gz
-sudo mv linux-amd64/helm /usr/local/bin/helm
-```
-
-> See [Helm documentation for Linux](https://helm.sh/docs/intro/install/#from-the-binary-releases).
-
-Or use official OpenShift 4 version:
-
-```shell
-curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-amd64 -o /usr/local/bin/helm
-chmod +x /usr/local/bin/helm
-```
-
-### Helm on MacOS
-
-```shell
-brew install helm
-```
-
-> See [Helm documentation for MacOS](https://helm.sh/docs/intro/install/#from-homebrew-macos).
-
-### Helm on Windows
-
-Install using [Chocolatey](https://chocolatey.org/).
-
-```shell
-choco install kubernetes-helm
-```
-
-> See [Helm documentation for Windows](https://helm.sh/docs/intro/install/#from-chocolatey-windows).
-
-### Check Helm installation
-
-```shell
-helm version
-```
-
