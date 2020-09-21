@@ -5,7 +5,7 @@ title: Start from Docker image
 
 The DSRI is an [OpenShift OKD](https://www.okd.io/) cluster, based on [Kubernetes](https://kubernetes.io/). It uses [Docker containers](https://www.docker.com) to deploy services and applications in **pods**.
 
-Any services or job can be run in a Docker container. If you want to run a service in Python for example, you will find Docker images for Python. 
+Any service or job can be run in a Docker container. If you want to run a service in Python for example, you will find Docker images for Python. 
 
 * You can find already existing images for the service you want to run on DockerHub
 * or create a custom Docker image in a few minutes. 

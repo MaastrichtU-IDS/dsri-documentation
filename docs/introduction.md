@@ -9,17 +9,16 @@ The DSRI provides a graphical user interface to easily run and manage services (
 
 ## What can be done on the DSRI?
 
-In short: 
+Any service that: 
 
-* any services or jobs running in a Docker container 🐳
-  * Any code can be easily executed in a Docker container (apart from some proprietary softwares)
-* which does not need to be accessed from outside the UM network (or the UM VPN) 🔒
+* runs in a Docker container 🐳 (Any code can be easily executed in a Docker container (apart from some proprietary software)
+* does not need to be accessed from outside the UM network (or the UM VPN) 🔒
 
 In more details:
 
 **What can be done easily on the DSRI ✔️**
 
-* [Start any Docker image](/dsri-documentation/docs/deploy-from-dockerhub) from the web UI
+* [Start any Docker image](https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-from-docker) from the web UI
 * [Start a simple Jupyter Notebook or RStudio](https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter) through the web UI
 * Deploy TensorFlow or PyTorch [on GPUs](https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-on-gpu) (8 Nvidia DGX-1 GPU cores are available)
 * Start a [Apache Spark cluster](/dsri-documentation/docs/deploy-spark) with multiples nodes, and a Jupyter Notebook from the web UI
