@@ -48,12 +48,12 @@ In more details:
 
 ### Hardware
 
-* 15 CPU nodes
+* 16 CPU nodes
 
 |                | RAM (GB) | CPU (cores) | Storage (TB) |
 | -------------- | -------- | ----------- | ------------ |
 | Node capacity  | 512 GB   | 64 cores    | 120 TB       |
-| Total capacity | 7 680 GB | 960 cores   | 1800 TB      |
+| Total capacity | 8 192 GB | 1 024 cores | 1 920 TB     |
 
 * 1 GPU node
   * Nvidia DGX1: **8x** Tesla V100 - 32GB GPU
