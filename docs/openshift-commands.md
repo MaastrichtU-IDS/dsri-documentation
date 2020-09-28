@@ -82,6 +82,22 @@ oc logs -f <pod_id>
 
 > Get more details on how to [debug a pod](/dsri-documentation/docs/openshift-debug).
 
+## Create app from template
+
+Create app from template using the CLI and providing parameters as arguments:
+
+```bash
+oc new-app my-template -p APPLICATION_NAME=my-app,ADMIN_PASSWORD=mypassword
+```
+
+Example for the Semantic Web course notebooks:
+
+```bash
+oc new-app template-jupyterstack-notebook -p APPLICATION_NAME=swcourseName,NOTEBOOK_PASSWORD=PASSWORD
+
+oc delete all --selector template=template-jupyterstack-notebook
+```
+
 ### Copy files
 
 See the [Load data](https://maastrichtu-ids.github.io/dsri-documentation/docs/openshift-load-data) page.
