@@ -19,7 +19,7 @@ cd openshift-origin-client*/
 sudo mv oc kubectl /usr/local/bin/
 ```
 
-> See the [official documentation on Linux](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-linux) for more details.
+> See the [release on GitHub](https://github.com/openshift/origin/releases/tag/v3.11.0).
 
 ## On Mac
 
