@@ -69,6 +69,16 @@
 <p>⚠️ The users will be able to install new <code>pip</code> packages in their JupyterLab instance, but they will not have <code>sudo</code> privileges (so they cannot install <code>apt</code> or <code>yum</code> packages)</p>
 </blockquote>
 <p>A custom image can be built and provided when deploying JupyterHub, see this repository as example to build a JupyterLab Docker image supported by OpenShift: <a href="https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift" target="_blank" rel="nofollow noreferrer noopener">https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift</a></p>
+<p>You will need to register a new GitHub OAuth application for your JupyterHub instance to authenticate via GitHub:</p>
+<ol>
+<li><p>Create a new OAuth app at <a href="https://github.com/settings/developers" target="_blank" rel="nofollow noreferrer noopener">https://github.com/settings/developers</a></p></li>
+<li><p>Provide the following callback URL:</p>
+<ul>
+<li><a href="https://APPLICATION" target="_blank" rel="nofollow noreferrer noopener">https://APPLICATION</a>_NAME-OPENSHIFT_<a href="http://PROJECT.app.dsri.unimaas.nl/hub/oauth_callback" target="_blank" rel="nofollow noreferrer noopener">PROJECT.app.dsri.unimaas.nl/hub/oauth_callback</a></li>
+<li>e.g. for the <code>ids-projects</code> project: <a href="https://jupyterhub-ids-projects.app.dsri.unimaas.nl/hub/oauth_callback" target="_blank" rel="nofollow noreferrer noopener">https://jupyterhub-ids-projects.app.dsri.unimaas.nl/hub/oauth_callback</a></li>
+</ul></li>
+<li><p>Add authorized GitHub users to the JupyterHub users when submitting the template to deploy JupyterHub in the OpenShift web UI. It can be changed from the <strong>Admin</strong> tab in the JupyterHub UI later.</p></li>
+</ol>
 <h2><a class="anchor" aria-hidden="true" id="start-jupyterlab-with-root-user"></a><a href="#start-jupyterlab-with-root-user" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Start JupyterLab with root user</h2>
 <p>You will need to have enabled root containers (aka. anyuid) in your project to start a container as root user, <a href="mailto:dsri-support-l@maastrichtuniversity.nl" target="_blank" rel="nofollow noreferrer noopener">contact us 📬</a> to do so.</p>
 <p>You can deploy it using the <strong>JupyterLab with root user</strong> solutions in the <a href="https://app.dsri.unimaas.nl:8443/console/catalog" target="_blank" rel="nofollow noreferrer noopener">Catalog web UI</a>:</p>
