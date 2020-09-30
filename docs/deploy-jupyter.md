@@ -19,6 +19,16 @@ Persistent volumes are automatically created for each instance started in Jupyte
 
 A custom image can be built and provided when deploying JupyterHub, see this repository as example to build a JupyterLab Docker image supported by OpenShift: https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift
 
+You will need to register a new GitHub OAuth application for your JupyterHub instance to authenticate via GitHub:
+
+1. Create a new OAuth app at https://github.com/settings/developers
+
+2. Provide the following callback URL:
+    * https://APPLICATION_NAME-OPENSHIFT_PROJECT.app.dsri.unimaas.nl/hub/oauth_callback
+    * e.g. for the `ids-projects` project: https://jupyterhub-ids-projects.app.dsri.unimaas.nl/hub/oauth_callback
+
+3. Add authorized GitHub users to the JupyterHub users when submitting the template to deploy JupyterHub in the OpenShift web UI. It can be changed from the **Admin** tab in the JupyterHub UI later.
+
 ## Start JupyterLab with root user
 
 You will need to have enabled root containers (aka. anyuid) in your project to start a container as root user, [contact us 📬](mailto:dsri-support-l@maastrichtuniversity.nl) to do so.
