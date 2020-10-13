@@ -7,11 +7,17 @@ title: Start a VSCode server
 
 ### Standalone VSCode
 
-Use the **VisualStudio Code (Persistent)** template to start a simple pod on a CPU node with VisualStudio Code and Python3.7 installed.
+Use the **VisualStudio Code in the browser (Dynamic)** or **VisualStudio Code with root user** templates to start a simple pod on a CPU node with VisualStudio Code and Python3.7 installed.
 
 > You will be able to access it directly on the DSRI using the generated URL.
 
 > We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
+
+If the VisualStudio Code templates are not available you can create it yourself:
+
+```bash
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-vscode-dynamic.yml
+```
 
 ### VSCode for GPU
 

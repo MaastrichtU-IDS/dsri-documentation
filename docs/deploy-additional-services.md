@@ -14,17 +14,15 @@ A service can be easily deployed from a [Docker image](/dsri-documentation/docs/
 
 [Apache Flink](https://flink.apache.org/) enables processing of Data Streams using languages such as Java or Scala .
 
-Run Apache Flink in your project using [vemonet/flink-on-openshift](https://github.com/vemonet/flink-on-openshift)
+> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
 
-⚠️ At the moment the PVC name needs to be changed before creating the deployment in files `jobmanager-deployment.yaml` and `taskmanager-deployment.yaml`
+Create the Apache Flink template in your project using [vemonet/flink-on-openshift](https://github.com/vemonet/flink-on-openshift)
 
 ```shell
-git clone https://github.com/vemonet/flink-on-openshift.git
-cd flink-on-openshift
-# Change the PVC name in YAML files
-oc project my-project
-./create_deployment.sh
+oc apply -f https://raw.githubusercontent.com/vemonet/flink-on-openshift/master/template-flink-dsri.yml
 ```
+
+> Use the template to start the cluster.
 
 Use this command to get the Flink Jobmanager pod id and copy file to the pod.
 
@@ -36,7 +34,13 @@ oc exec <pod_id> -- mkdir -p /mnt/workspace/resources
 oc cp workspace/resources/RMLStreamer.jar <pod_id>:/mnt/
 ```
 
-> [Let us know](https://gitter.im/um-dsri/community) if you are interested in using it, so we could make the deployment easier.
+Delete the Apache Flink cluster:
+
+```bash
+oc delete all,secret,configmaps,serviceaccount,rolebinding --selector app=flink-cluster
+```
+
+> Change `flink-cluster` by the name you gave to the application.
 
 ## OpenMPI
 

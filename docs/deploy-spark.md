@@ -9,7 +9,7 @@ An [Apache Spark](https://spark.apache.org/) cluster can be deployed using a tem
 
 The following services are deployed:
 
-* a JupyterLab all-spark-notebook with `root` permissions from [vemonet/jupyterlab-spark](https://github.com/vemonet/jupyterlab-spark)
+* a JupyterLab all-spark-notebook
 
 * a configurable Spark cluster from [CSCfi/spark-openshift](https://github.com/CSCfi/spark-openshift)
 
@@ -18,13 +18,6 @@ The following services are deployed:
 ## Create the template
 
 > You will need to have [the oc command line tool installed](/dsri-documentation/docs/openshift-install) to create the template.
-
-Clone the [vemonet/spark-openshift](https://github.com/vemonet/spark-openshift) repository:
-
-```bash
-git clone https://github.com/vemonet/spark-openshift.git
-cd spark-openshift
-```
 
 Login with the `oc` command line tool and go to your project:
 
@@ -35,7 +28,7 @@ oc project <my_project>
 Create the template:
 
 ```shell
-oc create -f spark-template-dsri.yml
+oc apply -f https://raw.githubusercontent.com/vemonet/spark-openshift/master/spark-template-dsri.yml
 ```
 
 ## Deploy a Spark cluster
