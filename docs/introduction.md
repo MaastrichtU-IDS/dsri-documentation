@@ -34,7 +34,9 @@ In more details:
 * Since DSRI can only be accessed when on the physical UM network or using the UM VPN, deployed services will not be available on the public Internet.
 * All activities must be legal in basis. You must closely examine and abide by the terms and conditions of any data, software, or web service that you use as part of your work. 
 
-[Contact us 📬](mailto:dsri-support-l@maastrichtuniversity.nl) to request an account, and run your services on the DSRI from the UM network.
+**Getting started**
+
+See [this page](https://maastrichtu-ids.github.io/dsri-documentation/docs/access-dsri) to request an account, and run your services on the DSRI from the UM network.
 
 ## The DSRI specifications
 
