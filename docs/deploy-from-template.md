@@ -11,10 +11,11 @@ Multiple templates are available for Data Science:
 
 * VisualStudio Code server
 * JupyterHub with GitHub authentication
-* Multiple flavors of [JupyterLab](https://github.com/jupyter/docker-stacks) (scipy, tensorflow, all-spark, etc)
+* Multiple flavors of [JupyterLab](https://github.com/jupyter/docker-stacks) (scipy, tensorflow, all-spark, and more)
 * RStudio with a Shiny server
 * Tensorflow or PyTorch on GPU (with JupyterLab or VisualStudio Code)
 * Apache Spark cluster with JupyterLab
+* Apache Flink cluster for Streaming applications (require `anyuid` privileges)
 
 To see all templates defined and quickly start Data Science applications on the DSRI, go to your project catalog in the OpenShift web UI:
 * At the top right of the page: **Add to Project** > **Browse Catalog**
@@ -26,13 +27,16 @@ You will need root containers enabled to be able to run some of those templates
 
 > You can find additional documentation about starting those applications in the next step of this docs.
 
-If the templates are not available, you can create the JupyterHub, VisualStudio Code, RStudio and JupyterLab templates in your project:
+If the templates are not available, you can create the JupyterHub, VisualStudio Code, RStudio, JupyterLab, Spark and Flink templates in your project:
 
 ```bash
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-jupyterhub-github-auth.yml
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-vscode-dynamic.yml
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-rstudio-shiny-dynamic.yml
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-jupyterlab-dynamic.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-jupyterlab-persistent.yml
+oc apply -f https://raw.githubusercontent.com/vemonet/spark-openshift/master/spark-template-dsri.yml
+oc apply -f https://raw.githubusercontent.com/vemonet/flink-on-openshift/master/template-flink-dsri.yml
 ```
 
 ## Stop your application
