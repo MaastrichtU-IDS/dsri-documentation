@@ -117,7 +117,8 @@ class Index extends React.Component {
             content:
               '[OpenShift](https://www.openshift.com/) and [Kubernetes](https://kubernetes.io/) allow you to run any [Docker](https://www.docker.com/) container in parallel on multiple nodes'
               + '\n \n[OpenShift](https://www.openshift.com/) also enables you to leverage the power of [MapReduce](https://mapr.com/products/product-overview/mapreduce/) jobs',
-            image: `${baseUrl}img/openshift_kubernetes_docker.png`,
+            // image: `${baseUrl}img/openshift_kubernetes_docker.png`,
+            image: `${baseUrl}img/undraw_file_sync.svg`,
             imageAlign: 'left',
             title: 'Run jobs in parallel on multiple nodes',
           },
@@ -130,7 +131,7 @@ class Index extends React.Component {
         {[
           {
             content:
-              'Run your experiments on the DSRI servers\n \nRelieve your laptop from resource consuming workloads',
+              'Run your experiments on the DSRI servers to relieve your laptop from resource consuming workloads',
             image: `${baseUrl}img/undraw_server_cluster.svg`,
             imageAlign: 'right',
             title: 'With the computing power you need',
