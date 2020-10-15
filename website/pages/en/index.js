@@ -110,7 +110,7 @@ class Index extends React.Component {
       </div>
     );
 
-    const TryOut = () => (
+    const RunJobInParallel = () => (
       <Block>
         {[
           {
@@ -125,7 +125,7 @@ class Index extends React.Component {
       </Block>
     );
 
-    const LearnHow = () => (
+    const GetComputingPower = () => (
       <Block background="dark">
         {[
           {
@@ -133,7 +133,21 @@ class Index extends React.Component {
               'Run your experiments on the DSRI servers\n \nRelieve your laptop from resource consuming workloads',
             image: `${baseUrl}img/undraw_server_cluster.svg`,
             imageAlign: 'right',
-            title: 'Get the computing power you need',
+            title: 'With the computing power you need',
+          },
+        ]}
+      </Block>
+    );
+
+    const BuildDataApp = () => (
+      <Block>
+        {[
+          {
+            content:
+              'Use the various solutions available to build your Data Science application\n\nJupyterLab, RStudio, VisualStudio Code, and more',
+            image: `${baseUrl}img/undraw_data.svg`,
+            imageAlign: 'right',
+            title: 'Build your Data Science applications',
           },
         ]}
       </Block>
@@ -159,7 +173,7 @@ class Index extends React.Component {
       </Block>
     );
 
-    const Description = () => (
+    const Storage = () => (
       <div>
       <Block background="dark">
         {[
@@ -205,9 +219,10 @@ class Index extends React.Component {
         <div className="mainContainer">
           <Features />
           <FeatureCallout />
-          <LearnHow />
-          <TryOut />
-          <Description />
+          <BuildDataApp />
+          <GetComputingPower />
+          <RunJobInParallel />
+          <Storage />
           <Showcase />
         </div>
       </div>
