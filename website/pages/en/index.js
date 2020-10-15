@@ -99,7 +99,7 @@ class Index extends React.Component {
           Access the [Data Science Research Infrastructure](/dsri-documentation/docs/access-dsri) on the UM network
         </MarkdownBlock>
         <MarkdownBlock>
-          [Deploy popular Data Science applications](/dsri-documentation/docs/deploy-from-template) from the DSRI web interface in pods
+          [Deploy popular Data Science applications](/dsri-documentation/docs/deploy-from-template) from the DSRI web interface in containers
         </MarkdownBlock>
         <MarkdownBlock>
           Or start your [custom application from a Docker image](/dsri-documentation/docs/deploy-from-docker)
@@ -134,7 +134,7 @@ class Index extends React.Component {
               'Run your experiments on the DSRI servers to relieve your laptop from resource consuming workloads',
             image: `${baseUrl}img/undraw_server_cluster.svg`,
             imageAlign: 'right',
-            title: 'With the computing power you need',
+            title: 'Get the computing power you need',
           },
         ]}
       </Block>
