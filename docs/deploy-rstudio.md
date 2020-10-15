@@ -17,6 +17,13 @@ Use the **RStudio with Shiny (Dynamic)** template in the OpenShift web UI catalo
 
 Run RStudio with `sudo` privileges, can be useful if need to install additional packages that requires `sudo`
 
+Create the templates in your project catalog:
+
+```bash
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-rstudio-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-rstudio-root-ephemeral.yml
+```
+
 2 storage solutions are available:
 
 🗄️ **Persistent**: use a Persistent Volume Claim (PVC) for a persistent storage of the data.

@@ -64,10 +64,9 @@ You will need to register a new GitHub OAuth application for your JupyterHub ins
 Create the templates in your project catalog:
 
 ```bash
-
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-jupyterlab-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-jupyterlab-root-ephemeral.yml
 ```
-
-
 
 You can deploy it using the **JupyterLab with root user** solutions in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog):
 
