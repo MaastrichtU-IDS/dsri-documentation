@@ -1,6 +1,6 @@
 ---
 id: openshift-commands
-title: oc tool commands
+title: Command Line Interface
 ---
 
 [![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)

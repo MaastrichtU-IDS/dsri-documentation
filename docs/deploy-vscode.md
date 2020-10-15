@@ -3,29 +3,29 @@ id: deploy-vscode
 title: Start a VSCode server
 ---
 
-## Start pod with VisualStudio Code
+## Start VisualStudio Code server
 
-### Standalone VSCode
+Use the **VisualStudio Code in the browser (Dynamic)** template to start a simple pod on a CPU node with a VisualStudio Code server
 
-Use the **VisualStudio Code in the browser (Dynamic)** or **VisualStudio Code with root user** templates to start a simple pod on a CPU node with VisualStudio Code and Python3.7 installed.
+Packages installed:
 
-> You will be able to access it directly on the DSRI using the generated URL.
-
-> We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
+* Python3.7
+* Java 11
+* NodeJS and NPM
 
 If the VisualStudio Code templates are not available you can create it yourself:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-vscode-dynamic.yml
+oc apply -f oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-vscode-dynamic.yml
 ```
 
-### VSCode for GPU
+> **You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
 
-See the [Deploy on GPU](/dsri-documentation/docs/deploy-on-gpu) page.
+> We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
 
-## Git login in VSCode
+### Git login in VSCode
 
-VSCode will prompt a window to give permission to GitHub in a web page, if this option does not work you can cancel this window and VSCode will ask your for username and password.
+VisualStudio will prompt a window to give permission to GitHub in a web page, if this option does not work you can cancel this window and VSCode will ask your for username and password.
 
 You can run this command to ask git to save your password:
 
@@ -33,58 +33,6 @@ You can run this command to ask git to save your password:
 git config credential.helper cache
 ```
 
-## Install VisualStudio Code in existing pod
+## VSCode for GPU
 
-Installing VSCode in another existing pod requires to forward the port 8080 to your localhost.
-
-### Install VSCode
-
-Install code-server in the pod:
-
-```bash
-curl -fsSL https://code-server.dev/install.sh | sh
-```
-
-Run it in the background:
-
-```bash
-nohup code-server &
-```
-
-The following pre-requisites are needed on the OC Pod to host the VS code-server environment,
-
-1. First install tmux using,
-```bash
-sudo apt install tmux
-```
-
-You can also use any other way to run the VS code-server in the background. ```tmux``` is useful since the terminal environment is accessible easily.
-
-2. Follow the instructions to install code-server on your OC Pod from [https://github.com/cdr/code-server](https://github.com/cdr/code-server)
-
-Install code-server:
-
-```bash
-curl -fsSL https://code-server.dev/install.sh | sh
-```
-
-3. Open up a tmux session and run code-server. 
-
-```bash
-code-server
-```
-
-> The code-server runs on port 8080 by default. Look at ```~/.config/code-server/config.yaml``` for more information (Auth password, port, host etc.)
-
-### Forward on local machine
-
-On the local machine, run the following commands to port-forward the VS code-server on a local port.
-
-1. Install ```oc``` client from [openshift-install](openshift-install.md)
-2. Once installed, use the ```oc login``` command from [openshift-login](openshift-login.md) to login.
-3. Once logged in, you can use ```oc get pods``` to get a list of your pods. Select the pod where code-server was hosted and run
-```bash
-oc port-forward <pod_id> 8080:8080
-```
-
-This forwards the server to port 8080 on your local machine. You can then go to http://localhost:8080 and access VS Code. 
+See the [Deploy on GPU](/dsri-documentation/docs/deploy-on-gpu) page to deploy a VisualStudio Code server on GPU.

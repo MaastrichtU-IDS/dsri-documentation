@@ -1,6 +1,6 @@
 ---
  id: openshift-install
-title: Install oc tool
+title: Install oc CLI
 ---
 
 ![OpenShift](/dsri-documentation/img/openshift-logo.png)

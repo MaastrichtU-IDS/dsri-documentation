@@ -13,6 +13,8 @@ Use the **RStudio with Shiny (Dynamic)** template in the OpenShift web UI catalo
 
 ## RStudio with root user
 
+> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+
 Run RStudio with `sudo` privileges, can be useful if need to install additional packages that requires `sudo`
 
 2 storage solutions are available:
@@ -22,7 +24,5 @@ Run RStudio with `sudo` privileges, can be useful if need to install additional 
 ⚡ **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted (but this deployment does not require to request the creation of a PVC)
 
 > See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
-
-> To develop: this deployment for OpenShift: https://github.com/CSCfi/rstudio-openshift
 
 <img src="/dsri-documentation/img/screenshot-deploy-rstudio.png" alt="Deploy RStudio" style="max-width: 100%; max-height: 100%;" />

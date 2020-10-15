@@ -131,7 +131,7 @@ class Index extends React.Component {
           {
             content:
               'Run your jobs without worrying about the resources required.\n \nThe DSRI cluster will allocate as much as possible depending on its availability.',
-            image: `${baseUrl}img/kubernetes_diagram.png`,
+            image: `${baseUrl}img/undraw_server_cluster.png`,
             imageAlign: 'right',
             title: 'Get the computing power you need',
           },

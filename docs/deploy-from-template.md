@@ -7,7 +7,7 @@ The easiest to get started with the DSRI is to use the predefined templates to d
 
 ## Start applications using templates
 
-Multiple templates are available for Data Science:
+Multiple applications are available for Data Science:
 
 * VisualStudio Code server
 * JupyterHub with GitHub authentication
@@ -27,17 +27,17 @@ You will need root containers enabled to be able to run some of those templates
 
 > You can find additional documentation about starting those applications in the next step of this docs.
 
-If the templates are not available, you can create the JupyterHub, VisualStudio Code, RStudio, JupyterLab, Spark and Flink templates in your project:
+If the templates are not available, you can create the JupyterLab, VisualStudio Code, RStudio, and JupyterHub templates in your project:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-jupyterhub-github-auth.yml
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-vscode-dynamic.yml
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-rstudio-shiny-dynamic.yml
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-jupyterlab-dynamic.yml
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/jupyterlab-on-openshift/master/template-jupyterlab-persistent.yml
-oc apply -f https://raw.githubusercontent.com/vemonet/spark-openshift/master/spark-template-dsri.yml
-oc apply -f https://raw.githubusercontent.com/vemonet/flink-on-openshift/master/template-flink-dsri.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-jupyterhub-github-auth.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-jupyterlab-dynamic.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-jupyterlab-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-rstudio-shiny-dynamic.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-vscode-dynamic.yml
 ```
+
+> Contact us if you are interested in using Apache Spark or Apache Flink.
 
 ## Stop your application
 

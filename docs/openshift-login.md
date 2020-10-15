@@ -1,6 +1,6 @@
 ---
 id: openshift-login
-title: Login with oc tool
+title: Login with oc CLI
 ---
 
 ![OpenShift](/dsri-documentation/img/openshift-logo.png)

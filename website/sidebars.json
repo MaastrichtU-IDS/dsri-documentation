@@ -2,8 +2,8 @@
   "docs": {
     "Get started": ["introduction", "access-dsri", "openshift-install", 
       "openshift-login", "openshift-storage", "prepare-project-for-dsri"],
-    "Start services": [ "deploy-from-template", "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-spark", 
-      "deploy-on-gpu", "deploy-database", "deploy-additional-services", "deploy-from-docker", "guide-dockerfile-to-openshift"],
+    "Start services": [ "deploy-from-template", "deploy-jupyter", "deploy-rstudio", "deploy-vscode",
+      "deploy-on-gpu", "deploy-database", "deploy-spark", "deploy-additional-services", "deploy-from-docker", "guide-dockerfile-to-openshift"],
     "Guides": [ "openshift-delete-services", "openshift-load-data", "openshift-commands", 
       "openshift-debug", "openshift-secret", "helm","tools-machine-learning"],
     "Workflows": ["workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"]

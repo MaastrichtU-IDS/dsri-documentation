@@ -11,6 +11,8 @@ The following services are deployed:
 * a configurable Spark cluster from [CSCfi/spark-openshift](https://github.com/CSCfi/spark-openshift)
 * a storage automatically created
 
+> Contact us to get help with setting up Apache Spark.
+
 ## Create the template
 
 > You will need to have [the oc command line tool installed](/dsri-documentation/docs/openshift-install) to create the template.

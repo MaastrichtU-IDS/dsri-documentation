@@ -7,7 +7,35 @@ Feel free to propose new deployments using [pull requests](https://github.com/Ma
 
 [![Jupyterlab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
 
+## Start JupyterLab
+
+Start JupyterLab images with regular `jovyan` user, without `sudo` privileges. 
+
+You can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
+
+* `jupyter/scipy-notebook`
+* `jupyter/datascience-notebook` (with Julia kernel)
+* `jupyter/tensorflow-notebook`
+* `jupyter/r-notebook`
+* `jupyter/pyspark-notebook`
+* `jupyter/all-spark-notebook`
+* `ghcr.io/maastrichtu-ids/jupyterlab-on-openshift` (with SPARQL and Java kernels)
+
+Or build your own using this repository as example: https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift 📦
+
+> **You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
+
+Two deployments are available for the **JupyterLab with restricted user** template:
+
+⚡ **Dynamic**:  automatically create a persistent storage for the notebook data
+
+🗄️ **Persistent**: use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
+
+By default the working directory is `/home/jovyan`
+
 ## Start JupyterHub
+
+> Useful if you want to provide JupyterLab to multiple users.
 
 Use the **JupyterHub with GitHub authentication (Dynamic)** template to start a JupyterHub service, users will be able to login with their GitHub account, and start a notebook choosing from various images.
 
@@ -31,7 +59,7 @@ You will need to register a new GitHub OAuth application for your JupyterHub ins
 
 ## Start JupyterLab with root user
 
-You will need to have enabled root containers (aka. anyuid) in your project to start a container as root user, [contact us 📬](mailto:dsri-support-l@maastrichtuniversity.nl) to do so.
+> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
 
 You can deploy it using the **JupyterLab with root user** solutions in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog):
 
@@ -41,7 +69,7 @@ You can deploy it using the **JupyterLab with root user** solutions in the [Cata
 
 🦋 **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted.
 
-🗄️ **Persistent**: use a Persistent Volume Claim (PVC) for a persistent storage of the data.
+🗄️ **Persistent**: use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
 
 The following parameters can be provided:
 
@@ -58,63 +86,3 @@ Pip requirements, apt packages and Jupyterlab extensions are installed from `req
 Try the following Notebooks to work on a RDF Knowledge Graph about COVID-19 related publications: https://github.com/vemonet/covid-kg-notebooks
 
 > Built from [amalic/Jupyterlab](https://github.com/amalic/Jupyterlab).
-
-## Start JupyterLab with restricted user
-
-[Source-to-Image (S2I)](https://docs.openshift.com/container-platform/3.11/creating_images/s2i.html) builds allow to deploy Jupyter Notebooks as non-root user, which is a practice recommended  by OpenShift but prevents you to install packages requiring the root user after the pod has been built. 
-
-> **You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
-
-Two deployments are available for the **JupyterLab with restricted user** template:
-
-🦋 **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted.
-
-⚡ **Dynamic**:  automatically create a persistent storage for the notebook data
-
-The following parameters can to be provided:
-
-1. Provide a unique **Application name**
-2. The **Password** is safely stored in a secret.
-3. Choose the **Notebook interface**:
-   * `classic`: Jupyter notebook web UI.
-   * `lab`: Jupyterlab web UI.
-4. Provide the base **S2I Builder image** used by S2I to build your image with the provided requirements installed:
-   * `s2i-minimal-notebook:3.6` : minimal jupyter notebook
-   * `s2i-scipy-notebook:3.6` : notebook with popular scientific libraries pre-installed
-   * `s2i-tensorflow-notebook:3.6` : notebook with tensorflow libraries for machine learning.
-5. (only for ephemeral) URL to the Git repository with the requirements and the code to clone in the notebook. The repository typically have a `requirements.txt` file at the root to install the libraries that will be used. See as examples:
-   * https://github.com/vemonet/PythonDataScienceHandbook
-   * https://github.com/marcelbrouwers/sample-notebooks
-   * https://github.com/vemonet/TensorFlow-Examples
-
-By default the working directory is `/opt/app-root/src`
-
-> Built from [jupyter-on-openshift](https://github.com/jupyter-on-openshift/jupyter-notebooks).
-
-> See [MaastrichtU-IDS/jupyterlab-on-openshift](https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift) as example to build custom JupyterLab images optimized for OpenShift 
-
-## Anaconda and Tensorflow with Jupyter
-
-Another option to run Jupyter notebooks with Anaconda and Tensorflow installed.
-
-This deployment needs to be done through the UI > `Deploy Image`
-
-Use [jupyter/tensorflow-notebook](https://hub.docker.com/r/jupyter/tensorflow-notebook) official Docker image.
-
-* Image name:
-
-  ```shell
-  jupyter/tensorflow-notebook
-  ```
-  
-* Environment variables:
-
-  * `JUPYTER_ENABLE_LAB` : `yes` (optional)
-
-* Mount storage:
-
-  * Go to the deployments page > Click **Actions** > Select **Add Storage**
-  * Mount the storage in `/home/jovyan`.
-
-
-> Go to the `pod logs` to get the `login token`.
