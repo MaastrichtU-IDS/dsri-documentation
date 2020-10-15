@@ -35,6 +35,13 @@ const users = [
     image: 'img/brightlands-logo.svg',
     infoLink: 'https://www.brightlands.com/',
     pinned: true,
+  },
+  {
+    // TODO: Brein logo and URL
+    caption: 'BReIN project',
+    image: 'img/Logo_BReIN.png',
+    infoLink: 'https://www.breinmaastricht.nl/',
+    pinned: true,
   }
 ];
 
