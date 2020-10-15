@@ -68,6 +68,10 @@
 <p>🔒 You need root containers enabled (aka. anyuid) in your project to start this application.</p>
 </blockquote>
 <p>Run RStudio with <code>sudo</code> privileges, can be useful if need to install additional packages that requires <code>sudo</code></p>
+<p>Create the templates in your project catalog:</p>
+<pre><code class="hljs css language-bash">oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-rstudio-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-rstudio-root-ephemeral.yml
+</code></pre>
 <p>2 storage solutions are available:</p>
 <p>🗄️ <strong>Persistent</strong>: use a Persistent Volume Claim (PVC) for a persistent storage of the data.</p>
 <p>⚡ <strong>Ephemeral</strong>: volumes bind to the pod, data will be lost when the pod is deleted (but this deployment does not require to request the creation of a PVC)</p>

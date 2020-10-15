@@ -107,7 +107,8 @@
 <p>🔒 You need root containers enabled (aka. anyuid) in your project to start this application.</p>
 </blockquote>
 <p>Create the templates in your project catalog:</p>
-<pre><code class="hljs css language-bash">
+<pre><code class="hljs css language-bash">oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-jupyterlab-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-jupyterlab-root-ephemeral.yml
 </code></pre>
 <p>You can deploy it using the <strong>JupyterLab with root user</strong> solutions in the <a href="https://app.dsri.unimaas.nl:8443/console/catalog" target="_blank" rel="nofollow noreferrer noopener">Catalog web UI</a>:</p>
 <p><img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style="max-width: 100%; max-height: 100%;" /></p>
