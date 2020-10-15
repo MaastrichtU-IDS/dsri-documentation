@@ -47,7 +47,7 @@ const users = [
 
 const siteConfig = {
   title: 'Data Science Research Infrastructure', // Title for your website.
-  tagline: 'A distributed and scalable infrastructure to run Data Science workloads',
+  tagline: 'A distributed and scalable infrastructure to run Data Science experiments',
   url: 'https://maastrichtu-ids.github.io/', // Your website URL
   baseUrl: '/dsri-documentation/', // Base URL for your project */
   // We deploy at https://maastrichtu-ids.github.io/dsri-documentation/
@@ -57,6 +57,10 @@ const siteConfig = {
   repoUrl: 'https://github.com/MaastrichtU-IDS/dsri-documentation',
   // URL for editing docs
   editUrl: 'https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/',
+
+  // For sites with a sizable amount of content, set collapsible to true.
+  // Expand/collapse the links and subcategories under categories.
+  docsSideNavCollapsible: true,
 
   // Deploy to GitHub pages (first generate build dir)
   // npm run build
@@ -127,10 +131,6 @@ const siteConfig = {
 
   // Open Graph and Twitter card images.
   ogImage: 'img/undraw_online.svg',
-
-  // For sites with a sizable amount of content, set collapsible to true.
-  // Expand/collapse the links and subcategories under categories.
-  docsSideNavCollapsible: false,
 
   markdownPlugins: [
     function(md) {

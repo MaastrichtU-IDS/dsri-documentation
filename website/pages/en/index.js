@@ -96,16 +96,16 @@ class Index extends React.Component {
         style={{textAlign: 'center'}}>
         <h2>Sustainable and scalable Data Science for everyone</h2>
         <MarkdownBlock>
-          Login to [OpenShift DSRI](https://app.dsri.unimaas.nl:8443/console/catalog)
+          Access the [Data Science Research Infrastructure](/dsri-documentation/docs/access-dsri) on the UM network
         </MarkdownBlock>
         <MarkdownBlock>
-          [Deploy your services](/dsri-documentation/docs/openshift-services) from the DSRI web interface in pods
+          [Deploy popular Data Science applications](/dsri-documentation/docs/deploy-from-template) from the DSRI web interface in pods
         </MarkdownBlock>
         <MarkdownBlock>
-          Or build from a [Docker image](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-dockerfile-to-openshift)
+          Or start your [custom application from a Docker image](/dsri-documentation/docs/deploy-from-docker)
         </MarkdownBlock>
         <MarkdownBlock>
-          Combine multiple programs to run [workflows](/dsri-documentation/docs/argo-install)
+          Access your application via the generated URL
         </MarkdownBlock>
       </div>
     );
@@ -115,8 +115,8 @@ class Index extends React.Component {
         {[
           {
             content:
-              '[OpenShift](https://www.openshift.com/) and [Kubernetes](https://kubernetes.io/) allow you to run any [Docker](https://www.docker.com/) container in parallel on multiple nodes.'
-              + '\n \n[OpenShift](https://www.openshift.com/) also enables you to leverage the power of [MapReduce](https://mapr.com/products/product-overview/mapreduce/) jobs.',
+              '[OpenShift](https://www.openshift.com/) and [Kubernetes](https://kubernetes.io/) allow you to run any [Docker](https://www.docker.com/) container in parallel on multiple nodes'
+              + '\n \n[OpenShift](https://www.openshift.com/) also enables you to leverage the power of [MapReduce](https://mapr.com/products/product-overview/mapreduce/) jobs',
             image: `${baseUrl}img/openshift_kubernetes_docker.png`,
             imageAlign: 'left',
             title: 'Run jobs in parallel on multiple nodes',
@@ -130,8 +130,8 @@ class Index extends React.Component {
         {[
           {
             content:
-              'Run your jobs without worrying about the resources required.\n \nThe DSRI cluster will allocate as much as possible depending on its availability.',
-            image: `${baseUrl}img/undraw_server_cluster.png`,
+              'Run your experiments on the DSRI servers\n \nRelieve your laptop from resource consuming workloads',
+            image: `${baseUrl}img/undraw_server_cluster.svg`,
             imageAlign: 'right',
             title: 'Get the computing power you need',
           },
@@ -144,13 +144,13 @@ class Index extends React.Component {
       <Block layout="fourColumn">
         {[
           {
-            content: 'Using [MapR](https://mapr.com/) FileSystem to securely store and access your file on the DSRI cluster.',
+            content: 'We use [MapR](https://mapr.com/) FileSystem to securely store and access your file',
             image: `${baseUrl}img/mapr_logo.png`,
             imageAlign: 'top',
             title: 'A distributed filesystem',
           },
           {
-            content: '[Kubernetes](https://kubernetes.io/) allows you to run containers started from [Docker](https://www.docker.com/) images on the DSRI cluster.',
+            content: '[Kubernetes](https://kubernetes.io/) allows you to run containers started from [Docker](https://www.docker.com/) images',
             image: `${baseUrl}img/Kubernetes.png`,
             imageAlign: 'top',
             title: 'To run anything',
@@ -165,8 +165,8 @@ class Index extends React.Component {
         {[
           {
             content:
-              'Data stored on the [MapR](https://mapr.com/) FileSystem are replicated over multiple nodes for high availability and fault tolerance. \n \n' + 
-              'The DSRI also offers to easily store and access backups to [iRODS](https://irods.org/) [DataHub](https://portal.datahubmaastricht.nl/)',
+              'Data stored on the [MapR](https://mapr.com/) FileSystem are replicated over multiple nodes for high availability and fault tolerance\n \n' + 
+              'The DSRI also works on offering a long term storage solution with [iRODS](https://irods.org/) [DataHub](https://portal.datahubmaastricht.nl/)',
             image: `${baseUrl}img/DataHub_irods.png`,
             imageAlign: 'right',
             title: 'Securely store your data',

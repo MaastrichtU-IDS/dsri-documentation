@@ -1,11 +1,11 @@
 ---
- id: openshift-install
-title: Install oc CLI
+id: openshift-install
+title: Install the CLI
 ---
 
 ![OpenShift](/dsri-documentation/img/openshift-logo.png)
 
-Install the OpenShift command line tool to access the DSRI from your computer's terminal. It enable to:
+Install the OpenShift Command Line Interface (CLI) to access the DSRI from your computer's terminal. It enable to:
 
 * Copy large files from/to the DSRI using `oc cp`
 * Connect to a pod terminal using `oc rsh`
