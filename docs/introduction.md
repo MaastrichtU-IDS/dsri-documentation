@@ -11,7 +11,7 @@ The DSRI provides a graphical user interface to easily run and manage services (
 
 Any service that: 
 
-* runs in a Docker container 🐳 (Any code can be easily executed in a Docker container (apart from some proprietary software)
+* runs in a Docker container 🐳 anything can be easily executed in a Docker container (apart from some proprietary software)
 * does not need to be accessed from outside the UM network (or the UM VPN) 🔒
 
 In more details:
