@@ -61,6 +61,14 @@ You will need to register a new GitHub OAuth application for your JupyterHub ins
 
 > 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
 
+Create the templates in your project catalog:
+
+```bash
+
+```
+
+
+
 You can deploy it using the **JupyterLab with root user** solutions in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog):
 
 <img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style="max-width: 100%; max-height: 100%;" />
