@@ -131,10 +131,37 @@ You can also do it through the
 
 ### Delete stuck project
 
-Project can get stuck as marked for deletion. Usually due to ServiceInstance not terminated or a `finalizers` left in the **Project** YAML file.
+Project can get stuck as marked for deletion. Usually due to Objects still present in the project that are not terminated or `finalizers` left in the some objects YAML file.
 
-This command remove `kubernetes-incubator` finalizers from ServiceInstance in terminating projects:
+> The following commands will allow you to clean up all the projects stuck in terminating state you have access to 
+
+Force deletion of terminating projects:
+
+```bash
+for i in $(oc get projects  | grep Terminating| awk '{print $1}'); do echo $i; oc delete project --force --grace-period=0 $i ; done
+```
+
+Delete all objects in terminating projects:
+
+```bash
+for i in $(oc get projects  | grep Terminating| awk '{print $1}'); do echo $i; oc delete all,configmap,pvc,serviceaccount,rolebinding,secret,serviceinstance --force --grace-period=0 --all -n $i ; done
+```
+
+Remove Kubernetes finalizers from terminating projects:
+
+```bash
+for i in $(oc get projects  | grep Terminating| awk '{print $1}'); do echo $i; oc get project $i -o yaml | sed "/kubernetes/d" | sed "/finalizers:/d" | oc apply -f - ; done
+```
+
+If ServiceInstances refuses to get deleted, try to remove kubernetes finalizers:
 
 ```shell
 for i in $(oc get projects  | grep Terminating| awk '{print $1}'); do echo $i; oc get serviceinstance -n $i -o yaml | sed "/kubernetes-incubator/d"| oc apply -f - ; done
 ```
+
+Check if there are still objects in a project:
+
+```bash
+oc get all,configmap,pvc,serviceaccount,secret,rolebinding,serviceinstance
+```
+
