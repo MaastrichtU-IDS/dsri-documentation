@@ -5,7 +5,7 @@ title: Start from Helm charts
 
 [Helm](https://helm.sh/) is a popular package manager for [Kubernetes](https://kubernetes.io/). It allows you to easily deploy [Helm Charts](https://hub.helm.sh/) built by the community
 
-> You can explore published Helm charts at [https://hub.helm.sh :sailboat:](https://hub.helm.sh) 
+> You can explore published Helm charts at [https://hub.helm.sh ⛵](https://hub.helm.sh) 
 
 ## Install the Helm client
 
@@ -32,19 +32,10 @@ echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.profile
 #### Install on Linux
 
 ```shell
-curl https://get.helm.sh/helm-v3.2.2-linux-amd64.tar.gz > helm-v3.2.2-linux-amd64.tar.gz
-tar -zxvf helm-v3.2.2-linux-amd64.tar.gz
-sudo mv linux-amd64/helm /usr/local/bin/helm
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 ```
 
 > See [Helm documentation for Linux](https://helm.sh/docs/intro/install/#from-the-binary-releases).
-
-Available alternative: official OpenShift 4 version
-
-```shell
-curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-amd64 -o /usr/local/bin/helm
-chmod +x /usr/local/bin/helm
-```
 
 #### Install on MacOS
 
@@ -72,23 +63,25 @@ helm version
 
 ## Install a Helm chart
 
+Explore published Helm charts at [https://hub.helm.sh :sailboat:](https://hub.helm.sh)
+
 ### Start a MySQL database with Helm
 
 Example from the [OpenShift 4.3 documentation](https://docs.openshift.com/container-platform/4.3/cli_reference/helm_cli/getting-started-with-helm-on-openshift-container-platform.html). See also the [official Helm documentation](https://helm.sh/docs/intro/using_helm/).
 
-* Add a repository of Helm charts to your local Helm client:
+1. Add a repository of Helm charts to your local Helm client:
 
 ```bash
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 ```
 
-* Update the repository:
+2. Update the repository:
 
 ```bash
 helm repo update
 ```
 
-* Install an example MySQL chart and start the application as `example-mysql`:
+3. Install an example MySQL chart, and start the application named `example-mysql`:
 
 ```bash
 helm install example-mysql stable/mysql
@@ -102,13 +95,13 @@ helm install example-mysql stable/mysql
 > oc get secret example-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode; echo
 > ```
 
-* Verify that the chart has installed successfully:
+4. Verify that the chart has installed successfully:
 
 ```bash
 helm list
 ```
 
-* Expose the MySQL service as a route:
+5. Expose the MySQL service as a route:
 
 ```bash
 oc expose service example-mysql
@@ -121,7 +114,7 @@ Or port-forward to http://localhost:3306
 oc port-forward svc/example-mysql 3306
 ```
 
-* Uninstall the application:
+### Uninstall the application
 
 ```bash
 helm uninstall example-mysql
