@@ -1,11 +1,11 @@
 ---
 id: helm
-title: Helm package manager
+title: Start from Helm charts
 ---
 
-> This feature has not been tested at the moment. Please [contact us](mailto:dsri-support-l@maastrichtuniversity.nl) if you are interested in deploying Helm Charts.
+[Helm](https://helm.sh/) is a popular package manager for [Kubernetes](https://kubernetes.io/). It allows you to easily deploy [Helm Charts](https://hub.helm.sh/) built by the community
 
-[Helm](https://helm.sh/) is a popular package manager for [Kubernetes](https://kubernetes.io/). It allows you to easily deploy [Helm Charts](https://hub.helm.sh/) built by the community, you can explore published Helm charts at [https://hub.helm.sh](https://hub.helm.sh). 
+> You can explore published Helm charts at [https://hub.helm.sh :sailboat:](https://hub.helm.sh) 
 
 ## Install the Helm client
 
@@ -26,6 +26,8 @@ echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.profile
 > Restart your laptop for the changes to take effects or execute `source ~/.profile`
 
 ### Install Helm
+
+[Install Helm 3](https://helm.sh/docs/intro/install/) in your computer terminal.
 
 #### Install on Linux
 
@@ -70,7 +72,7 @@ helm version
 
 ## Install a Helm chart
 
-### Start MySQL with Helm
+### Start a MySQL database with Helm
 
 Example from the [OpenShift 4.3 documentation](https://docs.openshift.com/container-platform/4.3/cli_reference/helm_cli/getting-started-with-helm-on-openshift-container-platform.html). See also the [official Helm documentation](https://helm.sh/docs/intro/using_helm/).
 
