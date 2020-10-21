@@ -19,27 +19,29 @@ You can also use the `oc` CLI to get the services in your project:
 oc get services
 ```
 
-### Start PostgreSQL 🐘
+### Start MariaDB 🦦
 
-Use the **Postgresql** template in the DSRI OpenShift web UI catalog.
+Use the **MariaDB** template in the DSRI OpenShift web UI catalog.
+
+> When the database has been deployed, you can connect from another pod using your favorite language and connector.
 
 Example with the `mysql` Command Line Interface:
 
 ```bash
-apt-get update && apt-get install postgresql-client -y
+apt-get update && apt-get install mariadb-client -y
 ```
 
-Connect to the Postgresql database using the service name (change depending on the username and database name you chose):
+Connect to the MariaDB database using the service name:
 
 ```bash
-psql -h postgresql-db -U postgres db
+mysql -h example-mysql -p
 ```
 
 ### Start MySQL 🐬
 
 Use the **MySQL** template in the DSRI OpenShift web UI catalog.
 
-Connect from another pod using your favorite language and connector.
+> When the database has been deployed, you can connect from another pod using your favorite language and connector.
 
 Example with the `mysql` Command Line Interface:
 
@@ -55,7 +57,27 @@ mysql -h example-mysql -p
 
 > Alternatively, MySQL databases can be started using Helm, see the [Helm documentation page](/dsri-documentation/docs/helm#install-a-helm-chart) for more details.
 
+### Start PostgreSQL 🐘
+
+Use the **Postgresql** template in the DSRI OpenShift web UI catalog.
+
+> When the database has been deployed, you can connect from another pod using your favorite language and connector.
+
+Example with the `psql` Command Line Interface:
+
+```bash
+apt-get update && apt-get install postgresql-client -y
+```
+
+Connect to the Postgresql database using the service name (change depending on the username and database name you chose):
+
+```bash
+psql -h postgresql-db -U postgres db
+```
+
 ### Start Apache Drill 🔩
+
+> Contact us to deploy Apache Drill.
 
 Use the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-containers/tree/master/kubernetes) for Kubernetes from MapR.
 
@@ -126,7 +148,7 @@ helm upgrade --install neo4j-community equinor-charts/neo4j-community --set acce
 
 > Try setting extraVars: `--set extraVars='NEO4J_dbms_connector_bolt_address=0.0.0.0:7687'`
 
-Go to the web UI, and add the following `env` variable to the YAML of the deployment created:
+Go to the web UI, and add the following `env` variable to the YAML of the deployment created ([fix](https://stackoverflow.com/questions/59439263/getting-neo4j-running-on-openshift)):
 
 ``` yaml
 env:
@@ -152,14 +174,8 @@ Manually expose a route to `neo4j-bolt` on port 7687 (click on the service, then
 >
 > Use the `neo4j` username to login.
 
-[Fix](https://stackoverflow.com/questions/59439263/getting-neo4j-running-on-openshift): add environment variable to Docker container to access bolt URL:
+Alternatively, Neo4j Enterprise edition is more recent: https://artifacthub.io/packages/helm/neo4j-helm/neo4j
 
 ```bash
--e "NEO4J_dbms_connector_bolt_address=0.0.0.0:7687"
-```
-
-Enterprise neo4j: https://artifacthub.io/packages/helm/neo4j-helm/neo4j
-
-```bash
-helm install mygraph https://github.com/neo4j-contrib/neo4j-helm/releases/download/4.1.3-1/neo4j-4.1.3-1.tgz --set core.standalone=true --set acceptLicenseAgreement=yes --set neo4jPassword=mySecretPassword
+helm install mygraph https://github.com/neo4j-contrib/neo4j-helm/releases/download/4.1.3-1/neo4j-4.1.3-1.tgz --set core.standalone=true --set acceptLicenseAgreement=yes --set neo4jPassword=mypassword
 ```
