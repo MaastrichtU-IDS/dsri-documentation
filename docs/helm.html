@@ -136,6 +136,15 @@ chmod </span>+x /usr/local/bin/helm
 <pre><code class="hljs css language-bash">helm list
 </code></pre>
 <ul>
+<li>Expose the MySQL service as a route:</li>
+</ul>
+<pre><code class="hljs css language-bash">oc expose service example-mysql
+oc get routes
+</code></pre>
+<p>Or port-forward to <a href="http://localhost:3306" target="_blank" rel="nofollow noreferrer noopener">http://localhost:3306</a></p>
+<pre><code class="hljs css language-bash">oc port-forward svc/example-mysql 3306
+</code></pre>
+<ul>
 <li>Uninstall the application:</li>
 </ul>
 <pre><code class="hljs css language-bash">helm uninstall example-mysql
