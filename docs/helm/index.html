@@ -61,7 +61,7 @@
             });
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/helm.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Start from Helm charts</h1></header><article><div><span><p><a href="https://helm.sh/" target="_blank" rel="nofollow noreferrer noopener">Helm</a> is a popular package manager for <a href="https://kubernetes.io/" target="_blank" rel="nofollow noreferrer noopener">Kubernetes</a>. It allows you to easily deploy <a href="https://hub.helm.sh/" target="_blank" rel="nofollow noreferrer noopener">Helm Charts</a> built by the community</p>
 <blockquote>
-<p>You can explore published Helm charts at <a href="https://hub.helm.sh" target="_blank" rel="nofollow noreferrer noopener">https://hub.helm.sh :sailboat:</a></p>
+<p>You can explore published Helm charts at <a href="https://hub.helm.sh" target="_blank" rel="nofollow noreferrer noopener">https://hub.helm.sh ⛵</a></p>
 </blockquote>
 <h2><a class="anchor" aria-hidden="true" id="install-the-helm-client"></a><a href="#install-the-helm-client" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install the Helm client</h2>
 <h3><a class="anchor" aria-hidden="true" id="install-golang"></a><a href="#install-golang" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install Golang</h3>
@@ -80,17 +80,11 @@ tar </span>-C /usr/local<span class="hljs-template-variable"> -xzf</span> go1.14
 <h3><a class="anchor" aria-hidden="true" id="install-helm"></a><a href="#install-helm" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install Helm</h3>
 <p><a href="https://helm.sh/docs/intro/install/" target="_blank" rel="nofollow noreferrer noopener">Install Helm 3</a> in your computer terminal.</p>
 <h4><a class="anchor" aria-hidden="true" id="install-on-linux"></a><a href="#install-on-linux" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install on Linux</h4>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">curl </span>https://get.helm.sh/helm-v3.2.2-linux-amd64.tar.gz &gt; helm-v3.2.2-linux-amd64.tar.gz<span class="hljs-keyword">
-tar </span>-zxvf helm-v3.2.2-linux-amd64.tar.gz<span class="hljs-meta">
-sudo </span>mv linux-amd64/helm /usr/local/bin/helm
+<pre><code class="hljs css language-shell"><span class="hljs-keyword">curl </span>https://raw.githubusercontent.com/helm/helm/master/scripts/<span class="hljs-built_in">get</span>-helm-3 | bash
 </code></pre>
 <blockquote>
 <p>See <a href="https://helm.sh/docs/intro/install/#from-the-binary-releases" target="_blank" rel="nofollow noreferrer noopener">Helm documentation for Linux</a>.</p>
 </blockquote>
-<p>Available alternative: official OpenShift 4 version</p>
-<pre><code class="hljs css language-shell"><span class="hljs-keyword">curl </span>-L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-amd64<span class="hljs-template-variable"> -o</span> /usr/local/bin/helm<span class="hljs-keyword">
-chmod </span>+x /usr/local/bin/helm
-</code></pre>
 <h4><a class="anchor" aria-hidden="true" id="install-on-macos"></a><a href="#install-on-macos" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install on MacOS</h4>
 <pre><code class="hljs css language-shell"><span class="hljs-keyword">brew </span><span class="hljs-built_in">install</span> helm
 </code></pre>
@@ -108,21 +102,22 @@ chmod </span>+x /usr/local/bin/helm
 <pre><code class="hljs css language-shell">helm version
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="install-a-helm-chart"></a><a href="#install-a-helm-chart" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install a Helm chart</h2>
+<p>Explore published Helm charts at <a href="https://hub.helm.sh" target="_blank" rel="nofollow noreferrer noopener">https://hub.helm.sh :sailboat:</a></p>
 <h3><a class="anchor" aria-hidden="true" id="start-a-mysql-database-with-helm"></a><a href="#start-a-mysql-database-with-helm" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Start a MySQL database with Helm</h3>
 <p>Example from the <a href="https://docs.openshift.com/container-platform/4.3/cli_reference/helm_cli/getting-started-with-helm-on-openshift-container-platform.html" target="_blank" rel="nofollow noreferrer noopener">OpenShift 4.3 documentation</a>. See also the <a href="https://helm.sh/docs/intro/using_helm/" target="_blank" rel="nofollow noreferrer noopener">official Helm documentation</a>.</p>
-<ul>
+<ol>
 <li>Add a repository of Helm charts to your local Helm client:</li>
-</ul>
+</ol>
 <pre><code class="hljs css language-bash">helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 </code></pre>
-<ul>
+<ol start="2">
 <li>Update the repository:</li>
-</ul>
+</ol>
 <pre><code class="hljs css language-bash">helm repo update
 </code></pre>
-<ul>
-<li>Install an example MySQL chart and start the application as <code>example-mysql</code>:</li>
-</ul>
+<ol start="3">
+<li>Install an example MySQL chart, and start the application named <code>example-mysql</code>:</li>
+</ol>
 <pre><code class="hljs css language-bash">helm install example-mysql stable/mysql
 </code></pre>
 <blockquote>
@@ -131,30 +126,28 @@ chmod </span>+x /usr/local/bin/helm
 <pre><code class="hljs css language-bash">oc get secret example-mysql -o jsonpath=<span class="hljs-string">"{.data.mysql-root-password}"</span> | base64 --decode; <span class="hljs-built_in">echo</span>
 </code></pre>
 </blockquote>
-<ul>
+<ol start="4">
 <li>Verify that the chart has installed successfully:</li>
-</ul>
+</ol>
 <pre><code class="hljs css language-bash">helm list
 </code></pre>
-<ul>
+<ol start="5">
 <li>Expose the MySQL service as a route:</li>
-</ul>
+</ol>
 <pre><code class="hljs css language-bash">oc expose service example-mysql
 oc get routes
 </code></pre>
 <p>Or port-forward to <a href="http://localhost:3306" target="_blank" rel="nofollow noreferrer noopener">http://localhost:3306</a></p>
 <pre><code class="hljs css language-bash">oc port-forward svc/example-mysql 3306
 </code></pre>
-<ul>
-<li>Uninstall the application:</li>
-</ul>
+<h3><a class="anchor" aria-hidden="true" id="uninstall-the-application"></a><a href="#uninstall-the-application" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Uninstall the application</h3>
 <pre><code class="hljs css language-bash">helm uninstall example-mysql
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="set-service-account-and-node-selector"></a><a href="#set-service-account-and-node-selector" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Set service account and node selector</h3>
 <p>You can also define a service account and a node selector when installing a Helm chart. For example here we make sure the application will run on DSRI CPU nodes and use the <code>anyuid</code> service account:</p>
 <pre><code class="hljs css language-bash">helm install example-mysql stable/mysql --<span class="hljs-built_in">set</span> nodeSelector.dsri.unimaas.nl/cpu=<span class="hljs-literal">true</span> --<span class="hljs-built_in">set</span> serviceAccount.name=anyuid
 </code></pre>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/dsri-documentation/docs/guide-dockerfile-to-openshift"><span class="arrow-prev">← </span><span>Start from Dockerfile</span></a><a class="docs-next button" href="/dsri-documentation/docs/openshift-delete-services"><span>Delete an application</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#install-the-helm-client">Install the Helm client</a><ul class="toc-headings"><li><a href="#install-golang">Install Golang</a></li><li><a href="#install-helm">Install Helm</a></li><li><a href="#check-helm-installation">Check Helm installation</a></li></ul></li><li><a href="#install-a-helm-chart">Install a Helm chart</a><ul class="toc-headings"><li><a href="#start-a-mysql-database-with-helm">Start a MySQL database with Helm</a></li><li><a href="#set-service-account-and-node-selector">Set service account and node selector</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/workflows-introduction">Run workflows</a><a href="/dsri-documentation/docs/openshift-install">Advanced use</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a></div><div><h5>Community</h5><a href="https://gitter.im/um-dsri/community" target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter"><img alt="Chat on Gitter" src="https://img.shields.io/gitter/room/um-dsri/community"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div style="margin-bottom:10px">We track page views and users demographics using Google Analytics to improve our users experience. <a href="https://policies.google.com/technologies/partner-sites">See how Google uses collected informations</a>.<br/>You can prevent Google Analytics tracking by enabling <a href="https://blog.mozilla.org/blog/2019/06/04/firefox-now-available-with-enhanced-tracking-protection-by-default/">Firefox Tracking Protection</a>, installing <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=fr">uBlock Origin add-on</a>, or using the official <a href="https://tools.google.com/dlpage/gaoptout/">Google Analytics Opt-out add-on</a>.</div><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2020 Institute of Data Science at Maastricht University</section><div><div class="gitter-open-chat-button">Chat with the community</div><script type="text/javascript">
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/dsri-documentation/docs/guide-dockerfile-to-openshift"><span class="arrow-prev">← </span><span>Start from Dockerfile</span></a><a class="docs-next button" href="/dsri-documentation/docs/openshift-delete-services"><span>Delete an application</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#install-the-helm-client">Install the Helm client</a><ul class="toc-headings"><li><a href="#install-golang">Install Golang</a></li><li><a href="#install-helm">Install Helm</a></li><li><a href="#check-helm-installation">Check Helm installation</a></li></ul></li><li><a href="#install-a-helm-chart">Install a Helm chart</a><ul class="toc-headings"><li><a href="#start-a-mysql-database-with-helm">Start a MySQL database with Helm</a></li><li><a href="#uninstall-the-application">Uninstall the application</a></li><li><a href="#set-service-account-and-node-selector">Set service account and node selector</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/workflows-introduction">Run workflows</a><a href="/dsri-documentation/docs/openshift-install">Advanced use</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a></div><div><h5>Community</h5><a href="https://gitter.im/um-dsri/community" target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter"><img alt="Chat on Gitter" src="https://img.shields.io/gitter/room/um-dsri/community"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div style="margin-bottom:10px">We track page views and users demographics using Google Analytics to improve our users experience. <a href="https://policies.google.com/technologies/partner-sites">See how Google uses collected informations</a>.<br/>You can prevent Google Analytics tracking by enabling <a href="https://blog.mozilla.org/blog/2019/06/04/firefox-now-available-with-enhanced-tracking-protection-by-default/">Firefox Tracking Protection</a>, installing <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=fr">uBlock Origin add-on</a>, or using the official <a href="https://tools.google.com/dlpage/gaoptout/">Google Analytics Opt-out add-on</a>.</div><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2020 Institute of Data Science at Maastricht University</section><div><div class="gitter-open-chat-button">Chat with the community</div><script type="text/javascript">
         ((window.gitter = {}).chat = {}).options = {
           showChatByDefault: false,
           activationElement: '.gitter-open-chat-button',
