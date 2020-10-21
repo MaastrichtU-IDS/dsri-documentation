@@ -33,6 +33,27 @@ You can run this command to ask git to save your password:
 git config credential.helper cache
 ```
 
+## Start VSCode with root privileges
+
+> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+
+Those templates will run VSCode with the `coder` user which has `sudo` privileges.
+
+Create the templates in your project catalog:
+
+```bash
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-vscode-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-vscode-root-ephemeral.yml
+```
+
+You can deploy it using the **VisualStudio Code with root user** solutions in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog):
+
+2 deployments are available:
+
+🦋 **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted.
+
+🗄️ **Persistent**: use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
+
 ## VSCode for GPU
 
 See the [Deploy on GPU](/dsri-documentation/docs/deploy-on-gpu) page to deploy a VisualStudio Code server on GPU.
