@@ -60,10 +60,12 @@
               }
             });
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/openshift-install.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Install the CLI</h1></header><article><div><span><p><img src="/dsri-documentation/img/openshift-logo.png" alt="OpenShift"></p>
-<p>Install the OpenShift Command Line Interface (CLI) to access the DSRI from your computer's terminal. It enable to:</p>
+<p>Install the <strong>OpenShift Command Line Interface (CLI)</strong> to access the DSRI from your computer's terminal.</p>
+<p>The <code>oc</code> CLI enables to perform operations on your applications deployed on the DSRI, such as:</p>
 <ul>
-<li>Copy large files from/to the DSRI using <code>oc cp</code></li>
-<li>Connect to a pod terminal using <code>oc rsh</code></li>
+<li>Copy large files to or from the DSRI using <code>oc cp</code></li>
+<li>Connect to an application terminal using <code>oc rsh</code></li>
+<li>Get applications running in your project with <code>oc get pods</code></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="on-linux"></a><a href="#on-linux" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>On Linux</h2>
 <pre><code class="hljs css language-shell"><span class="hljs-keyword">wget </span>https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz<span class="hljs-keyword">
@@ -84,16 +86,20 @@ sudo </span>mv<span class="hljs-keyword"> oc </span>kubectl /usr/local/bin/
 <p>See the <a href="https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-mac" target="_blank" rel="nofollow noreferrer noopener">official documentation on MacOS</a> for more details.</p>
 </blockquote>
 <h2><a class="anchor" aria-hidden="true" id="on-windows"></a><a href="#on-windows" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>On Windows</h2>
-<p>OC version: <strong>3.11.0</strong></p>
-<blockquote>
-<p>We strongly recommend to use the PowerShell to install and run the <code>oc</code> tool</p>
-</blockquote>
-<p>Click on <a href="https://github.com/openshift/origin/releases/download/v3.7.2/openshift-origin-client-tools-v3.7.2-282e43f-windows.zip" target="_blank" rel="nofollow noreferrer noopener">Windows Client Tools</a> to download OC tool zip file.</p>
-<p>After downloading the <code>.zip</code> and extract all.</p>
-<p>Next set the system <strong>PATH</strong> environment variables for the directory containing <code>oc.exe</code>, which now resides in your newly created <strong>OpenShift</strong> folder inside of <span style='color:red'><em>C:\Program Files (x86)\OpenShift</em></span></p>
-<p>Open the Control Panel, and click on <strong>System</strong>. Click on <strong>Advance system settings</strong> on the left or open the <strong>Advance</strong> tab of <em>System Properties.</em> Click the button labeled <strong>Environment Variables..</strong> at the bottom. Look for the option in the <em>User variables</em> section for <em>Path.</em></p>
+<ol>
+<li><p>Create a folder for OpenShift in Program Files: <code>C:\Program Files (x86)\OpenShift</code></p></li>
+<li><p>Click <a href="https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-windows.zip" target="_blank" rel="nofollow noreferrer noopener">here</a> to download the <code>oc</code> tool <code>.zip</code> file, and move it to <code>C:\Program Files (x86)\OpenShift</code>.</p></li>
+<li><p>Extract the <code>.zip</code> file.</p></li>
+<li><p>Next set the system <strong>PATH</strong> environment variables for the directory containing the <code>oc.exe</code> file, which now resides in your newly created <strong>OpenShift</strong> folder inside of <code>C:\Program Files (x86)\OpenShift</code></p>
+<ol>
+<li>Open the Control Panel, and click on <strong>System</strong></li>
+<li>Click on <strong>Advance system settings</strong> on the left or open the <strong>Advance</strong> tab of <em>System Properties.</em></li>
+<li>Click the button labeled <strong>Environment Variables...</strong> at the bottom.</li>
+<li>Look for the option in the <strong>User variables</strong> section for <strong>Path</strong>.</li>
+</ol></li>
+</ol>
 <p><img class="screenshot" src="/dsri-documentation/img/OC_Path.png" alt="Set OC Path" style="zoom: 100%; max-height: 500px; max-width: 500px;"></p>
-<p>This makes it easy to access OC Tools by simply opening up command prompt and typing in an <code>oc</code> command.</p>
+<p>This makes it easy to access the <code>oc</code> command line interface by simply opening up the <strong>PowerShell</strong> and typing in the <code>oc</code> command, e.g.:</p>
 <pre><code class="hljs css language-powershell">oc version
 </code></pre>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/dsri-documentation/docs/access-dsri"><span class="arrow-prev">← </span><span>Access the DSRI</span></a><a class="docs-next button" href="/dsri-documentation/docs/openshift-login"><span>Login with the CLI</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#on-linux">On Linux</a></li><li><a href="#on-mac">On Mac</a></li><li><a href="#on-windows">On Windows</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/workflows-introduction">Run workflows</a><a href="/dsri-documentation/docs/openshift-install">Advanced use</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a></div><div><h5>Community</h5><a href="https://gitter.im/um-dsri/community" target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter"><img alt="Chat on Gitter" src="https://img.shields.io/gitter/room/um-dsri/community"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div style="margin-bottom:10px">We track page views and users demographics using Google Analytics to improve our users experience. <a href="https://policies.google.com/technologies/partner-sites">See how Google uses collected informations</a>.<br/>You can prevent Google Analytics tracking by enabling <a href="https://blog.mozilla.org/blog/2019/06/04/firefox-now-available-with-enhanced-tracking-protection-by-default/">Firefox Tracking Protection</a>, installing <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=fr">uBlock Origin add-on</a>, or using the official <a href="https://tools.google.com/dlpage/gaoptout/">Google Analytics Opt-out add-on</a>.</div><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2020 Institute of Data Science at Maastricht University</section><div><div class="gitter-open-chat-button">Chat with the community</div><script type="text/javascript">
