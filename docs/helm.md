@@ -106,6 +106,19 @@ helm install example-mysql stable/mysql
 helm list
 ```
 
+* Expose the MySQL service as a route:
+
+```bash
+oc expose service example-mysql
+oc get routes
+```
+
+Or port-forward to http://localhost:3306
+
+```bash
+oc port-forward svc/example-mysql 3306
+```
+
 * Uninstall the application:
 
 ```bash
