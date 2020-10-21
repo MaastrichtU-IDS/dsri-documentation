@@ -13,6 +13,12 @@ You can connect to a database from another application in the same project by us
 
 <img src="/dsri-documentation/img/screenshot_database_service.png" alt="Databases in catalog web UI" style="max-width: 100%; max-height: 100%;" />
 
+You can also use the `oc` CLI to get the services in your project:
+
+```bash
+oc get services
+```
+
 ### Start PostgreSQL 🐘
 
 Use the **Postgresql** template in the DSRI OpenShift web UI catalog.
@@ -49,7 +55,7 @@ mysql -h example-mysql -p
 
 > Alternatively, MySQL databases can be started using Helm, see the [Helm documentation page](/dsri-documentation/docs/helm#install-a-helm-chart) for more details.
 
-### Start apache-drill 🔩
+### Start Apache Drill 🔩
 
 Use the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-containers/tree/master/kubernetes) for Kubernetes from MapR.
 
@@ -72,39 +78,6 @@ Use the **Redis** template in the DSRI OpenShift web UI catalog.
 > Use the service name as hostname to connect from another pod in the same project.
 
 ## Graph databases
-
-### Neo4j
-
-Add repository:
-
-```bash
-helm repo add equinor-charts https://equinor.github.io/helm-charts/charts/
-helm repo update 
-```
-
-Start Neo4j in current project:
-
-```bash
-helm upgrade --install neo4j-community equinor-charts/neo4j-community --set acceptLicenseAgreement=yes --set neo4jPassword=myPassword
-```
-
-Expose a route to Neo4j:
-
-```bash
-oc expose service neo4j-community-neo4j-community 
-```
-
-Manually expose a route to `neo4j-bolt` on port 7687 (click on the service, then create route)
-
-> Provide the bolt route URL, e.g. http://neo4j-bolt-ids-shared-project.app.dsri.unimaas.nl
->
-> Use the `neo4j` username to login.
-
-[Fix](https://stackoverflow.com/questions/59439263/getting-neo4j-running-on-openshift): add environment variable to Docker container to access bolt URL:
-
-```bash
--e "NEO4J_dbms_connector_bolt_address=0.0.0.0:7687"
-```
 
 ### Ontotext GraphDB triplestore
 
@@ -133,3 +106,60 @@ curl -X POST --data-binary @blazegraph-dataloader.txt --header 'Content-Type:tex
 ### Start Virtuoso triplestore
 
 Use the [official OpenLink deployment](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/pods/d2s-pod-virtuoso7.yaml) and `anyuid` service account.
+
+### Start Neo4j
+
+From [Neo4j community charts](https://artifacthub.io/packages/helm/equinor-charts/neo4j-community).
+
+Add repository:
+
+```bash
+helm repo add equinor-charts https://equinor.github.io/helm-charts/charts/
+helm repo update 
+```
+
+Start Neo4j in current project:
+
+```bash
+helm upgrade --install neo4j-community equinor-charts/neo4j-community --set acceptLicenseAgreement=yes --set neo4jPassword=mypassword
+```
+
+> Try setting extraVars: `--set extraVars='NEO4J_dbms_connector_bolt_address=0.0.0.0:7687'`
+
+Go to the web UI, and add the following `env` variable to the YAML of the deployment created:
+
+``` yaml
+env:
+  - name: NEO4J_dbms_connector_bolt_address
+    value: 0.0.0.0:7687
+```
+
+3 nodes cluster:
+
+```bash
+helm install mygraph RELEASE_URL --set acceptLicenseAgreement=yes --set neo4jPassword=mySecretPassword
+```
+
+Expose a route to Neo4j:
+
+```bash
+oc expose service neo4j-community-neo4j-community 
+```
+
+Manually expose a route to `neo4j-bolt` on port 7687 (click on the service, then create route)
+
+> Provide the bolt route URL, e.g. http://neo4j-bolt-ids-shared-project.app.dsri.unimaas.nl
+>
+> Use the `neo4j` username to login.
+
+[Fix](https://stackoverflow.com/questions/59439263/getting-neo4j-running-on-openshift): add environment variable to Docker container to access bolt URL:
+
+```bash
+-e "NEO4J_dbms_connector_bolt_address=0.0.0.0:7687"
+```
+
+Enterprise neo4j: https://artifacthub.io/packages/helm/neo4j-helm/neo4j
+
+```bash
+helm install mygraph https://github.com/neo4j-contrib/neo4j-helm/releases/download/4.1.3-1/neo4j-4.1.3-1.tgz --set core.standalone=true --set acceptLicenseAgreement=yes --set neo4jPassword=mySecretPassword
+```
