@@ -66,6 +66,10 @@ class Footer extends React.Component {
               aria-label="Star this project on GitHub">
               <img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&style=social"/>
             </a>
+            <a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues"
+              target="_blank" aria-label="GitHub issues">
+              <img alt="GitHub issues" src="https://img.shields.io/github/issues/MaastrichtU-IDS/dsri-documentation?label=dsri-documentation"/>
+            </a>
           </div>
 
           <div>
