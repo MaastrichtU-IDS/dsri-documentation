@@ -3,9 +3,10 @@
     "Get started": ["introduction", "access-dsri", "openshift-install", 
       "openshift-login", "openshift-storage", "prepare-project-for-dsri"],
     "Start applications": [ "deploy-from-template", "deploy-jupyter", "deploy-rstudio", "deploy-vscode",
-      "deploy-on-gpu", "deploy-database", "deploy-spark", "deploy-additional-services", "deploy-from-docker", "guide-dockerfile-to-openshift"],
+      "deploy-on-gpu", "deploy-database", "deploy-spark", "deploy-additional-services",
+      "deploy-from-docker", "guide-dockerfile-to-openshift", "helm"],
     "Guides": [ "openshift-delete-services", "openshift-load-data", "openshift-commands", 
-      "openshift-debug", "openshift-secret", "helm","tools-machine-learning", 
+      "openshift-debug", "openshift-secret", "tools-machine-learning", 
       {
         "type": "subcategory",
         "label": "Workflows",
