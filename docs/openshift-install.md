@@ -5,10 +5,13 @@ title: Install the CLI
 
 ![OpenShift](/dsri-documentation/img/openshift-logo.png)
 
-Install the OpenShift Command Line Interface (CLI) to access the DSRI from your computer's terminal. It enable to:
+Install the **OpenShift Command Line Interface (CLI)** to access the DSRI from your computer's terminal. 
 
-* Copy large files from/to the DSRI using `oc cp`
-* Connect to a pod terminal using `oc rsh`
+The `oc` CLI enables to perform operations on your applications deployed on the DSRI, such as:
+
+* Copy large files to or from the DSRI using `oc cp`
+* Connect to an application terminal using `oc rsh`
+* Get applications running in your project with `oc get pods`
 
 ## On Linux
 
@@ -33,21 +36,20 @@ brew install openshift-cli
 
 ## On Windows
 
-OC version: **3.11.0**
+1. Create a folder for OpenShift in Program Files: `C:\Program Files (x86)\OpenShift`
+2. Click [here](https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-windows.zip) to download the `oc` tool `.zip` file, and move it to `C:\Program Files (x86)\OpenShift`.
 
-> We strongly recommend to use the PowerShell to install and run the `oc` tool
+2. Extract the `.zip` file.
 
-Click on [Windows Client Tools](https://github.com/openshift/origin/releases/download/v3.7.2/openshift-origin-client-tools-v3.7.2-282e43f-windows.zip) to download OC tool zip file.
-
-After downloading the `.zip` and extract all.
-
-Next set the system **PATH** environment variables for the directory containing `oc.exe`, which now resides in your newly created **OpenShift** folder inside of <span style='color:red'>*C:\Program Files (x86)\OpenShift*</span> 
-
-Open the Control Panel, and click on **System**. Click on **Advance system settings** on the left or open the **Advance** tab of *System Properties.* Click the button labeled **Environment Variables..** at the bottom. Look for the option in the *User variables* section for *Path.*
+3. Next set the system **PATH** environment variables for the directory containing the `oc.exe` file, which now resides in your newly created **OpenShift** folder inside of `C:\Program Files (x86)\OpenShift`
+   1. Open the Control Panel, and click on **System**
+   2. Click on **Advance system settings** on the left or open the **Advance** tab of *System Properties.* 
+   3. Click the button labeled **Environment Variables...** at the bottom. 
+   4. Look for the option in the **User variables** section for **Path**.
 
 <img class="screenshot" src="/dsri-documentation/img/OC_Path.png" alt="Set OC Path" style="zoom: 100%; max-height: 500px; max-width: 500px;">
 
-This makes it easy to access OC Tools by simply opening up command prompt and typing in an `oc` command.
+This makes it easy to access the `oc` command line interface by simply opening up the **PowerShell** and typing in the `oc` command, e.g.:
 
 ```powershell
 oc version

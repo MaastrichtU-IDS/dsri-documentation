@@ -60,7 +60,8 @@ class HomeSplash extends React.Component {
 
     return (
       <SplashContainer>
-        <Logo img_src={`${baseUrl}img/openshift-um-logo.png`} />
+        {/* <Logo img_src={`${baseUrl}img/openshift-um-logo.png`} /> */}
+        <Logo img_src={`${baseUrl}img/dsri_logo.png`} />
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
@@ -176,7 +177,7 @@ class Index extends React.Component {
 
     const Storage = () => (
       <div>
-      <Block background="dark">
+      <Block>
         {[
           {
             content:
@@ -222,7 +223,7 @@ class Index extends React.Component {
           <FeatureCallout />
           <BuildDataApp />
           <GetComputingPower />
-          <RunJobInParallel />
+          {/* <RunJobInParallel /> */}
           <Storage />
           <Showcase />
         </div>
