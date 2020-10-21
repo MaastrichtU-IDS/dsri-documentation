@@ -69,7 +69,7 @@ Explore published Helm charts at [https://hub.helm.sh ⛵](https://hub.helm.sh)
 
 Example from the [OpenShift 4.3 documentation](https://docs.openshift.com/container-platform/4.3/cli_reference/helm_cli/getting-started-with-helm-on-openshift-container-platform.html). See also the [official Helm documentation](https://helm.sh/docs/intro/using_helm/).
 
-1. Add a repository of Helm charts to your local Helm client:
+1. Add the repository of official Helm charts to your local Helm client:
 
 ```bash
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
@@ -126,6 +126,17 @@ You can also define deployment parameters when installing a Helm chart, such as 
 
 For example, here we make sure the application will run on DSRI CPU nodes and use the `anyuid` service account:
 
+Add Bitnami repository:
+
 ```bash
-helm install example-mysql stable/mysql --set nodeSelector.dsri.unimaas.nl/cpu=true --set serviceAccount.name=anyuid
+helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
+
+Install and start Postgresql:
+
+```bash
+helm install postgresql-db bitnami/postgresql --set nodeSelector.dsri.unimaas.nl/cpu=true --set serviceAccount.name=anyuid
+```
+
+
+

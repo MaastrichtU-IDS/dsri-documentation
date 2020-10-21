@@ -85,3 +85,10 @@ In case you want to delete or update the Spark template:
 oc delete -f spark-template-dsri.yml
 ```
 
+## Alternative: deploy Spark with Helm
+
+You can use Helm to deploy Spark on OpenShift.
+
+1. Install Helm following instructions at [this page](/dsri-documentation/docs/helm).
+
+2. Install Microsoft Spark charts, with Zeppelin notebook and Livy API: https://artifacthub.io/packages/helm/microsoft/spark

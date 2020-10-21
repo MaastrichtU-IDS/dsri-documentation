@@ -62,11 +62,17 @@ See the GPU benchmarks for examples of MPI job definitions:
 
 > [Contact us](mailto:dsri-support-l@maastrichtuniversity.nl) to get access to OpenMPI on the DSRI 📬
 
-## File Browser
+## File browser
 
-Deploy a filebrowser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume.
+Deploy a file browser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume in case you need it (JupyterLab, RStudio and VisualStudio Code server already include a file browser)
 
-File browser can be deployed from the [OpenShift Catalog](https://app.dsri.unimaas.nl:8443/console/catalog):
+Add the file browser template:
+
+```bash
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-filebrowser.yml
+```
+
+Then the file browser can be deployed from the [OpenShift Catalog](https://app.dsri.unimaas.nl:8443/console/catalog):
 
 <img src="/dsri-documentation/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style="max-width: 100%; max-height: 100%;" />
 
