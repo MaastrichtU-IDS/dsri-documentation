@@ -63,7 +63,7 @@ helm version
 
 ## Install a Helm chart
 
-Explore published Helm charts at [https://hub.helm.sh :sailboat:](https://hub.helm.sh)
+Explore published Helm charts at [https://hub.helm.sh ⛵](https://hub.helm.sh)
 
 ### Start a MySQL database with Helm
 
@@ -120,9 +120,11 @@ oc port-forward svc/example-mysql 3306
 helm uninstall example-mysql
 ```
 
-### Set service account and node selector
+### Set deployment parameters
 
-You can also define a service account and a node selector when installing a Helm chart. For example here we make sure the application will run on DSRI CPU nodes and use the `anyuid` service account:
+You can also define deployment parameters when installing a Helm chart, such as the **service account** and **node selector**. 
+
+For example, here we make sure the application will run on DSRI CPU nodes and use the `anyuid` service account:
 
 ```bash
 helm install example-mysql stable/mysql --set nodeSelector.dsri.unimaas.nl/cpu=true --set serviceAccount.name=anyuid
