@@ -7,7 +7,7 @@ title: Start databases
 
 ### Start MySQL
 
-MySQL databases can be started using Helm, see the [Helm documentation page](/dsri-documentation/docs/helm) to start a MySQL database in your project.
+MySQL databases can be started using Helm, see the [Helm documentation page](/dsri-documentation/docs/helm#install-a-helm-chart) to start a MySQL database in your project.
 
 ### Start apache-drill
 

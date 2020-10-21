@@ -43,9 +43,9 @@ See [this page](https://maastrichtu-ids.github.io/dsri-documentation/docs/access
 ### Software
 
 * **[OKD 3.11](https://www.okd.io/)** (Open Source version of [RedHat OpenShift](https://www.openshift.com/)) to run services and jobs.
-  * Working on upgrading to [OKD 4.5](https://github.com/openshift/okd/releases)
+  * We are working on upgrading to [OKD 4.5](https://github.com/openshift/okd/releases)
 * **[HP MapR](https://mapr.com/)** for distributed storage.
-  * [RedHat Ceph storage](https://www.redhat.com/fr/technologies/storage/ceph) also considered
+  * [RedHat Ceph storage](https://www.redhat.com/fr/technologies/storage/ceph) is also considered
 
 ### Hardware
 
@@ -53,11 +53,14 @@ See [this page](https://maastrichtu-ids.github.io/dsri-documentation/docs/access
 
 |                | RAM (GB) | CPU (cores) | Storage (TB) |
 | -------------- | -------- | ----------- | ------------ |
-| Node capacity  | 512 GB   | 64 cores    | 120 TB       |
-| Total capacity | 8 192 GB | 1 024 cores | 1 920 TB     |
+| Node capacity  | 512 GB   | 128 cores   | 120 TB       |
+| Total capacity | 8 192 GB | 2 048 cores | 1 920 TB     |
 
-* 1 GPU node
-  * Nvidia DGX1: **8x** Tesla V100 - 32GB GPU
+* 1 GPU node: **Nvidia DGX1** 8x Tesla V100 - 32GB GPU
+
+|                   | GPUs | RAM (GB) | CPU (cores) |
+| ----------------- | ---- | -------- | ----------- |
+| GPU node capacity | 8    | 528 GB   | 80 cores    |
 
 ## History of the DSRI
 
