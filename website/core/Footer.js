@@ -40,11 +40,11 @@ class Footer extends React.Component {
             <a href={this.docUrl('introduction')}>
               Get started
             </a>
-            <a href={this.docUrl('workflows-introduction')}>
-              Run workflows
+            <a href={this.docUrl('deploy-from-template')}>
+              Start applications
             </a>
             <a href={this.docUrl('openshift-install')}>
-              Advanced use
+              Install the CLI
             </a>
           </div>
 
@@ -66,6 +66,7 @@ class Footer extends React.Component {
               aria-label="Star this project on GitHub">
               <img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&style=social"/>
             </a>
+            <h5>Issues</h5>
             <a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues"
               target="_blank" aria-label="GitHub issues">
               <img alt="GitHub issues" src="https://img.shields.io/github/issues/MaastrichtU-IDS/dsri-documentation?label=dsri-documentation"/>
