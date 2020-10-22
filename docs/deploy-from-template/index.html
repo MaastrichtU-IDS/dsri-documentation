@@ -61,16 +61,6 @@
             });
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/deploy-from-template.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Quickstart with templates</h1></header><article><div><span><p>The easiest to get started with the DSRI is to use the predefined templates to deploy an application.</p>
 <h2><a class="anchor" aria-hidden="true" id="start-applications-using-templates"></a><a href="#start-applications-using-templates" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Start applications using templates</h2>
-<p>Multiple applications are available for Data Science:</p>
-<ul>
-<li>VisualStudio Code server</li>
-<li>JupyterHub with GitHub authentication</li>
-<li>Multiple flavors of <a href="https://github.com/jupyter/docker-stacks" target="_blank" rel="nofollow noreferrer noopener">JupyterLab</a> (scipy, tensorflow, all-spark, and more)</li>
-<li>RStudio with a Shiny server</li>
-<li>Tensorflow or PyTorch on GPU (with JupyterLab or VisualStudio Code)</li>
-<li>Apache Spark cluster with JupyterLab</li>
-<li>Apache Flink cluster for Streaming applications (require <code>anyuid</code> privileges)</li>
-</ul>
 <p>To see all templates defined and quickly start Data Science applications on the DSRI, go to your project catalog in the OpenShift web UI:</p>
 <ul>
 <li>At the top right of the page: <strong>Add to Project</strong> &gt; <strong>Browse Catalog</strong></li>
@@ -81,7 +71,7 @@
 <blockquote>
 <p>You can find additional documentation about starting those applications in the next step of this docs.</p>
 </blockquote>
-<p>If the templates are not available, you can create the JupyterLab, VisualStudio Code, RStudio, and JupyterHub templates in your project:</p>
+<p>If the templates are not available, you can create the Data Science templates in your project (JupyterLab, VisualStudio Code, RStudio, and JupyterHub) using the following <code>oc</code> commands:</p>
 <pre><code class="hljs css language-bash">oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-jupyterhub-github-auth.yml
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-jupyterlab-dynamic.yml
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-jupyterlab-persistent.yml
