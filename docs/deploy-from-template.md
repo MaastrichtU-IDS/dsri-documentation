@@ -7,16 +7,6 @@ The easiest to get started with the DSRI is to use the predefined templates to d
 
 ## Start applications using templates
 
-Multiple applications are available for Data Science:
-
-* VisualStudio Code server
-* JupyterHub with GitHub authentication
-* Multiple flavors of [JupyterLab](https://github.com/jupyter/docker-stacks) (scipy, tensorflow, all-spark, and more)
-* RStudio with a Shiny server
-* Tensorflow or PyTorch on GPU (with JupyterLab or VisualStudio Code)
-* Apache Spark cluster with JupyterLab
-* Apache Flink cluster for Streaming applications (require `anyuid` privileges)
-
 To see all templates defined and quickly start Data Science applications on the DSRI, go to your project catalog in the OpenShift web UI:
 * At the top right of the page: **Add to Project** > **Browse Catalog**
 * Click on **Filter** to choose the **Institute of Data Science, UM** publisher
@@ -27,7 +17,7 @@ You will need root containers enabled to be able to run some of those templates
 
 > You can find additional documentation about starting those applications in the next step of this docs.
 
-If the templates are not available, you can create the JupyterLab, VisualStudio Code, RStudio, and JupyterHub templates in your project:
+If the templates are not available, you can create the Data Science templates in your project (JupyterLab, VisualStudio Code, RStudio, and JupyterHub) using the following `oc` commands:
 
 ```bash
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-jupyterhub-github-auth.yml

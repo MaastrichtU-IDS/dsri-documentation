@@ -28,14 +28,6 @@ Access the DSRI web UI at **[https://app.dsri.unimaas.nl:8443](https://app.dsri.
 
 If you do not have access to the DSRI contact us.
 
-The DSRI web UI gives an overview of your project and the applications currently running. You can easily start new Data Science applications using templates from the **Institute of Data Science, UM** provider:
-
-* VisualStudio Code server
-* JupyterHub with GitHub authentication
-* Multiple flavors of [JupyterLab](https://github.com/jupyter/docker-stacks) (scipy, tensorflow, all-spark, and more)
-* RStudio with a Shiny server
-* Tensorflow or PyTorch on GPU (with JupyterLab or VisualStudio Code)
-* Apache Spark cluster with JupyterLab
-* Apache Flink cluster for Streaming applications (require `anyuid` privileges)
+The DSRI web UI gives an overview of your project and the applications currently running. You can easily start new Data Science applications using templates from the **Institute of Data Science, UM** provider.
 
 > We recommend you to install the `oc` command line tool to perform additional operations on your applications, such as loading large amount of data using `oc cp`, or deploying an application from a local Dockerfile.

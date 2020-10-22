@@ -11,9 +11,11 @@ The `oc` CLI enables to perform operations on your applications deployed on the 
 
 * Copy large files to or from the DSRI using `oc cp`
 * Connect to an application terminal using `oc rsh`
-* Get applications running in your project with `oc get pods`
+* Get the applications running in your project with `oc get pods`
 
 ## On Linux
+
+Download `oc` and `kubectl`:
 
 ```shell
 wget https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
@@ -29,8 +31,6 @@ sudo mv oc kubectl /usr/local/bin/
 ```shell
 brew install openshift-cli
 ```
-
-> For people that know what they are doing: download the `.zip` from [GitHub Releases](https://github.com/openshift/origin/releases) and unzip it in your path.
 
 > See the [official documentation on MacOS](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-mac) for more details.
 

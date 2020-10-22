@@ -66,6 +66,8 @@ See the GPU benchmarks for examples of MPI job definitions:
 
 Deploy a file browser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume in case you need it (JupyterLab, RStudio and VisualStudio Code server already include a file browser)
 
+> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+
 Add the file browser template:
 
 ```bash

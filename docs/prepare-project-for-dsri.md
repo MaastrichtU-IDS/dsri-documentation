@@ -23,6 +23,10 @@ If you prefer your local environment for development, and only run big tasks on 
 * Make sure your code **does not use absolute paths**. For example, `C://Desktop/myproject/data` will not work when running on the DSRI, use a relative path such as `../data`
 * **Use `git`** to synchronize your local development code with the code on the DSRI
 
+## Define your deployment strategy
+
+<img src="/dsri-documentation/img/dsri-deploy-flowchart.png" alt="DSRI deployment flowchart" style="max-width: 100%; max-height: 100%;" />
+
 ## Get your data ready
 
 If your project is using a large amount of data that cannot be pushed to a git repository, you will need to use a persistent storage to store your data on the DSRI. See the [Storage on the DSRI](/dsri-documentation/docs/openshift-storage) documentation for more details about creating a persistent storage.

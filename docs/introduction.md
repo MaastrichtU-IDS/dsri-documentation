@@ -7,36 +7,33 @@ The Data Science Research Infrastructure is an [OpenShift](https://www.openshift
 
 The DSRI provides a graphical user interface to easily run and manage services ([OKD](https://www.okd.io/), the Open Source version of [OpenShift](https://www.openshift.com/)). 
 
-## What can be done on the DSRI?
+## Getting started
 
-Any service that: 
+### What can be done on the DSRI ✔️
 
-* runs in a Docker container 🐳 anything can be easily executed in a Docker container (apart from some proprietary software)
-* does not need to be accessed from outside the UM network (or the UM VPN) 🔒
+Run Data Science applications in [Docker container 🐳](https://www.docker.com/) on the [UM network](https://vpn.maastrichtuniversity.nl/), such as:
 
-In more details:
+* VisualStudio Code server
+* Multiple flavors of [JupyterLab](https://github.com/jupyter/docker-stacks) (scipy, tensorflow, all-spark, and more)
+* JupyterHub with GitHub authentication
+* RStudio, with a complementary Shiny server
+* Tensorflow or PyTorch on Nvidia GPU (with JupyterLab or VisualStudio Code)
+* SQL databases (MariaDB, MySQL, PostgreSQL)
+* NoSQL databases (MongoDB, Redis)
+* Graph databases (GraphDB, Blazegraph, Virtuoso)
+* Apache Spark cluster with JupyterLab
+* Apache Flink cluster for Streaming applications
 
-**What can be done easily on the DSRI ✔️**
+The data will be safely stored in persistent volumes.
 
-* [Start any Docker image](https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-from-docker) from the web UI
-* [Start a simple Jupyter Notebook or RStudio](https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter) through the web UI
-* Deploy TensorFlow or PyTorch [on GPUs](https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-on-gpu) (8 Nvidia DGX-1 GPU cores are available)
-* Start a [Apache Spark cluster](/dsri-documentation/docs/deploy-spark) with multiples nodes, and a Jupyter Notebook from the web UI
-* [Request a persistent storage 📬](mailto:dsri-support-l@maastrichtuniversity.nl) to store data for your computational project (from GB to a few TB).
+For user already familiar with those concepts [workflow orchestration tools](/dsri-documentation/docs/workflows-introduction) can be used, such as [Argo workflows](/dsri-documentation/docs/workflows-argo), [Nextflow](/dsri-documentation/docs/workflows-nextflow) or [CWL Calrissian](/dsri-documentation/docs/cwl-calrissian).
 
-**What can be done with extra configuration ⌨️**
+### What cannot be done ❌
 
-* Use [workflow orchestration tools](/dsri-documentation/docs/workflows-introduction), such as [Argo workflows](/dsri-documentation/docs/workflows-argo), [Nextflow](/dsri-documentation/docs/workflows-nextflow) or [CWL Calrissian](/dsri-documentation/docs/cwl-calrissian).
-* Run [OpenMPI](https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-services#openmpi) jobs
+* Since DSRI can only be accessed when on the physical UM network or using the [UM VPN](https://vpn.maastrichtuniversity.nl/), deployed services will not be available on the public Internet 🔒
+* All activities must be legal in basis. You must closely examine and abide by the terms and conditions of any data, software, or web service that you use as part of your work 📜
 
-**What cannot be done ❌**
-
-* Since DSRI can only be accessed when on the physical UM network or using the UM VPN, deployed services will not be available on the public Internet.
-* All activities must be legal in basis. You must closely examine and abide by the terms and conditions of any data, software, or web service that you use as part of your work. 
-
-**Getting started**
-
-See [this page](https://maastrichtu-ids.github.io/dsri-documentation/docs/access-dsri) to request an account, and run your services on the DSRI from the UM network.
+> See [this page](https://maastrichtu-ids.github.io/dsri-documentation/docs/access-dsri) to request an account, and run your services on the DSRI from the [UM network](https://vpn.maastrichtuniversity.nl/).
 
 ## The DSRI specifications
 
