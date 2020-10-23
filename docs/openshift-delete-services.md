@@ -71,16 +71,29 @@ oc get pod
 Use the pod ID retrieved to delete the pod:
 
 ```shell
-oc delete pod <pod_id>
+oc delete pod <POD_ID>
 ```
 
 Force deletion:
 
 ```shell
-oc delete pod --force --grace-period=0 <pod_id>
+oc delete pod --force --grace-period=0 <POD_ID>
 ```
 
----
+## Delete a project
+
+To properly delete a project you need to first delete all objects in this project:
+
+```bash
+oc delete all,configmap,pvc,serviceaccount,rolebinding,secret,serviceinstance --all -n <PROJECT_ID>
+```
+
+Then delete the project:
+
+```bash
+oc delete project <PROJECT_ID>
+```
+
 
 ## Fix stuck deletions
 
@@ -105,29 +118,14 @@ You can also do it using the `oc` CLI:
 
 ```shell
 oc get serviceinstance
-oc edit serviceinstance <service_instance_id>
-
-# Delete the following lines in metadata:
-finalizers: null 	# add null
-  - kubernetes-incubator/service-catalog   # Delete this line
+ 
+# Delete problematic line from serviceinstance to delete them
+oc get serviceinstance -o yaml | grep Terminating | sed "/kubernetes-incubator/d"| oc apply -f - 
 ```
 
-> The OpenShift Catalog does not handle deploying templates globally (on all projects). If a template is deployed globally, OpenShift will try to create unnecessary objects such as provisioned service (aka. **ServiceInstance**), or ClusterClasses. Those services are not used, and some of them cannot be deleted easily. 
+> The OpenShift Catalog does not handle deploying templates globally properly (on all projects). If a template is deployed globally, OpenShift will try to create unnecessary objects such as provisioned service (aka. ServiceInstance), or ClusterClasses. Those services are not used, and some of them cannot be deleted easily. 
 >
-> At the moment it is much more reliable to create the template in each project.
-
-You can also do it through the 
-
-* Go to the **Provisionned Service** in the OpenShift UI overview
-
-* Click on **Edit YAML**
-
-* Remove the **finalizers**:
-
-  ```yaml
-    finalizers:
-      - kubernetes-incubator/service-catalog
-  ```
+> At the moment it is more reliable to create the template in directly in your project if you need to use it multiple time.
 
 ### Delete stuck project
 

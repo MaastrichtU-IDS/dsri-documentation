@@ -37,6 +37,12 @@ oc create -f my-pod.yaml
 oc get pod
 ```
 
+List running pods:
+
+```bash
+oc get pods --field-selector=status.phase=Running
+```
+
 ### Get specific pod
 
 ```shell
