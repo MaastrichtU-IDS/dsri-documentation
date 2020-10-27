@@ -75,10 +75,10 @@ class Footer extends React.Component {
 
           <div>
             <h5>Community</h5>
-            <a href="https://gitter.im/um-dsri/community"
-              target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter">
-              <img alt="Chat on Gitter" 
-              src="https://img.shields.io/gitter/room/um-dsri/community"/>
+            <a href="https://dsri.slack.com"
+              target="_blank" rel="noreferrer noopener" aria-label="Chat on Slack">
+              <img alt="Chat on Slack" 
+              src="https://img.shields.io/badge/Chat%20on-Slack-blueviolet"/>
             </a>
             <a href="https://twitter.com/MaastrichtU"
               target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter">

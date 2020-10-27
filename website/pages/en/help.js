@@ -21,21 +21,21 @@ function Help(props) {
 
   const supportLinks = [
     {
-      content: `<a href="https://gitter.im/um-dsri/community"
-        target="_blank" rel="noreferrer noopener" aria-label="Chat on Gitter">
-        <img alt="Chat on Gitter" 
-        src="https://img.shields.io/gitter/room/um-dsri/community"/>
+      content: `<a href="https://dsri.slack.com"
+        target="_blank" rel="noreferrer noopener" aria-label="Chat on Slack">
+        <img alt="Chat on Slack" 
+        src="https://img.shields.io/badge/Chat%20on-Slack-blueviolet"/>
       </a>
-      <p>Feel free to ask questions on [Gitter](https://gitter.im/um-dsri/community) and get involved in the community 💬</p>`,
-      title: 'Join the DSRI community',
+      <p>Contact us at <br/>[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl)<br/> to get an invitation to the DSRI Slack channel 💬</p>`,
+      title: 'Join the DSRI Slack',
     },
     {
       content: `<a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues"
         target="_blank" aria-label="GitHub issues">
         <img alt="GitHub issues" src="https://img.shields.io/github/issues/MaastrichtU-IDS/dsri-documentation?label=dsri-documentation"/>
       </a>
-      <p>Browse and submit [issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) or [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) 
-      to fix and improve the documentation 🔧</p>`,
+      <p>Submit [issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) or [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) 
+      to request new features on the DSRI or improve the documentation 🔧</p>`,
       title: 'Submit issues',
     },
     {
