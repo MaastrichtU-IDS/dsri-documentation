@@ -3,7 +3,7 @@ name: Request deployment of an application or feature on the DSRI
 about: If you need help deploying your application, or a new feature, on the DSRI, you can request it here
 title: 'Request deployment APPLICATION_NAME'
 labels: deployment,request
-assignees: vemonet
+assignees: vemonet,Binosha
 ---
 
 #### Describe the application

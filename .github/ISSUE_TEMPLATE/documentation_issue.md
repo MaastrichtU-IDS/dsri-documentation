@@ -1,9 +1,9 @@
 ---
-name: Documentation issue
-about: If you need help with missing/unclear informations in the DSRI documentation
+name: Report unclear or missing documentation
+about: If you need help with unclear, missing or misleading informations in the DSRI documentation
 title: ''
 labels: documentation
-assignees: 'vemonet'
+assignees: vemonet,Binosha
 ---
 
 <!-- If you need help with unclear informations or think you have found a bug, please help us with your issue by entering the following information (otherwise you can delete this text): -->
