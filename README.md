@@ -80,6 +80,10 @@ sudo npm install --global docusaurus-init
 npx docusaurus-init
 ```
 
+## Contribute
+
+Contributions are welcome! See the [guidelines to contribute 👨‍💻](/CONTRIBUTING.md).
+
 ## Acknowledgments
 
 Documentation website generated using [Docusaurus](https://docusaurus.io/).
