@@ -28,7 +28,7 @@ class Footer extends React.Component {
             {this.props.config.footerIcon && (
               <img
                 src={this.props.config.baseUrl + this.props.config.footerIcon}
-                alt={this.props.config.title}
+                alt='DSRI'
                 width="66"
                 height="58"
               />
