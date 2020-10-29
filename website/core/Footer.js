@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import Gitter from 'react-sidecar';
 const React = require('react');
+// import Gitter from 'react-sidecar';
 
 class Footer extends React.Component {
   docUrl(doc, language) {
@@ -153,7 +153,7 @@ class Footer extends React.Component {
 
           gtag('config', 'UA-172146359-1');
         </script> */}
-        <Gitter room="um-dsri/community" title="Chat with the community" />
+        {/* <Gitter room="um-dsri/community" title="Chat with the community" /> */}
       </footer>
     );
   }
