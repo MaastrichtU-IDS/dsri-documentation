@@ -65,20 +65,6 @@ a:hover {
 }
 /* Maastricht Blue: 001f3e */
 
-/* Make sure the Gitter sidecar is over the navbar and change color */
-aside.gitter-chat-embed {
-    z-index: 9999;
-}
-div.fixedHeaderContainer {
-    z-index: 9998;
-}
-/* .gitter-open-chat-button {
-    background-color: #fb8c00
-}
-.gitter-open-chat-button:hover {
-    background-color: #c25e00;
-} */
-
 /* Docs markdown images size */
 article img, article p img {
     max-width: 250px;
