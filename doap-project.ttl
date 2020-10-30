@@ -7,7 +7,7 @@
   doap:name "Data Science Research Infrastructure" ;
   doap:description "The Data Science Research Infrastructure (DSRI) is a cluster of servers for Data Science research. It is based on OpenShift (Kubernetes) container orchestration to run researchers experiments." ;
 
-  doap:programming-language "TypeScript" ;
+  doap:programming-language "Kubernetes" ;
   doap:license <https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/LICENSE.md> ;
   doap:homepage <https://maastrichtu-ids.github.io/dsri-documentation> ;
   doap:bug-database <https://github.com/MaastrichtU-IDS/dsri-documentation/issues> ;
