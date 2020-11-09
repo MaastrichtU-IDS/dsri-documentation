@@ -13,10 +13,10 @@ The DSRI provides a graphical user interface to easily run and manage services (
 
 Run Data Science applications in [Docker container 🐳](https://www.docker.com/) on the [UM network](https://vpn.maastrichtuniversity.nl/), such as:
 
-* VisualStudio Code server
 * Multiple flavors of [JupyterLab](https://github.com/jupyter/docker-stacks) (scipy, tensorflow, all-spark, and more)
 * JupyterHub with GitHub authentication
 * RStudio, with a complementary Shiny server
+* VisualStudio [Code server](https://github.com/cdr/code-server)
 * Tensorflow or PyTorch on Nvidia GPU (with JupyterLab or VisualStudio Code)
 * SQL databases (MariaDB, MySQL, PostgreSQL)
 * NoSQL databases (MongoDB, Redis)

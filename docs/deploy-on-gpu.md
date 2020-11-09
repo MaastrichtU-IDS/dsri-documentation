@@ -3,7 +3,9 @@ id: deploy-on-gpu
 title: Start on GPU
 ---
 
-To deploy applications on GPUs you need to **request GPU quotas**. Contact the **[DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)** to request GPU access.
+To deploy applications on GPUs you need to **request GPU quotas**. 
+
+> Contact the **[DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)** to request GPU access.
 
 ## JupyterLab on GPU
 
@@ -12,8 +14,8 @@ Once your project has been granted access to GPUs:
 * Go to the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog): **Add to Project** > **Browse Catalog**
 * **Filter** the catalog on the publisher "**Institute of Data Science, UM**"
 * Choose on the template:
-  * **Pytorch on GPU as Root (Persistent)**.
-  * **Tensorflow on GPU (Persistent)**
+  * **Pytorch on GPU with JupyterLab (Persistent)**.
+  * **Tensorflow on GPU with JupyterLab (Persistent)**
 
 The following parameters can be provided:
 
