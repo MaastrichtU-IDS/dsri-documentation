@@ -13,7 +13,7 @@ Once your project has been granted access to GPUs:
 
 * Go to the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog): **Add to Project** > **Browse Catalog**
 * **Filter** the catalog on the publisher "**Institute of Data Science, UM**"
-* Choose on the template:
+* Choose one of the available templates:
   * **Pytorch on GPU with JupyterLab (Persistent)**.
   * **Tensorflow on GPU with JupyterLab (Persistent)**
 
@@ -33,7 +33,7 @@ Now that your template is created and its accessible from the **Overview** page 
 
 * Go to the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog): **Add to Project** > **Browse Catalog**
 * **Filter** the catalog on the publisher "**Institute of Data Science, UM**"
-* Choose on the template:
+* Choose one of the available templates:
   * **Tensorflow on GPU with VisualStudio (Persistent)**
   * **PyTorch on GPU with VisualStudio (Persistent)**
 
