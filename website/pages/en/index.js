@@ -160,7 +160,7 @@ class Index extends React.Component {
       <Block layout="fourColumn">
         {[
           {
-            content: 'We use [MapR](https://mapr.com/) FileSystem to securely store and access your file',
+            content: 'We use [MapR](https://mapr.com/) FileSystem to slowly store and access your file',
             image: `${baseUrl}img/mapr_logo.png`,
             imageAlign: 'top',
             title: 'A distributed filesystem',
