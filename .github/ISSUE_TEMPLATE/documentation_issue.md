@@ -1,7 +1,7 @@
 ---
 name: Report unclear or missing documentation
 about: If you need help with unclear, missing or misleading informations in the DSRI documentation
-title: ''
+title: 'Issue with docs: DOCUMENTATION_PAGE'
 labels: documentation
 assignees: vemonet,Binosha
 ---
