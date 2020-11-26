@@ -59,6 +59,8 @@ For user already familiar with those concepts [workflow orchestration tools](/ds
 | ----------------- | ---- | -------- | ----------- |
 | GPU node capacity | 8    | 528 GB   | 80 cores    |
 
+<img src="/dsri-documentation/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure " style="max-width: 100%; max-height: 100%;" />
+
 ## History of the DSRI
 
 See the following presentation about the Data Science Research Infrastructure origins and background:
