@@ -9,7 +9,7 @@ assignees: vemonet,Binosha
 
 ### Summary
 
-Describe the motivation behind this new roadmap feature.
+Describe the motivation behind this new roadmap milestone.
 
 ### How will it work?
 
@@ -17,4 +17,4 @@ Describe how this feature will work for users on the DSRI
 
 ### Delivery date expected
 
-Approximate of the delivery date expected (month and year)
+Provide an approximate of the delivery date expected (month and year)
