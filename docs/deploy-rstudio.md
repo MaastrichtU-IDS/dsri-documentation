@@ -62,4 +62,11 @@ git config --global user.name "John Doe"
 git config --global user.email johndoe@example.com
 ```
 
-## 
+## Upload data to RStudio
+
+See the [guide to upload data on the DSRI](/dsri-documentation/docs/openshift-load-data).
+
+## Stop or delete RStudio
+
+See the [documentation to stop and delete services](/dsri-documentation/docs/openshift-delete-services).
+

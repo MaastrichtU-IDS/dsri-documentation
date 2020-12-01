@@ -72,7 +72,11 @@ git config --global user.email johndoe@example.com
 
 ## Upload data to VSCode
 
-See the [Guide to upload data on the DSRI](/dsri-documentation/docs/openshift-load-data).
+See the [guide to upload data on the DSRI](/dsri-documentation/docs/openshift-load-data).
+
+## Stop or delete VSCode
+
+See the [documentation to stop and delete services](/dsri-documentation/docs/openshift-delete-services).
 
 ## VSCode for GPU
 
