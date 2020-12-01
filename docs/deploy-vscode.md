@@ -39,7 +39,7 @@ oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-app
 
 > We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
 
-### Use Git in VSCode
+## Use Git in VSCode
 
 You will need to use `git` from the terminal to clone the git repository, for example:
 
