@@ -5,7 +5,7 @@ title: Start Jupyter Notebooks
 
 Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
-[![Jupyterlab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
+[![JupyterLab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
 
 ## Start JupyterLab with the root user
 
@@ -41,7 +41,7 @@ Pip requirements, apt packages and Jupyterlab extensions are installed from `req
 
 Try the following Notebooks to work on a RDF Knowledge Graph about COVID-19 related publications: https://github.com/vemonet/covid-kg-notebooks
 
-> Built from [amalic/Jupyterlab](https://github.com/amalic/Jupyterlab).
+> Built from [amalic/Jupyterlab](https://github.com/amalic/Jupyterlab) image.
 
 ## Start JupyterLab with restricted user
 
