@@ -17,6 +17,8 @@ oc project my-project
 
 When you are not using your application anymore you can stop the pod. If you are using a Dynamic or Persistent storage you can restart the pod and continue working with all your data in the same state as you left it.
 
+If your application is stuck stopping and restarting it is the best way to resolve your issue.
+
 > ⚠️ Please think of stopping applications you are not using to avoid consuming unnecessary resources.
 
 On the **Overview** page click on the down arrow ⬇️ next to the number of pods deployed.
@@ -50,13 +52,15 @@ If the objects are not deleting properly you can force their deletion:
 oc delete all,secret,configmaps,serviceaccount,rolebinding --force --grace-period=0 --selector app=my-application
 ```
 
-### Delete persistent storage
+### Delete application from the web UI
 
-To delete a persistent storage dynamically created:
+We recommend to use the `oc` CLI to easily delete an application. But in the case you cannot install `oc`  on your computer you can delete the different objects created by the application (easy to find in the **Overview** page):
 
-```bash
-oc delete pvc storage-name
-```
+1. Delete the **Route**
+2. Delete the **Service**
+3. Delete the **Deployment Config** 
+
+<img src="/dsri-documentation/img/screenshot_delete_application.png" alt="Delete application from the web UI" style="max-width: 100%; max-height: 100%;" />
 
 ---
 
@@ -94,6 +98,13 @@ Then delete the project:
 oc delete project <PROJECT_ID>
 ```
 
+## Delete persistent storage
+
+To delete a persistent storage dynamically created:
+
+```bash
+oc delete pvc storage-name
+```
 
 ## Fix stuck deletions
 

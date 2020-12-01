@@ -19,6 +19,7 @@ You need to be connected to the UM network to access the DSRI.
 
 * Use the **Maastricht University VPN** at **[vpn.maastrichtuniversity.nl](https://vpn.maastrichtuniversity.nl/)**
 * Connect to **UMnet** or **eduroam** WiFi at Maastricht University
+* For **students**, use the Athena Student Desktop at [athenadesktop.maastrichtuniversity.nl](https://athenadesktop.maastrichtuniversity.nl)
 
 ## Access the web UI
 

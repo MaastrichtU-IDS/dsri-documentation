@@ -47,6 +47,12 @@ Try the following Notebooks to work on a RDF Knowledge Graph about COVID-19 rela
 
 Start JupyterLab images from the [official Jupyter docker stack](https://github.com/jupyter/docker-stacks) with regular `jovyan` user, without `sudo` privileges.
 
+Create the template in your project catalog:
+
+```bash
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-restricted/template-jupyterlab-dynamic.yml
+```
+
 You can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
 
 * `jupyter/scipy-notebook`
@@ -90,9 +96,11 @@ git config --global credential.helper 'store --file ~/.git-credentials'
 Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
 
 ```bash
-git config --global user.name "John Doe"
-git config --global user.email johndoe@example.com
+git config --global user.name "Jean Dupont"
+git config --global user.email jeandupont@gmail.com
 ```
+
+> We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
 
 ## Upload data to JupyterLab
 
@@ -113,6 +121,12 @@ This solution enable you to use the DSRI to run Jupyter notebooks for multiple u
 Persistent volumes are automatically created for each instance started in JupyterHub to insure persistence of the data even if the instances or JupyterHub are stopped.
 
 > ⚠️ The users will be able to install new `pip` packages in their JupyterLab instance, but they will not have `sudo` privileges (so they cannot install `apt` or `yum` packages)
+
+Create the template in your project catalog:
+
+```bash
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-restricted/template-jupyterhub-github-auth.yml
+```
 
 A custom image can be built and provided when deploying JupyterHub, see this repository as example to build a JupyterLab Docker image supported by OpenShift: https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift
 
