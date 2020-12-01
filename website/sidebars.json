@@ -5,7 +5,7 @@
     "Start applications": [ "deploy-from-template", "deploy-jupyter", "deploy-rstudio", "deploy-vscode",
       "deploy-database", "deploy-on-gpu", "deploy-spark", "deploy-additional-services",
       "deploy-from-docker", "guide-dockerfile-to-openshift", "helm"],
-    "Guides": [ "openshift-delete-services", "openshift-load-data", "openshift-commands", 
+    "Guides": [ "openshift-delete-services", "openshift-load-data", "openshift-commands", "guide-publish-image",
       "openshift-debug", "openshift-secret", "tools-machine-learning", 
       {
         "type": "subcategory",

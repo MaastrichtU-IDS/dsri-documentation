@@ -7,36 +7,7 @@ Feel free to propose new deployments using [pull requests](https://github.com/Ma
 
 [![Jupyterlab](/dsri-documentation/img/jupyter_logo.png)](https://jupyter.org/)
 
-## Use git in JupyterLab
-
-You can use the [JupyterLab Git extension](https://github.com/jupyterlab/jupyterlab-git) to clone and manage your `git` repositories.
-
-It will prompt you for a username and password if the repository is private.
-
-<img src="https://raw.githubusercontent.com/jupyterlab/jupyterlab-git/master/docs/figs/preview.gif" alt="JupyterLab Git extension" style="max-width: 100%; max-height: 100%;" />
-
->  You can also use `git` from the terminal.
-
-You can run this command to ask git to save your password for 15min:
-
-```bash
-git config credential.helper cache
-```
-
-Or store the password in a plain text file:
-
-```bash
-git config --global credential.helper 'store --file ~/.git-credentials'
-```
-
-Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
-
-```bash
-git config --global user.name "John Doe"
-git config --global user.email johndoe@example.com
-```
-
-## Start JupyterLab with root user
+## Start JupyterLab with the root user
 
 > 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
 
@@ -50,11 +21,7 @@ You can deploy it using the **JupyterLab with root user (Persistent)** solutions
 
 <img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style="max-width: 100%; max-height: 100%;" />
 
-2 deployments are available:
-
-🦋 **Ephemeral**: volumes bind to the pod, data will be lost when the pod is deleted.
-
-🗄️ **Persistent**: use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
+> The application will use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
 
 The following parameters can be provided:
 
@@ -90,13 +57,42 @@ Or build your own using this repository as example: https://github.com/Maastrich
 
 > **You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
 
-Two deployments are available for the **JupyterLab with restricted user** template:
-
-⚡ **Dynamic**:  automatically create a persistent storage for the notebook data
-
-🗄️ **Persistent**: use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
-
 By default the working directory is `/home/jovyan`
+
+> The application will automatically create a Persistent Volume Claim (PVC) for a persistent storage of the data.
+
+## Use git in JupyterLab
+
+You can use the [JupyterLab Git extension](https://github.com/jupyterlab/jupyterlab-git) to clone and manage your `git` repositories.
+
+It will prompt you for a username and password if the repository is private.
+
+<img src="https://raw.githubusercontent.com/jupyterlab/jupyterlab-git/master/docs/figs/preview.gif" alt="JupyterLab Git extension" style="max-width: 100%; max-height: 100%;" />
+
+>  You can also use `git` from the terminal.
+
+You can run this command to ask git to save your password for 15min:
+
+```bash
+git config credential.helper cache
+```
+
+Or store the password in a plain text file:
+
+```bash
+git config --global credential.helper 'store --file ~/.git-credentials'
+```
+
+Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
+
+```bash
+git config --global user.name "John Doe"
+git config --global user.email johndoe@example.com
+```
+
+## Upload data to JupyterLab
+
+See the [Guide to upload data on the DSRI](/dsri-documentation/docs/openshift-load-data).
 
 ## Start JupyterHub
 

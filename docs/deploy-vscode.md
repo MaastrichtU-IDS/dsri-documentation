@@ -70,6 +70,10 @@ git config --global user.name "John Doe"
 git config --global user.email johndoe@example.com
 ```
 
+## Upload data to VSCode
+
+See the [Guide to upload data on the DSRI](/dsri-documentation/docs/openshift-load-data).
+
 ## VSCode for GPU
 
 See the [Deploy on GPU](/dsri-documentation/docs/deploy-on-gpu) page to deploy a VisualStudio Code server on GPU.
