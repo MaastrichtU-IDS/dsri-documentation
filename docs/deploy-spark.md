@@ -3,17 +3,15 @@ id: deploy-spark
 title: Start a Spark cluster
 ---
 
-An [Apache Spark](https://spark.apache.org/) cluster can be deployed using a template in the [DSRI catalog](https://app.dsri.unimaas.nl:8443/console/catalog).
+> Currently deploying an [Apache Spark](https://spark.apache.org/) cluster is a work in progress on the DSRI, [contact us](/dsri-documentation/help) if you are interested in trying it out.
 
-The following services are deployed:
+## Create the template
+
+The following services are deployed by this Spark template:
 
 * a JupyterLab all-spark-notebook
 * a configurable Spark cluster from [CSCfi/spark-openshift](https://github.com/CSCfi/spark-openshift)
 * a storage automatically created
-
-> Contact us to get help with setting up Apache Spark.
-
-## Create the template
 
 > You will need to have [the oc command line tool installed](/dsri-documentation/docs/openshift-install) to create the template.
 
