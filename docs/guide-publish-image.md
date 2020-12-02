@@ -3,9 +3,17 @@ id: guide-publish-image
 title: Publish a Docker image
 ---
 
-⚠️ We highly recommend to **use the GitHub Container Registry or quay.io to publish public Docker images**. As DockerHub impose strict pull limitations for clusters like the DSRI.
+> ⚠️ **DockerHub imposes strict pull limitations for clusters** like the DSRI (using DockerHub might result in failing to pull your images on the DSRI). 
+>
+> We highly recommend to **use the [GitHub Container Registry](https://docs.github.com/en/free-pro-team@latest/packages/getting-started-with-github-container-registry/about-github-container-registry) or [RedHat quay.io Container Registry](https://quay.io/) to publish public Docker images**.
+>
+> You can also login to DockerHub using a Secret in OpenShift to increase the pull rates limitations:
+>
+> ```bash
+> oc create secret docker-registry docker-hub-secret --docker-server=docker.io --docker-username=your-dockerhub-username --docker-password=your-dockerhub-password --docker-email=your-dockerhub-email
+> ```
 
-## Log in to Container Registries 🔑
+## Login to Container Registries 🔑
 
 ### Login to GitHub Container Registry
 
@@ -56,24 +64,36 @@ The [GitHub Container Registry](https://docs.github.com/en/free-pro-team@latest/
 Publish to your user Container Registry on GitHub:
 
 ```bash
-docker build -t ghcr.io/github-username/jupyterlab:latest .
-docker push ghcr.io/github-username/jupyterlab:latest
+docker build -t ghcr.io/github-username/my-image:latest .
+docker push ghcr.io/github-username/my-image:latest
 ```
 
-Or to the [MaastrichtU-IDS Container Registry on GitHub](https://github.com/orgs/MaastrichtU-IDS/packages):
+For example, to the [MaastrichtU-IDS organization Container Registry on GitHub](https://github.com/orgs/MaastrichtU-IDS/packages):
 
 ```bash
 docker build -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:latest .
-docker push ghcr.io/maastrichtu-ids/jupyterlab:latest
+docker push ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:latest
 ```
 
-> If the image does not exist, GitHub Container Registry will create automatically and set it as **Private** by default. You can easily change it to **Public** in your image settings on GitHub.
+> If the image does not exist, GitHub Container Registry will create it automatically and set it as **Private** by default. You can easily change it to **Public** in the image settings on github.com.
+
+### Publish to Quay.io
+
+1. Create the image on [quay.io](https://quay.io/)
+
+2. Build and push to [quay.io](https://quay.io/)
+
+```bash
+docker build -t ghcr.io/quay-username/my-image:latest .
+docker push quay.io/quay-username/my-image:latest
+```
 
 ### Publish to DockerHub
 
-[DockerHub](https://hub.docker.com/) is still the most popular and mature Container Registry, and the new rates should not impact a regular user.
+It is not recommended, but [DockerHub](https://hub.docker.com/) is still the most popular and mature Container Registry, if you are login to DockerHub on the DSRI it should allow you to pull DockerHub images in your project (see at the start of this page to do so).
 
-First, create the repository on [DockerHub](https://hub.docker.com/) (attached to your user or an [organization](https://hub.docker.com/orgs/umids/repositories)), then build and push the image:
+1. Create the repository on [DockerHub](https://hub.docker.com/) (attached to your user or an [organization](https://hub.docker.com/orgs/umids/repositories))
+2. Build and push the image:
 
 ```bash
 docker build -t dockerhub-username/jupyterlab:latest .
