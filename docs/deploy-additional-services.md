@@ -11,7 +11,15 @@ A service can be easily deployed from a [Docker image](/dsri-documentation/docs/
 
 ## Ubuntu
 
+> To be tested
+
 Start Ubuntu with the `root` user which has `sudo` permissions to install anything.
+
+Add the template to your project:
+
+```bash
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-ubuntu-root-persistent.yml
+```
 
 This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
 
@@ -19,7 +27,27 @@ This template uses the Ubuntu image hosted on DockerHub, see its documentation a
 
 📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage
 
-We enabled the port 8080 in the Ubuntu container if you need to deploy applications
+We enabled the port 8080 in the Ubuntu container if you need to deploy applications.
+
+To quickly access it from the terminal:
+
+1. Get the Ubuntu pod ID:
+
+   ```bash
+   oc get pods
+   ```
+
+2. Connect to it:
+
+   ```bash
+   oc rsh POD_ID
+   ```
+
+3. Enable Bash in the Ubuntu container (if it starts with the Shell)
+
+   ```bash
+   bash
+   ```
 
 ## Apache Flink
 
