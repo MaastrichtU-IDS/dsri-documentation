@@ -9,6 +9,17 @@ Feel free to propose new services using [pull requests](https://github.com/Maast
 
 A service can be easily deployed from a [Docker image](/dsri-documentation/docs/guide-dockerfile-to-openshift).
 
+## Ubuntu
+
+Start Ubuntu with the `root` user which has `sudo` permissions to install anything.
+
+This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
+
+> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+
+📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage
+
+We enabled the port 8080 in the Ubuntu container if you need to deploy applications
 
 ## Apache Flink
 

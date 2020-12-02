@@ -1,5 +1,5 @@
 ---
-name: Report an issue deploying an application
+name: Report an issue deploying an application 💥
 about: If you meet issues trying to deploy your application on the DSRI, you can request it here
 title: 'Issue deploying APPLICATION_NAME'
 labels: deployment, bug
