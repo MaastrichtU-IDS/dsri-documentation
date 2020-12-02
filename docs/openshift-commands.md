@@ -5,6 +5,22 @@ title: Command Line Interface
 
 [![OpenShift](/dsri-documentation/img/openshift-logo.png)](https://www.openshift.com/)
 
+## Overview
+
+Here is an overview of common `oc` commands:
+
+| **Command**                      | **Description**                                              |
+| -------------------------------- | ------------------------------------------------------------ |
+| `oc login <host> -u <user>`      | Login to the DSRI OpenShift cluster in your terminal         |
+| `oc get projects`                | List all available projects                                  |
+| `oc project <project> `          | Switch to project                                            |
+| `oc get pods `                   | Get running pods (a pod can run one or multiple containers for your application) |
+| `oc rsh <pod_name> <command>`    | Remote terminal connexion to a pod (Shell/Bash)              |
+| `oc cp <from> <to>`              | Copy files from host to container or vice versa, e.g. from host: `oc cp <local dir> <pod>:<pod_dir>` or from to host: `oc cp <pod>:<pod_dir> <local dir>` |
+| `oc rsync <from> <to>`           | Similar to rsync command on Linux to synchronize directories between container and host or the other way around |
+| `oc exec <pod_id> <folder_path>` | Execute command in pods                                      |
+| `oc delete pod <pod_id>`         | Delete pod                                                   |
+
 ## Projects
 
 ### List projects
