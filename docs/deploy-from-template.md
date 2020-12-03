@@ -5,29 +5,35 @@ title: Quickstart with templates
 
 The easiest to get started with the DSRI is to use the predefined templates to deploy an application.
 
-## Start applications using templates
+## Access the catalog
 
-To see all templates defined and quickly start Data Science applications on the DSRI, go to your project catalog in the OpenShift web UI:
-* At the top right of the page: **Add to Project** > **Browse Catalog**
-* Click on **Filter** to choose the **Institute of Data Science, UM** publisher
+**Access the templates catalog** in your project:
 
-<img src="/dsri-documentation/img/screenshot-dsri-filter-publishers.png" alt="Filter template by publisher" style="max-width: 100%; max-height: 100%;" />
+<img src="/dsri-documentation/img/screenshot_access_catalog.png" alt="Access catalog" style="max-width: 100%; max-height: 100%;" />
 
-You will need root containers enabled to be able to run some of those templates
+**Filter the templates catalog** to only see data science applications:
 
-> You can find additional documentation about starting those applications in the next step of this docs.
+<img src="/dsri-documentation/img/screenshot_filter_templates.png" alt="Filter templates catalog" style="max-width: 100%; max-height: 100%;" />
 
-If the templates are not available, you can create the Data Science templates in your project (JupyterLab, VisualStudio Code, RStudio, and JupyterHub) using the following `oc` commands:
+> You might wonder why do you see less templates in your project? Because templates needs to be earned! 🏆 
+>
+> Get started with deploying, and using a service on the DSRI, then we will be able to give you access to more advanced uses of the DSRI!
 
-```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-jupyterhub-github-auth.yml
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-jupyterlab-dynamic.yml
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-jupyterlab-persistent.yml
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-rstudio-shiny-dynamic.yml
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-datascience/template-vscode-dynamic.yml
-```
+## Start an application using a template
 
-> Contact us if you are interested in using Apache Spark or Apache Flink.
+> You will need root containers (aka. `anyuid`) to have been enabled by the DSRI team to be able to start applications with the root user.
+
+**Click on the template** of the application you want to start, in this example we will use **RStudio**, but you can easily try the same with **VisualStudio Code** and **JupyterLab**.
+
+1. Check the informations about the applications you are going to start (such as the path of the persistent storage in the container application, or if this application run as root)
+
+<img src="/dsri-documentation/img/screenshot_template_information.png" alt="Filter templates catalog" style="max-width: 100%; max-height: 100%;" />
+
+2. Provide a few informations to configure your application:
+
+<img src="/dsri-documentation/img/screenshot_template_configuration.png" alt="Filter templates catalog" style="max-width: 100%; max-height: 100%;" />
+
+3. Click on the **Create** button, and go back to your project **Overview** page to see the application starting! It can take from a few seconds up to a few minutes.
 
 ## Stop your application
 
@@ -40,14 +46,3 @@ On the **Overview** page click on the down arrow ⬇️ next to the number of po
 <img src="/dsri-documentation/img/screenshot_scaledown_pod.png" alt="Scale down pod" style="max-width: 100%; max-height: 100%;" />
 
 You can then restart the pod by clicking the up arrow ⬆️
-
-## Delete your application
-
-The best way to make sure all objects related to your application have been deleted is to use the command line:
-
-```shell
-oc delete all,secret,configmaps,serviceaccount,rolebinding --selector app=my-application
-```
-
-> Delete storage if necessary from the OpenShift web UI.
-

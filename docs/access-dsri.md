@@ -31,4 +31,15 @@ If you do not have access to the DSRI contact us.
 
 The DSRI web UI gives an overview of your project and the applications currently running. You can easily start new Data Science applications using templates from the **Institute of Data Science, UM** provider.
 
+<img src="/dsri-documentation/img/screenshot_login_screen.png" alt="Login screen" style="max-width: 100%; max-height: 100%;" />
+
 > We recommend you to install the `oc` command line tool to perform additional operations on your applications, such as loading large amount of data using `oc cp`, or deploying an application from a local Dockerfile.
+
+## Go to your project
+
+Once in the DSRI OpenShift web UI, **go to your project** (applications are deployed in a project)
+
+> One should have already been created when you registered to the DSRI. Use this project.
+
+<img src="/dsri-documentation/img/screenshot_go_to_project.png" alt="Login screen" style="max-width: 100%; max-height: 100%;" />
+

@@ -9,6 +9,12 @@ If you are using JupyterLab or VSCode you should be able to load data to the con
 
 > If this solution doesn't work due to the files size, try one of the solutions below.
 
+## In RStudio
+
+Use the Upload file button in the RStudio web UI to upload files from your computer to the RStudio workspace.
+
+> If this solution doesn't work due to the files size, try one of the solutions below.
+
 ## Copy files
 
 Copy a file, or directory, from your local filesystem to an OpenShift pod.

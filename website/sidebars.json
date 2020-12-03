@@ -1,12 +1,14 @@
 {
   "docs": {
-    "Get started": ["introduction", "access-dsri", "openshift-install", 
-      "openshift-login", "openshift-storage", "prepare-project-for-dsri"],
-    "Start applications": [ "deploy-from-template", "deploy-jupyter", "deploy-rstudio", "deploy-vscode",
+    "Get started": ["introduction", "access-dsri", "deploy-from-template", 
+      "openshift-install", "openshift-login", "openshift-load-data",
+      "openshift-delete-services", "openshift-debug"],
+    "Start applications": [ "deploy-jupyter", "deploy-rstudio", "deploy-vscode",
       "deploy-database", "deploy-on-gpu", "deploy-spark", "deploy-additional-services",
       "deploy-from-docker", "guide-dockerfile-to-openshift", "helm"],
-    "Guides": [ "openshift-delete-services", "openshift-load-data", "openshift-commands", "guide-publish-image",
-      "openshift-debug", "openshift-secret", "tools-machine-learning", 
+    "Guides": [ "openshift-storage", "openshift-commands", "openshift-delete-objects", 
+      "prepare-project-for-dsri", "guide-publish-image", 
+      "openshift-secret", "tools-machine-learning", 
       {
         "type": "subcategory",
         "label": "Workflows",
