@@ -1,0 +1,14 @@
+{
+  "unversionedId": "guide-local-install",
+  "id": "guide-local-install",
+  "isDocsHomePage": false,
+  "title": "Install local OpenShift",
+  "description": "OpenShift and Kubernetes can be installed locally on a single machine for test purpose. The installation requires knowledge of your OS administration, and can be quite complex. We recommend to install it locally only if really required. Otherwise we recommend you to simply use Docker to test images, then deploy them on the DSRI.",
+  "source": "@site/docs/guide-local-install.md",
+  "slug": "/guide-local-install",
+  "permalink": "/dsri-documentation/docs/guide-local-install",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/guide-local-install.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055
+}

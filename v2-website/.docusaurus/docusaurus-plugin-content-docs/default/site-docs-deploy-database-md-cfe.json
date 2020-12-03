@@ -1,0 +1,23 @@
+{
+  "unversionedId": "deploy-database",
+  "id": "deploy-database",
+  "isDocsHomePage": false,
+  "title": "Start databases",
+  "description": "SQL databases",
+  "source": "@site/docs/deploy-database.md",
+  "slug": "/deploy-database",
+  "permalink": "/dsri-documentation/docs/deploy-database",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-database.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Start a VSCode server",
+    "permalink": "/dsri-documentation/docs/deploy-vscode"
+  },
+  "next": {
+    "title": "Start on GPU",
+    "permalink": "/dsri-documentation/docs/deploy-on-gpu"
+  }
+}

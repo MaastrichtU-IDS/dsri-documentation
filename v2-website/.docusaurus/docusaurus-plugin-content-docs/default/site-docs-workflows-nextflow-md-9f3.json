@@ -1,0 +1,23 @@
+{
+  "unversionedId": "workflows-nextflow",
+  "id": "workflows-nextflow",
+  "isDocsHomePage": false,
+  "title": "Run Nextflow workflows",
+  "description": "Nextflow",
+  "source": "@site/docs/workflows-nextflow.md",
+  "slug": "/workflows-nextflow",
+  "permalink": "/dsri-documentation/docs/workflows-nextflow",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/workflows-nextflow.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Run Argo workflows",
+    "permalink": "/dsri-documentation/docs/workflows-argo"
+  },
+  "next": {
+    "title": "Run CWL workflows",
+    "permalink": "/dsri-documentation/docs/cwl-calrissian"
+  }
+}

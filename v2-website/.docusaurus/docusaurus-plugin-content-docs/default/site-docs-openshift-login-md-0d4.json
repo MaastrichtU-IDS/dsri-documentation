@@ -1,0 +1,23 @@
+{
+  "unversionedId": "openshift-login",
+  "id": "openshift-login",
+  "isDocsHomePage": false,
+  "title": "Login with the CLI",
+  "description": "OpenShift",
+  "source": "@site/docs/openshift-login.md",
+  "slug": "/openshift-login",
+  "permalink": "/dsri-documentation/docs/openshift-login",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-login.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Install the CLI",
+    "permalink": "/dsri-documentation/docs/openshift-install"
+  },
+  "next": {
+    "title": "Upload data",
+    "permalink": "/dsri-documentation/docs/openshift-load-data"
+  }
+}

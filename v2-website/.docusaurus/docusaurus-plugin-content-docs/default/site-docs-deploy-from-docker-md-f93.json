@@ -1,0 +1,23 @@
+{
+  "unversionedId": "deploy-from-docker",
+  "id": "deploy-from-docker",
+  "isDocsHomePage": false,
+  "title": "Start from Docker image",
+  "description": "The DSRI is an OpenShift OKD cluster, based on Kubernetes. It uses Docker containers to deploy services and applications in pods.",
+  "source": "@site/docs/deploy-from-docker.md",
+  "slug": "/deploy-from-docker",
+  "permalink": "/dsri-documentation/docs/deploy-from-docker",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-from-docker.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Additional services",
+    "permalink": "/dsri-documentation/docs/deploy-additional-services"
+  },
+  "next": {
+    "title": "Start from Dockerfile",
+    "permalink": "/dsri-documentation/docs/guide-dockerfile-to-openshift"
+  }
+}

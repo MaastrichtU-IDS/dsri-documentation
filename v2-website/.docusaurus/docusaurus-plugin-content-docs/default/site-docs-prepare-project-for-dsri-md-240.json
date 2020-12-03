@@ -1,0 +1,23 @@
+{
+  "unversionedId": "prepare-project-for-dsri",
+  "id": "prepare-project-for-dsri",
+  "isDocsHomePage": false,
+  "title": "Prepare your project",
+  "description": "Code in a git repository",
+  "source": "@site/docs/prepare-project-for-dsri.md",
+  "slug": "/prepare-project-for-dsri",
+  "permalink": "/dsri-documentation/docs/prepare-project-for-dsri",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/prepare-project-for-dsri.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Delete objects (advanced)",
+    "permalink": "/dsri-documentation/docs/openshift-delete-objects"
+  },
+  "next": {
+    "title": "Publish a Docker image",
+    "permalink": "/dsri-documentation/docs/guide-publish-image"
+  }
+}

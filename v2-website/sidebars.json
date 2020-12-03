@@ -1,0 +1,21 @@
+{
+  "docs": {
+    "Get started": ["introduction", "access-dsri", "deploy-from-template", 
+      "openshift-install", "openshift-login", "openshift-load-data",
+      "openshift-delete-services", "openshift-debug"],
+    "Start applications": [ "deploy-jupyter", "deploy-rstudio", "deploy-vscode",
+      "deploy-database", "deploy-on-gpu", "deploy-spark", "deploy-additional-services",
+      "deploy-from-docker", "guide-dockerfile-to-openshift", "helm"],
+    "Guides": [ "openshift-storage", "openshift-commands", "openshift-delete-objects", 
+      "prepare-project-for-dsri", "guide-publish-image", 
+      "openshift-secret", "tools-machine-learning", 
+      {
+        "type": "category",
+        "label": "Workflows",
+        "items": [
+          "workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"
+        ]
+      }
+    ]
+  }
+}

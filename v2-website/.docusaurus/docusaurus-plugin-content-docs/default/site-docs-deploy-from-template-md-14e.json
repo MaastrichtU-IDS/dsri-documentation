@@ -1,0 +1,23 @@
+{
+  "unversionedId": "deploy-from-template",
+  "id": "deploy-from-template",
+  "isDocsHomePage": false,
+  "title": "Quickstart with templates",
+  "description": "The easiest to get started with the DSRI is to use the predefined templates to deploy an application.",
+  "source": "@site/docs/deploy-from-template.md",
+  "slug": "/deploy-from-template",
+  "permalink": "/dsri-documentation/docs/deploy-from-template",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-from-template.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Access the DSRI",
+    "permalink": "/dsri-documentation/docs/access-dsri"
+  },
+  "next": {
+    "title": "Install the CLI",
+    "permalink": "/dsri-documentation/docs/openshift-install"
+  }
+}

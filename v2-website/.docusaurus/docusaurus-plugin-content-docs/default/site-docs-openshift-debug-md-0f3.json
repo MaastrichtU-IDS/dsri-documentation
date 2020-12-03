@@ -1,0 +1,23 @@
+{
+  "unversionedId": "openshift-debug",
+  "id": "openshift-debug",
+  "isDocsHomePage": false,
+  "title": "Debug an application",
+  "description": "If your application is facing issues when deployed:",
+  "source": "@site/docs/openshift-debug.md",
+  "slug": "/openshift-debug",
+  "permalink": "/dsri-documentation/docs/openshift-debug",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-debug.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Delete an application",
+    "permalink": "/dsri-documentation/docs/openshift-delete-services"
+  },
+  "next": {
+    "title": "Start Jupyter Notebooks",
+    "permalink": "/dsri-documentation/docs/deploy-jupyter"
+  }
+}

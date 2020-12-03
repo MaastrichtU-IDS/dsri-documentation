@@ -1,0 +1,19 @@
+{
+  "unversionedId": "cwl-calrissian",
+  "id": "cwl-calrissian",
+  "isDocsHomePage": false,
+  "title": "Run CWL workflows",
+  "description": "CWL workflows",
+  "source": "@site/docs/cwl-calrissian.md",
+  "slug": "/cwl-calrissian",
+  "permalink": "/dsri-documentation/docs/cwl-calrissian",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/cwl-calrissian.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Run Nextflow workflows",
+    "permalink": "/dsri-documentation/docs/workflows-nextflow"
+  }
+}

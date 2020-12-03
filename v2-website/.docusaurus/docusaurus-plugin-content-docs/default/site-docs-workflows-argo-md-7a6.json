@@ -1,0 +1,23 @@
+{
+  "unversionedId": "workflows-argo",
+  "id": "workflows-argo",
+  "isDocsHomePage": false,
+  "title": "Run Argo workflows",
+  "description": "Argo project",
+  "source": "@site/docs/workflows-argo.md",
+  "slug": "/workflows-argo",
+  "permalink": "/dsri-documentation/docs/workflows-argo",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/workflows-argo.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Introduction to workflows",
+    "permalink": "/dsri-documentation/docs/workflows-introduction"
+  },
+  "next": {
+    "title": "Run Nextflow workflows",
+    "permalink": "/dsri-documentation/docs/workflows-nextflow"
+  }
+}

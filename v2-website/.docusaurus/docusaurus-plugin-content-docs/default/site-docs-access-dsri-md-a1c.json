@@ -1,0 +1,23 @@
+{
+  "unversionedId": "access-dsri",
+  "id": "access-dsri",
+  "isDocsHomePage": false,
+  "title": "Access the DSRI",
+  "description": "Request an account",
+  "source": "@site/docs/access-dsri.md",
+  "slug": "/access-dsri",
+  "permalink": "/dsri-documentation/docs/access-dsri",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/access-dsri.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Introduction",
+    "permalink": "/dsri-documentation/docs/"
+  },
+  "next": {
+    "title": "Quickstart with templates",
+    "permalink": "/dsri-documentation/docs/deploy-from-template"
+  }
+}

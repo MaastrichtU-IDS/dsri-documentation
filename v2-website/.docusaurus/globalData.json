@@ -1,0 +1,167 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/dsri-documentation/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/dsri-documentation/docs",
+          "mainDocId": "introduction",
+          "docs": [
+            {
+              "id": "access-dsri",
+              "path": "/dsri-documentation/docs/access-dsri",
+              "sidebar": "docs"
+            },
+            {
+              "id": "cwl-calrissian",
+              "path": "/dsri-documentation/docs/cwl-calrissian",
+              "sidebar": "docs"
+            },
+            {
+              "id": "deploy-additional-services",
+              "path": "/dsri-documentation/docs/deploy-additional-services",
+              "sidebar": "docs"
+            },
+            {
+              "id": "deploy-database",
+              "path": "/dsri-documentation/docs/deploy-database",
+              "sidebar": "docs"
+            },
+            {
+              "id": "deploy-from-docker",
+              "path": "/dsri-documentation/docs/deploy-from-docker",
+              "sidebar": "docs"
+            },
+            {
+              "id": "deploy-from-template",
+              "path": "/dsri-documentation/docs/deploy-from-template",
+              "sidebar": "docs"
+            },
+            {
+              "id": "deploy-jupyter",
+              "path": "/dsri-documentation/docs/deploy-jupyter",
+              "sidebar": "docs"
+            },
+            {
+              "id": "deploy-on-gpu",
+              "path": "/dsri-documentation/docs/deploy-on-gpu",
+              "sidebar": "docs"
+            },
+            {
+              "id": "deploy-rstudio",
+              "path": "/dsri-documentation/docs/deploy-rstudio",
+              "sidebar": "docs"
+            },
+            {
+              "id": "deploy-spark",
+              "path": "/dsri-documentation/docs/deploy-spark",
+              "sidebar": "docs"
+            },
+            {
+              "id": "deploy-vscode",
+              "path": "/dsri-documentation/docs/deploy-vscode",
+              "sidebar": "docs"
+            },
+            {
+              "id": "guide-dockerfile-to-openshift",
+              "path": "/dsri-documentation/docs/guide-dockerfile-to-openshift",
+              "sidebar": "docs"
+            },
+            {
+              "id": "guide-local-install",
+              "path": "/dsri-documentation/docs/guide-local-install"
+            },
+            {
+              "id": "guide-publish-image",
+              "path": "/dsri-documentation/docs/guide-publish-image",
+              "sidebar": "docs"
+            },
+            {
+              "id": "helm",
+              "path": "/dsri-documentation/docs/helm",
+              "sidebar": "docs"
+            },
+            {
+              "id": "introduction",
+              "path": "/dsri-documentation/docs/",
+              "sidebar": "docs"
+            },
+            {
+              "id": "openshift-commands",
+              "path": "/dsri-documentation/docs/openshift-commands",
+              "sidebar": "docs"
+            },
+            {
+              "id": "openshift-debug",
+              "path": "/dsri-documentation/docs/openshift-debug",
+              "sidebar": "docs"
+            },
+            {
+              "id": "openshift-delete-objects",
+              "path": "/dsri-documentation/docs/openshift-delete-objects",
+              "sidebar": "docs"
+            },
+            {
+              "id": "openshift-delete-services",
+              "path": "/dsri-documentation/docs/openshift-delete-services",
+              "sidebar": "docs"
+            },
+            {
+              "id": "openshift-install",
+              "path": "/dsri-documentation/docs/openshift-install",
+              "sidebar": "docs"
+            },
+            {
+              "id": "openshift-load-data",
+              "path": "/dsri-documentation/docs/openshift-load-data",
+              "sidebar": "docs"
+            },
+            {
+              "id": "openshift-login",
+              "path": "/dsri-documentation/docs/openshift-login",
+              "sidebar": "docs"
+            },
+            {
+              "id": "openshift-secret",
+              "path": "/dsri-documentation/docs/openshift-secret",
+              "sidebar": "docs"
+            },
+            {
+              "id": "openshift-storage",
+              "path": "/dsri-documentation/docs/openshift-storage",
+              "sidebar": "docs"
+            },
+            {
+              "id": "prepare-project-for-dsri",
+              "path": "/dsri-documentation/docs/prepare-project-for-dsri",
+              "sidebar": "docs"
+            },
+            {
+              "id": "tools-machine-learning",
+              "path": "/dsri-documentation/docs/tools-machine-learning",
+              "sidebar": "docs"
+            },
+            {
+              "id": "workflows-argo",
+              "path": "/dsri-documentation/docs/workflows-argo",
+              "sidebar": "docs"
+            },
+            {
+              "id": "workflows-introduction",
+              "path": "/dsri-documentation/docs/workflows-introduction",
+              "sidebar": "docs"
+            },
+            {
+              "id": "workflows-nextflow",
+              "path": "/dsri-documentation/docs/workflows-nextflow",
+              "sidebar": "docs"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

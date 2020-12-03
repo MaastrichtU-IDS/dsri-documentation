@@ -1,0 +1,1024 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "versionLabel": "Next",
+          "versionPath": "/dsri-documentation/docs",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/home/vemonet/develop/dsri/dsri-documentation/v2-website/sidebars.json",
+          "docsDirPath": "/home/vemonet/develop/dsri/dsri-documentation/v2-website/docs",
+          "mainDocId": "introduction",
+          "sidebars": {
+            "docs": [
+              {
+                "collapsed": true,
+                "type": "category",
+                "label": "Get started",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "introduction"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "access-dsri"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "deploy-from-template"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "openshift-install"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "openshift-login"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "openshift-load-data"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "openshift-delete-services"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "openshift-debug"
+                  }
+                ]
+              },
+              {
+                "collapsed": true,
+                "type": "category",
+                "label": "Start applications",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "deploy-jupyter"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "deploy-rstudio"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "deploy-vscode"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "deploy-database"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "deploy-on-gpu"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "deploy-spark"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "deploy-additional-services"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "deploy-from-docker"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "guide-dockerfile-to-openshift"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "helm"
+                  }
+                ]
+              },
+              {
+                "collapsed": true,
+                "type": "category",
+                "label": "Guides",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "openshift-storage"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "openshift-commands"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "openshift-delete-objects"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "prepare-project-for-dsri"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "guide-publish-image"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "openshift-secret"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "tools-machine-learning"
+                  },
+                  {
+                    "collapsed": true,
+                    "type": "category",
+                    "label": "Workflows",
+                    "items": [
+                      {
+                        "type": "doc",
+                        "id": "workflows-introduction"
+                      },
+                      {
+                        "type": "doc",
+                        "id": "workflows-argo"
+                      },
+                      {
+                        "type": "doc",
+                        "id": "workflows-nextflow"
+                      },
+                      {
+                        "type": "doc",
+                        "id": "cwl-calrissian"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "permalinkToSidebar": {
+            "/dsri-documentation/docs/access-dsri": "docs",
+            "/dsri-documentation/docs/cwl-calrissian": "docs",
+            "/dsri-documentation/docs/deploy-additional-services": "docs",
+            "/dsri-documentation/docs/deploy-database": "docs",
+            "/dsri-documentation/docs/deploy-from-docker": "docs",
+            "/dsri-documentation/docs/deploy-from-template": "docs",
+            "/dsri-documentation/docs/deploy-jupyter": "docs",
+            "/dsri-documentation/docs/deploy-on-gpu": "docs",
+            "/dsri-documentation/docs/deploy-rstudio": "docs",
+            "/dsri-documentation/docs/deploy-spark": "docs",
+            "/dsri-documentation/docs/deploy-vscode": "docs",
+            "/dsri-documentation/docs/guide-dockerfile-to-openshift": "docs",
+            "/dsri-documentation/docs/guide-publish-image": "docs",
+            "/dsri-documentation/docs/helm": "docs",
+            "/dsri-documentation/docs/": "docs",
+            "/dsri-documentation/docs/openshift-commands": "docs",
+            "/dsri-documentation/docs/openshift-debug": "docs",
+            "/dsri-documentation/docs/openshift-delete-objects": "docs",
+            "/dsri-documentation/docs/openshift-delete-services": "docs",
+            "/dsri-documentation/docs/openshift-install": "docs",
+            "/dsri-documentation/docs/openshift-load-data": "docs",
+            "/dsri-documentation/docs/openshift-login": "docs",
+            "/dsri-documentation/docs/openshift-secret": "docs",
+            "/dsri-documentation/docs/openshift-storage": "docs",
+            "/dsri-documentation/docs/prepare-project-for-dsri": "docs",
+            "/dsri-documentation/docs/tools-machine-learning": "docs",
+            "/dsri-documentation/docs/workflows-argo": "docs",
+            "/dsri-documentation/docs/workflows-introduction": "docs",
+            "/dsri-documentation/docs/workflows-nextflow": "docs"
+          },
+          "docs": [
+            {
+              "unversionedId": "access-dsri",
+              "id": "access-dsri",
+              "isDocsHomePage": false,
+              "title": "Access the DSRI",
+              "description": "Request an account",
+              "source": "@site/docs/access-dsri.md",
+              "slug": "/access-dsri",
+              "permalink": "/dsri-documentation/docs/access-dsri",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/access-dsri.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Introduction",
+                "permalink": "/dsri-documentation/docs/"
+              },
+              "next": {
+                "title": "Quickstart with templates",
+                "permalink": "/dsri-documentation/docs/deploy-from-template"
+              }
+            },
+            {
+              "unversionedId": "cwl-calrissian",
+              "id": "cwl-calrissian",
+              "isDocsHomePage": false,
+              "title": "Run CWL workflows",
+              "description": "CWL workflows",
+              "source": "@site/docs/cwl-calrissian.md",
+              "slug": "/cwl-calrissian",
+              "permalink": "/dsri-documentation/docs/cwl-calrissian",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/cwl-calrissian.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Run Nextflow workflows",
+                "permalink": "/dsri-documentation/docs/workflows-nextflow"
+              }
+            },
+            {
+              "unversionedId": "deploy-additional-services",
+              "id": "deploy-additional-services",
+              "isDocsHomePage": false,
+              "title": "Additional services",
+              "description": "Additional services available with easy installation on the Data Science Research Infrastructure.",
+              "source": "@site/docs/deploy-additional-services.md",
+              "slug": "/deploy-additional-services",
+              "permalink": "/dsri-documentation/docs/deploy-additional-services",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-additional-services.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Start a Spark cluster",
+                "permalink": "/dsri-documentation/docs/deploy-spark"
+              },
+              "next": {
+                "title": "Start from Docker image",
+                "permalink": "/dsri-documentation/docs/deploy-from-docker"
+              }
+            },
+            {
+              "unversionedId": "deploy-database",
+              "id": "deploy-database",
+              "isDocsHomePage": false,
+              "title": "Start databases",
+              "description": "SQL databases",
+              "source": "@site/docs/deploy-database.md",
+              "slug": "/deploy-database",
+              "permalink": "/dsri-documentation/docs/deploy-database",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-database.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Start a VSCode server",
+                "permalink": "/dsri-documentation/docs/deploy-vscode"
+              },
+              "next": {
+                "title": "Start on GPU",
+                "permalink": "/dsri-documentation/docs/deploy-on-gpu"
+              }
+            },
+            {
+              "unversionedId": "deploy-from-docker",
+              "id": "deploy-from-docker",
+              "isDocsHomePage": false,
+              "title": "Start from Docker image",
+              "description": "The DSRI is an OpenShift OKD cluster, based on Kubernetes. It uses Docker containers to deploy services and applications in pods.",
+              "source": "@site/docs/deploy-from-docker.md",
+              "slug": "/deploy-from-docker",
+              "permalink": "/dsri-documentation/docs/deploy-from-docker",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-from-docker.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Additional services",
+                "permalink": "/dsri-documentation/docs/deploy-additional-services"
+              },
+              "next": {
+                "title": "Start from Dockerfile",
+                "permalink": "/dsri-documentation/docs/guide-dockerfile-to-openshift"
+              }
+            },
+            {
+              "unversionedId": "deploy-from-template",
+              "id": "deploy-from-template",
+              "isDocsHomePage": false,
+              "title": "Quickstart with templates",
+              "description": "The easiest to get started with the DSRI is to use the predefined templates to deploy an application.",
+              "source": "@site/docs/deploy-from-template.md",
+              "slug": "/deploy-from-template",
+              "permalink": "/dsri-documentation/docs/deploy-from-template",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-from-template.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Access the DSRI",
+                "permalink": "/dsri-documentation/docs/access-dsri"
+              },
+              "next": {
+                "title": "Install the CLI",
+                "permalink": "/dsri-documentation/docs/openshift-install"
+              }
+            },
+            {
+              "unversionedId": "deploy-jupyter",
+              "id": "deploy-jupyter",
+              "isDocsHomePage": false,
+              "title": "Start Jupyter Notebooks",
+              "description": "Feel free to propose new deployments using pull requests or request new ones by creating a new issues.",
+              "source": "@site/docs/deploy-jupyter.md",
+              "slug": "/deploy-jupyter",
+              "permalink": "/dsri-documentation/docs/deploy-jupyter",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-jupyter.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Debug an application",
+                "permalink": "/dsri-documentation/docs/openshift-debug"
+              },
+              "next": {
+                "title": "Start RStudio",
+                "permalink": "/dsri-documentation/docs/deploy-rstudio"
+              }
+            },
+            {
+              "unversionedId": "deploy-on-gpu",
+              "id": "deploy-on-gpu",
+              "isDocsHomePage": false,
+              "title": "Start on GPU",
+              "description": "⛔ By default you do not have the permission to run pods on GPU ⛔",
+              "source": "@site/docs/deploy-on-gpu.md",
+              "slug": "/deploy-on-gpu",
+              "permalink": "/dsri-documentation/docs/deploy-on-gpu",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-on-gpu.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Start databases",
+                "permalink": "/dsri-documentation/docs/deploy-database"
+              },
+              "next": {
+                "title": "Start a Spark cluster",
+                "permalink": "/dsri-documentation/docs/deploy-spark"
+              }
+            },
+            {
+              "unversionedId": "deploy-rstudio",
+              "id": "deploy-rstudio",
+              "isDocsHomePage": false,
+              "title": "Start RStudio",
+              "description": "RStudio can be easily deployed from the OpenShift web UI Catalog.",
+              "source": "@site/docs/deploy-rstudio.md",
+              "slug": "/deploy-rstudio",
+              "permalink": "/dsri-documentation/docs/deploy-rstudio",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-rstudio.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Start Jupyter Notebooks",
+                "permalink": "/dsri-documentation/docs/deploy-jupyter"
+              },
+              "next": {
+                "title": "Start a VSCode server",
+                "permalink": "/dsri-documentation/docs/deploy-vscode"
+              }
+            },
+            {
+              "unversionedId": "deploy-spark",
+              "id": "deploy-spark",
+              "isDocsHomePage": false,
+              "title": "Start a Spark cluster",
+              "description": "Currently deploying an Apache Spark cluster is a work in progress on the DSRI, contact us if you are interested in trying it out.",
+              "source": "@site/docs/deploy-spark.md",
+              "slug": "/deploy-spark",
+              "permalink": "/dsri-documentation/docs/deploy-spark",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-spark.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Start on GPU",
+                "permalink": "/dsri-documentation/docs/deploy-on-gpu"
+              },
+              "next": {
+                "title": "Additional services",
+                "permalink": "/dsri-documentation/docs/deploy-additional-services"
+              }
+            },
+            {
+              "unversionedId": "deploy-vscode",
+              "id": "deploy-vscode",
+              "isDocsHomePage": false,
+              "title": "Start a VSCode server",
+              "description": "Start VSCode with root privileges",
+              "source": "@site/docs/deploy-vscode.md",
+              "slug": "/deploy-vscode",
+              "permalink": "/dsri-documentation/docs/deploy-vscode",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-vscode.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Start RStudio",
+                "permalink": "/dsri-documentation/docs/deploy-rstudio"
+              },
+              "next": {
+                "title": "Start databases",
+                "permalink": "/dsri-documentation/docs/deploy-database"
+              }
+            },
+            {
+              "unversionedId": "guide-dockerfile-to-openshift",
+              "id": "guide-dockerfile-to-openshift",
+              "isDocsHomePage": false,
+              "title": "Start from Dockerfile",
+              "description": "Build from local Dockerfile",
+              "source": "@site/docs/guide-dockerfile-to-openshift.md",
+              "slug": "/guide-dockerfile-to-openshift",
+              "permalink": "/dsri-documentation/docs/guide-dockerfile-to-openshift",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/guide-dockerfile-to-openshift.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Start from Docker image",
+                "permalink": "/dsri-documentation/docs/deploy-from-docker"
+              },
+              "next": {
+                "title": "Start from Helm charts",
+                "permalink": "/dsri-documentation/docs/helm"
+              }
+            },
+            {
+              "unversionedId": "guide-local-install",
+              "id": "guide-local-install",
+              "isDocsHomePage": false,
+              "title": "Install local OpenShift",
+              "description": "OpenShift and Kubernetes can be installed locally on a single machine for test purpose. The installation requires knowledge of your OS administration, and can be quite complex. We recommend to install it locally only if really required. Otherwise we recommend you to simply use Docker to test images, then deploy them on the DSRI.",
+              "source": "@site/docs/guide-local-install.md",
+              "slug": "/guide-local-install",
+              "permalink": "/dsri-documentation/docs/guide-local-install",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/guide-local-install.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055
+            },
+            {
+              "unversionedId": "guide-publish-image",
+              "id": "guide-publish-image",
+              "isDocsHomePage": false,
+              "title": "Publish a Docker image",
+              "description": "⚠️ DockerHub imposes strict pull limitations for clusters like the DSRI (using DockerHub might result in failing to pull your images on the DSRI).",
+              "source": "@site/docs/guide-publish-image.md",
+              "slug": "/guide-publish-image",
+              "permalink": "/dsri-documentation/docs/guide-publish-image",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/guide-publish-image.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Prepare your project",
+                "permalink": "/dsri-documentation/docs/prepare-project-for-dsri"
+              },
+              "next": {
+                "title": "Use secrets",
+                "permalink": "/dsri-documentation/docs/openshift-secret"
+              }
+            },
+            {
+              "unversionedId": "helm",
+              "id": "helm",
+              "isDocsHomePage": false,
+              "title": "Start from Helm charts",
+              "description": "Helm is a popular package manager for Kubernetes. It allows you to easily deploy Helm Charts built by the community",
+              "source": "@site/docs/helm.md",
+              "slug": "/helm",
+              "permalink": "/dsri-documentation/docs/helm",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/helm.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Start from Dockerfile",
+                "permalink": "/dsri-documentation/docs/guide-dockerfile-to-openshift"
+              },
+              "next": {
+                "title": "Storage and restrictions",
+                "permalink": "/dsri-documentation/docs/openshift-storage"
+              }
+            },
+            {
+              "unversionedId": "introduction",
+              "id": "introduction",
+              "isDocsHomePage": true,
+              "title": "Introduction",
+              "description": "The Data Science Research Infrastructure is an OpenShift cluster based on the MapR Distributed File System, using Kubernetes containers orchestration.",
+              "source": "@site/docs/introduction.md",
+              "slug": "/",
+              "permalink": "/dsri-documentation/docs/",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/introduction.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "next": {
+                "title": "Access the DSRI",
+                "permalink": "/dsri-documentation/docs/access-dsri"
+              }
+            },
+            {
+              "unversionedId": "openshift-commands",
+              "id": "openshift-commands",
+              "isDocsHomePage": false,
+              "title": "Command Line Interface",
+              "description": "OpenShift",
+              "source": "@site/docs/openshift-commands.md",
+              "slug": "/openshift-commands",
+              "permalink": "/dsri-documentation/docs/openshift-commands",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-commands.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Storage and restrictions",
+                "permalink": "/dsri-documentation/docs/openshift-storage"
+              },
+              "next": {
+                "title": "Delete objects (advanced)",
+                "permalink": "/dsri-documentation/docs/openshift-delete-objects"
+              }
+            },
+            {
+              "unversionedId": "openshift-debug",
+              "id": "openshift-debug",
+              "isDocsHomePage": false,
+              "title": "Debug an application",
+              "description": "If your application is facing issues when deployed:",
+              "source": "@site/docs/openshift-debug.md",
+              "slug": "/openshift-debug",
+              "permalink": "/dsri-documentation/docs/openshift-debug",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-debug.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Delete an application",
+                "permalink": "/dsri-documentation/docs/openshift-delete-services"
+              },
+              "next": {
+                "title": "Start Jupyter Notebooks",
+                "permalink": "/dsri-documentation/docs/deploy-jupyter"
+              }
+            },
+            {
+              "unversionedId": "openshift-delete-objects",
+              "id": "openshift-delete-objects",
+              "isDocsHomePage": false,
+              "title": "Delete objects (advanced)",
+              "description": "OpenShift",
+              "source": "@site/docs/openshift-delete-objects.md",
+              "slug": "/openshift-delete-objects",
+              "permalink": "/dsri-documentation/docs/openshift-delete-objects",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-delete-objects.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Command Line Interface",
+                "permalink": "/dsri-documentation/docs/openshift-commands"
+              },
+              "next": {
+                "title": "Prepare your project",
+                "permalink": "/dsri-documentation/docs/prepare-project-for-dsri"
+              }
+            },
+            {
+              "unversionedId": "openshift-delete-services",
+              "id": "openshift-delete-services",
+              "isDocsHomePage": false,
+              "title": "Delete an application",
+              "description": "OpenShift",
+              "source": "@site/docs/openshift-delete-services.md",
+              "slug": "/openshift-delete-services",
+              "permalink": "/dsri-documentation/docs/openshift-delete-services",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-delete-services.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Upload data",
+                "permalink": "/dsri-documentation/docs/openshift-load-data"
+              },
+              "next": {
+                "title": "Debug an application",
+                "permalink": "/dsri-documentation/docs/openshift-debug"
+              }
+            },
+            {
+              "unversionedId": "openshift-install",
+              "id": "openshift-install",
+              "isDocsHomePage": false,
+              "title": "Install the CLI",
+              "description": "OpenShift",
+              "source": "@site/docs/openshift-install.md",
+              "slug": "/openshift-install",
+              "permalink": "/dsri-documentation/docs/openshift-install",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-install.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Quickstart with templates",
+                "permalink": "/dsri-documentation/docs/deploy-from-template"
+              },
+              "next": {
+                "title": "Login with the CLI",
+                "permalink": "/dsri-documentation/docs/openshift-login"
+              }
+            },
+            {
+              "unversionedId": "openshift-load-data",
+              "id": "openshift-load-data",
+              "isDocsHomePage": false,
+              "title": "Upload data",
+              "description": "In JupyterLab and VSCode",
+              "source": "@site/docs/openshift-load-data.md",
+              "slug": "/openshift-load-data",
+              "permalink": "/dsri-documentation/docs/openshift-load-data",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-load-data.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Login with the CLI",
+                "permalink": "/dsri-documentation/docs/openshift-login"
+              },
+              "next": {
+                "title": "Delete an application",
+                "permalink": "/dsri-documentation/docs/openshift-delete-services"
+              }
+            },
+            {
+              "unversionedId": "openshift-login",
+              "id": "openshift-login",
+              "isDocsHomePage": false,
+              "title": "Login with the CLI",
+              "description": "OpenShift",
+              "source": "@site/docs/openshift-login.md",
+              "slug": "/openshift-login",
+              "permalink": "/dsri-documentation/docs/openshift-login",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-login.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Install the CLI",
+                "permalink": "/dsri-documentation/docs/openshift-install"
+              },
+              "next": {
+                "title": "Upload data",
+                "permalink": "/dsri-documentation/docs/openshift-load-data"
+              }
+            },
+            {
+              "unversionedId": "openshift-secret",
+              "id": "openshift-secret",
+              "isDocsHomePage": false,
+              "title": "Use secrets",
+              "description": "OpenShift",
+              "source": "@site/docs/openshift-secret.md",
+              "slug": "/openshift-secret",
+              "permalink": "/dsri-documentation/docs/openshift-secret",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-secret.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Publish a Docker image",
+                "permalink": "/dsri-documentation/docs/guide-publish-image"
+              },
+              "next": {
+                "title": "Libraries for Machine Learning",
+                "permalink": "/dsri-documentation/docs/tools-machine-learning"
+              }
+            },
+            {
+              "unversionedId": "openshift-storage",
+              "id": "openshift-storage",
+              "isDocsHomePage": false,
+              "title": "Storage and restrictions",
+              "description": "OpenShift images restrictions",
+              "source": "@site/docs/openshift-storage.md",
+              "slug": "/openshift-storage",
+              "permalink": "/dsri-documentation/docs/openshift-storage",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/openshift-storage.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Start from Helm charts",
+                "permalink": "/dsri-documentation/docs/helm"
+              },
+              "next": {
+                "title": "Command Line Interface",
+                "permalink": "/dsri-documentation/docs/openshift-commands"
+              }
+            },
+            {
+              "unversionedId": "prepare-project-for-dsri",
+              "id": "prepare-project-for-dsri",
+              "isDocsHomePage": false,
+              "title": "Prepare your project",
+              "description": "Code in a git repository",
+              "source": "@site/docs/prepare-project-for-dsri.md",
+              "slug": "/prepare-project-for-dsri",
+              "permalink": "/dsri-documentation/docs/prepare-project-for-dsri",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/prepare-project-for-dsri.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Delete objects (advanced)",
+                "permalink": "/dsri-documentation/docs/openshift-delete-objects"
+              },
+              "next": {
+                "title": "Publish a Docker image",
+                "permalink": "/dsri-documentation/docs/guide-publish-image"
+              }
+            },
+            {
+              "unversionedId": "tools-machine-learning",
+              "id": "tools-machine-learning",
+              "isDocsHomePage": false,
+              "title": "Libraries for Machine Learning",
+              "description": "This page is in development, feel free to edit it to add more informations.",
+              "source": "@site/docs/tools-machine-learning.md",
+              "slug": "/tools-machine-learning",
+              "permalink": "/dsri-documentation/docs/tools-machine-learning",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/tools-machine-learning.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Use secrets",
+                "permalink": "/dsri-documentation/docs/openshift-secret"
+              },
+              "next": {
+                "title": "Introduction to workflows",
+                "permalink": "/dsri-documentation/docs/workflows-introduction"
+              }
+            },
+            {
+              "unversionedId": "workflows-argo",
+              "id": "workflows-argo",
+              "isDocsHomePage": false,
+              "title": "Run Argo workflows",
+              "description": "Argo project",
+              "source": "@site/docs/workflows-argo.md",
+              "slug": "/workflows-argo",
+              "permalink": "/dsri-documentation/docs/workflows-argo",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/workflows-argo.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Introduction to workflows",
+                "permalink": "/dsri-documentation/docs/workflows-introduction"
+              },
+              "next": {
+                "title": "Run Nextflow workflows",
+                "permalink": "/dsri-documentation/docs/workflows-nextflow"
+              }
+            },
+            {
+              "unversionedId": "workflows-introduction",
+              "id": "workflows-introduction",
+              "isDocsHomePage": false,
+              "title": "Introduction to workflows",
+              "description": "Introduction",
+              "source": "@site/docs/workflows-introduction.md",
+              "slug": "/workflows-introduction",
+              "permalink": "/dsri-documentation/docs/workflows-introduction",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/workflows-introduction.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Libraries for Machine Learning",
+                "permalink": "/dsri-documentation/docs/tools-machine-learning"
+              },
+              "next": {
+                "title": "Run Argo workflows",
+                "permalink": "/dsri-documentation/docs/workflows-argo"
+              }
+            },
+            {
+              "unversionedId": "workflows-nextflow",
+              "id": "workflows-nextflow",
+              "isDocsHomePage": false,
+              "title": "Run Nextflow workflows",
+              "description": "Nextflow",
+              "source": "@site/docs/workflows-nextflow.md",
+              "slug": "/workflows-nextflow",
+              "permalink": "/dsri-documentation/docs/workflows-nextflow",
+              "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/workflows-nextflow.md",
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "sidebar": "docs",
+              "previous": {
+                "title": "Run Argo workflows",
+                "permalink": "/dsri-documentation/docs/workflows-argo"
+              },
+              "next": {
+                "title": "Run CWL workflows",
+                "permalink": "/dsri-documentation/docs/cwl-calrissian"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "docusaurus-plugin-content-blog": {
+    "default": {
+      "blogPosts": [
+        {
+          "id": "New Version 1.0.0",
+          "metadata": {
+            "permalink": "/dsri-documentation/blog/2017/10/24/new-version-1.0.0",
+            "source": "@site/blog/2017-10-24-new-version-1.0.0.md",
+            "description": "This blog post will test file name parsing issues when periods are present.",
+            "date": "2017-10-24T00:00:00.000Z",
+            "tags": [],
+            "title": "New Version 1.0.0",
+            "readingTime": 0.065,
+            "truncated": false,
+            "nextItem": {
+              "title": "Adding RSS Support",
+              "permalink": "/dsri-documentation/blog/2017/09/26/adding-rss"
+            }
+          }
+        },
+        {
+          "id": "Adding RSS Support",
+          "metadata": {
+            "permalink": "/dsri-documentation/blog/2017/09/26/adding-rss",
+            "source": "@site/blog/2017-09-26-adding-rss.md",
+            "description": "This is a test post.",
+            "date": "2017-09-26T00:00:00.000Z",
+            "tags": [],
+            "title": "Adding RSS Support",
+            "readingTime": 0.055,
+            "truncated": false,
+            "prevItem": {
+              "title": "New Version 1.0.0",
+              "permalink": "/dsri-documentation/blog/2017/10/24/new-version-1.0.0"
+            },
+            "nextItem": {
+              "title": "Adding RSS Support - RSS Truncation Test",
+              "permalink": "/dsri-documentation/blog/2017/09/25/testing-rss"
+            }
+          }
+        },
+        {
+          "id": "Adding RSS Support - RSS Truncation Test",
+          "metadata": {
+            "permalink": "/dsri-documentation/blog/2017/09/25/testing-rss",
+            "source": "@site/blog/2017-09-25-testing-rss.md",
+            "description": "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890",
+            "date": "2017-09-25T00:00:00.000Z",
+            "tags": [],
+            "title": "Adding RSS Support - RSS Truncation Test",
+            "readingTime": 0.065,
+            "truncated": true,
+            "prevItem": {
+              "title": "Adding RSS Support",
+              "permalink": "/dsri-documentation/blog/2017/09/26/adding-rss"
+            },
+            "nextItem": {
+              "title": "New Blog Post",
+              "permalink": "/dsri-documentation/blog/2017/04/10/blog-post-two"
+            }
+          }
+        },
+        {
+          "id": "New Blog Post",
+          "metadata": {
+            "permalink": "/dsri-documentation/blog/2017/04/10/blog-post-two",
+            "source": "@site/blog/2017-04-10-blog-post-two.md",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.",
+            "date": "2017-04-10T00:00:00.000Z",
+            "tags": [],
+            "title": "New Blog Post",
+            "readingTime": 2.31,
+            "truncated": true,
+            "prevItem": {
+              "title": "Adding RSS Support - RSS Truncation Test",
+              "permalink": "/dsri-documentation/blog/2017/09/25/testing-rss"
+            },
+            "nextItem": {
+              "title": "Blog Title",
+              "permalink": "/dsri-documentation/blog/2016/03/11/blog-post"
+            }
+          }
+        },
+        {
+          "id": "Blog Title",
+          "metadata": {
+            "permalink": "/dsri-documentation/blog/2016/03/11/blog-post",
+            "source": "@site/blog/2016-03-11-blog-post.md",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.",
+            "date": "2016-03-11T00:00:00.000Z",
+            "tags": [],
+            "title": "Blog Title",
+            "readingTime": 2.31,
+            "truncated": true,
+            "prevItem": {
+              "title": "New Blog Post",
+              "permalink": "/dsri-documentation/blog/2017/04/10/blog-post-two"
+            }
+          }
+        }
+      ],
+      "blogListPaginated": [
+        {
+          "metadata": {
+            "permalink": "/dsri-documentation/blog",
+            "page": 1,
+            "postsPerPage": 10,
+            "totalPages": 1,
+            "totalCount": 5,
+            "previousPage": null,
+            "nextPage": null,
+            "blogDescription": "Blog",
+            "blogTitle": "Blog"
+          },
+          "items": [
+            "New Version 1.0.0",
+            "Adding RSS Support",
+            "Adding RSS Support - RSS Truncation Test",
+            "New Blog Post",
+            "Blog Title"
+          ]
+        }
+      ],
+      "blogTags": {},
+      "blogTagsListPath": null
+    }
+  },
+  "docusaurus-plugin-content-pages": {
+    "default": [
+      {
+        "type": "jsx",
+        "permalink": "/dsri-documentation/help",
+        "source": "@site/src/pages/help.js"
+      },
+      {
+        "type": "jsx",
+        "permalink": "/dsri-documentation/",
+        "source": "@site/src/pages/index.js"
+      },
+      {
+        "type": "jsx",
+        "permalink": "/dsri-documentation/users",
+        "source": "@site/src/pages/users.js"
+      }
+    ]
+  },
+  "docusaurus-plugin-debug": {
+    "default": null
+  },
+  "docusaurus-theme-classic": {
+    "default": null
+  }
+}

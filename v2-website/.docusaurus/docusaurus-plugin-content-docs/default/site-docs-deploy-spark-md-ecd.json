@@ -1,0 +1,23 @@
+{
+  "unversionedId": "deploy-spark",
+  "id": "deploy-spark",
+  "isDocsHomePage": false,
+  "title": "Start a Spark cluster",
+  "description": "Currently deploying an Apache Spark cluster is a work in progress on the DSRI, contact us if you are interested in trying it out.",
+  "source": "@site/docs/deploy-spark.md",
+  "slug": "/deploy-spark",
+  "permalink": "/dsri-documentation/docs/deploy-spark",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-spark.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Start on GPU",
+    "permalink": "/dsri-documentation/docs/deploy-on-gpu"
+  },
+  "next": {
+    "title": "Additional services",
+    "permalink": "/dsri-documentation/docs/deploy-additional-services"
+  }
+}

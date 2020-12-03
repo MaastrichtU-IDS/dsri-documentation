@@ -1,0 +1,23 @@
+{
+  "unversionedId": "deploy-rstudio",
+  "id": "deploy-rstudio",
+  "isDocsHomePage": false,
+  "title": "Start RStudio",
+  "description": "RStudio can be easily deployed from the OpenShift web UI Catalog.",
+  "source": "@site/docs/deploy-rstudio.md",
+  "slug": "/deploy-rstudio",
+  "permalink": "/dsri-documentation/docs/deploy-rstudio",
+  "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/docs/deploy-rstudio.md",
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "sidebar": "docs",
+  "previous": {
+    "title": "Start Jupyter Notebooks",
+    "permalink": "/dsri-documentation/docs/deploy-jupyter"
+  },
+  "next": {
+    "title": "Start a VSCode server",
+    "permalink": "/dsri-documentation/docs/deploy-vscode"
+  }
+}
