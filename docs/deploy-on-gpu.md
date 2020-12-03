@@ -3,17 +3,13 @@ id: deploy-on-gpu
 title: Start on GPU
 ---
 
-To deploy applications on GPUs you need to **request GPU quotas**. 
+> **⛔ By default you do not have the permission to run pods on GPU ⛔** 
 
-> Contact the **[DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)** to request GPU access.
+If you want to run on GPU, **contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)**, they will create the templates you need to start applications on GPU.
 
 ## JupyterLab on GPU
 
-> **⛔ By default you do not have the permission to run pods on GPU ⛔** 
->
-> If you want to run on GPU, **contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)**, they will create the templates you need to start applications on GPU.
-
-Once your project has been granted access to GPUs:
+Once your project has been granted access to GPUs, you can deploy applications on GPU from the catalog:
 
 * Go to the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog): **Add to Project** > **Browse Catalog**
 * **Filter** the catalog on the publisher "**Institute of Data Science, UM**"
