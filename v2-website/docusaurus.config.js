@@ -63,7 +63,6 @@ module.exports={
       "@docusaurus/preset-classic",
       {
         "docs": {
-          "homePageId": "introduction",
           "showLastUpdateAuthor": true,
           "showLastUpdateTime": true,
           "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/",

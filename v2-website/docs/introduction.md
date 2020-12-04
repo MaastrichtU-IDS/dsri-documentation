@@ -1,6 +1,7 @@
 ---
 id: introduction
 title: Introduction
+slug: /
 ---
 
 The Data Science Research Infrastructure is an [OpenShift](https://www.openshift.com/) cluster based on the [MapR](https://mapr.com/) Distributed File System, using [Kubernetes](https://kubernetes.io/) containers orchestration.
