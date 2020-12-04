@@ -35,6 +35,14 @@ The easiest to get started with the DSRI is to use the predefined templates to d
 
 3. Click on the **Create** button, and go back to your project **Overview** page to see the application starting! It can take from a few seconds up to a few minutes.
 
+You can view this 1 minute video to guide you through the process to get the storage name, start, and access a RStudio application:
+
+<div className="container">
+    <video width="100%" height="100%" autoplay muted loop controls>
+        <source src="/dsri-documentation/img/screencast_dsri_deploy_template.webm" type="video/webm"/>
+    </video>
+</div>
+
 ## Stop your application
 
 When you are not using your application anymore you can stop the pod. If you are using a Dynamic or Persistent storage you can restart the pod and continue working with all your data in the same state as you left it.

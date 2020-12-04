@@ -72,8 +72,12 @@
     "sidebar": "sidebar---dsri-documentation-blog-462-1c6",
     "content": "content---dsri-documentation-blog-2017-10-24-new-version-1-0-0-bbb-8eb"
   },
-  "/dsri-documentation/help-820": {
-    "component": "component---site-src-pages-help-js-7-e-3-222",
+  "/dsri-documentation/help-a20": {
+    "component": "component---theme-mdx-page-1-f-3-b90",
+    "content": "content---dsri-documentation-help-7-d-8-891"
+  },
+  "/dsri-documentation/help_old-0a5": {
+    "component": "component---site-src-pages-help-old-js-3-a-7-6f2",
     "config": "config---dsri-documentation-5-e-9-e6f"
   },
   "/dsri-documentation/users-3de": {

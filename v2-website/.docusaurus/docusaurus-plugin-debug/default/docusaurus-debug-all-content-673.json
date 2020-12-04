@@ -999,9 +999,14 @@
   "docusaurus-plugin-content-pages": {
     "default": [
       {
-        "type": "jsx",
+        "type": "mdx",
         "permalink": "/dsri-documentation/help",
-        "source": "@site/src/pages/help.js"
+        "source": "@site/src/pages/help.md"
+      },
+      {
+        "type": "jsx",
+        "permalink": "/dsri-documentation/help_old",
+        "source": "@site/src/pages/help_old.js"
       },
       {
         "type": "jsx",

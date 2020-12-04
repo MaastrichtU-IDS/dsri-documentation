@@ -74,7 +74,12 @@ export default [
 },
 {
   path: '/dsri-documentation/help',
-  component: ComponentCreator('/dsri-documentation/help','820'),
+  component: ComponentCreator('/dsri-documentation/help','a20'),
+  exact: true,
+},
+{
+  path: '/dsri-documentation/help_old',
+  component: ComponentCreator('/dsri-documentation/help_old','0a5'),
   exact: true,
 },
 {
