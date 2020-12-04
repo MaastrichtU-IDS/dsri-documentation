@@ -34,9 +34,9 @@ For user already familiar with those concepts [workflow orchestration tools](/ds
 * Since DSRI can only be accessed when on the physical UM network or using the [UM VPN](https://vpn.maastrichtuniversity.nl/), deployed services will not be available on the public Internet 🔒
 * All activities must be legal in basis. You must closely examine and abide by the terms and conditions of any data, software, or web service that you use as part of your work 📜
 
-:::tip Get your DSRI account
+:::info
 
-If you are working at Maastricht University, see [this page](https://maastrichtu-ids.github.io/dsri-documentation/docs/access-dsri) to request an account, and run your services on the DSRI.
+If you are working at Maastricht University, **see [this page](https://maastrichtu-ids.github.io/dsri-documentation/docs/access-dsri) to request an account**, and run your services on the DSRI.
 
 :::
 
