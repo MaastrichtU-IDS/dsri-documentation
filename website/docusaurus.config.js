@@ -65,7 +65,7 @@ module.exports={
         "docs": {
           "showLastUpdateAuthor": true,
           "showLastUpdateTime": true,
-          "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/",
+          "editUrl": "https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/website/",
           "path": "./docs",
           "sidebarPath": require.resolve('./sidebars.json')
         },
@@ -111,8 +111,13 @@ module.exports={
         },
         {
           "href": "https://github.com/MaastrichtU-IDS/dsri-documentation/issues",
-          "label": "Issues",
+          "label": "Issues tracker",
           "position": "left"
+        },
+        {
+          "href": "https://github.com/MaastrichtU-IDS/dsri-documentation",
+          "label": "GitHub",
+          "position": "right"
         }
       ]
     },

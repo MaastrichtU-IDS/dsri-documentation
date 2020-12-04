@@ -15,7 +15,7 @@ The easiest to get started with the DSRI is to use the predefined templates to d
 
 <img src="/dsri-documentation/img/screenshot_filter_templates.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-> You might wonder why do you see less templates in your project? Because templates needs to be earned! 🏆 
+> You might wonder why do you see less templates in your project? Because templates need to be earned! 🏆 
 >
 > Get started with deploying, and using a service on the DSRI, then we will be able to give you access to more advanced uses of the DSRI!
 

@@ -107,7 +107,7 @@ Use the official DockerHub image if you have an enterprise license. Or [build](/
 
 ### Blazegraph triplestore
 
-Use [lyrasis/blazegraph](lyrasis/blazegraph) Docker image.
+Use [lyrasis/blazegraph](https://hub.docker.com/r/lyrasis/blazegraph) Docker image (optimized for OpenShift).
 
 * Image Name:
   

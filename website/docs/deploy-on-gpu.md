@@ -39,7 +39,7 @@ Now that your template is created and its accessible from the **Overview** page 
 
 For those pods VSCode cannot be accessed directly on a DSRI URL, you will need to forward the port to your localhost:
 
-1. [Login to the DSRI](/docs/openshift-login) using `oc login`
+1. [Login to the DSRI](/docs/openshift-install) using `oc login`
 2. Get the pod ID
 
 ```bash
