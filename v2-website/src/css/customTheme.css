@@ -7,3 +7,11 @@
   --ifm-color-primary-darker: #A82222;
   --ifm-color-primary-darkest: #8B1C1C;
 }
+
+a {
+  color: #c62828;
+}
+a:hover { 
+  color: #1565c0;
+  text-decoration: none;
+}
