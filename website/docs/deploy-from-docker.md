@@ -19,7 +19,11 @@ Search for an image for your service published on [DockerHub](https://hub.docker
 * [Google "dockerhub my_service_name"](https://www.google.com/search?q=dockerhub+python)
 * Sometimes multiple images can be found for your service. Take the official image when possible, or the one most relevant to your use-case.
 
-> If no suitable image can be found on [DockerHub](https://hub.docker.com/), it can be **built from a Dockerfile**. See above to do so.
+:::info
+
+If no suitable image can be found on [DockerHub](https://hub.docker.com/), it can be **built from a Dockerfile**. See above to do so.
+
+:::
 
 ---
 
@@ -37,9 +41,13 @@ Go to the [Overview page](https://app.dsri.unimaas.nl:8443/console/projects) of 
 
 <img src="/dsri-documentation/img/screenshot-deploy_image_from_ui.png" alt="Deploy image from UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-> You should now see your pod deployed on the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page of your project.
+:::info
 
-> You can expose routes to this pod in the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page: `Create route`.
+You should now see your pod deployed on the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page of your project.
+
+You can expose routes to this pod in the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page: **Create route**
+
+:::
 
 ---
 
@@ -49,9 +57,11 @@ In case you there is no Docker image for your application you can build and push
 
 To build and push a Docker image you will need to have [Docker installed](https://docs.docker.com/get-docker/).
 
-> See the [official Docker documentation](https://docs.docker.com/get-docker/).
+:::info
 
-> See [this documentation for details about Docker installation on Linux, MacOS and Windows](https://d2s.semanticscience.org/docs/d2s-installation#install-docker) without the need for a DockerHub account (required to use Docker Desktop on MacOS and Windows)
+See the [official documentation to install Docker](https://docs.docker.com/get-docker/).
+
+:::
 
 ### Define a Dockerfile
 
@@ -63,7 +73,11 @@ If no images are available on DockerHub, it is still possible that the developer
 
 If no `Dockerfile` are available we will need to define one. 
 
-> Feel free to [contact us](/help) to get help with this, especially if you are unfamiliar with [Docker](https://docs.docker.com/get-started/).
+:::info
+
+Feel free to [contact us](/help) to get help with this, especially if you are unfamiliar with [Docker](https://docs.docker.com/get-started/).
+
+:::
 
 ### Build the image
 
@@ -100,4 +114,8 @@ docker push username/my-service
 
 You can link DockerHub to your source code repository and ask it to build the Docker image automatically (from the Dockerfile in the root folder). It should take between 10 and 30min for DockerHub to build your image
 
-> You can also deploy a service on the DSRI directly from the Dockerfile, to avoid using DockerHub. See [this page to deploy a service from a local Dockerfile](/dsri-documentation/docs/guide-dockerfile-to-openshift) for more instructions
+:::tip Deploy from a local Dockerfile
+
+You can also deploy a service on the DSRI directly from a local `Dockerfile`, to avoid using DockerHub. See [this page to deploy a service from a local Dockerfile](/dsri-documentation/docs/guide-dockerfile-to-openshift) for more instructions
+
+:::

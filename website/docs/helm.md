@@ -5,7 +5,7 @@ title: Start from Helm charts
 
 [Helm](https://helm.sh/) is a popular package manager for [Kubernetes](https://kubernetes.io/). It allows you to easily deploy [Helm Charts](https://hub.helm.sh/) built by the community
 
-> You can explore published Helm charts at [https://hub.helm.sh ⛵](https://hub.helm.sh) 
+You can explore published Helm charts at [https://hub.helm.sh ⛵](https://hub.helm.sh) 
 
 ## Install the Helm client
 
@@ -87,13 +87,17 @@ helm repo update
 helm install example-mysql stable/mysql
 ```
 
-> The instructions to retrieve the admin password and connect to the database will be displayed in the terminal. 
-> 
-> Retrieve the database password with this command (N.B.: `kubectl` can also be used in place of `oc`):
-> 
-> ```bash
-> oc get secret example-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode; echo
-> ```
+:::info
+
+The instructions to retrieve the admin password and connect to the database will be displayed in the terminal. 
+
+Retrieve the database password with this command (N.B.: `kubectl` can also be used in place of `oc`):
+
+```bash
+oc get secret example-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode; echo
+```
+
+:::
 
 4. Verify that the chart has installed successfully:
 

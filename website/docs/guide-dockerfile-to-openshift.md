@@ -101,6 +101,6 @@ my-docker-image                              latest
 
 You can then deploy providing the docker image name and the name of the application to be deployed:
 
-```bash
+```abash
 oc new-app my-docker-image --name app-name-on-openshift
 ```

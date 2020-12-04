@@ -11,16 +11,28 @@ Define your workflow in a Bash script fashion, providing input, output and the c
 
 ## Install Nextflow
 
+Install the `nextflow` client on your computer:
+
 ```shell
 wget -qO- https://get.nextflow.io | bash
 ```
 
-> See the [Nextflow documentation](https://www.nextflow.io/docs/latest/getstarted.html#installation).
+:::info
+
+See the [Nextflow documentation](https://www.nextflow.io/docs/latest/getstarted.html#installation).
+
+:::
 
 ## Run workflow
+
+Try the hello world workflow from Nextflow using an existing storage:
 
 ```shell
 nextflow kuberun https://github.com/nextflow-io/hello -v pvc-mapr-projects-showcase:/data
 ```
 
-> Easily [define Conda environments and workflows](https://www.nextflow.io/docs/latest/conda.html) with Nextflow.
+:::tip Use Conda environments
+
+You can easily [define Conda environments and workflows](https://www.nextflow.io/docs/latest/conda.html) with Nextflow.
+
+:::

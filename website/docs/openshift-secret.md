@@ -18,7 +18,11 @@ Got to your project > `Resources` > `Secret`
 * `Key`: password
 * Enter the password in the text box `Clean Value`
 
-The secret can now be used in pods. 
+:::success
+
+The secret can now be used in deployment configs, pods, etc. 
+
+:::
 
 ## Connect to DockerHub
 

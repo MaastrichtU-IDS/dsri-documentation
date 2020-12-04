@@ -64,7 +64,11 @@ Once you built a Docker image, and you logged in to a Container Registry, you mi
 
 ### Publish to GitHub Container Registry
 
+:::tip Free for public images
+
 The [GitHub Container Registry](https://docs.github.com/en/free-pro-team@latest/packages/getting-started-with-github-container-registry) is still in beta but will be free for public images when fully released. It enables you to store your Docker images at the same place you keep your code! 📦
+
+:::
 
 Publish to your user Container Registry on GitHub:
 
@@ -88,6 +92,12 @@ If the image does not exist, GitHub Container Registry will create it automatica
 
 ### Publish to Quay.io
 
+:::tip Free for public images
+
+Quay.io is free for public images and does not restrict images pulls.
+
+:::
+
 1. Create the image on [quay.io](https://quay.io/)
 
 2. Build and push to [quay.io](https://quay.io/)
@@ -99,7 +109,19 @@ docker push quay.io/quay-username/my-image:latest
 
 ### Publish to DockerHub
 
-It is not recommended, but [DockerHub](https://hub.docker.com/) is still the most popular and mature Container Registry, if you are login to DockerHub on the DSRI it should allow you to pull DockerHub images in your project (see at the start of this page to do so).
+:::warning
+
+⚠️ **DockerHub imposes strict pull limitations for clusters** like the DSRI (using DockerHub might result in failing to pull your images on the DSRI). 
+
+We highly recommend to **use the [GitHub Container Registry](https://docs.github.com/en/free-pro-team@latest/packages/getting-started-with-github-container-registry/about-github-container-registry) or [RedHat quay.io Container Registry](https://quay.io/) to publish public Docker images**.
+
+:::
+
+:::info
+
+If you are login with your DockerHub user on the DSRI, it should allow you to pull DockerHub images in your project (see above).
+
+:::
 
 1. Create the repository on [DockerHub](https://hub.docker.com/) (attached to your user or an [organization](https://hub.docker.com/orgs/umids/repositories))
 2. Build and push the image:
@@ -120,18 +142,20 @@ docker tag my-jupyterlab ghcr.io/github-username/jupyterlab:latest
 
 You can automate the building and publication of Docker images using GitHub Actions workflows 🔄
 
-👀 Check the [`.github/workflows/publish-docker.yml` file](https://github.com/MaastrichtU-IDS/get-started-with-docker/blob/main/.github/workflows/publish-docker.yml) to see an example of a workflow to publish an image to the GitHub Container Registry.
+:::tip Use a working workflow as example
+
+👀 Check the [.github/workflows/publish-docker.yml file](https://github.com/MaastrichtU-IDS/get-started-with-docker/blob/main/.github/workflows/publish-docker.yml) to see an example of a workflow to publish an image to the GitHub Container Registry.
+
+:::
 
 👩‍💻 You only need to change the `IMAGE_NAME`, and use it in your GitHub repository to publish a Docker image for your application automatically! It will build from a `Dockerfile` at the root of the repository.
+
+:::info
 
 The workflow can be easily configured to:
 
 * publish a new image to the `latest` tag at each push to the main branch
 * publish an image to a new tag if a release is pushed on GitHub (using the git tag)
   * e.g. `v0.0.1` published as image `0.0.1`
-
-:::info
-
-GitHub Actions is still currently evolving quickly, feel free to check if they recommend a new way to build and publish containers 🚀
 
 :::

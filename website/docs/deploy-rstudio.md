@@ -78,11 +78,3 @@ We recommend to use SSH instead of HTTPS connection when possible, checkout [her
 
 :::
 
-## Upload data to RStudio
-
-See the [guide to upload data on the DSRI](/dsri-documentation/docs/openshift-load-data).
-
-## Stop or delete RStudio
-
-See the [documentation to stop and delete services](/dsri-documentation/docs/openshift-delete-services).
-

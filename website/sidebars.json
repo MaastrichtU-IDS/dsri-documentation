@@ -13,7 +13,7 @@
         "type": "category",
         "label": "Workflows",
         "items": [
-          "workflows-introduction", "workflows-argo", "workflows-nextflow", "cwl-calrissian"
+          "workflows-introduction", "workflows-argo", "workflows-nextflow", "workflows-cwl"
         ]
       }
     ]

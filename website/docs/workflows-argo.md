@@ -5,11 +5,17 @@ title: Run Argo workflows
 
 ![Argo project](/img/argo-logo.png)
 
-## Install the client
+:::warning
+
+Argo needs to be installed in your project, [contact the DSRI team](mailto:dsri-support-l@maastrichtuniversity.nl) to request it.
+
+:::
+
+## Install the `argo` client
 
 [Argo](https://argoproj.github.io/argo/) is a container native workflow engine for [Kubernetes](https://kubernetes.io/) supporting both [DAG](https://argoproj.github.io/docs/argo/examples/readme.html#dag) and [step based](https://argoproj.github.io/docs/argo/examples/readme.html#steps) workflows.
 
-Download the [Argo client](https://github.com/argoproj/argo/blob/master/demo.md#1-download-argo) to [run workflows](https://argoproj.github.io/docs/argo/examples/readme.html) on the DSRI cluster, from your computer.
+Download and install the [Argo client](https://github.com/argoproj/argo/blob/master/demo.md#1-download-argo) on your computer to [start workflows](https://argoproj.github.io/docs/argo/examples/readme.html) on the DSRI.
 
 ### On Ubuntu
 
@@ -38,14 +44,14 @@ Run Hello world workflow to test if Argo has been properly installed. And take a
 argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
 ```
 
-> You will need to have the `oc` client installed, see the [install documentation page](/dsri-documentation/docs/openshift-install).
+:::caution
 
-> It will allow you to [authenticate to the OpenShift cluster](/dsri-documentation/docs/openshift-install) using `oc login` .
+You will need to have the `oc` client installed and be logged in with `oc login`, see the [install documentation page](/dsri-documentation/docs/openshift-install).
 
-> Argo needs to be installed in your project, contact the DSRI team to request it.
+:::
 
 
-### Uninstall Argo client
+### Uninstall `argo`
 
 #### On Ubuntu
 
@@ -72,26 +78,26 @@ cd d2s-project-template
 
 ### Workflow to convert XML files to RDF
 
-* Steps-based workflow for XML files
+* Steps-based workflow for XML files, see the example workflow [YAML file on GitHub](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/d2s-workflow-xml.yaml).
 
 ```shell
 argo submit d2s-core/argo/workflows/d2s-workflow-transform-xml.yaml \
   -f support/config/config-transform-xml-drugbank.yml
 ```
 
-> Config files can be provided using the `-f` arguments, but are not necessary.
+:::info
 
-> See the example workflow [YAML file on GitHub](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/d2s-workflow-xml.yaml).
+Config files can be provided using the `-f` arguments, but are not necessary.
+
+:::
 
 
-* DAG workflow  for XML files
+* DAG workflow for XML files, see the [YAML file on GitHub](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/d2s-workflow-xml-dag.yaml).
 
 ```shell
 argo submit d2s-core/argo/workflows/d2s-workflow-transform-xml-dag.yaml \
   -f support/config/config-transform-xml-drugbank.yml
 ```
-
-> See the [YAML file on GitHub](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/d2s-workflow-xml-dag.yaml).
 
 ### Workflow to convert CSV files to RDF
 
@@ -109,7 +115,11 @@ argo submit d2s-core/argo/workflows/d2s-workflow-transform-csv-dag.yaml \
   -f support/config/config-transform-csv-stitch.yml
 ```
 
-> Try this to solve steps services IP: `{{steps.nginx-server.pod-ip}}`
+:::caution
+
+Try this to solve issue related to steps services IP: `{{steps.nginx-server.pod-ip}}`
+
+:::
 
 ---
 
@@ -127,7 +137,15 @@ argo list
 argo terminate my-workflow
 ```
 
-> This might not stop the workflow, in this case use `argo delete`
+:::caution
+
+This might not stop the workflow, in this case use:
+
+```bash
+argo delete my-workflow
+```
+
+:::
 
 ### Delete a workflow
 
@@ -141,7 +159,7 @@ argo delete my-workflow
 
 Get into a container, to understand why it bugs, by creating a YAML with the command `tail -f /dev/null` to keep it hanging.
 
-> See the [example in the d2s-argo-workflow repository](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/tests/test-devnull-argo.yaml).
+See the [example in the d2s-argo-workflow repository](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/tests/test-devnull-argo.yaml):
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -180,10 +198,8 @@ Then start the workflow:
 argo submit --serviceaccount argo tests/test-devnull-argo.yaml
 ```
 
-And connect with the Shell:
+And connect with the Shell (change the pod ID to your pod ID):
 
 ```shell
 oc rsh test-devnull-argo-pod
 ```
-
-> Change the pod ID to the generated pod ID.

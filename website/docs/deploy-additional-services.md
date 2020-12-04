@@ -11,7 +11,11 @@ A service can be easily deployed from a [Docker image](/dsri-documentation/docs/
 
 ## Ubuntu
 
-> To be tested
+:::warning
+
+To be tested
+
+:::
 
 Start Ubuntu with the `root` user which has `sudo` permissions to install anything.
 
@@ -23,11 +27,19 @@ oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-app
 
 This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
 
-> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+:::caution
+
+🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+
+:::
+
+:::info
 
 📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage
 
-We enabled the port 8080 in the Ubuntu container if you need to deploy applications.
+We enabled the port `8080` in the Ubuntu container if you need to deploy applications.
+
+:::
 
 To quickly access it from the terminal:
 
@@ -53,7 +65,11 @@ To quickly access it from the terminal:
 
 [Apache Flink](https://flink.apache.org/) enables processing of Data Streams using languages such as Java or Scala .
 
-> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+:::caution
+
+🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+
+:::
 
 Create the Apache Flink template in your project using [vemonet/flink-on-openshift](https://github.com/vemonet/flink-on-openshift)
 
@@ -61,7 +77,7 @@ Create the Apache Flink template in your project using [vemonet/flink-on-openshi
 oc apply -f https://raw.githubusercontent.com/vemonet/flink-on-openshift/master/template-flink-dsri.yml
 ```
 
-> Use the template to start the cluster.
+Use the template to start the cluster from the catalog.
 
 Use this command to get the Flink Jobmanager pod id and copy file to the pod.
 
@@ -73,13 +89,11 @@ oc exec <pod_id> -- mkdir -p /mnt/workspace/resources
 oc cp workspace/resources/RMLStreamer.jar <pod_id>:/mnt/
 ```
 
-Delete the Apache Flink cluster:
+Delete the Apache Flink cluster (change the application name):
 
 ```bash
 oc delete all,secret,configmaps,serviceaccount,rolebinding --selector app=flink-cluster
 ```
-
-> Change `flink-cluster` by the name you gave to the application.
 
 ## OpenMPI
 
@@ -99,13 +113,21 @@ See the GPU benchmarks for examples of MPI job definitions:
 * [MPI TensorFlow benchmark](https://github.com/kubeflow/mpi-operator/blob/master/examples/v1alpha2/tensorflow-benchmarks.yaml)
 * [MPI TensorFlow ImageNet benchmark](https://github.com/kubeflow/mpi-operator/blob/master/examples/v1alpha2/tensorflow-benchmarks-imagenet.yaml)
 
-> [Contact us](mailto:dsri-support-l@maastrichtuniversity.nl) to get access to OpenMPI on the DSRI 📬
+:::info
+
+[Contact us](mailto:dsri-support-l@maastrichtuniversity.nl) to get access to OpenMPI on the DSRI 📬
+
+:::
 
 ## File browser
 
 Deploy a file browser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume in case you need it (JupyterLab, RStudio and VisualStudio Code server already include a file browser)
 
-> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+:::caution
+
+🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+
+:::
 
 Add the file browser template:
 
@@ -131,12 +153,16 @@ You can find the Storage name if you Go to the deployments page > Storage panel.
 
 This deployment require to have  root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)  or create a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) to request root access or to create persistent volume for your project if you don't have them .
 
-Default credentials will be
+:::info
 
-* login: "admin" 
+Default credentials will be username `admin` and password `admin`
 
-* password: "admin" 
+:::
 
-  *Please change the password in the Filebrowser Web UI once it has been created.*
+:::caution
+
+Please **change the password in the Filebrowser Web UI** once it has been created.
+
+:::
 
 <img src="/dsri-documentation/img/screenshot-filebrowser-login.png" alt="File browser Web UI" style={{maxWidth: '50%', maxHeight: '50%'}} />

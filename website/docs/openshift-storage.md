@@ -11,13 +11,21 @@ OpenShift prevent running regular Docker images by default, and enforce to run i
 
 Some Docker images has been optimized to run in OpenShift, those images can use the **Dynamic storage** feature, and automatically store persistent data.
 
-> To run a regular Docker image, see below.
+:::caution
+
+To run a regular Docker image, see below.
+
+:::
 
 ### Regular Docker images
 
 Most Docker images run with a specific user (e.g. the `root` user) and have not been optimized to comply with OpenShift requirements. In this case your project will need to be enable to run root containers (aka. anyuid) by the DSRI support team.
 
-> 🚫 **Dynamic storage** does not work with regular Docker images, you will need to request a **Persistent storage** to securely store your data.
+:::warning
+
+**Dynamic storage** does not work with regular Docker images, you will need to request a **Persistent storage** to securely store your data.
+
+:::
 
 ## Storage solutions
 
@@ -29,17 +37,31 @@ Different storages can be used when running services on the DSRI:
 
 🗄️ **Persistent storage**:  a persistent storage can be created by the DSRI team for a persistent storage of the data. [Contact the DSRI team](/dsri-documentation/help) to request a persistent storage. 
 
-### Use the default ephemeral storage
+:::caution
 
-When creating a pod, OpenShift will by default use ephemeral storage. It creates a volumes bind to the pod. So the volume will be deleted.
+A storage (aka. Persistent Volume Claim) is only accessible in the project where it has been created.
 
-It is recommended to use dynamic provisioning for a more sustainable storage solution. But ephemeral storage can be sufficient for testing.
+:::
 
-### Define a dynamic persistent volume
+### Request a static persistent volumes
 
-> 🚫 Not working on project with Root access enabled at the moment, request a static volume for this.
+Static persistent volumes provides a sustainable persistent storage over time for applications that need to run regular Docker images (which usually use the `root` user).
 
-Dynamic persistent volumes can be created automatically by an application template, and used for application with an image optimized for OpenShift.
+:::info
+
+[Contact the DSRI support team 📬](/dsri-documentation/help) to request a static persistent volume
+
+:::
+
+### Use the dynamic storage
+
+:::warning
+
+This storage solution is not compatible with applications using the `root` user, [contact the DSRI support team 📬](/dsri-documentation/help) to request a persistent storage.
+
+:::
+
+Dynamic **persistent** volumes can be created automatically by an application template, and used for application with an image optimized for OpenShift.
 
 Dynamic storage can also be created dynamically, go to **Storage** on the left sidebar in a project:
 
@@ -50,10 +72,14 @@ Dynamic storage can also be created dynamically, go to **Storage** on the left s
    * **Shared Access (RWX)**: all users with access to the projects can read/write this volume.
    * **Read Only (ROX)**: all users with access to the projects can read this volume.
 
-> Dynamic PVCs are only accessible in the project they have been created.
+### Use the ephemeral storage
 
-### Request a static persistent volumes
+:::warning
 
-Static persistent volumes provides a more sustainable storage over time for application that need to run regular Docker images.
+We currently disabled this solution by default, as it was confusing for users and would lead to data loss.
 
-[Contact the DSRI support team 📬](/dsri-documentation/help) to request a static persistent volume
+:::
+
+When creating a pod, OpenShift will by default use ephemeral storage. It creates a volumes bind to the pod. So the volume will be deleted.
+
+It is recommended to use dynamic provisioning for a more sustainable storage solution. But ephemeral storage can be sufficient for testing.

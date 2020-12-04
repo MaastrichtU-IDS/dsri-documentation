@@ -3,7 +3,7 @@ id: tools-machine-learning
 title: Libraries for Machine Learning
 ---
 
-:::info
+:::caution
 
 This page is in development, feel free to [edit it](https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/tools-machine-learning.md) to add more informations.
 
@@ -12,9 +12,9 @@ This page is in development, feel free to [edit it](https://github.com/Maastrich
 ## Machine Learning libraries
 
 * See [this vulgarisation article](https://www.saagie.com/blog/machine-learning-for-grandmas/) explaining the different principles of Machine Learning.
-
 * The [Azure Machine Learning Algorithm Cheat Sheet](https://docs.microsoft.com/en-us/azure/machine-learning/algorithm-cheat-sheet) helps you choose the right algorithm for a predictive analytics model.
 * [This repository](https://github.com/TarrySingh/Artificial-Intelligence-Deep-Learning-Machine-Learning-Tutorials) provides tutorials and examples to a vast number of Machine / Deep Learning library.
+
 
 ### SciKit Learn
 

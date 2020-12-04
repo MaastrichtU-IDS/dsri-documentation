@@ -3,6 +3,12 @@ id: workflows-introduction
 title: Introduction to workflows
 ---
 
+:::warning
+
+Running workflows on the DSRI is a work in progress. It usually requires some knowledge about how to orchestrate containers.
+
+:::
+
 ## Introduction
 
 Multiple technologies are available to run workflows on OpenShift/Kubernetes clusters. Each has its strengths and weaknesses in different areas.
@@ -13,7 +19,7 @@ The technology to use needs to be **chosen depending on your use-case**.
 
 :::
 
-## Already implemented
+## Already tested
 
 ### Argo
 
@@ -34,7 +40,7 @@ Define your workflow in a Bash script fashion, providing input, output and the c
 * Good support for provenance description (export as RDF).
 * Support on OpenShift still in development
   * [Apache Airflow](https://airflow.apache.org/docs/stable/kubernetes.html)
-  * [cwl-calrissian](https://github.com/Duke-GCB/calrissian/)
+  * [workflows-cwl](https://github.com/Duke-GCB/calrissian/)
 * Propose a GUI to build the workflows: [Rabix Composer](https://rabix.io/)
 
 ## To be implemented
@@ -59,9 +65,7 @@ Pipelines written in Python.
 
 [KubeGene](https://kubegene.io/) is a turn-key genome sequencing workflow management framework.
 
-> See the [Workflow example](https://github.com/kubegene/kubegene/blob/master/example/simple-sample/simple-sample.yaml).
-
-> And how to [define a tool](https://kubegene.io/docs/guides/tool/).
+See the [Workflow example](https://github.com/kubegene/kubegene/blob/master/example/simple-sample/simple-sample.yaml), and how to [define a tool](https://kubegene.io/docs/guides/tool/).
 
 ### Seldon
 
@@ -69,10 +73,14 @@ Pipelines written in Python.
 
 ### Volcano
 
-Run batch pipelines on Kubernetes with [Volcano](https://volcano.sh/). More a scheduler than a workflow engine. 
+Run batch pipelines on Kubernetes with [Volcano](https://volcano.sh/). 
 
-> Can be used to run Spark, Kubeflow or KubeGene workflows.
+* More a scheduler than a workflow engine. 
 
-## Requests and questions
+* Volcano can be used to run Spark, Kubeflow or KubeGene workflows.
+
+:::info
 
 Feel free to [contact us](/dsri-documentation/help) if you have any questions about running workflows on DSRI or to request the support of a new technology.
+
+:::

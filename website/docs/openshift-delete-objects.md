@@ -11,11 +11,15 @@ This documentation provide guidelines to delete various types of objects in the 
 
 It is recommend to use the `oc` tool to delete OpenShift objects, as it will allow to properly delete all objects related to specific deployments.
 
+:::caution
+
 Make sure you are connected to the right project:
 
 ```shell
 oc project my-project
 ```
+
+:::
 
 ## Delete an application
 
@@ -32,11 +36,15 @@ oc delete all,secret,configmaps,serviceaccount,rolebinding --selector app=my-app
 
 > Delete storage if necessary from the OpenShift web UI.
 
+:::caution
+
 You can force the deletion if the objects are not deleting properly:
 
 ```shell
 oc delete all,secret,configmaps,serviceaccount,rolebinding --force --grace-period=0 --selector app=my-application
 ```
+
+:::
 
 ## Delete pod
 
@@ -52,21 +60,31 @@ Use the pod ID retrieved to delete the pod:
 oc delete pod <POD_ID>
 ```
 
-Force deletion:
+:::caution
+
+If the pod is not properly deleted, you can force its deletion:
 
 ```shell
 oc delete pod --force --grace-period=0 <POD_ID>
 ```
 
+:::
+
 ## Delete a project
 
-To properly delete a project you need to first delete all objects in this project:
+:::warning
+
+All objects and persistent storages in this project will be deleted and cannot be retrieved.
+
+:::
+
+1. To properly delete a project you need to first delete all objects in this project:
 
 ```bash
 oc delete all,configmap,pvc,serviceaccount,rolebinding,secret,serviceinstance --all -n <PROJECT_ID>
 ```
 
-Then delete the project:
+2. Then delete the project:
 
 ```bash
 oc delete project <PROJECT_ID>
@@ -74,7 +92,11 @@ oc delete project <PROJECT_ID>
 
 ## Delete persistent storage
 
-To delete a persistent storage dynamically created:
+:::warning
+
+All data stored in this persistent storage will be lost and cannot be retrieved.
+
+:::
 
 ```bash
 oc delete pvc storage-name
@@ -144,11 +166,17 @@ Remove Kubernetes finalizers from terminating projects:
 for i in $(oc get projects  | grep Terminating| awk '{print $1}'); do echo $i; oc get project $i -o yaml | sed "/kubernetes/d" | sed "/finalizers:/d" | oc apply -f - ; done
 ```
 
+:::caution
+
 If `ServiceInstances` refuses to get deleted, try to remove kubernetes finalizers:
 
 ```shell
 for i in $(oc get projects  | grep Terminating| awk '{print $1}'); do echo $i; oc get serviceinstance -n $i -o yaml | sed "/kubernetes-incubator/d"| oc apply -f - ; done
 ```
+
+:::
+
+:::info
 
 Check if there are still objects in a project:
 
@@ -156,3 +184,4 @@ Check if there are still objects in a project:
 oc get all,configmap,pvc,serviceaccount,secret,rolebinding,serviceinstance
 ```
 
+:::

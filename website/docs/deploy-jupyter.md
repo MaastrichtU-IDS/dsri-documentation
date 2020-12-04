@@ -24,11 +24,9 @@ Create the template in your project catalog if it is not present:
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-jupyterlab-root-persistent.yml
 ```
 
-You can deploy it using the **JupyterLab with root user (Persistent)** solutions in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog):
+You can deploy it using the **JupyterLab with root user (Persistent)** solutions in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog), the application will use an existing persistent storage to store your data.
 
 <img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-> The application will use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
 
 The following parameters can be provided:
 
@@ -36,15 +34,17 @@ The following parameters can be provided:
 2. The **Password** is safely stored in a Secret.
 3. You can provide a **Git repository URL** with files to be downloaded and requirements to be installed at the start of the application. 
 4. **Storage name** (only for persistent): the storage Persistent Volume Claim (PVC)
-5. **Storage folder** (only for persistent): path to the Notebook data folder in the Persistent Volume Claim storage
+5. **Storage folder** (only for persistent): path to the Notebook data folder in the Persistent Volume Claim storage, retrieve it in your project **Storage** page
 
-> This deployment require to have  root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl) to request root access if you don't have them.
+:::tip Automatically install packages when the application starts
 
 Pip requirements, apt packages and Jupyterlab extensions are installed from `requirements.txt`, `packages.txt` and `extensions.txt` requirement files. 
 
+:::
+
 Try the following Notebooks to work on a RDF Knowledge Graph about COVID-19 related publications: https://github.com/vemonet/covid-kg-notebooks
 
-> Built from [amalic/Jupyterlab](https://github.com/amalic/Jupyterlab) image.
+> The JupyterLab Docker image has been built from [amalic/Jupyterlab](https://github.com/amalic/Jupyterlab) image.
 
 ## Start JupyterLab with restricted user
 
@@ -68,11 +68,17 @@ You can use any image based on the official Jupyter docker stack: https://github
 
 Or build your own using this repository as example: https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift 📦
 
-> **You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
+:::warning
 
-By default the working directory is `/home/jovyan`
+**You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
 
-> The application will automatically create a Persistent Volume Claim (PVC) for a persistent storage of the data.
+:::
+
+:::info
+
+By default the working directory is `/home/jovyan`, the application will automatically create a persistent storage to store your data (find it in the **Storage** page of your project).
+
+:::
 
 ## Use git in JupyterLab
 
@@ -82,7 +88,20 @@ It will prompt you for a username and password if the repository is private.
 
 <img src="https://raw.githubusercontent.com/jupyterlab/jupyterlab-git/master/docs/figs/preview.gif" alt="JupyterLab Git extension" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
->  You can also use `git` from the terminal.
+You can also use `git` from the terminal.
+
+:::caution
+
+Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
+
+```bash
+git config --global user.name "Jean Dupont"
+git config --global user.email jeandupont@gmail.com
+```
+
+:::
+
+:::info
 
 You can run this command to ask git to save your password for 15min:
 
@@ -96,34 +115,32 @@ Or store the password in a plain text file:
 git config --global credential.helper 'store --file ~/.git-credentials'
 ```
 
-Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
+:::
 
-```bash
-git config --global user.name "Jean Dupont"
-git config --global user.email jeandupont@gmail.com
-```
+:::tip Git tip
 
-> We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
+We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
 
-## Upload data to JupyterLab
+:::
 
-See the [Guide to upload data on the DSRI](/dsri-documentation/docs/openshift-load-data).
-
-## Stop or delete JupyterLab
-
-See the [documentation to stop and delete services](/dsri-documentation/docs/openshift-delete-services).
 
 ## Start JupyterHub
 
-> Useful if you want to provide JupyterLab to multiple users.
+:::info
+
+This application is useful if you want to provide JupyterLab to multiple users.
+
+:::
 
 Use the **JupyterHub with GitHub authentication (Dynamic)** template to start a JupyterHub service, users will be able to login with their GitHub account, and start a notebook choosing from various images.
 
 This solution enable you to use the DSRI to run Jupyter notebooks for multiple users without the need for a DSRI account, or knowledge of OpenShift. All they need is a GitHub account and access to the UM network (via the UM VPN).
 
-Persistent volumes are automatically created for each instance started in JupyterHub to insure persistence of the data even if the instances or JupyterHub are stopped.
+:::tip Use different authentication systems
 
-> ⚠️ The users will be able to install new `pip` packages in their JupyterLab instance, but they will not have `sudo` privileges (so they cannot install `apt` or `yum` packages)
+Checkout the [different authenticators implemented by JupyterHub](https://jupyterhub.readthedocs.io/en/stable/reference/authenticators.html), and let us know if you would like to work together on implementing a new authentication system.
+
+:::
 
 Create the template in your project catalog:
 
@@ -142,3 +159,15 @@ You will need to register a new GitHub OAuth application for your JupyterHub ins
     * e.g. for the `ids-projects` project: https://jupyterhub-ids-projects.app.dsri.unimaas.nl/hub/oauth_callback
 
 3. Add authorized GitHub users to the JupyterHub users when submitting the template to deploy JupyterHub in the OpenShift web UI. It can be changed from the **Admin** tab in the JupyterHub UI later.
+
+:::info
+
+Persistent volumes are automatically created for each instance started in JupyterHub to insure persistence of the data even if the instances or JupyterHub are stopped.
+
+:::
+
+:::warning
+
+The users will be able to install new `pip` packages in their JupyterLab instance, but they will not have `sudo` privileges (so they cannot install `apt` or `yum` packages for example)
+
+:::

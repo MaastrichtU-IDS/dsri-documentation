@@ -39,9 +39,17 @@ Create the template in your project catalog:
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-restricted/template-vscode-dynamic.yml
 ```
 
-> **You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
+:::warning
 
-> We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
+**You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
+
+:::
+
+:::caution
+
+We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
+
+:::
 
 ## Use Git in VSCode
 
@@ -51,9 +59,26 @@ You will need to use `git` from the terminal to clone the git repository, for ex
 git clone https://github.com/MaastrichtU-IDS/dsri-openshift-applications.git
 ```
 
-> VisualStudio will prompt a window to give permission to GitHub in a web page if the repository is private, **this option does not work**, you need to cancel this window and VSCode will ask your for username and password!
+:::tip Login to GitHub
 
-Then you can use git from the VSCode web UI to manage your `git` repositories (add, commit, push changes).
+VisualStudio will prompt a window to give permission to GitHub in a web page if the repository is private, **this option does not work**, you need to cancel this window, then VSCode will ask your for username and password!
+
+:::
+
+Once the repository cloned, you can use git from the VSCode web UI to manage your `git` repositories (add, commit, push changes).
+
+:::caution
+
+Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
+
+```bash
+git config --global user.name "Jean Dupont"
+git config --global user.email jeandupont@gmail.com
+```
+
+:::
+
+:::info
 
 You can run this command to ask git to save your password for 15min:
 
@@ -67,26 +92,13 @@ Or store the password in a plain text file:
 git config --global credential.helper 'store --file ~/.git-credentials'
 ```
 
-Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
-
-```bash
-git config --global user.name "Jean Dupont"
-git config --global user.email jeandupont@gmail.com
-```
+:::
 
 :::tip Git tip
 
 We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
 
 :::
-
-## Upload data to VSCode
-
-See the [guide to upload data on the DSRI](/dsri-documentation/docs/openshift-load-data).
-
-## Stop or delete VSCode
-
-See the [documentation to stop and delete services](/dsri-documentation/docs/openshift-delete-services).
 
 ## VSCode for GPU
 

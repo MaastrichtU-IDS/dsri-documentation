@@ -27,7 +27,7 @@ Run Data Science applications in [Docker container 🐳](https://www.docker.com/
 
 The data will be safely stored in persistent volumes.
 
-For user already familiar with those concepts [workflow orchestration tools](/dsri-documentation/docs/workflows-introduction) can be used, such as [Argo workflows](/dsri-documentation/docs/workflows-argo), [Nextflow](/dsri-documentation/docs/workflows-nextflow) or [CWL Calrissian](/dsri-documentation/docs/cwl-calrissian).
+For user already familiar with those concepts [workflow orchestration tools](/dsri-documentation/docs/workflows-introduction) can be used, such as [Argo workflows](/dsri-documentation/docs/workflows-argo), [Nextflow](/dsri-documentation/docs/workflows-nextflow) or [CWL Calrissian](/dsri-documentation/docs/workflows-cwl).
 
 ### What cannot be done ❌
 

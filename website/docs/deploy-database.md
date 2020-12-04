@@ -23,7 +23,11 @@ oc get services
 
 Use the **MariaDB** template in the DSRI OpenShift web UI catalog.
 
-> When the database has been deployed, you can connect from another pod using your favorite language and connector.
+:::tip Connect to the database
+
+When the database has been deployed, you can connect from another pod using your favorite language and connector.
+
+:::
 
 Example with the `mysql` Command Line Interface:
 
@@ -41,7 +45,11 @@ mysql -h example-mysql -p
 
 Use the **MySQL** template in the DSRI OpenShift web UI catalog.
 
-> When the database has been deployed, you can connect from another pod using your favorite language and connector.
+:::tip Connect to the database
+
+When the database has been deployed, you can connect from another pod using your favorite language and connector.
+
+:::
 
 Example with the `mysql` Command Line Interface:
 
@@ -61,7 +69,11 @@ mysql -h example-mysql -p
 
 Use the **Postgresql** template in the DSRI OpenShift web UI catalog.
 
-> When the database has been deployed, you can connect from another pod using your favorite language and connector.
+:::tip Connect to the database
+
+When the database has been deployed, you can connect from another pod using your favorite language and connector.
+
+:::
 
 Example with the `psql` Command Line Interface:
 
@@ -77,7 +89,11 @@ psql -h postgresql-db -U postgres db
 
 ### Start Apache Drill 🔩
 
-> Contact us to deploy Apache Drill.
+:::info
+
+Contact us to install Apache Drill
+
+:::
 
 Use the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-containers/tree/master/kubernetes) for Kubernetes from MapR.
 
@@ -89,7 +105,11 @@ Use the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-
 
 Use the **MongoDB** template in the DSRI OpenShift web UI catalog.
 
-> Use the service name as hostname to connect from another pod in the same project.
+:::tip Connect to the database
+
+Use the service name as hostname to connect from another pod in the same project.
+
+:::
 
 ### Redis 🎲
 
@@ -97,7 +117,11 @@ Use the **MongoDB** template in the DSRI OpenShift web UI catalog.
 
 Use the **Redis** template in the DSRI OpenShift web UI catalog.
 
-> Use the service name as hostname to connect from another pod in the same project.
+:::tip Connect to the database
+
+Use the service name as hostname to connect from another pod in the same project.
+
+:::
 
 ## Graph databases
 
@@ -170,12 +194,20 @@ oc expose service neo4j-community-neo4j-community
 
 Manually expose a route to `neo4j-bolt` on port 7687 (click on the service, then create route)
 
-> Provide the bolt route URL, e.g. http://neo4j-bolt-ids-shared-project.app.dsri.unimaas.nl
->
-> Use the `neo4j` username to login.
+:::info
+
+Provide the bolt route URL, e.g. http://neo4j-bolt-ids-shared-project.app.dsri.unimaas.nl
+
+Use the `neo4j` username to login.
+
+:::
+
+:::tip Use Neo4j Enterprise edition
 
 Alternatively, Neo4j Enterprise edition is more recent: https://artifacthub.io/packages/helm/neo4j-helm/neo4j
 
 ```bash
 helm install mygraph https://github.com/neo4j-contrib/neo4j-helm/releases/download/4.1.3-1/neo4j-4.1.3-1.tgz --set core.standalone=true --set acceptLicenseAgreement=yes --set neo4jPassword=mypassword
 ```
+
+:::
