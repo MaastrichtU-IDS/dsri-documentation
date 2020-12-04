@@ -16,7 +16,7 @@ website/package-lock.json
 /node_modules
 
 # production
-/build
+build
 
 # generated files
 .docusaurus
