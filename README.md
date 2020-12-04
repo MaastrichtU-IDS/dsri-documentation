@@ -16,12 +16,11 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 
 ### Files locations
 
-- Add new `docs` pages to [website/sidebars.json](https://github.com/MaastrichtU-IDS/d2s-docs/blob/master/website/sidebars.json).
-
-- Main parameters of the website can be found in [website/siteConfig.js](https://github.com/MaastrichtU-IDS/d2s-docs/blob/master/website/siteConfig.js).
-
+- All documentation pages are in `website/docs`
+- Add new `docs` pages links to the sidebar: [website/sidebars.json](https://github.com/MaastrichtU-IDS/d2s-docs/blob/master/website/sidebars.json).
+- Main parameters of the website can be found in [website/docusaurus.config.js](https://github.com/MaastrichtU-IDS/d2s-docs/blob/master/website/docusaurus.config.js).
 - Static content (any resource to download, images, css, js) can be provided in [website/static](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/static)
-- HTML pages (other than docs markdown) are in [website/pages/en](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/pages/en)
+- Pages other than `docs` are in [website/src/pages](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/src/pages) (e.g. `help.md` or `index.js`)
 
 ## Run for development
 
@@ -46,8 +45,7 @@ Script details:
 ```shell
 cd website/
 yarn install
-yarn run build
-GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true yarn run publish-gh-pages
+GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true yarn deploy
 git pull
 ```
 
@@ -71,13 +69,28 @@ docker-compose up -d
 
 > Access at http://dsri.137.120.31.101.nip.io/dsri-documentation/
 
-## Install Docusaurus boostrap tool
+## Markdown tips
 
-```shell
-sudo npm install --global yarn
-sudo npm install --global docusaurus-init
+```
+:::note
+The content and title *can* include markdown.
+:::
 
-npx docusaurus-init
+:::tip You can specify an optional title
+Heads up! Here's a pro-tip.
+:::
+
+:::info
+Useful information.
+:::
+
+:::caution
+Warning! You better pay attention!
+:::
+
+:::danger
+Danger danger, mayday!
+:::
 ```
 
 ## Contribute

@@ -3,7 +3,13 @@ id: deploy-spark
 title: Start a Spark cluster
 ---
 
-> Currently deploying an [Apache Spark](https://spark.apache.org/) cluster is a work in progress on the DSRI, [contact us](/dsri-documentation/help) if you are interested in trying it out.
+
+:::caution
+
+Currently deploying an [Apache Spark](https://spark.apache.org/) cluster is a work in progress on the DSRI, [contact us](/dsri-documentation/help) if you are interested in trying it out.
+
+:::
+
 
 ## Create the template
 

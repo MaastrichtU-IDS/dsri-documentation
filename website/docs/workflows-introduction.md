@@ -7,7 +7,11 @@ title: Introduction to workflows
 
 Multiple technologies are available to run workflows on OpenShift/Kubernetes clusters. Each has its strengths and weaknesses in different areas.
 
-> The technology to use needs to be **chosen depending on your use-case**.
+:::caution
+
+The technology to use needs to be **chosen depending on your use-case**.
+
+:::
 
 ## Already implemented
 

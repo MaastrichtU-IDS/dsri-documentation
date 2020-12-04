@@ -3,9 +3,14 @@ id: deploy-on-gpu
 title: Start on GPU
 ---
 
-> **⛔ By default you do not have the permission to run pods on GPU ⛔** 
+
+:::warning
+
+**By default you do not have the permission to run pods on GPU** 
 
 If you want to run on GPU, **contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)**, they will create the templates you need to start applications on GPU.
+
+:::
 
 ## JupyterLab on GPU
 
@@ -52,6 +57,10 @@ oc get pods
 oc port-forward <pod_id> 8080:8080
 ```
 
-> Access VisualStudio Code on http://localhost:8080
+4. Access VisualStudio Code on http://localhost:8080
 
-> We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
+:::caution
+
+We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
+
+:::

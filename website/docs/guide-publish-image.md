@@ -3,15 +3,20 @@ id: guide-publish-image
 title: Publish a Docker image
 ---
 
-> ⚠️ **DockerHub imposes strict pull limitations for clusters** like the DSRI (using DockerHub might result in failing to pull your images on the DSRI). 
->
-> We highly recommend to **use the [GitHub Container Registry](https://docs.github.com/en/free-pro-team@latest/packages/getting-started-with-github-container-registry/about-github-container-registry) or [RedHat quay.io Container Registry](https://quay.io/) to publish public Docker images**.
->
-> You can also login to DockerHub using a Secret in OpenShift to increase the pull rates limitations:
+:::warning
+
+⚠️ **DockerHub imposes strict pull limitations for clusters** like the DSRI (using DockerHub might result in failing to pull your images on the DSRI). 
+
+We highly recommend to **use the [GitHub Container Registry](https://docs.github.com/en/free-pro-team@latest/packages/getting-started-with-github-container-registry/about-github-container-registry) or [RedHat quay.io Container Registry](https://quay.io/) to publish public Docker images**.
+
+:::
+
+> You can also login to DockerHub using a Secret in OpenShift to increase the pull rates limitations from 100 to 200 every 6 hours (this will mitigate the issue, but not solve it completely if you do not have a paid account on DockerHub):
 >
 > ```bash
 > oc create secret docker-registry docker-hub-secret --docker-server=docker.io --docker-username=your-dockerhub-username --docker-password=your-dockerhub-password --docker-email=your-dockerhub-email
 > ```
+>
 
 ## Login to Container Registries 🔑
 
@@ -75,7 +80,11 @@ docker build -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:latest .
 docker push ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:latest
 ```
 
-> If the image does not exist, GitHub Container Registry will create it automatically and set it as **Private** by default. You can easily change it to **Public** in the image settings on github.com.
+:::info
+
+If the image does not exist, GitHub Container Registry will create it automatically and set it as **Private** by default. You can easily change it to **Public** in the image settings on github.com.
+
+:::
 
 ### Publish to Quay.io
 
@@ -100,12 +109,12 @@ docker build -t dockerhub-username/jupyterlab:latest .
 docker push dockerhub-username/jupyterlab:latest
 ```
 
-> You can also change the name (aka. tag) of an existing image:
->
-> ```bash
-> docker build -t my-jupyterlab .
-> docker tag my-jupyterlab ghcr.io/github-username/jupyterlab:latest
-> ```
+You can also change the name (aka. tag) of an existing image:
+
+```bash
+docker build -t my-jupyterlab .
+docker tag my-jupyterlab ghcr.io/github-username/jupyterlab:latest
+```
 
 ### Use automated workflows
 
@@ -121,6 +130,8 @@ The workflow can be easily configured to:
 * publish an image to a new tag if a release is pushed on GitHub (using the git tag)
   * e.g. `v0.0.1` published as image `0.0.1`
 
-> If you publish your image on DockerHub, you can use [automated build on DockerHub](https://docs.docker.com/docker-hub/builds/).
+:::info
 
-> GitHub Actions is still currently evolving quickly, feel free to check if they recommend a new way to build and publish containers 🚀
+GitHub Actions is still currently evolving quickly, feel free to check if they recommend a new way to build and publish containers 🚀
+
+:::

@@ -5,7 +5,11 @@ title: Start a VSCode server
 
 ## Start VSCode with root privileges
 
-> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+:::caution
+
+🔒 You need root containers (aka. anyuid) enabled in your project to start this application.
+
+:::
 
 Those templates will run VSCode with the `coder` user which has `sudo` privileges.
 
@@ -70,7 +74,11 @@ git config --global user.name "Jean Dupont"
 git config --global user.email jeandupont@gmail.com
 ```
 
-> We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
+:::tip Git tip
+
+We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
+
+:::
 
 ## Upload data to VSCode
 

@@ -7,11 +7,11 @@ The easiest to get started with the DSRI is to use the predefined templates to d
 
 ## Access the catalog
 
-**Access the templates catalog** in your project:
+1. **Access the templates catalog** in your project:
 
 <img src="/dsri-documentation/img/screenshot_access_catalog.png" alt="Access catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-**Filter the templates catalog** to only see data science applications:
+2. **Filter the templates catalog** to only see data science applications:
 
 <img src="/dsri-documentation/img/screenshot_filter_templates.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
@@ -21,7 +21,11 @@ The easiest to get started with the DSRI is to use the predefined templates to d
 
 ## Start an application using a template
 
-> You will need root containers (aka. `anyuid`) to have been enabled by the DSRI team to be able to start applications with the root user.
+:::caution
+
+You will need root containers (aka. anyuid) to have been enabled by the DSRI team to be able to start applications with the root user.
+
+:::
 
 **Click on the template** of the application you want to start, in this example we will use **RStudio**, but you can easily try the same with **VisualStudio Code** and **JupyterLab**.
 
@@ -44,14 +48,24 @@ You can view this 1 minute video to guide you through the process to get the sto
 
 <img src="/dsri-documentation/img/screenshot_template_configuration.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-3. Click on the **Create** button, and go back to your project **Overview** page to see the application starting! It can take from a few seconds up to a few minutes.
+3. Click on the **Create** button.
+
+:::success
+
+Your application is starting on the DSRI! Go back to your project **Overview** page to find it! It can take from a few seconds up to a few minutes to deploy 🕐
+
+:::
 
 
 ## Stop your application
 
 When you are not using your application anymore you can stop the pod. If you are using a Dynamic or Persistent storage you can restart the pod and continue working with all your data in the same state as you left it.
 
-> ⚠️ Please think of stopping applications you are not using to avoid consuming unnecessary resources.
+:::caution
+
+Please think of stopping applications you are not using to avoid consuming unnecessary resources.
+
+:::
 
 On the **Overview** page click on the down arrow ⬇️ next to the number of pods deployed.
 

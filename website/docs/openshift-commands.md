@@ -124,5 +124,3 @@ oc delete all --selector template=template-jupyterstack-notebook
 
 See the [Load data](https://maastrichtu-ids.github.io/dsri-documentation/docs/openshift-load-data) page.
 
-[![Bash](/img/bash_logo.png)](https://devhints.io/bash)
-

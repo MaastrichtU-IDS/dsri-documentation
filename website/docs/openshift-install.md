@@ -67,9 +67,11 @@ To use the `oc` Command Line Interface, you will need to authenticate to the [DS
 
 3. Paste the copied command in your terminal, and execute it to login with `oc` 🔑
 
-> The command should look like this:
->
-> ```shell
-> oc login https://openshift_cluster:8443 --token=$GENERATED_TOKEN
-> ```
 
+:::info
+The command should look like this:
+
+```bash
+oc login https://openshift_cluster:8443 --token=$GENERATED_TOKEN
+```
+:::

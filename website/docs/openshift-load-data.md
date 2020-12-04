@@ -3,19 +3,18 @@ id: openshift-load-data
 title: Upload data
 ---
 
-## In JupyterLab and VSCode
+## In RStudio, JupyterLab and VSCode
 
-If you are using JupyterLab or VSCode you should be able to load data to the container by simply **drag and drop the files to upload** in the JupyterLab/VSCode web UI.
+* If you are using **JupyterLab** or **VSCode** you should be able to load data to the container by simply **drag and drop the files to upload** in the JupyterLab/VSCode web UI.
+* For **RStudio**, use the Upload file button in the RStudio web UI to upload files from your computer to the RStudio workspace.
 
-> If this solution doesn't work due to the files size, try one of the solutions below.
+:::caution
 
-## In RStudio
+If those solutions doesn't work due to the files size, try one of the solutions below.
 
-Use the Upload file button in the RStudio web UI to upload files from your computer to the RStudio workspace.
+:::
 
-> If this solution doesn't work due to the files size, try one of the solutions below.
-
-## Copy files
+## Upload large files with the `oc` tool
 
 Copy a file, or directory, from your local filesystem to an OpenShift pod.
 
@@ -31,11 +30,11 @@ oc get pod --selector app=<my_application_name>
 
 ### Copy from local to pod
 
-```shell
-oc cp <file_to_copy> <pod_id>:<copy_path_in_pod>
-```
+Folders are uploaded recursively by default:
 
-> It will copy folders recursively by default.
+```shell
+oc cp <folder_to_upload> <pod_id>:<copy_path_in_pod>
+```
 
 For example:
 
@@ -49,28 +48,28 @@ oc cp my-folder flink-jobmanager-000:/mnt
 oc cp <pod-id>:<path_to_copy> <local_destination>
 ```
 
-## Rsync
+## Synchronizes files
 
-[Synchronizes](https://docs.openshift.com/enterprise/3.1/dev_guide/copy_files_to_container.html) local directories with a pod.
+You can also use the `oc` command to [synchronizes](https://docs.openshift.com/enterprise/3.1/dev_guide/copy_files_to_container.html) local directories to an application on the DSRI.
+
+:::caution
+
+Rsync is usually faster than `oc cp` if you want to update data already uploaded without re-uploading everything. But it has more chances to fail (when `oc cp` should work in most cases)
+
+:::
 
 ### Sync local to pod
 
-```shell
-oc rsync <file_to_sync> <pod-id>:<sync_path_in_pod>
-```
+Content of directory in local `/data/my-dir` will be synced with the pod `/data` directory:
 
-> Content of directory in local `/data/my-dir` is synced with the pod `/data` directory.
+```shell
+oc rsync <folder_to_sync> <pod-id>:<sync_path_in_pod>
+```
 
 ### Sync pod to local
 
 Getting data from the pod to local.
 
 ```shell
-oc rsync <pod-id>:<file_to_sync> <local_destination_to_sync>
+oc rsync <pod-id>:<folder_to_sync> <local_destination_to_sync>
 ```
-
-> Data can be transfered from one pod to another using the same mechanisms.
->
-> ```shell
-> oc rsync my-pod1:/mnt my-pod2:/mnt
-> ```

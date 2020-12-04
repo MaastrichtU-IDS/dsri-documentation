@@ -3,15 +3,15 @@ id: openshift-secret
 title: Use secrets
 ---
 
+:::caution
 
+Feature still in development, only use it if you know how it works.
 
-> Feature still in development, only use it if you know how it works.
+:::
 
 [OpenShift secrets](https://docs.openshift.com/enterprise/3.1/dev_guide/secrets.html) can be used to store confidential information required when the pods are running (such as passwords).
 
-> Access [DSRI OpenShift](https://app.dsri.unimaas.nl:8443/). 
-
->  `Argo` project > `Resources` > `Secret`
+Got to your project > `Resources` > `Secret`
 
 * `Secret Type`: Generic Secret
 * `Secret Name`: my-password
@@ -19,6 +19,14 @@ title: Use secrets
 * Enter the password in the text box `Clean Value`
 
 The secret can now be used in pods. 
+
+## Connect to DockerHub
+
+Create secret to pull private images, or increase the DockerHub limitations to pull images:
+
+```shell
+oc create secret docker-registry docker-hub-secret --docker-server=docker.io --docker-username=your-dockerhub-username --docker-password=your-dockerhub-password --docker-email=your-dockerhub-email
+```
 
 ## Manage Secrets
 
@@ -58,14 +66,8 @@ Example to authenticate to a database to run an update query:
           key: password
 ```
 
-> Now you can use the secret as environment variable in the workflow definition.
+:::success
 
-## Connect to DockerHub
+Now you can use the secret as environment variable in the workflow definition.
 
-> To be tested.
-
-Create secret to pull private images.
-
-```shell
-oc create secret docker-registry docker-hub-secret --docker-server=docker.io --docker-username=your-dockerhub-username --docker-password=your-dockerhub-password --docker-email=your-dockerhub-email
-```
+:::

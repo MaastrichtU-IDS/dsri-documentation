@@ -8,7 +8,11 @@ Feel free to propose new deployments using [pull requests](https://github.com/Ma
 
 ## Start JupyterLab with the root user
 
-> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+:::caution
+
+🔒 You need root containers (aka. anyuid) enabled in your project to start this application.
+
+:::
 
 We will deploy the JupyterLab image with root user available at: [`ghcr.io/vemonet/jupyterlab`](https://github.com/users/vemonet/packages/container/package/jupyterlab)
 

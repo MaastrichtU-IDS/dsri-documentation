@@ -34,7 +34,11 @@ For user already familiar with those concepts [workflow orchestration tools](/ds
 * Since DSRI can only be accessed when on the physical UM network or using the [UM VPN](https://vpn.maastrichtuniversity.nl/), deployed services will not be available on the public Internet 🔒
 * All activities must be legal in basis. You must closely examine and abide by the terms and conditions of any data, software, or web service that you use as part of your work 📜
 
-> See [this page](https://maastrichtu-ids.github.io/dsri-documentation/docs/access-dsri) to request an account, and run your services on the DSRI from the [UM network](https://vpn.maastrichtuniversity.nl/).
+:::tip Get your DSRI account
+
+If you are working at Maastricht University, see [this page](https://maastrichtu-ids.github.io/dsri-documentation/docs/access-dsri) to request an account, and run your services on the DSRI.
+
+:::
 
 ## The DSRI specifications
 
@@ -66,5 +70,6 @@ For user already familiar with those concepts [workflow orchestration tools](/ds
 
 See the following presentation about the Data Science Research Infrastructure origins and background:
 
-* [DSRI Story presentation](/dsri-documentation/resource/dsri_story_201907.pdf) 
-* [DSRI Workshop presentation](/dsri-documentation/resource/dsri_openshift_workshop.pdf)
+* <a href="/dsri-documentation/resource/dsri_story_201907.pdf" target="_blank">DSRI Story presentation</a>
+* <a href="/dsri-documentation/resource/dsri_openshift_workshop.pdf" target="_blank">DSRI Workshop presentation</a>
+

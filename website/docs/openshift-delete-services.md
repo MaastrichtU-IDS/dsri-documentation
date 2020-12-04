@@ -7,11 +7,15 @@ title: Delete an application
 
 It is recommend to use the `oc` tool to delete an application, as it will allow to properly delete all objects related to the application deployment.
 
+:::caution
+
 Make sure you are connected to the right project:
 
 ```shell
 oc project my-project
 ```
+
+:::
 
 ## From the terminal
 
@@ -21,13 +25,15 @@ The best way to make sure all objects related to your application have been dele
 oc delete all,secret,configmaps,serviceaccount,rolebinding --selector app=my-application
 ```
 
-> Delete storage if necessary from the OpenShift web UI.
+:::info
 
 You can force the deletion if the objects are not deleting properly:
 
 ```shell
 oc delete all,secret,configmaps,serviceaccount,rolebinding --force --grace-period=0 --selector app=my-application
 ```
+
+:::
 
 ## From the web UI
 

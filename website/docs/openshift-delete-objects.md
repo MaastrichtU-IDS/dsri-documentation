@@ -3,7 +3,11 @@ id: openshift-delete-objects
 title: Delete objects (advanced)
 ---
 
-> This documentation provide guidelines to delete various types of objects in the OpenShift DSRI. Be careful when you are deleting object in your project, as it could be an object required to run an application.
+:::warning
+
+This documentation provide guidelines to delete various types of objects in the OpenShift DSRI. Be careful when you are deleting object in your project, as it could be an object required to run an application.
+
+:::
 
 It is recommend to use the `oc` tool to delete OpenShift objects, as it will allow to properly delete all objects related to specific deployments.
 
@@ -33,8 +37,6 @@ You can force the deletion if the objects are not deleting properly:
 ```shell
 oc delete all,secret,configmaps,serviceaccount,rolebinding --force --grace-period=0 --selector app=my-application
 ```
-
----
 
 ## Delete pod
 
@@ -106,15 +108,23 @@ oc get serviceinstance
 oc get serviceinstance -o yaml | grep Terminating | sed "/kubernetes-incubator/d"| oc apply -f - 
 ```
 
-> The OpenShift Catalog does not handle deploying templates globally properly (on all projects). If a template is deployed globally, OpenShift will try to create unnecessary objects such as provisioned service (aka. ServiceInstance), or ClusterClasses. Those services are not used, and some of them cannot be deleted easily. 
->
-> At the moment it is more reliable to create the template in directly in your project if you need to use it multiple time.
+:::caution
+
+The OpenShift Catalog does not handle deploying templates globally properly (on all projects). If a template is deployed globally, OpenShift will try to create unnecessary objects such as provisioned service (aka. ServiceInstance), or ClusterClasses. Those services are not used, and some of them cannot be deleted easily. 
+
+:::
+
+:::info
+
+At the moment it is more reliable to create the template in directly in your project if you need to use it multiple time.
+
+:::
 
 ### Delete stuck project
 
 Project can get stuck as marked for deletion. Usually due to Objects still present in the project that are not terminated or `finalizers` left in the some objects YAML file.
 
-> The following commands will allow you to clean up all the projects stuck in terminating state you have access to 
+The following commands will allow you to clean up all the projects stuck in terminating state you have access to .
 
 Force deletion of terminating projects:
 
@@ -134,7 +144,7 @@ Remove Kubernetes finalizers from terminating projects:
 for i in $(oc get projects  | grep Terminating| awk '{print $1}'); do echo $i; oc get project $i -o yaml | sed "/kubernetes/d" | sed "/finalizers:/d" | oc apply -f - ; done
 ```
 
-If ServiceInstances refuses to get deleted, try to remove kubernetes finalizers:
+If `ServiceInstances` refuses to get deleted, try to remove kubernetes finalizers:
 
 ```shell
 for i in $(oc get projects  | grep Terminating| awk '{print $1}'); do echo $i; oc get serviceinstance -n $i -o yaml | sed "/kubernetes-incubator/d"| oc apply -f - ; done

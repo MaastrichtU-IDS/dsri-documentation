@@ -93,7 +93,14 @@ module.exports={
     ],
   ],
   "themeConfig": {
+    "hideableSidebar": true,
+    "announcementBar": {
+      "id": 'supportus',
+      "content":
+        '⭐️ If you like the DSRI, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/MaastrichtU-IDS/dsri-documentation">GitHub</a>! ⭐️',
+    },
     "navbar": {
+      "hideOnScroll": false,
       "title": "Data Science Research Infrastructure",
       "logo": {
         "src": "img/favicon.ico"
@@ -116,8 +123,9 @@ module.exports={
         },
         {
           "href": "https://github.com/MaastrichtU-IDS/dsri-documentation",
-          "label": "GitHub",
-          "position": "right"
+          // "label": "GitHub",
+          "position": "right",
+          "className": 'header-github-link'
         }
       ]
     },
@@ -126,7 +134,8 @@ module.exports={
       "links": [],
       "copyright": "Copyright © 2020 Institute of Data Science at Maastricht University",
       "logo": {
-        "src": "img/favicon.ico"
+        "src": "img/favicon.ico",
+        "href": "https://maastrichtuniversity.nl/"
       }
     },
     "gtag": {

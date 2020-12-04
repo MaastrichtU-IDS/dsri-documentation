@@ -25,9 +25,13 @@ You need to be connected to the UM network to access the DSRI.
 
 Access the DSRI web UI at **[https://app.dsri.unimaas.nl:8443](https://app.dsri.unimaas.nl:8443)**
 
-> Use your general UM password.
+:::info
 
-If you do not have access to the DSRI contact us.
+Use your general UM password.
+
+:::
+
+If you do not have access to the DSRI [contact us](mailto:dsri-support-l@maastrichtuniversity.nl).
 
 The DSRI web UI gives an overview of your project and the applications currently running. You can easily start new Data Science applications using templates from the **Institute of Data Science, UM** provider.
 

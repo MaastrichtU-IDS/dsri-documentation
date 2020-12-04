@@ -7,7 +7,11 @@ RStudio can be easily deployed from the [OpenShift web UI Catalog](https://app.d
 
 ## RStudio with root user
 
-> 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+:::caution
+
+🔒 You need root containers (aka. anyuid) enabled in your project to start this application.
+
+:::
 
 Run RStudio with `sudo` privileges, can be useful if need to install additional packages that requires `sudo`
 
@@ -19,7 +23,9 @@ oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-app
 
 The application will use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
 
-> See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
+:::info
+See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
+:::
 
 <img src="/dsri-documentation/img/screenshot-deploy-rstudio.png" alt="Deploy RStudio" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
@@ -66,7 +72,11 @@ git config --global user.name "Jean Dupont"
 git config --global user.email jeandupont@gmail.com
 ```
 
-> We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
+:::tip Git tip
+
+We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
+
+:::
 
 ## Upload data to RStudio
 
