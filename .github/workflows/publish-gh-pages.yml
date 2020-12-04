@@ -1,15 +1,9 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Publish to GitHub Pages
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -26,7 +20,6 @@ jobs:
         host: github.com
         private-key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
 
-    # Runs a set of commands using the runners shell
     - name: Build and publish
       env:
         USE_SSH: true
