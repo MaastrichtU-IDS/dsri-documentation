@@ -3,7 +3,7 @@ id: openshift-secret
 title: Use secrets
 ---
 
-![OpenShift](/img/openshift-logo.png)
+
 
 > Feature still in development, only use it if you know how it works.
 

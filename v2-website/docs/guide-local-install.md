@@ -7,7 +7,7 @@ OpenShift and Kubernetes can be installed locally on a single machine for test p
 
 ## Install MiniShift
 
-[![OpenShift](/img/openshift-logo.png)](https://docs.okd.io/latest/minishift/getting-started/installing.html)
+[](https://docs.okd.io/latest/minishift/getting-started/installing.html)
 
 You will need to [set up the virtualization environment](https://docs.okd.io/latest/minishift/getting-started/setting-up-virtualization-environment.html) before [installing MiniShift](https://docs.okd.io/latest/minishift/getting-started/installing.html).
 

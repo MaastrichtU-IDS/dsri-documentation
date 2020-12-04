@@ -3,7 +3,7 @@ id: openshift-commands
 title: Command Line Interface
 ---
 
-[![OpenShift](/img/openshift-logo.png)](https://www.openshift.com/)
+
 
 ## Overview
 

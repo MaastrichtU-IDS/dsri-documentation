@@ -3,8 +3,6 @@ id: openshift-delete-objects
 title: Delete objects (advanced)
 ---
 
-[![OpenShift](/img/openshift-logo.png)](https://www.openshift.com/)
-
 > This documentation provide guidelines to delete various types of objects in the OpenShift DSRI. Be careful when you are deleting object in your project, as it could be an object required to run an application.
 
 It is recommend to use the `oc` tool to delete OpenShift objects, as it will allow to properly delete all objects related to specific deployments.

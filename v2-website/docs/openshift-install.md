@@ -1,9 +1,8 @@
 ---
 id: openshift-install
-title: Install the CLI
+title: Install the oc tool
 ---
 
-![OpenShift](/img/openshift-logo.png)
 
 Install the **OpenShift Command Line Interface (CLI)** to access the DSRI from your computer's terminal. 
 
@@ -13,7 +12,9 @@ The `oc` CLI enables to perform operations on your applications deployed on the 
 * Connect to an application terminal using `oc rsh`
 * Get the applications running in your project with `oc get pods`
 
-## On Linux
+## Install the `oc` tool
+
+### On Linux
 
 Download `oc` and `kubectl`:
 
@@ -26,7 +27,7 @@ sudo mv oc kubectl /usr/local/bin/
 
 > See the [release on GitHub](https://github.com/openshift/origin/releases/tag/v3.11.0).
 
-## On Mac
+### On Mac
 
 ```shell
 brew install openshift-cli
@@ -34,7 +35,7 @@ brew install openshift-cli
 
 > See the [official documentation on MacOS](https://docs.okd.io/latest/cli_reference/get_started_cli.html#cli-mac) for more details.
 
-## On Windows
+### On Windows
 
 1. Create a folder for OpenShift in Program Files: `C:\Program Files (x86)\OpenShift`
 2. Click [here](https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-windows.zip) to download the `oc` tool `.zip` file, and move it to `C:\Program Files (x86)\OpenShift`.
@@ -54,3 +55,21 @@ This makes it easy to access the `oc` command line interface by simply opening u
 ```powershell
 oc version
 ```
+
+## Login in the terminal with `oc`
+
+To use the `oc` Command Line Interface, you will need to authenticate to the [DSRI](https://app.dsri.unimaas.nl:8443/console):
+
+1. Go to the [DSRI web UI](https://app.dsri.unimaas.nl:8443/console).
+2. Click on the **Copy Login Command** button (in the top right of the page).
+
+<img src="/dsri-documentation/img/screenshot_copy_login.png" alt="Copy Login Command button" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+3. Paste the copied command in your terminal, and execute it to login with `oc` 🔑
+
+> The command should look like this:
+>
+> ```shell
+> oc login https://openshift_cluster:8443 --token=$GENERATED_TOKEN
+> ```
+
