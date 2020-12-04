@@ -1,63 +1,37 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>New Version 1.0.0 · Data Science Research Infrastructure</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="This blog post will test file name parsing issues when periods are present."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="New Version 1.0.0 · Data Science Research Infrastructure"/><meta property="og:type" content="website"/><meta property="og:url" content="https://maastrichtu-ids.github.io//dsri-documentation/blog/2017/10/24/new-version-1.0.0"/><meta property="og:description" content="This blog post will test file name parsing issues when periods are present."/><meta property="og:image" content="https://maastrichtu-ids.github.io//dsri-documentation/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/dsri-documentation/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-172146359-1"></script><script>
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments); }
-              gtag('js', new Date());
-              gtag('config', 'UA-172146359-1');
-            </script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,400i,500,600,700"/><link rel="stylesheet" href="/dsri-documentation/css/code-blocks-buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/dsri-documentation/js/code-blocks-buttons.js"></script><script src="/dsri-documentation/js/scrollSpy.js"></script><link rel="stylesheet" href="/dsri-documentation/css/main.css"/><script src="/dsri-documentation/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/dsri-documentation/"><img class="logo" src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure"/><h2 class="headerTitleWithLogo">Data Science Research Infrastructure</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/dsri-documentation/docs/introduction" target="_self">Documentation</a></li><li class=""><a href="/dsri-documentation/help" target="_self">Help</a></li><li class=""><a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues" target="_self">Issues</a></li><li class=""><a target="_self"></a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Recent Posts</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Recent Posts</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/dsri-documentation/blog/2017/10/24/new-version-1.0.0">New Version 1.0.0</a></li><li class="navListItem"><a class="navItem" href="/dsri-documentation/blog/2017/09/26/adding-rss">Adding RSS Support</a></li><li class="navListItem"><a class="navItem" href="/dsri-documentation/blog/2017/09/25/testing-rss">Adding RSS Support - RSS Truncation Test</a></li><li class="navListItem"><a class="navItem" href="/dsri-documentation/blog/2017/04/10/blog-post-two">New Blog Post</a></li><li class="navListItem"><a class="navItem" href="/dsri-documentation/blog/2016/03/11/blog-post">Blog Title</a></li></ul></div></div></section></div><script>
-            var coll = document.getElementsByClassName('collapsible');
-            var checkActiveCategory = true;
-            for (var i = 0; i < coll.length; i++) {
-              var links = coll[i].nextElementSibling.getElementsByTagName('*');
-              if (checkActiveCategory){
-                for (var j = 0; j < links.length; j++) {
-                  if (links[j].classList.contains('navListItemActive')){
-                    coll[i].nextElementSibling.classList.toggle('hide');
-                    coll[i].childNodes[1].classList.toggle('rotate');
-                    checkActiveCategory = false;
-                    break;
-                  }
-                }
-              }
-
-              coll[i].addEventListener('click', function() {
-                var arrow = this.childNodes[1];
-                arrow.classList.toggle('rotate');
-                var content = this.nextElementSibling;
-                content.classList.toggle('hide');
-              });
-            }
-
-            document.addEventListener('DOMContentLoaded', function() {
-              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
-              createToggler('#tocToggler', 'body', 'tocActive');
-
-              var headings = document.querySelector('.toc-headings');
-              headings && headings.addEventListener('click', function(event) {
-                var el = event.target;
-                while(el !== headings){
-                  if (el.tagName === 'A') {
-                    document.body.classList.remove('tocActive');
-                    break;
-                  } else{
-                    el = el.parentNode;
-                  }
-                }
-              }, false);
-
-              function createToggler(togglerSelector, targetSelector, className) {
-                var toggler = document.querySelector(togglerSelector);
-                var target = document.querySelector(targetSelector);
-
-                if (!toggler) {
-                  return;
-                }
-
-                toggler.onclick = function(event) {
-                  event.preventDefault();
-
-                  target.classList.toggle(className);
-                };
-              }
-            });
-        </script></nav></div><div class="container mainContainer postContainer blogContainer"><div class="wrapper"><div class="lonePost"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle"><a href="/dsri-documentation/blog/2017/10/24/new-version-1.0.0">New Version 1.0.0</a></h1><p class="post-meta">October 24, 2017</p><div class="authorBlock"><p class="post-authorName"><a href="http://twitter.com/ericnakagawa" target="_blank" rel="noreferrer noopener">Eric Nakagawa</a></p><div class="authorPhoto"><a href="http://twitter.com/ericnakagawa" target="_blank" rel="noreferrer noopener"><img src="https://graph.facebook.com/661277173/picture/?height=200&amp;width=200" alt="Eric Nakagawa"/></a></div></div></header><div><span><p>This blog post will test file name parsing issues when periods are present.</p>
-</span></div></div><div class="blogSocialSection"></div></div><div class="blog-recent"><a class="button" href="/dsri-documentation/blog/">Recent Posts</a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/dsri-documentation/" class="nav-home"><img src="/dsri-documentation/img/favicon.ico" alt="DSRI" width="66" height="58"/></a><div><h5>Docs</h5><a href="/dsri-documentation/docs/introduction">Get started</a><a href="/dsri-documentation/docs/deploy-from-template">Start applications</a><a href="/dsri-documentation/docs/openshift-install">Install the CLI</a></div><div><h5>Source</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation" target="_blank" aria-label="Star this project on GitHub"><img alt="GitHub stars" src="https://img.shields.io/github/stars/MaastrichtU-IDS/dsri-documentation?label=DSRI-documentation&amp;style=social"/></a><h5>Issues</h5><a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues" target="_blank" aria-label="GitHub issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/MaastrichtU-IDS/dsri-documentation?label=dsri-documentation"/></a></div><div><h5>Community</h5><a href="https://dsri.slack.com" target="_blank" rel="noreferrer noopener" aria-label="Chat on Slack"><img alt="Chat on Slack" src="https://img.shields.io/badge/Chat%20on-Slack-blueviolet"/></a><a href="https://twitter.com/MaastrichtU" target="_blank" rel="noreferrer noopener" aria-label="Follow on Twitter"><img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/MaastrichtU?style=social"/></a><a href="https://www.facebook.com/maastricht.university/" target="_blank" rel="noreferrer noopener">Facebook</a></div></section><section class="copyright"><div style="margin-bottom:10px">We track page views and users demographics using Google Analytics to improve our users experience. <a href="https://policies.google.com/technologies/partner-sites">See how Google uses collected informations</a>.<br/>You can prevent Google Analytics tracking by enabling <a href="https://blog.mozilla.org/blog/2019/06/04/firefox-now-available-with-enhanced-tracking-protection-by-default/">Firefox Tracking Protection</a>, installing <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=fr">uBlock Origin add-on</a>, or using the official <a href="https://tools.google.com/dlpage/gaoptout/">Google Analytics Opt-out add-on</a>.</div><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank"><img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/></a></div>Copyright © 2020 Institute of Data Science at Maastricht University</section></footer></div></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="generator" content="Docusaurus v2.0.0-alpha.69">
+<link rel="preconnect" href="https://www.google-analytics.com">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-172146359-1"></script>
+<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","UA-172146359-1",{})</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,400i,500,600,700">
+<link rel="stylesheet" href="/dsri-documentation/css/code-blocks-buttons.css">
+<script src="https://buttons.github.io/buttons.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script src="/dsri-documentation/js/code-blocks-buttons.js"></script><title data-react-helmet="true">New Version 1.0.0 | Data Science Research Infrastructure</title><meta data-react-helmet="true" property="og:title" content="New Version 1.0.0 | Data Science Research Infrastructure"><meta data-react-helmet="true" name="description" content="This blog post will test file name parsing issues when periods are present."><meta data-react-helmet="true" property="og:description" content="This blog post will test file name parsing issues when periods are present."><meta data-react-helmet="true" property="og:image" content="https://maastrichtu-ids.github.io//dsri-documentation/img/undraw_online.svg"><meta data-react-helmet="true" property="twitter:image" content="https://maastrichtu-ids.github.io//dsri-documentation/img/undraw_online.svg"><meta data-react-helmet="true" name="twitter:image:alt" content="Image for New Version 1.0.0 | Data Science Research Infrastructure"><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docusaurus_language" content="en"><meta data-react-helmet="true" name="docusaurus_tag" content="default"><link data-react-helmet="true" rel="shortcut icon" href="/dsri-documentation/img/favicon.ico"><link rel="stylesheet" href="/dsri-documentation/styles.54386e5e.css">
+<link rel="preload" href="/dsri-documentation/styles.4baa349f.js" as="script">
+<link rel="preload" href="/dsri-documentation/runtime~main.9c5fae31.js" as="script">
+<link rel="preload" href="/dsri-documentation/main.3a47572f.js" as="script">
+<link rel="preload" href="/dsri-documentation/1.e22b6b50.js" as="script">
+<link rel="preload" href="/dsri-documentation/2.55c966f9.js" as="script">
+<link rel="preload" href="/dsri-documentation/ccc49370.c84fc45d.js" as="script">
+<link rel="preload" href="/dsri-documentation/462b461e.d29ae79c.js" as="script">
+<link rel="preload" href="/dsri-documentation/bbb095bf.019e61dd.js" as="script">
+</head>
+<body>
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
+<nav aria-label="Skip navigation links"><button type="button" tabindex="0" class="skipToContent_2AhQ">Skip to main content</button></nav><nav class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><div aria-label="Navigation bar toggle" class="navbar__toggle" role="button" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></div><a class="navbar__brand" href="/dsri-documentation/"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" class="themedImage_2E_h themedImage--light_AouX navbar__logo"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" class="themedImage_2E_h themedImage--dark_1YPN navbar__logo"><strong class="navbar__title">Data Science Research Infrastructure</strong></a><a class="navbar__item navbar__link" href="/dsri-documentation/docs/">Documentation</a><a class="navbar__item navbar__link" href="/dsri-documentation/help">Help</a><a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Issues</a></div><div class="navbar__items navbar__items--right"><div class="react-toggle react-toggle--disabled displayOnlyInLargeViewport_2aTZ"><div class="react-toggle-track"><div class="react-toggle-track-check"><span class="toggle_BsTx">🌜</span></div><div class="react-toggle-track-x"><span class="toggle_BsTx">🌞</span></div></div><div class="react-toggle-thumb"></div><input type="checkbox" disabled="" aria-label="Dark mode toggle" class="react-toggle-screenreader-only"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div><div class="navbar-sidebar"><div class="navbar-sidebar__brand"><a class="navbar__brand" href="/dsri-documentation/"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" class="themedImage_2E_h themedImage--light_AouX navbar__logo"><img src="/dsri-documentation/img/favicon.ico" alt="Data Science Research Infrastructure" class="themedImage_2E_h themedImage--dark_1YPN navbar__logo"><strong class="navbar__title">Data Science Research Infrastructure</strong></a></div><div class="navbar-sidebar__items"><div class="menu"><ul class="menu__list"><li class="menu__list-item"><a class="menu__link" href="/dsri-documentation/docs/">Documentation</a></li><li class="menu__list-item"><a class="menu__link" href="/dsri-documentation/help">Help</a></li><li class="menu__list-item"><a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues" target="_blank" rel="noopener noreferrer" class="menu__link">Issues</a></li></ul></div></div></div></nav><div class="main-wrapper blog-wrapper"><div class="container margin-vert--lg"><div class="row"><div class="col col--2"><div class="sidebar_3I7I thin-scrollbar"><h3 class="sidebarItemTitle_2Dv3">Recent posts</h3><ul class="sidebarItemList_1RlG"><li class="sidebarItem_Hxgp"><a aria-current="page" class="sidebarItemLink_3ppv sidebarItemLinkActive_3XUi" href="/dsri-documentation/blog/2017/10/24/new-version-1.0.0">New Version 1.0.0</a></li><li class="sidebarItem_Hxgp"><a class="sidebarItemLink_3ppv" href="/dsri-documentation/blog/2017/09/26/adding-rss">Adding RSS Support</a></li><li class="sidebarItem_Hxgp"><a class="sidebarItemLink_3ppv" href="/dsri-documentation/blog/2017/09/25/testing-rss">Adding RSS Support - RSS Truncation Test</a></li><li class="sidebarItem_Hxgp"><a class="sidebarItemLink_3ppv" href="/dsri-documentation/blog/2017/04/10/blog-post-two">New Blog Post</a></li><li class="sidebarItem_Hxgp"><a class="sidebarItemLink_3ppv" href="/dsri-documentation/blog/2016/03/11/blog-post">Blog Title</a></li></ul></div></div><main class="col col--8"><article><header><h1 class="margin-bottom--sm blogPostTitle_1mse">New Version 1.0.0</h1><div class="margin-vert--md"><time datetime="2017-10-24T00:00:00.000Z" class="blogPostDate_3bQP">October 24, 2017  · 1 min read</time></div><div class="avatar margin-vert--md"><div class="avatar__intro"><h4 class="avatar__name"><a href="http://twitter.com/ericnakagawa" target="_blank" rel="noreferrer noopener">Eric Nakagawa</a></h4><small class="avatar__subtitle"></small></div></div></header><section class="markdown"><p>This blog post will test file name parsing issues when periods are present.</p></section></article><div></div><div class="margin-vert--xl"><nav class="pagination-nav" aria-label="Blog post page navigation"><div class="pagination-nav__item"></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/dsri-documentation/blog/2017/09/26/adding-rss"><div class="pagination-nav__sublabel">Older Post</div><div class="pagination-nav__label">Adding RSS Support »</div></a></div></nav></div></main><div class="col col--2"><div class="tableOfContents_3SO_ thin-scrollbar"></div></div></div></div></div><footer class="footer"><div class="container"><div class="text--center"><div class="margin-bottom--sm"><img class="footer__logo" src="/dsri-documentation/img/favicon.ico"></div><div>Copyright © 2020 Institute of Data Science at Maastricht University</div></div></div></footer></div>
+<script src="/dsri-documentation/styles.4baa349f.js"></script>
+<script src="/dsri-documentation/runtime~main.9c5fae31.js"></script>
+<script src="/dsri-documentation/main.3a47572f.js"></script>
+<script src="/dsri-documentation/1.e22b6b50.js"></script>
+<script src="/dsri-documentation/2.55c966f9.js"></script>
+<script src="/dsri-documentation/ccc49370.c84fc45d.js"></script>
+<script src="/dsri-documentation/462b461e.d29ae79c.js"></script>
+<script src="/dsri-documentation/bbb095bf.019e61dd.js"></script>
+</body>
+</html>
