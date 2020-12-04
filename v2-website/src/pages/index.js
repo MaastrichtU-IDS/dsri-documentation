@@ -9,7 +9,7 @@ import styles from './styles.module.css';
 const features = [
   {
     title: 'Get started quickly',
-    imageUrl: 'img/undraw_data.svg',
+    imageUrl: 'img/okd-panda.svg',
     description: (
       <>
         <a href="/dsri-documentation/docs/deploy-from-template">Easily deploy popular Data Science applications</a>&nbsp;
@@ -18,18 +18,19 @@ const features = [
     ),
   },
   {
-    title: 'Run any application in a container',
+    title: 'Run any program in a container',
     imageUrl: 'img/undraw_deliveries.svg',
     description: (
       <>
-        Most program can be installed and run in containers easily. 
+        Most programs can be installed and run in containers easily. 
         Customize an existing Docker image or create a new one to deploy exactly what you need
       </>
     ),
   },
   {
-    title: 'Share development environments',
-    imageUrl: 'img/undraw_collaborators.svg',
+    title: 'Share computing environments',
+    imageUrl: 'img/undraw_data.svg',
+    // imageUrl: 'img/undraw_collaborators.svg',
     description: (
       <>
         Share common development environments with other researchers at Maastricht University. 

@@ -5,7 +5,6 @@ title: Start Jupyter Notebooks
 
 Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
-[![JupyterLab](/img/jupyter_logo.png)](https://jupyter.org/)
 
 ## Start JupyterLab with the root user
 

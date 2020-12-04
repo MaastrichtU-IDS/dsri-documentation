@@ -6,8 +6,8 @@
     "Start applications": [ "deploy-jupyter", "deploy-rstudio", "deploy-vscode",
       "deploy-database", "deploy-on-gpu", "deploy-spark", "deploy-additional-services",
       "deploy-from-docker", "guide-dockerfile-to-openshift", "helm"],
-    "Guides": [ "openshift-storage", "openshift-commands", "openshift-delete-objects", 
-      "prepare-project-for-dsri", "guide-publish-image", 
+    "Guides": [ "openshift-commands", "openshift-storage", "prepare-project-for-dsri", 
+      "openshift-delete-objects", "guide-publish-image", 
       "openshift-secret", "tools-machine-learning", 
       {
         "type": "subcategory",

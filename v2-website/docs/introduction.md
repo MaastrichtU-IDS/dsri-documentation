@@ -22,8 +22,8 @@ Run Data Science applications in [Docker container 🐳](https://www.docker.com/
 * SQL databases (MariaDB, MySQL, PostgreSQL)
 * NoSQL databases (MongoDB, Redis)
 * Graph databases (GraphDB, Blazegraph, Virtuoso)
-* Apache Spark cluster with JupyterLab
 * Apache Flink cluster for Streaming applications
+* Or any program installed in a Docker image!
 
 The data will be safely stored in persistent volumes.
 

@@ -3,8 +3,6 @@ id: workflows-nextflow
 title: Run Nextflow workflows
 ---
 
-![Nextflow](/img/nextflow_logo.png)
-
 [Nextflow](https://www.nextflow.io/) enables scalable and reproducible scientific workflows using software containers. It allows the adaptation of pipelines written in the most common scripting languages.
 
 Nextflow has been developed by the genomic research scientific community and is built to run bioinformatics pipeline.

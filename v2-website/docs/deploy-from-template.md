@@ -25,7 +25,18 @@ The easiest to get started with the DSRI is to use the predefined templates to d
 
 **Click on the template** of the application you want to start, in this example we will use **RStudio**, but you can easily try the same with **VisualStudio Code** and **JupyterLab**.
 
-1. Check the informations about the applications you are going to start (such as the path of the persistent storage in the container application, or if this application run as root)
+You can view this 1 minute video to guide you through the process to get the storage name, then to start, and access a RStudio application:
+
+<div className="container">
+    <video width="100%" height="100%" autoplay muted loop controls>
+        <source src="/dsri-documentation/img/screencast_dsri_deploy_template.webm" type="video/webm"/>
+    </video>
+</div>
+
+
+1. Retrieve the name of the storage you are going to use to host your application data
+
+2. Check the informations about the applications you are going to start (such as the path of the persistent storage in the container application, or if this application run as root)
 
 <img src="/dsri-documentation/img/screenshot_template_information.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
@@ -35,13 +46,6 @@ The easiest to get started with the DSRI is to use the predefined templates to d
 
 3. Click on the **Create** button, and go back to your project **Overview** page to see the application starting! It can take from a few seconds up to a few minutes.
 
-You can view this 1 minute video to guide you through the process to get the storage name, start, and access a RStudio application:
-
-<div className="container">
-    <video width="100%" height="100%" autoplay muted loop controls>
-        <source src="/dsri-documentation/img/screencast_dsri_deploy_template.webm" type="video/webm"/>
-    </video>
-</div>
 
 ## Stop your application
 
