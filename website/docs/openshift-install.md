@@ -50,7 +50,7 @@ brew install openshift-cli
    3. Click the button labeled **Environment Variables...** at the bottom. 
    4. Look for the option in the **User variables** section for **Path**.
 
-<img class="screenshot" src="/img/OC_Path.png" alt="Set OC Path" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
+<img class="screenshot" src="/dsri-documentation/img/OC_Path.png" alt="Set OC Path" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
 
 This makes it easy to access the `oc` command line interface by simply opening up the **PowerShell** and typing in the `oc` command, e.g.:
 
