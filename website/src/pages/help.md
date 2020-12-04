@@ -13,7 +13,7 @@ If you need help or have questions about the Data Science Research Infrastructur
 
 Submit [issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) or [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) to request new features on the DSRI or improve the documentation 🔧
 
-<a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues" className={{marginBottom}} target="_blank" aria-label="GitHub issues">
+<a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues" target="_blank" aria-label="GitHub issues">
     <img alt="GitHub issues" src="https://img.shields.io/github/issues/MaastrichtU-IDS/dsri-documentation?label=dsri-documentation"/>
 </a>
 
