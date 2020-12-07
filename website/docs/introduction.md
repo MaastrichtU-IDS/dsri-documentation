@@ -68,9 +68,6 @@ If you are working at Maastricht University, **see [this page](https://maastrich
 
 ## Learn more about DSRI
 
-See the following presentation about the Data Science Research Infrastructure 
-
-<iframe src="https://view.officeapps.live.com/op/embed.aspx?src=[https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/website/static/resource/2020-11-DSRI-Community-Event.pptx?raw=true]" width="100%" height="600px" frameborder="0" />
-
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRAfZdOfGt761tIAj2e35OYrOL4uIKWiAQB15MXvsqso3XJ5Mr3-W4dOa9KjDTZpi1LE_D2CU1F5Thy/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 
