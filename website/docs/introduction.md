@@ -66,10 +66,14 @@ If you are working at Maastricht University, **see [this page](https://maastrich
 
 <img src="/dsri-documentation/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure " style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-## History of the DSRI
+## Learn more about DSRI
 
-See the following presentation about the Data Science Research Infrastructure origins and background:
+See the following presentation about the Data Science Research Infrastructure 
 
-* <a href="/dsri-documentation/resource/dsri_story_201907.pdf" target="_blank">DSRI Story presentation</a>
-* <a href="/dsri-documentation/resource/dsri_openshift_workshop.pdf" target="_blank">DSRI Workshop presentation</a>
+<a href="/website/static/resource/2020-11-DSRI-Community-Event.pdf" target="_blank"><img src="/website/static/resource/DSRI-community-event.png" 
+alt="DSRI Nov 2020 Community Event Presentation" /></a>
+
+
+
+
 
