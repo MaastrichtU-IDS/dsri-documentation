@@ -70,10 +70,7 @@ If you are working at Maastricht University, **see [this page](https://maastrich
 
 See the following presentation about the Data Science Research Infrastructure 
 
-<a href="/dsri-documentation/resource/2020-11-DSRI-Community-Event.pdf" target="_blank"><img src="/dsri-documentation/resource/DSRI-community-event.png" 
-alt="DSRI Nov 2020 Community Event Presentation" /></a>
-
-
+<iframe src='https://view.officeapps.live.com/op/embed.aspx?src=[https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/website/static/resource/2020-11-DSRI-Community-Event.pptx?raw=true]' width='100%' height='600px' frameborder='0'>
 
 
 
