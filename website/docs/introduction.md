@@ -19,11 +19,14 @@ Run Data Science applications in [Docker container 🐳](https://www.docker.com/
 * RStudio, with a complementary Shiny server
 * VisualStudio [Code server](https://github.com/cdr/code-server)
 * Tensorflow or PyTorch on Nvidia GPU (with JupyterLab or VisualStudio Code)
+* Apache Flink cluster for Streaming applications
+* Or any program installed in a Docker image!
+
+<!--
 * SQL databases (MariaDB, MySQL, PostgreSQL)
 * NoSQL databases (MongoDB, Redis)
 * Graph databases (GraphDB, Blazegraph, Virtuoso)
-* Apache Flink cluster for Streaming applications
-* Or any program installed in a Docker image!
+-->
 
 The data will be safely stored in persistent volumes.
 
