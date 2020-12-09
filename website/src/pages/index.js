@@ -96,7 +96,7 @@ function Home() {
           <h1 style={{textAlign: 'center'}}>
             How do you deploy an application on the DSRI? (1min)
           </h1>
-          <video width="100%" height="100%" autoplay muted loop controls>
+          <video width="100%" height="100%" controls>
             <source src="img/screencast_dsri_deploy_template.webm" type="video/webm"/>
           </video>
         </div>
