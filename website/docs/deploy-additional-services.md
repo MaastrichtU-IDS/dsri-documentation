@@ -11,15 +11,9 @@ A service can be easily deployed from a [Docker image](/dsri-documentation/docs/
 
 ## Ubuntu
 
-:::warning
-
-To be tested
-
-:::
-
 Start Ubuntu with the `root` user which has `sudo` permissions to install anything.
 
-Add the template to your project:
+Add the [template](https://github.com/MaastrichtU-IDS/dsri-openshift-applications/blob/main/templates-anyuid/template-ubuntu-root-persistent.yml) to your project:
 
 ```bash
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-ubuntu-root-persistent.yml
@@ -41,7 +35,7 @@ We enabled the port `8080` in the Ubuntu container if you need to deploy applica
 
 :::
 
-To quickly access it from the terminal:
+To quickly access it from the terminal you can use the **Terminal** tab in the pod page, or via your local terminal:
 
 1. Get the Ubuntu pod ID:
 
