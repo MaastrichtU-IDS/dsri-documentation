@@ -2,7 +2,7 @@
 @prefix asf: <http://projects.apache.org/ns/asfext#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
-<https://w3id.org/um/ids/project/data-science-research-infrastructure>
+<https://w3id.org/um/ids/projects#data-science-research-infrastructure>
   a doap:Project ;
   doap:name "Data Science Research Infrastructure" ;
   doap:description "The Data Science Research Infrastructure (DSRI) is a cluster of servers for Data Science research. It is based on OpenShift (Kubernetes) container orchestration to run researchers experiments." ;
