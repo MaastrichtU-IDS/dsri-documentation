@@ -4,9 +4,9 @@ title: Introduction
 slug: /
 ---
 
-The Data Science Research Infrastructure is an [OpenShift](https://www.openshift.com/) cluster based on the [MapR](https://mapr.com/) Distributed File System, using [Kubernetes](https://kubernetes.io/) containers orchestration.
+The Data Science Research Infrastructure is an [OKD](https://www.okd.io/) cluster (the open source version of [OpenShift](https://www.openshift.com/)), using the [MapR](https://mapr.com/) Distributed File System, using [Kubernetes](https://kubernetes.io/) containers orchestration.
 
-The DSRI provides a graphical user interface to easily run and manage services ([OKD](https://www.okd.io/), the Open Source version of [OpenShift](https://www.openshift.com/)). 
+The DSRI provides a graphical user interface on top of the [Kubernetes](https://kubernetes.io/) containers orchestration to easily deploy and manage services. 
 
 ## Getting started
 
@@ -19,18 +19,28 @@ Run Data Science applications in [Docker container 🐳](https://www.docker.com/
 * RStudio, with a complementary Shiny server
 * VisualStudio [Code server](https://github.com/cdr/code-server)
 * Tensorflow or PyTorch on Nvidia GPU (with JupyterLab or VisualStudio Code)
-* Apache Flink cluster for Streaming applications
+* Apache Flink cluster for streaming applications
 * Or any program installed in a Docker image!
 
 <!--
 * SQL databases (MariaDB, MySQL, PostgreSQL)
 * NoSQL databases (MongoDB, Redis)
 * Graph databases (GraphDB, Blazegraph, Virtuoso)
+* Apache Spark for distributed computing
+* Dask cluster for python distribution computing
 -->
+
+:::tip Data storage
 
 The data will be safely stored in persistent volumes.
 
-For user already familiar with those concepts [workflow orchestration tools](/dsri-documentation/docs/workflows-introduction) can be used, such as [Argo workflows](/dsri-documentation/docs/workflows-argo), [Nextflow](/dsri-documentation/docs/workflows-nextflow) or [CWL Calrissian](/dsri-documentation/docs/workflows-cwl).
+:::
+
+:::note
+
+For user already familiar with those concepts [workflow orchestration tools](/dsri-documentation/docs/workflows-introduction) can be installed, such as [Argo workflows](/dsri-documentation/docs/workflows-argo), [Nextflow](/dsri-documentation/docs/workflows-nextflow) or [CWL Calrissian](/dsri-documentation/docs/workflows-cwl).
+
+:::
 
 ### What cannot be done ❌
 

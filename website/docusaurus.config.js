@@ -82,13 +82,9 @@ module.exports={
     [
       require.resolve("@easyops-cn/docusaurus-search-local"),
       {
-        // ... Your options.
         // `hashed` is recommended as long-term-cache of index file is possible.
         hashed: true,
-        // For Docs using Chinese, The `language` is recommended to set to:
-        // ```
         language: ["en"],
-        // ```
       },
     ],
   ],
@@ -132,7 +128,7 @@ module.exports={
     "image": "img/undraw_online.svg",
     "footer": {
       "links": [],
-      "copyright": "Copyright © 2020 Institute of Data Science at Maastricht University",
+      "copyright": "Copyright © 2020 <a href='https://maastrichtuniversity.nl/ids' target='_blank'>Institute of Data Science</a> at Maastricht University",
       "logo": {
         "src": "img/favicon.ico",
         "href": "https://maastrichtuniversity.nl/"

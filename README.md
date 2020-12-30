@@ -4,13 +4,13 @@ The documentation website at [maastrichtu-ids.github.io/dsri-documentation](http
 
 ## Edit documentation pages
 
-Editing a documentation file is as easy as going to https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/introduction.md.
+Editing a documentation file is as easy as going to https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/website/docs/introduction.md.
 
 * Edit a page by login with an account that has edit permissions.
 
 * Otherwise fork the repository and modify the files you want. Pull requests are welcome!
 
-Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/docs).
+Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/website/docs).
 
 > We recommend using [Typora](https://typora.io/) to edit [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) files on your computer.
 
