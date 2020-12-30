@@ -3,6 +3,12 @@ id: deploy-neurodocker
 title: Neuroscience research
 ---
 
+:::note
+
+We are not expert in Neuroscience ourselves, please contact us if you see any improvements that could be make to this page, or if you need any help to get it working.
+
+:::
+
 The Neurodocker project helps you to create a Docker image with the Neuroscience softwares you need, such as FSL, FreeSurfer or ANTs. Checkout the Neurodocker documentation for more details: https://github.com/ReproNim/neurodocker
 
 :::info
