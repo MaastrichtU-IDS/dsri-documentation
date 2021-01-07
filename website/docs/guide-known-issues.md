@@ -12,7 +12,8 @@ title: Known Issues
 > It happen every time when we forced to change the Windows password.
 >
 > <img class="screenshot" src="/dsri-documentation/img/authentication-issue.png" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
-> 
+>
+> <img class="screenshot" src="/dsri-documentation/img/git-authentication-issue.png" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
 
 1. Apply command from cmd **(run as administrator)**
 
