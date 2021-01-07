@@ -15,7 +15,7 @@
         "items": [
           "workflows-introduction", "workflows-argo", "workflows-nextflow", "workflows-cwl"
         ]
-      }
+      },"guide-known-issues"
     ]
   }
 }
