@@ -113,8 +113,8 @@ module.exports={
           "position": "left"
         },
         {
-          "href": "https://github.com/MaastrichtU-IDS/dsri-documentation/issues",
-          "label": "Issues tracker",
+          "href": "/contributing",
+          "label": "Contribute",
           "position": "left"
         },
         {
