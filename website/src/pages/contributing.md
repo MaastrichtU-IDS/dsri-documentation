@@ -1,23 +1,20 @@
 # Contributing
 
-When contributing to this repository, please first discuss the change you wish to make via an [issue](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
-
 
 Check if there are [issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) related to your contribution, or post a [new issue](https://github.com/MaastrichtU-IDS/dsri-documentation/issues/new) to discuss improvement to the documentation. 
 
 <a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues" target="_blank" rel="noopener noreferrer" aria-label="GitHub issues">
-    <img alt="GitHub issues" src="https://img.shields.io/github/issues/MaastrichtU-IDS/dsri-documentation?label=dsri-documentation"/>
-</a>
+    <img alt="GitHub issues" src="https://img.shields.io/github/issues/MaastrichtU-IDS/dsri-documentation?label=dsri-documentation"/></a>
 
-:::info Make changes in this repository
+:::info Fork this repository
 
-If you are part of the [MaastrichtU-IDS organization on GitHub](https://github.com/MaastrichtU-IDS) you can directly create a new branch to make your change in the main repository. 
+Otherwise you will need to first [fork this repository](https://github.com/MaastrichtU-IDS/dsri-documentation/fork), then send a pull request when your changes have been pushed.
 
 :::
 
-:::note Otherwise fork it
+:::note Direct change if permission
 
-Otherwise you will need to first [fork this repository](https://github.com/MaastrichtU-IDS/dsri-documentation/fork), then send a pull request when your changes have been pushed.
+If you are part of the [MaastrichtU-IDS organization on GitHub](https://github.com/MaastrichtU-IDS) you can directly create a new branch to make your change in the main repository. 
 
 :::
 
@@ -25,25 +22,19 @@ Otherwise you will need to first [fork this repository](https://github.com/Maast
 
 ## ⚡ Quick edit on GitHub
 
-You can really easily make quick changes directly on the GitHub website by clicking the **Edit this page** button at the bottom left of each documentation page.
+You can really easily make quick changes directly on the GitHub website by clicking the **Edit this page** button at the bottom left of each documentation page. Or browsing to your forked repository.
 
 For example to edit the introduction page you can go to https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/website/docs/introduction.md
-
-:::tip Quick changes on master branch
-
-For small changes to the documentation feel free to make them directly on the `master` branch.
-
-:::
 
 ---
 
 ## 🏗️ Larger changes locally
 
-To make larger changes to the documentation it is easier to clone the repository on your laptop.
+To edit the documentation it is easier to clone the repository on your laptop, and use a [user-friendly markdown editor](https://typora.io).
 
 :::info Use a Markdown editor
 
-We strongly recommend you to use a markdown editor, such as [Typora](https://typora.io/). It makes writing documentation much faster, and more enjoyable.
+We strongly recommend you to use a markdown editor, such as [Typora](https://typora.io). It makes writing documentation much faster, and more enjoyable.
 
 :::
 
@@ -75,7 +66,11 @@ yarn start
 
 Send a pull request to the `master` branch when your changes are done
 
-> Read more about running the API in development at https://github.com/MaastrichtU-IDS/dsri-documentation#run-for-development
+:::
+
+:::note Development documentation
+
+Read more about running the API in development at https://github.com/MaastrichtU-IDS/dsri-documentation#run-for-development
 
 :::
 
@@ -133,7 +128,7 @@ Danger danger, mayday!
 ```
 
 
-## Pull Request process
+## ✔️ Pull Request process
 
 1. Before sending a pull request make sure the DSRI documentation website still work as expected with the new changes properly integrated:
 ```
