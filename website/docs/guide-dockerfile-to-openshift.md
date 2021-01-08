@@ -51,6 +51,54 @@ Create a new app using the build we just created:
 oc new-app dockerfile-to-okd
 ```
 
+To properly deploy your app on OpenShift you will need to define a few more parameters:
+
+- Enable root user access (with `serviceAccountName`)
+- Add persistent storage (with `volumes` and `containers: volumeMounts` )
+
+`${STORAGE_NAME}`: Name of your persistent volume claim in the **Storage** page of your project in the web UI
+`${STORAGE_FOLDER}` : Name of the folder inside the persistent volume claim to store the application data (so you can store multiple applications on the same persistent volume claim)
+
+- Make sure the container will run on the right nodes (with the `nodeSelector`)
+
+Open the configuration of the started app:
+
+```shell
+oc edit dockerfile-to-okd
+```
+
+Add the following lines (replace the variables, such as `${STORAGE_NAME}` by your values):
+
+```yaml
+    template:
+      spec:
+        serviceAccountName: anyuid
+        nodeSelector:
+          dsri.unimaas.nl/cpu: 'true'
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${STORAGE_NAME}"
+        containers:
+        - image: rstudio-root:latest
+          volumeMounts:
+          - name: data
+            mountPath: "/home/rstudio"
+            subPath: "${STORAGE_FOLDER}"
+```
+
+:::info Generate deployment file in YAML
+
+You can also generate the app deployment in a YAML file to edit it before start:
+
+```shell
+oc new-app dockerfile-to-okd -o yaml > myapp.yml
+# Edit myapp.yml
+oc create -f myapp.yml
+```
+
+:::
+
 ---
 
 ### Expose app
