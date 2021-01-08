@@ -8,6 +8,12 @@ hide_table_of_contents: true
 
 If you need help or have questions about the Data Science Research Infrastructure, try one of the mechanisms above:
 
+## New Project 📁
+
+Submit this [form](https://forms.gle/RorkVaNvZsBKerD58) to provide us information about your project. Afterwards we can provide you with the DSRI project and access to it.
+
+
+
 
 ## Submit issues 📝
 
@@ -39,6 +45,6 @@ From the [Institute of Data Science](https://maastrichtuniversity.nl/ids) (IDS) 
 - **Vincent Emonet** - Data Science engineer at [IDS](https://maastrichtuniversity.nl/ids)
 - **Binosha Weerarathna** - Data Science engineer at [IDS](https://maastrichtuniversity.nl/ids)
 - **Brouwers Marcel** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Sebastiaam Nijhuis** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Maurice Steyvers** - ICT manager at [ICTS](https://maastrichtuniversity.nl/icts)
+- **Chris Kuipers** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
+- **Jordy Frijns** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
 - **Michel Dumontier** - Project investigator from [IDS](https://maastrichtuniversity.nl/ids)

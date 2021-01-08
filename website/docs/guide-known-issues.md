@@ -15,7 +15,7 @@ title: Known Issues
 >
 > <img class="screenshot" src="/dsri-documentation/img/git-authentication-issue.png" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
 
-1. Apply command from cmd **(run as administrator)**
+1. Apply command from powershell **(run as administrator)**
 
    **`git config --system --unset credential.helper`**
 
