@@ -44,7 +44,7 @@ From the [Institute of Data Science](https://maastrichtuniversity.nl/ids) (IDS) 
 
 - **Vincent Emonet** - Data Science engineer at [IDS](https://maastrichtuniversity.nl/ids)
 - **Binosha Weerarathna** - Data Science engineer at [IDS](https://maastrichtuniversity.nl/ids)
-- **Brouwers Marcel** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
+- **Marcel Brouwers ** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
 - **Chris Kuipers** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
 - **Jordy Frijns** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
 - **Michel Dumontier** - Project investigator from [IDS](https://maastrichtuniversity.nl/ids)
