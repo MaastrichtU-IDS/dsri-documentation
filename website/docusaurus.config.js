@@ -128,7 +128,7 @@ module.exports={
     "image": "img/undraw_online.svg",
     "footer": {
       "links": [],
-      "copyright": "Copyright © 2020 <a href='https://maastrichtuniversity.nl/ids' target='_blank' rel='noopener noreferrer'>Institute of Data Science</a> at Maastricht University",
+      "copyright": "Copyright © 2021 <a href='https://maastrichtuniversity.nl/ids' target='_blank' rel='noopener noreferrer'>Institute of Data Science</a> at Maastricht University",
       "logo": {
         "src": "img/favicon.ico",
         "href": "https://maastrichtuniversity.nl/"
