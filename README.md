@@ -2,6 +2,10 @@
 
 The documentation website at [maastrichtu-ids.github.io/dsri-documentation](https://maastrichtu-ids.github.io/dsri-documentation/) is automatically updated by a [GitHub Action](/actions) at each push to this `master` branch.
 
+## Contribute
+
+Contributions are welcome! See the [guidelines to contribute 👨‍💻](https://maastrichtu-ids.github.io/dsri-documentation/contributing).
+
 ## Edit documentation pages
 
 Editing a documentation file is as easy as going to https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/website/docs/introduction.md.
@@ -110,10 +114,6 @@ Embed a Google docs presentation (size does not change dynamically). You can che
   /* overflow: hidden; */
 }
 ```
-
-## Contribute
-
-Contributions are welcome! See the [guidelines to contribute 👨‍💻](/CONTRIBUTING.md).
 
 ## Acknowledgments
 
