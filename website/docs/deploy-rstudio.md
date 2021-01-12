@@ -7,7 +7,7 @@ RStudio can be easily deployed from the [OpenShift web UI Catalog](https://app.d
 
 ## RStudio with root user
 
-:::caution
+:::caution Root permission required
 
 🔒 You need root containers (aka. anyuid) enabled in your project to start this application.
 
@@ -23,7 +23,7 @@ oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-app
 
 The application will use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
 
-:::info
+:::info Official documentation
 See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
 :::
 

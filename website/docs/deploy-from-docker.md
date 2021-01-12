@@ -19,9 +19,9 @@ Search for an image for your service published on [DockerHub](https://hub.docker
 * [Google "dockerhub my_service_name"](https://www.google.com/search?q=dockerhub+python)
 * Sometimes multiple images can be found for your service. Take the official image when possible, or the one most relevant to your use-case.
 
-:::info
+:::info Deploy from a Dockerfile
 
-If no suitable image can be found on [DockerHub](https://hub.docker.com/), it can be **built from a Dockerfile**. See above to do so.
+If no suitable image can be found on [DockerHub](https://hub.docker.com/), it can be **deployed from a Dockerfile**. See above to do so.
 
 :::
 
@@ -41,7 +41,7 @@ Go to the [Overview page](https://app.dsri.unimaas.nl:8443/console/projects) of 
 
 <img src="/dsri-documentation/img/screenshot-deploy_image_from_ui.png" alt="Deploy image from UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-:::info
+:::info Access the application
 
 You should now see your pod deployed on the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page of your project.
 
@@ -57,7 +57,7 @@ In case you there is no Docker image for your application you can build and push
 
 To build and push a Docker image you will need to have [Docker installed](https://docs.docker.com/get-docker/).
 
-:::info
+:::info Install Docker
 
 See the [official documentation to install Docker](https://docs.docker.com/get-docker/).
 
@@ -73,7 +73,7 @@ If no images are available on DockerHub, it is still possible that the developer
 
 If no `Dockerfile` are available we will need to define one. 
 
-:::info
+:::info Contact us
 
 Feel free to [contact us](/help) to get help with this, especially if you are unfamiliar with [Docker](https://docs.docker.com/get-started/).
 

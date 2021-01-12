@@ -159,7 +159,7 @@ oc new-app my-docker-image --name app-name-on-openshift
 
 You can also build and deploy your application using a GitHub Actions workflow.
 
-:::info
+:::info RedHat documentation
 
 RedHat provides the following instructions and template to deploy an application on OpenShift
 

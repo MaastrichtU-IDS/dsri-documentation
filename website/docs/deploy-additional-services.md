@@ -21,13 +21,13 @@ oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-app
 
 This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
 
-:::caution
+:::caution Root permission required
 
 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
 
 :::
 
-:::info
+:::info Persistent data folder
 
 📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage
 
@@ -59,7 +59,7 @@ To quickly access it from the terminal you can use the **Terminal** tab in the p
 
 [Apache Flink](https://flink.apache.org/) enables processing of Data Streams using languages such as Java or Scala .
 
-:::caution
+:::caution Root permission required
 
 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
 
@@ -107,7 +107,7 @@ See the GPU benchmarks for examples of MPI job definitions:
 * [MPI TensorFlow benchmark](https://github.com/kubeflow/mpi-operator/blob/master/examples/v1alpha2/tensorflow-benchmarks.yaml)
 * [MPI TensorFlow ImageNet benchmark](https://github.com/kubeflow/mpi-operator/blob/master/examples/v1alpha2/tensorflow-benchmarks-imagenet.yaml)
 
-:::info
+:::info Contact us
 
 [Contact us](mailto:dsri-support-l@maastrichtuniversity.nl) to get access to OpenMPI on the DSRI 📬
 
@@ -117,7 +117,7 @@ See the GPU benchmarks for examples of MPI job definitions:
 
 Deploy a file browser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume in case you need it (JupyterLab, RStudio and VisualStudio Code server already include a file browser)
 
-:::caution
+:::caution Root permission required
 
 🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
 
@@ -147,13 +147,13 @@ You can find the Storage name if you Go to the deployments page > Storage panel.
 
 This deployment require to have  root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)  or create a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) to request root access or to create persistent volume for your project if you don't have them .
 
-:::info
+:::info Credentials
 
 Default credentials will be username `admin` and password `admin`
 
 :::
 
-:::caution
+:::caution Change password
 
 Please **change the password in the Filebrowser Web UI** once it has been created.
 

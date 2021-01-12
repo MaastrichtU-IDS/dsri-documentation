@@ -25,7 +25,7 @@ oc get events
 
 2. When a pod is running you can check its logs in the **Logs** tab ( after going to the pod page).
 
-:::info
+:::info Get help
 
 If you cannot figure out the issue by yourself:
 
@@ -53,3 +53,64 @@ Check the CPU and memory usage
 
    > MiB Mem : **515543.2** total,   **403486.8** free,  **98612.0** used,  **13444.5** buff/cache
 
+## Known issues
+
+### DockerHub pull limitations
+
+:::warning Spot the issue
+
+If the **Events** tab show this error:
+
+```
+--> Scaling filebrowser-case-1 to 1
+error: update acceptor rejected filebrowser-case-1: pods for rc 'case-law-explorer/filebrowser-case-1' took longer than 600 seconds to become available
+```
+
+Then check for the application ImageStream in **Build** > **Images**, and you might see this for your application image:
+
+```
+Internal error occurred: toomanyrequests: You have reached your pull rate limit. 
+You may increase the limit by authenticating and upgrading: https://www.docker.com/increase-rate-limit.
+```
+
+:::
+
+The easiest way to solve this issue is to publish the DockerHub image to the GitHub Container Registry.
+
+:::info Adapt the instructions
+
+Just change `filebrowser/filebrowser:v2.11.0` to your image ID and tag on DockerHub
+
+:::
+
+1. [Login to the GitHub Container Registry](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-publish-image#login-to-github-container-registry) with `docker login`.
+
+2. pull the docker image from 
+
+    ```bash
+    docker pull filebrowser/filebrowser:v2.11.0
+    ```
+
+3. change its tag
+
+    ```bash
+    docker tag filebrowser/filebrowser:v2.11.0 ghcr.io/maastrichu-ids/filebrowser:v2.11.10
+    ```
+
+4. Push it back to the GitHub Container Registry:
+
+    ```bash
+    docker push ghcr.io/maastrichu-ids/filebrowser:v2.11.10
+    ```
+
+:::tip
+
+If the image does not exist, GitHub will create automatically when you push it for the first time! You can then head to your organization **Packages** tab to see the package.
+
+:::
+
+:::caution Update the image
+
+You will need to update the image if you want access to the latest version, you can set a GitHub Actions workflow to do so.
+
+:::

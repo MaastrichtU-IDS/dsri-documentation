@@ -93,7 +93,7 @@ oc exec <pod_id> -- mkdir -p /mnt/workspace/resources
 oc delete pod <pod_id>
 ```
 
-:::caution
+:::caution Force pod deletion
 
 If the pod is not properly deleted, you can force its deletion:
 
@@ -109,7 +109,7 @@ oc delete pod --force --grace-period=0 <pod_id>
 oc logs -f <pod_id>
 ```
 
-:::info
+:::info Debug a pod
 
 Get more details on how to [debug a pod](/dsri-documentation/docs/openshift-debug).
 

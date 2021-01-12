@@ -89,7 +89,7 @@ psql -h postgresql-db -U postgres db
 
 ### Start Apache Drill 🔩
 
-:::info
+:::info Contact us
 
 Contact us to install Apache Drill
 
@@ -194,7 +194,7 @@ oc expose service neo4j-community-neo4j-community
 
 Manually expose a route to `neo4j-bolt` on port 7687 (click on the service, then create route)
 
-:::info
+:::info Bolt URL
 
 Provide the bolt route URL, e.g. http://neo4j-bolt-ids-shared-project.app.dsri.unimaas.nl
 

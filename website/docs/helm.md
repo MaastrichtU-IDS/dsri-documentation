@@ -87,7 +87,7 @@ helm repo update
 helm install example-mysql stable/mysql
 ```
 
-:::info
+:::info Password
 
 The instructions to retrieve the admin password and connect to the database will be displayed in the terminal. 
 

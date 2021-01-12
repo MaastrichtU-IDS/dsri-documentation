@@ -4,7 +4,7 @@ title: Start a Spark cluster
 ---
 
 
-:::warning
+:::warning Work in progress
 
 Deploying an [Apache Spark](https://spark.apache.org/) cluster is a **work in progress** on the DSRI, **[contact us](/dsri-documentation/help)** if you are interested in trying it out.
 
@@ -33,7 +33,7 @@ Go to the DSRI OpenShift web UI catalog and click on the **Apache Spark (Persist
 
 You will be prompted various parameters to configure your Spark cluster resources.
 
-:::caution
+:::caution 1 cluster per project
 
 Only 1 Spark cluster should be deployed by project.
 

@@ -3,7 +3,7 @@ id: guide-publish-image
 title: Publish a Docker image
 ---
 
-:::warning
+:::warning DockerHub pull rates limitations
 
 ⚠️ **DockerHub imposes strict pull limitations for clusters** like the DSRI (using DockerHub might result in failing to pull your images on the DSRI). 
 
@@ -84,7 +84,7 @@ docker build -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:latest .
 docker push ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:latest
 ```
 
-:::info
+:::info Created automatically
 
 If the image does not exist, GitHub Container Registry will create it automatically and set it as **Private** by default. You can easily change it to **Public** in the image settings on github.com.
 
@@ -109,7 +109,7 @@ docker push quay.io/quay-username/my-image:latest
 
 ### Publish to DockerHub
 
-:::warning
+:::warning DockerHub pull rates limitations
 
 ⚠️ **DockerHub imposes strict pull limitations for clusters** like the DSRI (using DockerHub might result in failing to pull your images on the DSRI). 
 
@@ -117,7 +117,7 @@ We highly recommend to **use the [GitHub Container Registry](https://docs.github
 
 :::
 
-:::info
+:::info Logged in
 
 If you are login with your DockerHub user on the DSRI, it should allow you to pull DockerHub images in your project (see above).
 
@@ -150,7 +150,7 @@ You can automate the building and publication of Docker images using GitHub Acti
 
 👩‍💻 You only need to change the `IMAGE_NAME`, and use it in your GitHub repository to publish a Docker image for your application automatically! It will build from a `Dockerfile` at the root of the repository.
 
-:::info
+:::info Workflow triggers
 
 The workflow can be easily configured to:
 

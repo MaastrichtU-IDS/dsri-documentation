@@ -7,7 +7,7 @@ title: Delete an application
 
 It is recommend to use the `oc` tool to delete an application, as it will allow to properly delete all objects related to the application deployment.
 
-:::caution
+:::caution Project
 
 Make sure you are connected to the right project:
 
@@ -25,7 +25,7 @@ The best way to make sure all objects related to your application have been dele
 oc delete all,secret,configmaps,serviceaccount,rolebinding --selector app=my-application
 ```
 
-:::info
+:::info Force deletion
 
 You can force the deletion if the objects are not deleting properly:
 

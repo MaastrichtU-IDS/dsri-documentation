@@ -5,7 +5,7 @@ title: Run Argo workflows
 
 ![Argo project](/img/argo-logo.png)
 
-:::warning
+:::warning Install in your project
 
 Argo needs to be installed in your project, [contact the DSRI team](mailto:dsri-support-l@maastrichtuniversity.nl) to request it.
 
@@ -44,7 +44,7 @@ Run Hello world workflow to test if Argo has been properly installed. And take a
 argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examples/hello-world.yaml
 ```
 
-:::caution
+:::caution Logged in
 
 You will need to have the `oc` client installed and be logged in with `oc login`, see the [install documentation page](/dsri-documentation/docs/openshift-install).
 
@@ -85,7 +85,7 @@ argo submit d2s-core/argo/workflows/d2s-workflow-transform-xml.yaml \
   -f support/config/config-transform-xml-drugbank.yml
 ```
 
-:::info
+:::info Provide config files
 
 Config files can be provided using the `-f` arguments, but are not necessary.
 
@@ -115,7 +115,7 @@ argo submit d2s-core/argo/workflows/d2s-workflow-transform-csv-dag.yaml \
   -f support/config/config-transform-csv-stitch.yml
 ```
 
-:::caution
+:::caution Solve issue
 
 Try this to solve issue related to steps services IP: `{{steps.nginx-server.pod-ip}}`
 
@@ -137,7 +137,7 @@ argo list
 argo terminate my-workflow
 ```
 
-:::caution
+:::caution Workflow
 
 This might not stop the workflow, in this case use:
 

@@ -17,7 +17,7 @@ Install the `nextflow` client on your computer:
 wget -qO- https://get.nextflow.io | bash
 ```
 
-:::info
+:::info Official documentation
 
 See the [Nextflow documentation](https://www.nextflow.io/docs/latest/getstarted.html#installation).
 

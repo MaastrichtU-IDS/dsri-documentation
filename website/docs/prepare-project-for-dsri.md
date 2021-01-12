@@ -7,7 +7,7 @@ title: Prepare your project
 
 Using `git` is mandatory to deploy code on the DSRI. Store your code in a git repository to keep track of changes, and make it easier to share and re-use your code outside of your computer.
 
-:::info
+:::info Platform recommendations
 
 We recommend those platforms depending on your use-case:
 
@@ -43,7 +43,7 @@ If the data is stored on a local machine, such as your computer:
 * Drag and drop files from your computer to the VisualStudio Code or JupyterLab web UI, if applicable.
 * Otherwise, use the `oc cp` command to copy data to your application pod. See the [Load data](/dsri-documentation/docs/openshift-load-data) documentation page for more informations.
 
-:::caution
+:::caution Upload to persistent storage
 
 Make sure you **upload the data to a folder mounted on a persistent storage** in the pod to avoid losing your data if the pod restarts.
 

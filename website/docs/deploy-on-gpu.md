@@ -4,7 +4,7 @@ title: Start on GPU
 ---
 
 
-:::warning
+:::warning Request GPU access
 
 **By default you do not have the permission to run pods on GPU** 
 
@@ -59,8 +59,8 @@ oc port-forward <pod_id> 8080:8080
 
 4. Access VisualStudio Code on http://localhost:8080
 
-:::caution
+:::caution Use Chrome
 
-We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
+We recommend to **use Google Chrome** web browser as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
 
 :::

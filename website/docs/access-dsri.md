@@ -31,7 +31,7 @@ You need to be connected to the UM network to access the DSRI.
 
 Access the DSRI web UI at **[https://app.dsri.unimaas.nl:8443](https://app.dsri.unimaas.nl:8443)**
 
-:::info
+:::info Password
 
 Use your general UM password.
 
@@ -46,9 +46,9 @@ You will be able to login at **[https://app.dsri.unimaas.nl:8443](https://app.ds
 
 <img src="/dsri-documentation/img/screenshot_login_screen.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-:::info
+:::info Command line interface
 
-We recommend you to install the `oc` command line tool to perform additional operations on your applications, such as loading large amount of data using `oc cp`, or deploying an application from a local Dockerfile.
+We recommend you to install the `oc` command line interface to perform additional operations on your applications, such as loading large amount of data using `oc cp`, or deploying an application from a local `Dockerfile`.
 
 :::
 
@@ -56,7 +56,7 @@ We recommend you to install the `oc` command line tool to perform additional ope
 
 Once in the DSRI OpenShift web UI, **go to your project** (applications are deployed in a project)
 
-:::info
+:::info Project
 
 A project should have already been created for you when you registered to the DSRI. Use this project.
 

@@ -3,7 +3,7 @@ id: openshift-delete-objects
 title: Delete objects (advanced)
 ---
 
-:::warning
+:::warning Be careful
 
 This documentation provide guidelines to delete various types of objects in the OpenShift DSRI. Be careful when you are deleting object in your project, as it could be an object required to run an application.
 
@@ -11,7 +11,7 @@ This documentation provide guidelines to delete various types of objects in the 
 
 It is recommend to use the `oc` tool to delete OpenShift objects, as it will allow to properly delete all objects related to specific deployments.
 
-:::caution
+:::caution Project
 
 Make sure you are connected to the right project:
 
@@ -36,7 +36,7 @@ oc delete all,secret,configmaps,serviceaccount,rolebinding --selector app=my-app
 
 > Delete storage if necessary from the OpenShift web UI.
 
-:::caution
+:::caution Force deletion
 
 You can force the deletion if the objects are not deleting properly:
 
@@ -60,7 +60,7 @@ Use the pod ID retrieved to delete the pod:
 oc delete pod <POD_ID>
 ```
 
-:::caution
+:::caution Force deletion
 
 If the pod is not properly deleted, you can force its deletion:
 
@@ -72,7 +72,7 @@ oc delete pod --force --grace-period=0 <POD_ID>
 
 ## Delete a project
 
-:::warning
+:::warning Be careful
 
 All objects and persistent storages in this project will be deleted and cannot be retrieved.
 
@@ -92,7 +92,7 @@ oc delete project <PROJECT_ID>
 
 ## Delete persistent storage
 
-:::warning
+:::warning Be careful
 
 All data stored in this persistent storage will be lost and cannot be retrieved.
 
@@ -130,13 +130,13 @@ oc get serviceinstance
 oc get serviceinstance -o yaml | grep Terminating | sed "/kubernetes-incubator/d"| oc apply -f - 
 ```
 
-:::caution
+:::caution No global catalog
 
 The OpenShift Catalog does not handle deploying templates globally properly (on all projects). If a template is deployed globally, OpenShift will try to create unnecessary objects such as provisioned service (aka. ServiceInstance), or ClusterClasses. Those services are not used, and some of them cannot be deleted easily. 
 
 :::
 
-:::info
+:::info Catalog per project 
 
 At the moment it is more reliable to create the template in directly in your project if you need to use it multiple time.
 
@@ -166,7 +166,7 @@ Remove Kubernetes finalizers from terminating projects:
 for i in $(oc get projects  | grep Terminating| awk '{print $1}'); do echo $i; oc get project $i -o yaml | sed "/kubernetes/d" | sed "/finalizers:/d" | oc apply -f - ; done
 ```
 
-:::caution
+:::caution Fix deletion
 
 If `ServiceInstances` refuses to get deleted, try to remove kubernetes finalizers:
 
@@ -176,7 +176,7 @@ for i in $(oc get projects  | grep Terminating| awk '{print $1}'); do echo $i; o
 
 :::
 
-:::info
+:::info Check deletion
 
 Check if there are still objects in a project:
 

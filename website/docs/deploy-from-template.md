@@ -25,9 +25,9 @@ Get started with deploying, and using a service on the DSRI, then we will be abl
 
 ## Start an application using a template
 
-:::caution
+:::caution Root permission required
 
-You will need root containers (aka. anyuid) to have been enabled by the DSRI team to be able to start applications with the root user.
+🔒 You will need root containers (aka. anyuid) to have been enabled by the DSRI team to be able to start applications with the root user.
 
 :::
 
@@ -54,7 +54,7 @@ You can view this 1 minute video to guide you through the process to get the sto
 
 3. Click on the **Create** button.
 
-:::success
+:::tip Application started
 
 Your application is starting on the DSRI! Go back to your project **Overview** page to find it! It can take from a few seconds up to a few minutes to deploy 🕐
 
@@ -65,7 +65,7 @@ Your application is starting on the DSRI! Go back to your project **Overview** p
 
 When you are not using your application anymore you can stop the pod. If you are using a Dynamic or Persistent storage you can restart the pod and continue working with all your data in the same state as you left it.
 
-:::caution
+:::caution Do not waste resources
 
 Please think of stopping applications you are not using to avoid consuming unnecessary resources.
 

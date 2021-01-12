@@ -13,7 +13,7 @@ The Neurodocker project helps you to create a Docker image with the Neuroscience
 
 Checkout the Neurodocker documentation for more details: https://github.com/ReproNim/neurodocker
 
-:::info
+:::info Freesurfer and FSL
 
 In this page we will show you how to generate a Docker image with FreeSurfer and FSL installed. Feel free to change it to adapt it to your needs.
 
@@ -29,9 +29,9 @@ docker run --rm repronim/neurodocker:0.7.0 generate docker \
 
 2. Checkout the documentation to [deploy the `Dockerfile` on DSRI](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-dockerfile-to-openshift). 
 
-:::note
+:::note UI with VNC
 
-Running a UI through VNC (e.g. FSLeyes) is still a work in progress. See [this issue for more details](https://github.com/ReproNim/neurodocker/issues/343).
+Running a UI with VNC (e.g. FSLeyes) is still a work in progress. See [this issue for more details](https://github.com/ReproNim/neurodocker/issues/343).
 
 :::
 

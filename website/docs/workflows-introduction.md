@@ -3,7 +3,7 @@ id: workflows-introduction
 title: Introduction to workflows
 ---
 
-:::warning
+:::warning Work in progress
 
 Running workflows on the DSRI is a work in progress. It usually requires some knowledge about how to orchestrate containers.
 
@@ -13,7 +13,7 @@ Running workflows on the DSRI is a work in progress. It usually requires some kn
 
 Multiple technologies are available to run workflows on OpenShift/Kubernetes clusters. Each has its strengths and weaknesses in different areas.
 
-:::caution
+:::caution Use-case dependant
 
 The technology to use needs to be **chosen depending on your use-case**.
 
@@ -79,7 +79,7 @@ Run batch pipelines on Kubernetes with [Volcano](https://volcano.sh/).
 
 * Volcano can be used to run Spark, Kubeflow or KubeGene workflows.
 
-:::info
+:::info Contact us
 
 Feel free to [contact us](/dsri-documentation/help) if you have any questions about running workflows on DSRI or to request the support of a new technology.
 

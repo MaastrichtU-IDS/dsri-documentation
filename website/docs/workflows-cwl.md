@@ -37,7 +37,7 @@ Start the CWL execution from your computer using the `oc` client. Define the CWL
 oc create -f d2s-core/support/run-workflows-cwl.yaml
 ```
 
-:::caution
+:::caution Delete the pod
 
 You will need to delete the pod if you want to re-create it.
 

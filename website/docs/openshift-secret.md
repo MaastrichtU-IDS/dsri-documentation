@@ -3,7 +3,7 @@ id: openshift-secret
 title: Use secrets
 ---
 
-:::caution
+:::caution Work in progress
 
 Feature still in development, only use it if you know how it works.
 
@@ -18,7 +18,7 @@ Got to your project > `Resources` > `Secret`
 * `Key`: password
 * Enter the password in the text box `Clean Value`
 
-:::success
+:::tip Secret created
 
 The secret can now be used in deployment configs, pods, etc. 
 
@@ -70,7 +70,7 @@ Example to authenticate to a database to run an update query:
           key: password
 ```
 
-:::success
+:::tip Use the secret
 
 Now you can use the secret as environment variable in the workflow definition.
 

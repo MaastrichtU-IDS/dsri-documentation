@@ -8,7 +8,7 @@ Feel free to propose new deployments using [pull requests](https://github.com/Ma
 
 ## Start JupyterLab with the root user
 
-:::caution
+:::caution Root permission required
 
 🔒 You need root containers (aka. anyuid) enabled in your project to start this application.
 
@@ -68,13 +68,13 @@ You can use any image based on the official Jupyter docker stack: https://github
 
 Or build your own using this repository as example: https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift 📦
 
-:::warning
+:::warning Restricted user
 
 **You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
 
 :::
 
-:::info
+:::info Persistent data folder
 
 By default the working directory is `/home/jovyan`, the application will automatically create a persistent storage to store your data (find it in the **Storage** page of your project).
 
@@ -90,7 +90,7 @@ It will prompt you for a username and password if the repository is private.
 
 You can also use `git` from the terminal.
 
-:::caution
+:::caution Configure username
 
 Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
 
@@ -101,7 +101,7 @@ git config --global user.email jeandupont@gmail.com
 
 :::
 
-:::info
+:::info Save your password
 
 You can run this command to ask git to save your password for 15min:
 
@@ -126,7 +126,7 @@ We recommend to use SSH instead of HTTPS connection when possible, checkout [her
 
 ## Start JupyterHub
 
-:::info
+:::info For multiple users
 
 This application is useful if you want to provide JupyterLab to multiple users.
 
@@ -160,13 +160,13 @@ You will need to register a new GitHub OAuth application for your JupyterHub ins
 
 3. Add authorized GitHub users to the JupyterHub users when submitting the template to deploy JupyterHub in the OpenShift web UI. It can be changed from the **Admin** tab in the JupyterHub UI later.
 
-:::info
+:::info Dynamic storage
 
 Persistent volumes are automatically created for each instance started in JupyterHub to insure persistence of the data even if the instances or JupyterHub are stopped.
 
 :::
 
-:::warning
+:::warning Restricted user
 
 The users will be able to install new `pip` packages in their JupyterLab instance, but they will not have `sudo` privileges (so they cannot install `apt` or `yum` packages for example)
 

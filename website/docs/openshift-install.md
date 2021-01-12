@@ -70,7 +70,7 @@ To use the `oc` Command Line Interface, you will need to authenticate to the [DS
 3. Paste the copied command in your terminal, and execute it to login with `oc` 🔑
 
 
-:::info
+:::info Login command
 The command should look like this:
 
 ```bash

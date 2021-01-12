@@ -5,7 +5,7 @@ title: Start a VSCode server
 
 ## Start VSCode with root privileges
 
-:::caution
+:::caution Root permission required
 
 🔒 You need root containers (aka. anyuid) enabled in your project to start this application.
 
@@ -39,15 +39,15 @@ Create the template in your project catalog:
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-restricted/template-vscode-dynamic.yml
 ```
 
-:::warning
+:::warning Restricted user
 
 **You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
 
 :::
 
-:::caution
+:::caution Use Chrome
 
-We recommend to **use Chrome** as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
+We recommend to **use Google Chrome** web browser as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
 
 :::
 
@@ -67,7 +67,7 @@ VisualStudio will prompt a window to give permission to GitHub in a web page if 
 
 Once the repository cloned, you can use git from the VSCode web UI to manage your `git` repositories (add, commit, push changes).
 
-:::caution
+:::caution Configure git username
 
 Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
 
@@ -78,7 +78,7 @@ git config --global user.email jeandupont@gmail.com
 
 :::
 
-:::info
+:::info Save your git password
 
 You can run this command to ask git to save your password for 15min:
 

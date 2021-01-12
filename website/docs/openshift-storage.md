@@ -11,7 +11,7 @@ OpenShift prevent running regular Docker images by default, and enforce to run i
 
 Some Docker images has been optimized to run in OpenShift, those images can use the **Dynamic storage** feature, and automatically store persistent data.
 
-:::caution
+:::caution For most images
 
 To run a regular Docker image, see below.
 
@@ -21,7 +21,7 @@ To run a regular Docker image, see below.
 
 Most Docker images run with a specific user (e.g. the `root` user) and have not been optimized to comply with OpenShift requirements. In this case your project will need to be enable to run root containers (aka. anyuid) by the DSRI support team.
 
-:::warning
+:::warning Require persistent storage created
 
 **Dynamic storage** does not work with regular Docker images, you will need to request a **Persistent storage** to securely store your data.
 
@@ -37,7 +37,7 @@ Different storages can be used when running services on the DSRI:
 
 🗄️ **Persistent storage**:  a persistent storage can be created by the DSRI team for a persistent storage of the data. [Contact the DSRI team](/dsri-documentation/help) to request a persistent storage. 
 
-:::caution
+:::caution Storage per project
 
 A storage (aka. Persistent Volume Claim) is only accessible in the project where it has been created.
 
@@ -47,7 +47,7 @@ A storage (aka. Persistent Volume Claim) is only accessible in the project where
 
 Static persistent volumes provides a sustainable persistent storage over time for applications that need to run regular Docker images (which usually use the `root` user).
 
-:::info
+:::info Contact us
 
 [Contact the DSRI support team 📬](/dsri-documentation/help) to request a static persistent volume
 
@@ -55,7 +55,7 @@ Static persistent volumes provides a sustainable persistent storage over time fo
 
 ### Use the dynamic storage
 
-:::warning
+:::warning Not for root containers
 
 This storage solution is not compatible with applications using the `root` user, [contact the DSRI support team 📬](/dsri-documentation/help) to request a persistent storage.
 
@@ -74,7 +74,7 @@ Dynamic storage can also be created dynamically, go to **Storage** on the left s
 
 ### Use the ephemeral storage
 
-:::warning
+:::warning Disabled
 
 We currently disabled this solution by default, as it was confusing for users and would lead to data loss.
 
