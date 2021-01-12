@@ -35,6 +35,12 @@ Use your existing [GitHub](https://github.com) account if you have one:
 echo "ACCESS_TOKEN" | docker login ghcr.io -u USERNAME --password-stdin
 ```
 
+On Windows use this command:
+
+```bash
+docker login ghcr.io -u USERNAME -p "ACCESS_TOKEN"
+```
+
 > See the [official GitHub documentation](https://docs.github.com/en/free-pro-team@latest/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages).
 
 ### Login to quay.io

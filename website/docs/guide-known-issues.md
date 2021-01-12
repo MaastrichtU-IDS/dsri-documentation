@@ -3,6 +3,68 @@ id: guide-known-issues
 title: Known Issues
 ---
 
+## DockerHub pull limitations
+
+:::warning Spot the issue
+
+If the **Events** tab show this error:
+
+```
+--> Scaling filebrowser-case-1 to 1
+error: update acceptor rejected my-app-1: pods for rc 'my-project/my-app-1' took longer than 600 seconds to become available
+```
+
+Then check for the application ImageStream in **Build** > **Images**, and you might see this for your application image:
+
+```
+Internal error occurred: toomanyrequests: You have reached your pull rate limit. 
+You may increase the limit by authenticating and upgrading: https://www.docker.com/increase-rate-limit.
+```
+
+:::
+
+The easiest way to solve this issue is to publish the DockerHub image to the GitHub Container Registry.
+
+1. [Login to the GitHub Container Registry](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-publish-image#login-to-github-container-registry) with `docker login`.
+
+2. Pull the docker image from 
+
+   ```bash
+   docker pull myorg/myimage:latest
+   ```
+
+3. Change its tag
+
+   ```bash
+   docker tag myorg/myimage:latest ghcr.io/maastrichtu-ids/myimage:latest
+   ```
+
+4. Push it back to the GitHub Container Registry:
+
+   ```bash
+   docker push ghcr.io/maastrichtu-ids/myimage:latest
+   ```
+
+:::tip Image created automatically
+
+If the image does not exist, GitHub will create automatically when you push it for the first time! You can then head to your [organization **Packages** tab](https://github.com/orgs/MaastrichtU-IDS/packages) to see the package.
+
+:::
+
+:::info Make it public
+
+By default new images are set as `Private`, go to your Package settings and set it as `Public`, this avoids the need to login to pull the image.
+
+:::
+
+You can update the image if you want access to the latest version, you can set a GitHub Actions workflow to do so.
+
+Finally you will need to update your DSRI deployment, or template, to use the newly created image on `ghcr.io`, and redeploy the application with the new template.
+
+---
+
+## Git authentication issue
+
 :::warning
 
 ⚠️ remote: HTTP Basic: Access denied fatal: Authentication failed for
