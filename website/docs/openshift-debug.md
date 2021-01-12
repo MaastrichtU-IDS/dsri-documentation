@@ -77,7 +77,7 @@ You may increase the limit by authenticating and upgrading: https://www.docker.c
 
 The easiest way to solve this issue is to publish the DockerHub image to the GitHub Container Registry.
 
-:::info Adapt the instructions
+:::info Adapt the instructions to your image
 
 Just change `filebrowser/filebrowser:v2.11.0` to your image ID and tag on DockerHub
 
@@ -85,13 +85,13 @@ Just change `filebrowser/filebrowser:v2.11.0` to your image ID and tag on Docker
 
 1. [Login to the GitHub Container Registry](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-publish-image#login-to-github-container-registry) with `docker login`.
 
-2. pull the docker image from 
+2. Pull the docker image from 
 
     ```bash
     docker pull filebrowser/filebrowser:v2.11.0
     ```
 
-3. change its tag
+3. Change its tag
 
     ```bash
     docker tag filebrowser/filebrowser:v2.11.0 ghcr.io/maastrichu-ids/filebrowser:v2.11.10
@@ -103,15 +103,15 @@ Just change `filebrowser/filebrowser:v2.11.0` to your image ID and tag on Docker
     docker push ghcr.io/maastrichu-ids/filebrowser:v2.11.10
     ```
 
-:::tip
+:::tip Image created automatically
 
-If the image does not exist, GitHub will create automatically when you push it for the first time! You can then head to your organization **Packages** tab to see the package.
+If the image does not exist, GitHub will create automatically when you push it for the first time! You can then head to your [organization **Packages** tab](https://github.com/orgs/MaastrichtU-IDS/packages) to see the package.
 
 :::
 
 :::warning Make it public
 
-By default new images are set as `private`, go to your Package settings and set it as `public` to avoid needing to login to pull it.
+By default new images are set as `Private`, go to your Package settings and set it as `Public`, this avoids the need to login to pull the image.
 
 :::
 
