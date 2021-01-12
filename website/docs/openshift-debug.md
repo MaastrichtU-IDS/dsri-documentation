@@ -109,6 +109,12 @@ If the image does not exist, GitHub will create automatically when you push it f
 
 :::
 
+:::warning Make it public
+
+By default new images are set as `private`, go to your Package settings and set it as `public` to avoid needing to login to pull it.
+
+:::
+
 :::caution Update the image
 
 You will need to update the image if you want access to the latest version, you can set a GitHub Actions workflow to do so.
