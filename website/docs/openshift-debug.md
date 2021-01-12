@@ -77,30 +77,24 @@ You may increase the limit by authenticating and upgrading: https://www.docker.c
 
 The easiest way to solve this issue is to publish the DockerHub image to the GitHub Container Registry.
 
-:::info Adapt the instructions to your image
-
-Just change `filebrowser/filebrowser:v2.11.0` to your image ID and tag on DockerHub
-
-:::
-
 1. [Login to the GitHub Container Registry](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-publish-image#login-to-github-container-registry) with `docker login`.
 
 2. Pull the docker image from 
 
     ```bash
-    docker pull filebrowser/filebrowser:v2.11.0
+    docker pull myorg/myimage:latest
     ```
 
 3. Change its tag
 
     ```bash
-    docker tag filebrowser/filebrowser:v2.11.0 ghcr.io/maastrichu-ids/filebrowser:v2.11.10
+    docker tag myorg/myimage:latest ghcr.io/maastrichtu-ids/myimage:latest
     ```
 
 4. Push it back to the GitHub Container Registry:
 
     ```bash
-    docker push ghcr.io/maastrichu-ids/filebrowser:v2.11.10
+    docker push ghcr.io/maastrichtu-ids/myimage:latest
     ```
 
 :::tip Image created automatically
