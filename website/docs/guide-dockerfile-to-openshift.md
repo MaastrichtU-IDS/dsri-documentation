@@ -56,8 +56,8 @@ To properly deploy your app on OpenShift you will need to define a few more para
 - Enable root user access (with `serviceAccountName`)
 - Add persistent storage (with `volumes` and `containers: volumeMounts` )
 
-`${STORAGE_NAME}`: Name of your persistent volume claim in the **Storage** page of your project in the web UI
-`${STORAGE_FOLDER}` : Name of the folder inside the persistent volume claim to store the application data (so you can store multiple applications on the same persistent volume claim)
+  - `${STORAGE_NAME}`: Name of your persistent volume claim in the **Storage** page of your project in the web UI
+  - `${STORAGE_FOLDER}` : Name of the folder inside the persistent volume claim to store the application data (so you can store multiple applications on the same persistent volume claim)
 
 - Make sure the container will run on the right nodes (with the `nodeSelector`)
 
