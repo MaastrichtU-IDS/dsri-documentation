@@ -5,7 +5,7 @@ title: Access the DSRI
 
 ## Request an account
 
-1. You will need to have an account at Maastricht University with an email ending with `@maastrichtuniversity.nl` or `@maastro.nl`.
+1. You will need to have an account at Maastricht University with an email ending with `@maastrichtuniversity.nl` or `@student.maastrichtuniversity.nl`.
 
 2. Request access to the DSRI for your account  [to the DSRI support team 📬](mailto:dsri-support-l@maastrichtuniversity.nl).
 
