@@ -3,12 +3,6 @@ id: openshift-secret
 title: Use secrets
 ---
 
-:::caution Work in progress
-
-Feature still in development, only use it if you know how it works.
-
-:::
-
 [OpenShift secrets](https://docs.openshift.com/enterprise/3.1/dev_guide/secrets.html) can be used to store confidential information required when the pods are running (such as passwords).
 
 Got to your project > `Resources` > `Secret`
@@ -24,54 +18,60 @@ The secret can now be used in deployment configs, pods, etc.
 
 :::
 
-## Connect to DockerHub
+## Connect to Docker registries
 
-Create secret to pull private images, or increase the DockerHub limitations to pull images:
+Create secret to login to Docker registries to pull private images.
 
-```shell
-oc create secret docker-registry docker-hub-secret --docker-server=docker.io --docker-username=your-dockerhub-username --docker-password=your-dockerhub-password --docker-email=your-dockerhub-email
-```
+### For DockerHub
 
-## Manage Secrets
+:::tip Increase DockerHub limitations
 
-Secrets cannot be read, but they can be changed through the OpenShift UI.
-
-## Use in Argo workflows
-
-Example to authenticate to a database to run an update query:
-
-```yaml
-- name: d2s-sparql-operations
-  inputs:
-    parameters:
-    - name: sparql-queries-path
-    - name: sparql-input-graph
-    - name: sparql-output-graph
-    - name: sparql-service-url
-    - name: sparql-triplestore-url
-    - name: sparql-triplestore-repository
-    - name: sparql-triplestore-username
-  container:
-    image: maastrichtuids/d2s-sparql-operations:latest
-    args: ["-ep", "{{inputs.parameters.sparql-triplestore-url}}", 
-      "-rep", "{{inputs.parameters.sparql-triplestore-repository}}", 
-      "-op", "update", "-f", "{{inputs.parameters.sparql-queries-path}}",
-      "-un", "{{inputs.parameters.sparql-triplestore-username}}", 
-      "-pw", "{{inputs.parameters.sparql-triplestore-password}}",
-      "-pw", "$SPARQLPASSWORD",  # secret from env
-      "--var-input", "{{inputs.parameters.sparql-input-graph}}",
-      "--var-output", "{{inputs.parameters.sparql-output-graph}}", 
-      "--var-service", "{{inputs.parameters.sparql-service-url}}", ]
-    env:
-    - name: PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: my-password
-          key: password
-```
-
-:::tip Use the secret
-
-Now you can use the secret as environment variable in the workflow definition.
+Login with DockerHub also increase the DockerHub limitations to pull images in your project
 
 :::
+
+1. Create a secret to login to DockerHub in your project:
+
+```bash
+oc create secret docker-registry dockerhub-secret --docker-server=docker.io --docker-username=<dockerhub-username> --docker-password=<dockerhub-password> --docker-email=<email-address>
+```
+
+2. Link the login secret to the default service account:
+
+```bash
+oc secrets link default dockerhub-secret --for=pull
+```
+
+## For GitHub Container Registry
+
+1. Go to [GitHub Settings](https://github.com/settings/tokens), and create a Personal Access Token (PAT) which will be used as password to connect to the GitHub Container Registry
+
+2. Create a secret to login to GitHub Container Registry in your project:
+
+```bash
+oc create secret docker-registry github-ghcr-secret --docker-server=ghcr.io --docker-username=<github-username> --docker-password=<github-personal-access-token> --docker-email=<email-address>
+```
+
+3. Link the login secret to the default service account:
+
+```bash
+oc secrets link default github-ghcr-secret --for=pull
+```
+
+## Use in a deployment
+
+Example to define a secret in a deployment YAML file:
+
+```yaml
+container:
+  image: maastrichtuids/jupyterlab:latest
+  env:
+  - name: PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: my-password
+        key: password
+```
+
+Now you can use the secret as environment variable in the container.
+

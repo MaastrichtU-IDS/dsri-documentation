@@ -23,7 +23,27 @@ You may increase the limit by authenticating and upgrading: https://www.docker.c
 
 :::
 
-The easiest way to solve this issue is to publish the DockerHub image to the GitHub Container Registry.
+You can solve this by creating a secret to login to DockerHub in your project:
+
+```bash
+oc -n <project> create secret docker-registry <secret-name> --docker-server=docker.io --docker-username=<dockerhub-username> --docker-password=<dockerhub-password> --docker-email=<email-address>
+```
+
+Linking the login secret to the default service account:
+
+```bash
+oc secrets link default <secret-name> --for=pull
+```
+
+:::tip
+
+Login to DockerHub should raise the limitations
+
+:::
+
+To definitely solve this issue you can publish the DockerHub image to the [GitHub Container Registry](https://docs.github.com/en/packages/guides/about-github-container-registry).
+
+Follow those instructions on your laptop:
 
 1. [Login to the GitHub Container Registry](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-publish-image#login-to-github-container-registry) with `docker login`.
 
