@@ -66,16 +66,16 @@ If you are working at Maastricht University, **see [this page](https://maastrich
 
 * 16 CPU nodes
 
-|                | RAM (GB) | CPU (cores) | Storage (TB) |
-| -------------- | -------- | ----------- | ------------ |
-| Node capacity  | 512 GB   | 128 cores   | 120 TB       |
-| Total capacity | 8 192 GB | 2 048 cores | 1 920 TB     |
+|                | RAM (GB) | CPU (cores)            | Storage (TB) |
+| -------------- | -------- | ---------------------- | ------------ |
+| Node capacity  | 512 GB   | 64 cores (128 threads) | 120 TB       |
+| Total capacity | 8 192 GB | 1 024 cores            | 1 920 TB     |
 
 * 1 GPU node: **Nvidia DGX1** 8x Tesla V100 - 32GB GPU
 
 |                   | GPUs | RAM (GB) | CPU (cores) |
 | ----------------- | ---- | -------- | ----------- |
-| GPU node capacity | 8    | 528 GB   | 80 cores    |
+| GPU node capacity | 8    | 528 GB   | 40 cores    |
 
 <img src="/dsri-documentation/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure " style={{maxWidth: '100%', maxHeight: '100%'}} />
 
