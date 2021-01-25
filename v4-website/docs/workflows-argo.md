@@ -3,8 +3,6 @@ id: workflows-argo
 title: Run Argo workflows
 ---
 
-![Argo project](/img/argo-logo.png)
-
 :::warning Install in your project
 
 Argo needs to be installed in your project, [contact the DSRI team](mailto:dsri-support-l@maastrichtuniversity.nl) to request it.
@@ -13,7 +11,7 @@ Argo needs to be installed in your project, [contact the DSRI team](mailto:dsri-
 
 ## Install the `argo` client
 
-[Argo](https://argoproj.github.io/argo/) is a container native workflow engine for [Kubernetes](https://kubernetes.io/) supporting both [DAG](https://argoproj.github.io/docs/argo/examples/readme.html#dag) and [step based](https://argoproj.github.io/docs/argo/examples/readme.html#steps) workflows.
+[Argo 🦑](https://argoproj.github.io/argo/) is a container native workflow engine for [Kubernetes](https://kubernetes.io/) supporting both [DAG](https://argoproj.github.io/docs/argo/examples/readme.html#dag) and [step based](https://argoproj.github.io/docs/argo/examples/readme.html#steps) workflows.
 
 Download and install the [Argo client](https://github.com/argoproj/argo/blob/master/demo.md#1-download-argo) on your computer to [start workflows](https://argoproj.github.io/docs/argo/examples/readme.html) on the DSRI.
 
@@ -50,6 +48,28 @@ You will need to have the `oc` client installed and be logged in with `oc login`
 
 :::
 
+## Install Argo in your project
+
+### Argo workflows with Helm
+
+Deploy the [Argo Helm chart](https://artifacthub.io/packages/helm/argo/argo).
+
+1. Install and use [`helm`](/docs/helm)
+2. Add the Helm charts repository:
+
+```bash
+helm repo add argo https://argoproj.github.io/argo-helm
+```
+
+3. Install chart:
+
+```bash
+helm install my-argo argo/argo --version 0.15.2
+```
+
+### ArgoCD Operator
+
+Ask on the DSRI Slack **#helpdesk** channel to have the [ArgoCD Operator](https://artifacthub.io/packages/olm/community-operators/argocd-operator) installed in your project.
 
 ### Uninstall `argo`
 
