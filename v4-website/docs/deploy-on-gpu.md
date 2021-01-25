@@ -1,6 +1,6 @@
 ---
 id: deploy-on-gpu
-title: Start on GPU
+title: GPU applications
 ---
 
 

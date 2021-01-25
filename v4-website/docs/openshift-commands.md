@@ -111,7 +111,7 @@ oc logs -f <pod_id>
 
 :::info Debug a pod
 
-Get more details on how to [debug a pod](/dsri-documentation/docs/openshift-debug).
+Get more details on how to [debug a pod](/dsri-documentation/docs/guide-monitoring).
 
 :::
 

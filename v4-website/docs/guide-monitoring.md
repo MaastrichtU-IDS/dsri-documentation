@@ -1,6 +1,6 @@
 ---
-id: openshift-debug
-title: Debug an application
+id: guide-monitoring
+title: Monitor your applications
 ---
 
 ## Debug an application deployment

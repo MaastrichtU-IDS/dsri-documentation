@@ -1,6 +1,6 @@
 ---
 id: deploy-vscode
-title: Start a VSCode server
+title: VisualStudio Code
 ---
 
 ## Start VSCode with root privileges

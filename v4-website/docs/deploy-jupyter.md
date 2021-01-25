@@ -1,12 +1,12 @@
 ---
 id: deploy-jupyter
-title: Start Jupyter Notebooks
+title: Jupyter Notebooks
 ---
 
 Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
 
-## Start JupyterLab with the root user
+## Use JupyterLab with root user
 
 :::caution Root permission required
 
@@ -46,9 +46,9 @@ Try the following Notebooks to work on a RDF Knowledge Graph about COVID-19 rela
 
 > The JupyterLab Docker image has been built from [amalic/Jupyterlab](https://github.com/amalic/Jupyterlab) image.
 
-## Start JupyterLab with restricted user
+## Use the official Jupyter docker stack
 
-Start JupyterLab images from the [official Jupyter docker stack](https://github.com/jupyter/docker-stacks) with regular `jovyan` user, without `sudo` privileges.
+Start JupyterLab images from the [official Jupyter docker stack](https://github.com/jupyter/docker-stacks) with **regular `jovyan` user, without `sudo` privileges**.
 
 Create the template in your project catalog:
 

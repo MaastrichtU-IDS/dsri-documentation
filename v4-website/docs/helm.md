@@ -1,11 +1,15 @@
 ---
 id: helm
-title: Start from Helm charts
+title: Install from Helm charts
 ---
 
-[Helm](https://helm.sh/) is a popular package manager for [Kubernetes](https://kubernetes.io/). It allows you to easily deploy [Helm Charts](https://hub.helm.sh/) built by the community
+[Helm](https://helm.sh/) is a popular package manager for [Kubernetes](https://kubernetes.io/). A Helm chart is a bundle of parameterizable YAML resources for Kubernetes/OpenShift.
 
-You can explore published Helm charts at [https://hub.helm.sh ⛵](https://hub.helm.sh) 
+:::caution Difference with Operators
+
+Helm charts can be defined as [Operators](/docs/operators) (if they are packaged using the `operator-sdk`), but they are not all Operators.
+
+:::
 
 ## Install the Helm client
 

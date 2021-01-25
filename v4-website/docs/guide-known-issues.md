@@ -1,7 +1,21 @@
 ---
 id: guide-known-issues
-title: Known Issues
+title: Fix known issues
 ---
+
+## OpenShift user restrictions
+
+For security, **OpenShift prevent using the root user in Docker images**, and enforce to run images as a a random restricted user.
+
+Some Docker images has been optimized to run with an OpenShift-compliant user.
+
+But most images on DockerHub uses the root user. In this case we will need to tell OpenShift that this container will use the `root` user by running it using the `anyuid` service account.
+
+:::caution Enable anyuid
+
+DSRI admins automatically add the `anyuid` service account to your project when they create it. If you created the project by yourself, ask to have `anyuid` enabled in this project in the #helpdesk channel on the DSRI Slack.
+
+:::
 
 ## DockerHub pull limitations
 
@@ -23,7 +37,7 @@ You may increase the limit by authenticating and upgrading: https://www.docker.c
 
 :::
 
-You can solve this by creating a secret to login to DockerHub in your project:
+This issue is due to DockerHub limiting the number of pull an unauthenticated user can do. You can solve this by creating a secret to login to DockerHub in your project:
 
 ```bash
 oc -n <project> create secret docker-registry <secret-name> --docker-server=docker.io --docker-username=<dockerhub-username> --docker-password=<dockerhub-password> --docker-email=<email-address>
@@ -124,3 +138,7 @@ Finally you will need to update your DSRI deployment, or template, to use the ne
 <img class="screenshot" src="/dsri-documentation/img/Mac-git-autentication.png" alt="Mac GIT Autentication" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
 
 3. Right click and delete.
+
+## Container port 80 cannot be exposed
+
+For security reason, OpenShift prevents to use Docker containers that directly expose the port 80. Use a different port when building the image.
