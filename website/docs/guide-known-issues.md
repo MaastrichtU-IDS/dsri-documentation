@@ -124,3 +124,24 @@ Finally you will need to update your DSRI deployment, or template, to use the ne
 <img class="screenshot" src="/dsri-documentation/img/Mac-git-autentication.png" alt="Mac GIT Autentication" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
 
 3. Right click and delete.
+
+---
+## Filebrowser 403 forbidden
+
+:::warning Spot the issue
+
+If you get 403 forbidden issue while try to upload folders / files or creating new folder / file 
+
+```
+403 forbidden 
+```
+
+<img class="screenshot" src="/dsri-documentation/img/forbidden-issue.png" alt="Forbidden Issue" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
+
+Above issue will occur if you are not using the **persistent storage**.
+
+A persistent storage can be created by the DSRI team for a persistent storage of the data. [Contact the DSRI team](http://localhost:3000/dsri-documentation/help) to request a persistent storage.
+
+You can find the persistent storage name as below
+
+<img class="screenshot" src="/dsri-documentation/img/storage.png" alt="Storage" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
