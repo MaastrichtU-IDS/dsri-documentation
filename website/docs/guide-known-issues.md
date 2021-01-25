@@ -136,6 +136,8 @@ If you get 403 forbidden issue while try to upload folders / files or creating n
 403 forbidden 
 ```
 
+:::
+
 <img class="screenshot" src="/dsri-documentation/img/forbidden-issue.png" alt="Forbidden Issue" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
 
 Above issue will occur if you are not using the **persistent storage**.
