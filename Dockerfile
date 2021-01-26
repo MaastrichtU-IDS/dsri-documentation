@@ -4,11 +4,11 @@ FROM node:12
 
 WORKDIR /app/website
 
-RUN yarn global add docusaurus
+# RUN yarn global add docusaurus
 
 EXPOSE 3000 35729
 # COPY ./docs /app/docs
 COPY ./v4-website /app/website
 RUN yarn install
 
-CMD ["yarn", "serve", "--build", "--port", "3000", "--host", "0.0.0.0"]
+ENTRYPOINT ["yarn", "serve", "--build", "--port", "3000", "--host", "0.0.0.0"]
