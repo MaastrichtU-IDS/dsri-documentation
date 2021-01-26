@@ -4,6 +4,8 @@ FROM node:12
 
 WORKDIR /app/website
 
+RUN yarn global add docusaurus
+
 EXPOSE 3000 35729
 # COPY ./docs /app/docs
 COPY ./v4-website /app/website
