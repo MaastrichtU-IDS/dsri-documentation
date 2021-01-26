@@ -2,7 +2,8 @@ module.exports={
   "title": "Data Science Research Infrastructure",
   "tagline": "A distributed and scalable infrastructure to run Data Science experiments at Maastricht University",
   "url": "https://maastrichtu-ids.github.io/",
-  "baseUrl": "/dsri-documentation/",
+  // "baseUrl": "/dsri-documentation/",
+  "baseUrl": "/",
   "organizationName": "MaastrichtU-IDS",
   "projectName": "dsri-documentation",
   "scripts": [
