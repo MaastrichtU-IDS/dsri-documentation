@@ -37,6 +37,16 @@ oc project my-project
 
 ---
 
+## ImageStreams
+
+To update an ImageStream in your project to pull the latest update from the external repository (e.g. from ghcr.io or DockerHub):
+
+```bash
+oc import-image <imagestream-id>
+```
+
+---
+
 ## Pods
 
 ### Create pod from YAML

@@ -5,8 +5,8 @@ FROM node:12
 WORKDIR /app/website
 
 EXPOSE 3000 35729
-COPY ./docs /app/docs
-COPY ./website /app/website
+# COPY ./docs /app/docs
+COPY ./v4-website /app/website
 RUN yarn install
 
-CMD ["yarn", "start"]
+CMD ["yarn", "run", "serve", "--build", "--port", "3000", "--host", "0.0.0.0"]

@@ -7,15 +7,8 @@ services:
       - 3000:3000
       - 35729:35729
     volumes:
-      - ./docs:/app/docs
-      - ./website/blog:/app/website/blog
-      - ./website/core:/app/website/core
-      - ./website/i18n:/app/website/i18n
-      - ./website/pages:/app/website/pages
-      - ./website/static:/app/website/static
-      - ./website/sidebars.json:/app/website/sidebars.json
-      - ./website/siteConfig.js:/app/website/siteConfig.js
+      - ./v4-website:/app/website
     working_dir: /app/website
     environment:
-      - VIRTUAL_HOST=http://dsri.137.120.31.101.nip.io/dsri-documentation/
+      - VIRTUAL_HOST=http://dsri.137.120.31.102.nip.io/dsri-documentation/
       - VIRTUAL_PORT=3000
