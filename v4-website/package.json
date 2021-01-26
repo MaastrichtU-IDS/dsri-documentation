@@ -2,17 +2,13 @@
   "author": "Vincent Emonet",
   "license": "CC-BY-4.0",
   "scripts": {
-    "examples": "docusaurus-examples",
+    "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
-    "publish-gh-pages": "docusaurus-publish",
-    "write-translations": "docusaurus-write-translations",
-    "version": "docusaurus-version",
-    "rename-version": "docusaurus-rename-version",
+    "clear": "docusaurus clear",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
-    "serve": "docusaurus serve",
-    "docusaurus": "docusaurus"
+    "serve": "docusaurus serve"
   },
   "devDependencies": {
     "remarkable-extlink": "^1.1.0"

@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:14
 
 # Original Docusaurus image FROM node:8.11.4
 
@@ -12,3 +12,4 @@ COPY ./v4-website /app/website
 RUN yarn install
 
 ENTRYPOINT ["yarn", "serve", "--build", "--port", "3000", "--host", "0.0.0.0"]
+# ENTRYPOINT ["yarn", "start", "--host", "0.0.0.0"]
