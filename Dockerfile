@@ -11,4 +11,4 @@ EXPOSE 3000 35729
 COPY ./v4-website /app/website
 RUN yarn install
 
-CMD ["yarn", "run", "serve", "--build", "--port", "3000", "--host", "0.0.0.0"]
+CMD ["yarn", "serve", "--build", "--port", "3000", "--host", "0.0.0.0"]
