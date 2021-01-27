@@ -209,7 +209,7 @@ name: Deploy to OpenShift
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets
 env:
   # ⬇️ EDIT with your registry and registry path.
-  REGISTRY: quay.io/<username>
+  REGISTRY: ghcr.io/maastrichtu-ids
   # ⬇️ EDIT with your registry username.
   REGISTRY_USER: <username>
   REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
@@ -226,7 +226,7 @@ env:
   OPENSHIFT_NAMESPACE: ""
 
   # If you wish to manually provide the APP_NAME and TAG, set them here, otherwise they will be auto-detected.
-  APP_NAME: ""
+  APP_NAME: "my-app"
   TAG: ""
 
 on:
