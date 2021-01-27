@@ -159,6 +159,17 @@ oc new-app my-docker-image --name app-name-on-openshift
 
 You can also build and deploy your application using a GitHub Actions workflow.
 
+You will need to connect to the UM VPN in your workflow by defining 2 secrets for `VPN_USER` and `VPN_PASSWORD`, this is done by this step:
+
+```yaml
+- name: Connect to the VPN
+  run: |
+    sudo apt-get install -y openconnect network-manager-openconnect
+    echo '${{ secrets.VPN_PASSWORD }}' | sudo openconnect --passwd-on-stdin --no-xmlpost --non-inter --background --authgroup 01-Employees --user ${{ secrets.VPN_USER }} vpn-rw1.maastrichtuniversity.nl
+    sleep 10
+  # Authgroup: 01-Employees or 03-InternBeheer
+```
+
 :::info RedHat documentation
 
 RedHat provides the following instructions and template to deploy an application on OpenShift
@@ -267,10 +278,14 @@ jobs:
 
     # The path the image was pushed to is now stored in ${{ steps.push-to-registry.outputs.registry-path }}
 
+	- name: Connect to the VPN
+      run: |
+        sudo apt-get install -y openconnect network-manager-openconnect
+        echo '${{ secrets.VPN_PASSWORD }}' | sudo openconnect --passwd-on-stdin --no-xmlpost --non-inter --background --authgroup 01-Employees --user ${{ secrets.VPN_USER }} vpn-rw1.maastrichtuniversity.nl
+        sleep 10
+
     # oc-login works on all platforms, but oc must be installed first.
     # The GitHub Ubuntu runner already includes oc.
-    # Otherwise, https://github.com/redhat-actions/oc-installer#readme is available.
-
     # https://github.com/redhat-actions/oc-login#readme
     - name: Log in to OpenShift
       uses: redhat-actions/oc-login@v1
