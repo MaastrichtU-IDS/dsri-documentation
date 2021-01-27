@@ -167,7 +167,6 @@ You will need to connect to the UM VPN in your workflow by defining 2 secrets fo
     sudo apt-get install -y openconnect network-manager-openconnect
     echo '${{ secrets.VPN_PASSWORD }}' | sudo openconnect --passwd-on-stdin --no-xmlpost --non-inter --background --authgroup 01-Employees --user ${{ secrets.VPN_USER }} vpn-rw1.maastrichtuniversity.nl
     sleep 10
-  # Authgroup: 01-Employees or 03-InternBeheer
 ```
 
 :::info RedHat documentation
