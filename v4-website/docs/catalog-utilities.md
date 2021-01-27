@@ -51,6 +51,7 @@ To quickly access it from the terminal you can use the **Terminal** tab in the p
    bash
    ```
 
+<img src="/dsri-documentation/img/screenshot-deploy-ubuntu.png" alt="Deploy Ubuntu" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 ## File browser
 
@@ -97,3 +98,5 @@ Default credentials will be username `admin` and password `admin`
 Please **change the password in the Filebrowser Web UI** once it has been created.
 
 :::
+
+<img src="/dsri-documentation/img/screenshot-filebrowser-login.png" alt="File browser Web UI" style={{maxWidth: '50%', maxHeight: '50%'}} />
