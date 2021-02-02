@@ -46,6 +46,7 @@ function Footer() {
   if (!footer) {
     return null;
   }
+  const feedback_url = "https://docs.google.com/forms/d/e/1FAIpQLSeaIE_eM0h9frMtSJaW-15-A7enSdNLPej9AoqaqjRwXlRawA/viewform?usp=pp_url&entry.1130493462=" + window.location.href + "&embedded=true"
 
   return (
     <footer
@@ -121,6 +122,12 @@ function Footer() {
               We track page views and users demographics using Google Analytics to improve our users experience. <a href="https://policies.google.com/technologies/partner-sites">See how Google uses collected informations</a>.<br/>
               You can prevent Google Analytics tracking by enabling <a href="https://blog.mozilla.org/blog/2019/06/04/firefox-now-available-with-enhanced-tracking-protection-by-default/">Firefox Tracking Protection</a>, installing <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=fr">uBlock Origin add-on</a>, or using the official <a href='https://tools.google.com/dlpage/gaoptout/'>Google Analytics Opt-out add-on</a>.
             </div>
+
+            <iframe class="form" scrolling="no" 
+              src={feedback_url}
+              width="640" height="360" frameborder="0" marginheight="0" marginwidth="0">
+                Loading...
+            </iframe> 
           </div>
         )}
       </div>
