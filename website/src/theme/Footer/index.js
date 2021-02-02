@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import {useThemeConfig} from '@docusaurus/theme-common';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import { useLocation } from 'react-router-dom'
 import styles from './styles.module.css';
 
 function FooterLink({to, href, label, prependBaseUrlToHref, ...props}) {
@@ -40,14 +41,16 @@ const FooterLogo = ({url, alt}) => (
 
 function Footer() {
   const {footer} = useThemeConfig();
+  const location = useLocation();
+
   const {copyright, links = [], logo = {}} = footer || {};
   const logoUrl = useBaseUrl(logo.src);
 
   if (!footer) {
     return null;
   }
-
-  const feedback_url = "https://docs.google.com/forms/d/e/1FAIpQLSeaIE_eM0h9frMtSJaW-15-A7enSdNLPej9AoqaqjRwXlRawA/viewform?usp=pp_url&entry.1130493462=" + window.location.href + "&embedded=true"
+  const page_url = 'https://maastrichtu-ids.github.io' + location.pathname
+  const feedback_url = "https://docs.google.com/forms/d/e/1FAIpQLSeaIE_eM0h9frMtSJaW-15-A7enSdNLPej9AoqaqjRwXlRawA/viewform?usp=pp_url&entry.1130493462=" + page_url + "&embedded=true"
 
   return (
     <footer
