@@ -2,11 +2,13 @@ version: "3"
 
 services:
   docusaurus:
+    restart: unless-stopped
     build: .
     # ports:
     #   - 3000:3000
     environment:
-      - VIRTUAL_HOST=dsri.137.120.31.102.nip.io
+      - VIRTUAL_HOST=dsri.semanticscience.org
+      - LETSENCRYPT_HOST=dsri.semanticscience.org
       - VIRTUAL_PORT=3000
     # volumes:
     #   - ./v4-website:/app/website
