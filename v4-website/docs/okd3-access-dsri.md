@@ -1,6 +1,6 @@
 ---
 id: okd3-access-dsri
-title: Access the DSRI
+title: Access the OKD 3.11 cluster
 ---
 
 ## Request an account

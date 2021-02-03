@@ -1,7 +1,6 @@
 ---
 id: okd3-introduction
 title: Introduction
-slug: /
 ---
 
 The Data Science Research Infrastructure is an [OKD](https://www.okd.io/) cluster (the open source version of [OpenShift](https://www.openshift.com/)), using the [MapR](https://mapr.com/) Distributed File System, and [Kubernetes](https://kubernetes.io/) containers orchestration.
