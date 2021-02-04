@@ -110,7 +110,7 @@ function Footer() {
 
             <iframe class="form"
               src={feedback_url}
-              width="640" height="550" frameborder="0" marginheight="0" marginwidth="0">
+              width="640" height="400" frameborder="0" marginheight="0" marginwidth="0">
                 Loading...
             </iframe> 
 
