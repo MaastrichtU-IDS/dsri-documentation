@@ -60,7 +60,7 @@ oc version
 
 ## Login in the terminal with `oc`
 
-To use the `oc` Command Line Interface, you will need to authenticate to the [DSRI](https://app.dsri.unimaas.nl:8443/console) in you terminal:
+To use the `oc` Command Line Interface, you will need to authenticate to the [DSRI](https://console-openshift-console.apps.dsri2.unimaas.nl/console) in you terminal:
 
 ```bash
 oc login https://api.dsri2.unimaas.nl:6443
@@ -68,7 +68,7 @@ oc login https://api.dsri2.unimaas.nl:6443
 
 Otherwise try to use the token provided by the Web UI:
 
-1. Go to the [DSRI web UI](https://app.dsri.unimaas.nl:8443/console).
+1. Go to the [DSRI web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console).
 2. Click on the **Copy Login Command** button (in the top right of the page).
 
 <img src="/dsri-documentation/img/screenshot_copy_login.png" alt="Copy Login Command button" style={{maxWidth: '100%', maxHeight: '100%'}} />

@@ -3,7 +3,7 @@ id: deploy-rstudio
 title: RStudio
 ---
 
-RStudio can be easily deployed from the [OpenShift web UI Catalog](https://app.dsri.unimaas.nl:8443/console/catalog).
+RStudio can be easily deployed from the [OpenShift web UI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog).
 
 ## RStudio with root user
 

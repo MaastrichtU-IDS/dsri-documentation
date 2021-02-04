@@ -26,7 +26,7 @@
         ]
       }
     ],
-    "OKD 3.11": [ 
+    "Legacy cluster OKD 3.11": [ 
       {
         "type": "category",
         "label": "Get started",

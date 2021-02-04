@@ -29,7 +29,7 @@ You need to be connected to the UM network to access the DSRI.
 
 ## Access the web UI
 
-Access the DSRI web UI at **[https://app.dsri.unimaas.nl:8443](https://app.dsri.unimaas.nl:8443)**
+Access the DSRI web UI at **[https://console-openshift-console.apps.dsri2.unimaas.nl](https://console-openshift-console.apps.dsri2.unimaas.nl)**
 
 :::info Password
 
@@ -39,7 +39,7 @@ Use your general UM password.
 
 If you do not have access to the DSRI [contact us](mailto:dsri-support-l@maastrichtuniversity.nl).
 
-You will be able to login at **[https://app.dsri.unimaas.nl:8443](https://app.dsri.unimaas.nl:8443)** either using:
+You will be able to login at **[https://console-openshift-console.apps.dsri2.unimaas.nl](https://console-openshift-console.apps.dsri2.unimaas.nl)** either using:
 
 * The **prefix of your UM email address** with the first letter capitalized, e.g. `Firstname.Lastname` or `F.Lastname`
 * Or your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`

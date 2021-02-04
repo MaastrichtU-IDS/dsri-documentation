@@ -14,7 +14,7 @@ After cloning you now have a local folder containing a Dockerfile and index.html
 
 Login with the openshift client:
 ```shell
-oc login https://app.dsri.unimaas.nl:8443
+oc login https://console-openshift-console.apps.dsri2.unimaas.nl
 ```
 
 Create a new project if you don't have a project yet you can work with (change myproject to a project name of your choice:

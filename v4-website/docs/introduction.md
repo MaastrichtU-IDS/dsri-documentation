@@ -8,6 +8,30 @@ The Data Science Research Infrastructure is an [OKD](https://www.okd.io/) cluste
 
 The DSRI provides a graphical user interface on top of the [Kubernetes](https://kubernetes.io/) containers orchestration to easily deploy and manage services. 
 
+:::tip New DSRI version!
+
+This documentation cover the **new DSRI version using OKD4.6** available at https://console-openshift-console.apps.dsri2.unimaas.nl
+
+You can find the documentation for the legacy DSRI version using OKD 3.11 [here](/docs/okd3-introduction).
+
+:::
+
+## Which DSRI version should you use?
+
+### New OKD 4.6 cluster
+
+You need to start applications on CPU 
+
+Storage of applications deployed in the new cluster is automated.
+
+### Legacy OKD 3.11 cluster
+
+You need to run applications on GPU (TensorFlow, PyTorch...)
+
+Storage of applications deployed in the legacy cluster needs to be manually configured.
+
+If you need to run applications on GPU, visit the [documentation for the legacy cluster](/docs/okd3-introduction).
+
 ## Getting started
 
 ### What can be done on the DSRI ✔️
@@ -23,6 +47,7 @@ Run Data Science applications in [Docker container 🐳](https://www.docker.com/
 * Or any program installed in a Docker image!
 
 <!--
+
 * SQL databases (MariaDB, MySQL, PostgreSQL)
 * NoSQL databases (MongoDB, Redis)
 * Graph databases (GraphDB, Blazegraph, Virtuoso)
@@ -30,17 +55,23 @@ Run Data Science applications in [Docker container 🐳](https://www.docker.com/
 * Dask cluster for python distribution computing
 -->
 
-:::tip Data storage
+:::caution Data storage
 
-The data will be safely stored in persistent volumes.
+**DSRI is a computing infrastructure**, built and used to run data science workloads. DSRI stores data in a persistent manner, but all data stored on the DSRI is susceptible to be altered by the workloads you are running, and we cannot guarantee its immutability.
+
+**Always keep a safe copy of your data outside the DSRI**. And don't rely on the DSRI for long term storage.
 
 :::
+
+<!--
 
 :::note Workflows
 
 For user already familiar with those concepts [workflow orchestration tools](/dsri-documentation/docs/workflows-introduction) can be installed, such as [Argo workflows](/dsri-documentation/docs/workflows-argo), [Nextflow](/dsri-documentation/docs/workflows-nextflow) or [CWL Calrissian](/dsri-documentation/docs/workflows-cwl).
 
 :::
+
+-->
 
 ### What cannot be done ❌
 
@@ -57,10 +88,8 @@ If you are working at Maastricht University, **see [this page](https://maastrich
 
 ### Software
 
-* **[OKD 3.11](https://www.okd.io/)** (Open Source version of [RedHat OpenShift](https://www.openshift.com/)) to run services and jobs.
-  * We are working on upgrading to [OKD 4.5](https://github.com/openshift/okd/releases)
-* **[HP MapR](https://mapr.com/)** for distributed storage.
-  * [RedHat Ceph storage](https://www.redhat.com/fr/technologies/storage/ceph) is also considered
+* [**OKD 4.6**](https://www.okd.io/) (Open Source version of [RedHat OpenShift](https://www.openshift.com/)) to run services and jobs.
+* [**RedHat Ceph storage**](https://www.redhat.com/fr/technologies/storage/ceph) for distributed storage.
 
 ### Hardware
 

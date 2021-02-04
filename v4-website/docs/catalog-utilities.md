@@ -69,7 +69,7 @@ Add the file browser template:
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-filebrowser.yml
 ```
 
-Then the file browser can be deployed from the [OpenShift Catalog](https://app.dsri.unimaas.nl:8443/console/catalog):
+Then the file browser can be deployed from the [OpenShift Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog):
 
 <img src="/dsri-documentation/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
