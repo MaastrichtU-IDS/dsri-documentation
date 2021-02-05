@@ -52,15 +52,22 @@ We recommend you to install the `oc` command line interface to perform additiona
 
 :::
 
-## Go to your project
+## Access your project
 
-Once in the DSRI OpenShift web UI, **go to your project** (applications are deployed in a project)
+In the DSRI OpenShift web UI, applications are deployed in projects.
 
-:::info Project
+1. Create a new project with a meaningful name describing what you are doing, such as "retail-behavior-analysis".
 
-A project should have already been created for you when you registered to the DSRI. Use this project.
+2. Go to your project (applications are deployed in a project).
+
+:::caution Reuse your project
+
+Only create new projects when it is necessary (for a new project). You can easily clean up your current project instead of creating a new one every time you want to try something.
 
 :::
 
+<!--
+
 <img src="/dsri-documentation/img/screenshot_go_to_project.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
+-->
