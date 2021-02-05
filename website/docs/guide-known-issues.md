@@ -146,4 +146,4 @@ A persistent storage can be created by the DSRI team for a persistent storage of
 
 You can find the persistent storage name as below
 
-<img class="screenshot" src="/dsri-documentation/img/storage.png" alt="Storage" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
+<img class="screenshot" src="/dsri-documentation/img/persistent_storage.png" alt="Storage" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
