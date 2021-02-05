@@ -73,7 +73,10 @@ oc login https://api.dsri2.unimaas.nl:6443
 Otherwise try to use the token provided by the Web UI:
 
 1. Go to the [DSRI web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console).
+
 2. Click on the **Copy Login Command** button (in the top right of the page).
+
+   <img src="/dsri-documentation/img/screenshot_copy_login.png" alt="Deploy VSCode" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 3. Paste the copied command in your terminal, and execute it to login with `oc` 🔑
 
