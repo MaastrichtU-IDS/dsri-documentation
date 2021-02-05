@@ -56,7 +56,7 @@ You can view this 1 minute video to guide you through the process to get the sto
 
 :::tip Application started
 
-Your application is starting on the DSRI! Go back to your project **Overview** page to find it! It can take from a few seconds up to a few minutes to deploy 🕐
+Your application is starting on the DSRI! Go back to your project **Topology** page to find it! It can take from a few seconds up to a few minutes to deploy 🕐
 
 :::
 
@@ -71,7 +71,7 @@ Please think of stopping applications you are not using to avoid consuming unnec
 
 :::
 
-On the **Overview** page click on the down arrow ⬇️ next to the number of pods deployed.
+On the **Topology** page click on the down arrow ⬇️ next to the number of pods deployed.
 
 <img src="/dsri-documentation/img/screenshot_scaledown_pod.png" alt="Scale down pod" style={{maxWidth: '100%', maxHeight: '100%'}} />
 

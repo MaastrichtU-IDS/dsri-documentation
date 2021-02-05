@@ -30,7 +30,7 @@ The following parameters can be provided:
 4. **Storage name**: the storage Persistent Volume Claim (PVC)
 5. **Storage subpath**: path to the Notebook folder in the Persistent Volume Claim storage
 
-Now that your template is created and its accessible from the **Overview** page of OpenShift web UI.
+Now that your template is created and its accessible from the **Topology** page of OpenShift web UI.
 
 ## VSCode on GPU
 

@@ -23,7 +23,7 @@ You can deploy it using the **VisualStudio Code with root user** solutions in th
 
 > This application uses an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
 
-<img src="/dsri-documentation/img/screenshot-deploy-rstudio.png" alt="Deploy VSCode" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/dsri-documentation/img/screenshot-deploy-vscode.png" alt="Deploy VSCode" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 
