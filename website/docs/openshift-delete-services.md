@@ -37,7 +37,7 @@ oc delete all,secret,configmaps,serviceaccount,rolebinding --force --grace-perio
 
 ## From the web UI
 
-We recommend to use the `oc` CLI to easily delete an application. But in the case you cannot install `oc`  on your computer you can delete the different objects created by the application (easy to find in the **Overview** page):
+We recommend to use the `oc` CLI to easily delete an application. But in the case you cannot install `oc`  on your computer you can delete the different objects created by the application (easy to find in the **Topology** page):
 
 1. Delete the **Route**
 2. Delete the **Service**
