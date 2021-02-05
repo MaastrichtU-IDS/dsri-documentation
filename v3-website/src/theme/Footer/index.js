@@ -49,7 +49,8 @@ function Footer() {
   if (!footer) {
     return null;
   }
-  const feedback_url = "https://docs.google.com/forms/d/e/1FAIpQLSeaIE_eM0h9frMtSJaW-15-A7enSdNLPej9AoqaqjRwXlRawA/viewform?usp=pp_url&entry.1130493462=" + location.pathname + "&embedded=true"
+  const page_url = 'https://maastrichtu-ids.github.io' + location.pathname
+  const feedback_url = "https://docs.google.com/forms/d/e/1FAIpQLSeaIE_eM0h9frMtSJaW-15-A7enSdNLPej9AoqaqjRwXlRawA/viewform?usp=pp_url&entry.1130493462=" + page_url + "&embedded=true"
 
   return (
     <footer
@@ -92,6 +93,11 @@ function Footer() {
         )}
         {(logo || copyright) && (
           <div className="text--center">
+            <iframe class="form" scrolling="no" 
+              src={feedback_url}
+              width="640" height="360" frameborder="0" marginheight="0" marginwidth="0">
+                Loading...
+            </iframe> 
             {/* {logo && logo.src && (
               <div className="margin-bottom--sm">
                 {logo.href ? (
@@ -107,12 +113,6 @@ function Footer() {
                 )}
               </div>
             )} */}
-
-            <iframe class="form"
-              src={feedback_url}
-              width="640" height="400" frameborder="0" marginheight="0" marginwidth="0">
-                Loading...
-            </iframe> 
 
             <div>
               <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank" rel="noopener noreferrer">

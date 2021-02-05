@@ -29,7 +29,7 @@ You need to be connected to the UM network to access the DSRI.
 
 ## Access the web UI
 
-Access the DSRI web UI at **[https://console-openshift-console.apps.dsri2.unimaas.nl](https://console-openshift-console.apps.dsri2.unimaas.nl)**
+Access the DSRI web UI at **[https://app.dsri.unimaas.nl:8443](https://app.dsri.unimaas.nl:8443)**
 
 :::info Password
 
@@ -39,7 +39,7 @@ Use your general UM password.
 
 If you do not have access to the DSRI [contact us](mailto:dsri-support-l@maastrichtuniversity.nl).
 
-You will be able to login at **[https://console-openshift-console.apps.dsri2.unimaas.nl](https://console-openshift-console.apps.dsri2.unimaas.nl)** either using:
+You will be able to login at **[https://app.dsri.unimaas.nl:8443](https://app.dsri.unimaas.nl:8443)** either using:
 
 * The **prefix of your UM email address** with the first letter capitalized, e.g. `Firstname.Lastname` or `F.Lastname`
 * Or your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`
@@ -52,22 +52,15 @@ We recommend you to install the `oc` command line interface to perform additiona
 
 :::
 
-## Access your project
+## Go to your project
 
-In the DSRI OpenShift web UI, applications are deployed in projects.
+Once in the DSRI OpenShift web UI, **go to your project** (applications are deployed in a project)
 
-1. Create a new project with a meaningful name describing what you are doing, such as "retail-behavior-analysis".
+:::info Project
 
-2. Go to your project (applications are deployed in a project).
-
-:::caution Reuse your project
-
-Only create new projects when it is necessary (for a new project). You can easily clean up your current project instead of creating a new one every time you want to try something.
+A project should have already been created for you when you registered to the DSRI. Use this project.
 
 :::
 
-<!--
-
 <img src="/dsri-documentation/img/screenshot_go_to_project.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
--->

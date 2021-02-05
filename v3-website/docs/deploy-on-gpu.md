@@ -1,6 +1,6 @@
 ---
 id: deploy-on-gpu
-title: GPU applications
+title: Start on GPU
 ---
 
 
@@ -16,7 +16,7 @@ If you want to run on GPU, **contact the [DSRI support team](mailto:dsri-support
 
 Once your project has been granted access to GPUs, you can deploy applications on GPU from the catalog:
 
-* Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
+* Go to the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog): **Add to Project** > **Browse Catalog**
 * **Filter** the catalog on the publisher "**Institute of Data Science, UM**"
 * Choose one of the available templates:
   * **Pytorch on GPU with JupyterLab (Persistent)**.
@@ -36,7 +36,7 @@ Now that your template is created and its accessible from the **Overview** page 
 
 2 templates are available to deploy VisualStudio Code on GPU:
 
-* Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
+* Go to the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog): **Add to Project** > **Browse Catalog**
 * **Filter** the catalog on the publisher "**Institute of Data Science, UM**"
 * Choose one of the available templates:
   * **Tensorflow on GPU with VisualStudio (Persistent)**

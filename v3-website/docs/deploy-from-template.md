@@ -1,6 +1,6 @@
 ---
 id: deploy-from-template
-title: Quickstart an application
+title: Quickstart with templates
 ---
 
 The easiest to get started with the DSRI is to use the predefined templates to deploy an application.

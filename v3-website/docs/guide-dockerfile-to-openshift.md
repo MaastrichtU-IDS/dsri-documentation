@@ -1,6 +1,6 @@
 ---
 id: guide-dockerfile-to-openshift
-title: Deploy from a Dockerfile
+title: Start from Dockerfile
 ---
 
 ## Build from local Dockerfile
@@ -14,7 +14,7 @@ After cloning you now have a local folder containing a Dockerfile and index.html
 
 Login with the openshift client:
 ```shell
-oc login https://console-openshift-console.apps.dsri2.unimaas.nl
+oc login https://app.dsri.unimaas.nl:8443
 ```
 
 Create a new project if you don't have a project yet you can work with (change myproject to a project name of your choice:
@@ -159,16 +159,6 @@ oc new-app my-docker-image --name app-name-on-openshift
 
 You can also build and deploy your application using a GitHub Actions workflow.
 
-You will need to connect to the UM VPN in your workflow by defining 2 secrets for `VPN_USER` and `VPN_PASSWORD`, this is done by this step:
-
-```yaml
-- name: Connect to the VPN
-  run: |
-    sudo apt-get install -y openconnect network-manager-openconnect
-    echo '${{ secrets.VPN_PASSWORD }}' | sudo openconnect --passwd-on-stdin --no-xmlpost --non-inter --background --authgroup 01-Employees --user ${{ secrets.VPN_USER }} vpn-rw1.maastrichtuniversity.nl
-    sleep 10
-```
-
 :::info RedHat documentation
 
 RedHat provides the following instructions and template to deploy an application on OpenShift
@@ -208,7 +198,7 @@ name: Deploy to OpenShift
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets
 env:
   # ⬇️ EDIT with your registry and registry path.
-  REGISTRY: ghcr.io/maastrichtu-ids
+  REGISTRY: quay.io/<username>
   # ⬇️ EDIT with your registry username.
   REGISTRY_USER: <username>
   REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
@@ -225,7 +215,7 @@ env:
   OPENSHIFT_NAMESPACE: ""
 
   # If you wish to manually provide the APP_NAME and TAG, set them here, otherwise they will be auto-detected.
-  APP_NAME: "my-app"
+  APP_NAME: ""
   TAG: ""
 
 on:
@@ -277,14 +267,10 @@ jobs:
 
     # The path the image was pushed to is now stored in ${{ steps.push-to-registry.outputs.registry-path }}
 
-	- name: Connect to the VPN
-      run: |
-        sudo apt-get install -y openconnect network-manager-openconnect
-        echo '${{ secrets.VPN_PASSWORD }}' | sudo openconnect --passwd-on-stdin --no-xmlpost --non-inter --background --authgroup 01-Employees --user ${{ secrets.VPN_USER }} vpn-rw1.maastrichtuniversity.nl
-        sleep 10
-
     # oc-login works on all platforms, but oc must be installed first.
     # The GitHub Ubuntu runner already includes oc.
+    # Otherwise, https://github.com/redhat-actions/oc-installer#readme is available.
+
     # https://github.com/redhat-actions/oc-login#readme
     - name: Log in to OpenShift
       uses: redhat-actions/oc-login@v1

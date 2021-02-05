@@ -37,16 +37,6 @@ oc project my-project
 
 ---
 
-## ImageStreams
-
-To update an ImageStream in your project to pull the latest update from the external repository (e.g. from ghcr.io or DockerHub):
-
-```bash
-oc import-image <imagestream-id>
-```
-
----
-
 ## Pods
 
 ### Create pod from YAML
@@ -121,7 +111,7 @@ oc logs -f <pod_id>
 
 :::info Debug a pod
 
-Get more details on how to [debug a pod](/dsri-documentation/docs/guide-monitoring).
+Get more details on how to [debug a pod](/dsri-documentation/docs/openshift-debug).
 
 :::
 

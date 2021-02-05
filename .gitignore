@@ -11,12 +11,12 @@ website/yarn.lock
 website/node_modules
 website/i18n/*
 website/package-lock.json
-v4-website/translated_docs
-v4-website/build/
-v4-website/yarn.lock
-v4-website/node_modules
-v4-website/i18n/*
-v4-website/package-lock.json
+v3-website/translated_docs
+v3-website/build/
+v3-website/yarn.lock
+v3-website/node_modules
+v3-website/i18n/*
+v3-website/package-lock.json
 
 # Docusaurus v2:
 /node_modules

@@ -1,6 +1,6 @@
 ---
 id: deploy-from-docker
-title: Deploy from a Docker image
+title: Start from Docker image
 ---
 
 The DSRI is an [OpenShift OKD](https://www.okd.io/) cluster, based on [Kubernetes](https://kubernetes.io/). It uses [Docker containers](https://www.docker.com) to deploy services and applications in **pods**.
@@ -29,9 +29,9 @@ If no suitable image can be found on [DockerHub](https://hub.docker.com/), it ca
 
 ## Deploy the image on OpenShift
 
-Once you have a Docker image for your application you can deploy it using the [DSRI web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/projects).
+Once you have a Docker image for your application you can deploy it using the [DSRI web UI](https://app.dsri.unimaas.nl:8443/console/projects).
 
-Go to the [Overview page](https://console-openshift-console.apps.dsri2.unimaas.nl/console/projects) of your project.
+Go to the [Overview page](https://app.dsri.unimaas.nl:8443/console/projects) of your project.
 
 * Click the **Add to Project** button in top right corner > **Deploy Image**
 * Select to deploy from **Image Name**
@@ -43,9 +43,9 @@ Go to the [Overview page](https://console-openshift-console.apps.dsri2.unimaas.n
 
 :::info Access the application
 
-You should now see your pod deployed on the [Overview](https://console-openshift-console.apps.dsri2.unimaas.nl/console/projects) page of your project.
+You should now see your pod deployed on the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page of your project.
 
-You can expose routes to this pod in the [Overview](https://console-openshift-console.apps.dsri2.unimaas.nl/console/projects) page: **Create route**
+You can expose routes to this pod in the [Overview](https://app.dsri.unimaas.nl:8443/console/projects) page: **Create route**
 
 :::
 

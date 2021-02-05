@@ -97,7 +97,7 @@ function Home() {
             How do you deploy an application on the DSRI? (1min)
           </h1>
           <video width="100%" height="100%" controls>
-            <source src="img/DSRI-Introduction.mp4" type="video/mp4"/>
+            <source src="img/screencast_dsri_deploy_template.webm" type="video/webm"/>
           </video>
         </div>
       </main>

@@ -2,18 +2,63 @@
   "docs": {
     "Get started": ["introduction", "access-dsri", "deploy-from-template", 
       "openshift-install", "openshift-load-data",
-      "openshift-delete-services", "openshift-debug"],
-    "Start applications": [ "deploy-jupyter", "deploy-rstudio", "deploy-vscode",
-      "neuroscience", "deploy-on-gpu", "deploy-additional-services",
-      "deploy-from-docker", "guide-dockerfile-to-openshift", "helm", "deploy-spark"],
-    "Guides": [ "guide-known-issues", "openshift-commands", "openshift-storage",  
-      "prepare-project-for-dsri", "guide-publish-image", 
-      "openshift-secret", "openshift-delete-objects", "tools-machine-learning", 
+      "openshift-delete-services", "prepare-project-for-dsri"],
+    "Deploy applications": [ 
+      {
+        "type": "category",
+        "label": "Data Science catalog",
+        "collapsed": false,
+        "items": [
+          "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-database",
+          "catalog-opendatahub", "catalog-openmpi", "neuroscience", "deploy-on-gpu", "catalog-utilities"
+        ]
+      },
+      "guide-dockerfile-to-openshift", "deploy-from-docker", "operators", "helm"
+    ],
+    "Guides": [ "guide-monitoring", "guide-known-issues", "login-docker-registry", "openshift-commands", "openshift-storage",  
+      "guide-publish-image", 
+      "openshift-delete-objects", "tools-machine-learning", 
       {
         "type": "category",
         "label": "Workflows",
         "items": [
           "workflows-introduction", "workflows-argo", "workflows-nextflow", "workflows-cwl"
+        ]
+      }
+    ],
+    "Legacy cluster OKD 3.11": [ 
+      {
+        "type": "category",
+        "label": "Get started",
+        "items": [
+          "okd3-introduction", "okd3-access-dsri", "okd3-deploy-from-template", 
+          "okd3-openshift-install", "okd3-openshift-load-data",
+          "okd3-openshift-delete-services", "okd3-openshift-debug"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Start applications",
+        "items": [
+          "okd3-deploy-jupyter", "okd3-deploy-rstudio", "okd3-deploy-vscode",
+          "okd3-neuroscience", "okd3-deploy-on-gpu", "okd3-deploy-additional-services",
+          "okd3-deploy-from-docker", "okd3-guide-dockerfile-to-openshift", "okd3-helm", "okd3-deploy-spark"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Guides",
+        "items": [
+          "okd3-guide-known-issues", "okd3-openshift-commands", "okd3-openshift-storage",  
+          "okd3-prepare-project-for-dsri", "okd3-guide-publish-image", 
+          "okd3-openshift-secret", "okd3-openshift-delete-objects", "okd3-tools-machine-learning", 
+          {
+            "type": "category",
+            "label": "Workflows",
+            "items": [
+              "okd3-workflows-introduction", "okd3-workflows-argo", "okd3-workflows-nextflow", "okd3-workflows-cwl"
+            ]
+          }
         ]
       }
     ]
