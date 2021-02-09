@@ -83,6 +83,50 @@ Finally you will need to update your DSRI deployment, or template, to use the ne
 
 ---
 
+## How to run function within a container ''in the background'
+
+:::warning Spot the issue
+
+If the **Events** tab show this error:
+
+```
+--> cd /usr/local/src/work2/aerius-sample-sequencing/CD4K4ANXX
+
+Trinity --seqType fq --max_memory 100G --CPU 64 --samples_file samples.txt --output /usr/local/src/work2/Trinity_output_zip_090221
+error: The function starts but at some points just exits without warnings or errors to Windows folder
+```
+
+```
+DSRI in the container's terminal keep running fine but never finishes. At some point a red label ''disconnected'' appears and the terminal stops and the analysis never continues.
+```
+
+:::
+
+Those two issues are due to the process running attach to the terminal
+
+Should be able to easily run it using the "Bash way": add `nohup` at the beginning and `&` at the end
+It will run in the back and all output that should have gone to the terminal will go to a file `nohup.out` in the repo
+
+```
+nohup Trinity --seqType fq --max_memory 100G --CPU 64 --samples_file samples.txt --output /usr/local/src/work2/Trinity_output_zip_090221 &
+```
+
+To check if it is still running:
+
+```
+ps aux | grep Trinity
+```
+
+Be careful make sure the terminal uses bash and not shell ("sh")
+
+To use bash just type bash in the terminal:
+
+```
+bash
+```
+
+
+
 ## Git authentication issue
 
 :::warning
