@@ -125,8 +125,6 @@ To use bash just type bash in the terminal:
 bash
 ```
 
-
-
 ## Git authentication issue
 
 :::warning
