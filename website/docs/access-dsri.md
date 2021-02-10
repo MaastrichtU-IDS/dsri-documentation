@@ -70,7 +70,9 @@ Only create new projects when it is necessary (for a new project). You can easil
 
 ## About the web UI
 
-The OpenShift Container Platform web console provides two perspectives; 
+Developers can use the web console to **visualize**, **browse**, and **manage** the contents of projects in new version of OKD4. 
+
+The [OpenShift Container Platform web console](https://docs.openshift.com/container-platform/4.6/web_console/odc-about-developer-perspective.html) provides two perspectives; 
 
 * the **Administrator** perspective 
 * the **Developer** perspective.
