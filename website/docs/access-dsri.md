@@ -96,7 +96,7 @@ You can also use:
 
 - The **Remove Access** icon, to completely remove the access permissions of an existing user to the project.
 
-:::info Command line interface
+:::info 
 
   Advanced role-based access control is managed in the **Roles** and **Roles Binding** views in the **Administrator** perspective
 
