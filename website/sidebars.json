@@ -1,6 +1,6 @@
 {
   "docs": {
-    "Get started": ["introduction", "access-dsri", "deploy-from-template", 
+    "Get started": ["introduction", "access-dsri", "create-dsri-project", "deploy-from-template", 
       "openshift-install", "openshift-load-data",
       "openshift-delete-services", "prepare-project-for-dsri"],
     "Deploy applications": [ 
