@@ -66,12 +66,41 @@ Only create new projects when it is necessary (for a new project). You can easil
 
 :::
 
-<!--
-
 <img src="/dsri-documentation/img/screenshot_go_to_project.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
--->
+## About the web UI
 
+The OpenShift Container Platform web console provides two perspectives; 
 
+* the **Administrator** perspective 
+* the **Developer** perspective.
 
-  
+The Developer perspective provides workflows specific to developer use cases, such as the ability to:
+
+* Create and deploy applications on OpenShift Container Platform by importing existing codebases, images, and dockerfiles.
+
+* Visually interact with applications, components, and services associated with them within a project and monitor their deployment and build status.
+
+* Group components within an application and connect the components within and across applications.
+
+### Accessing the Developer perspective
+
+You can access the **Developer** perspective from the web console as follows:
+
+1. Log in to the OpenShift Container Platform web console using your login credentials. 
+
+   * The default view for the OpenShift Container Platform web console is the **Administrator** perspective.
+
+2. Use the perspective switcher to switch to the **Developer** perspective. The **Topology** view with a list of all the projects in your cluster is displayed.
+
+   <img src="/dsri-documentation/img/screenshot_developer_perspective.png" alt="Developer Perspective" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+3. Select an existing project from the list or use the **Project** drop-down list to create a new project.
+
+:::info
+
+If you have no workloads or applications in the project, the **Topology** view displays the available options to create applications. If you have existing workloads, the **Topology** view graphically displays your workload nodes.
+
+:::
+
+<img src="/dsri-documentation/img/screenshot_topology_view.png" alt="Topology View" style={{maxWidth: '100%', maxHeight: '100%'}} />

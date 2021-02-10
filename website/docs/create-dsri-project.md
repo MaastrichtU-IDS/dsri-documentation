@@ -23,7 +23,7 @@ You can create a project using the **Developer** perspective, as follows:
 
 5. Use the left navigation panel to navigate to the **Project** view and see the dashboard for your project.
 
-<img src="/dsri-documentation/img/screenshot_create_project.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/dsri-documentation/img/screenshot_create_project.png" alt="Create Project" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 6. Optional:
@@ -99,7 +99,7 @@ You can also use:
 
 5. Click **Delete**.
 
-  <img src="/dsri-documentation/img/screenshot_delete_project.png" alt="Project Access" style={{maxWidth: '100%', maxHeight: '100%'}} />
+  <img src="/dsri-documentation/img/screenshot_delete_project.png" alt="Delete Project" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 ## Delete a project using the CLI
