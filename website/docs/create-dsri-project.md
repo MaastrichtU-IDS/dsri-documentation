@@ -1,6 +1,6 @@
 ---
 id: create-dsri-project
-title: Create the DSRI Project
+title: Create New Project
 ---
 
 ## Create a project using the web UI
@@ -23,11 +23,8 @@ You can create a project using the **Developer** perspective, as follows:
 
 5. Use the left navigation panel to navigate to the **Project** view and see the dashboard for your project.
 
-   <!--
+<img src="/dsri-documentation/img/screenshot_create_project.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-   <img src="/dsri-documentation/img/screenshot_create_project.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-   -->
 
 6. Optional:
 
@@ -55,7 +52,7 @@ You need to be logged in to the DSRI and [copy the login command](https://maastr
 
 :::caution Reuse your project
 
-Only create new projects when it is necessary (for a new project). You can easily clean up your current project instead of creating a new one every time you want to try something.
+Only create new projects when it is necessary (for a new project). You can easily [clean up your current project](https://maastrichtu-ids.github.io/dsri-documentation/docs/create-dsri-project#delete-a-project-using-the-web-ui) instead of creating a new one every time you want to try something.
 
 :::
 
@@ -71,11 +68,8 @@ To add users to your project and provide **Admin**, **Edit**, or **View** access
 
 3. Click **Add Access** to add a new row of permissions to the default ones.
 
-   <!--
+ <img src="/dsri-documentation/img/screenshot_project_access.png" alt="Project Access" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-   <img src="/dsri-documentation/img/screenshot_project_access.png" alt="Project Access" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-   -->
 
 4. Enter the user name, click the **Select a role** drop-down list, and select an appropriate role.
 
@@ -105,11 +99,8 @@ You can also use:
 
 5. Click **Delete**.
 
-   <!--
+  <img src="/dsri-documentation/img/screenshot_delete_project.png" alt="Project Access" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-   <img src="/dsri-documentation/img/screenshot_delete_project.png" alt="Project Access" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-   -->
 
 ## Delete a project using the CLI
 
