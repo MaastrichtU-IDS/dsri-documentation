@@ -62,7 +62,7 @@ In the DSRI OpenShift web UI, applications are deployed in projects.
 
 :::caution Reuse your project
 
-Only create new projects when it is necessary (for a new project). You can easily clean up your current project instead of creating a new one every time you want to try something.
+Only create new projects when it is necessary (for a new project). You can easily [clean up your current project](https://maastrichtu-ids.github.io/dsri-documentation/docs/create-dsri-project#delete-a-project-using-the-web-ui) instead of creating a new one every time you want to try something.
 
 :::
 
