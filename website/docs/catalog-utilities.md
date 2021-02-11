@@ -69,7 +69,7 @@ Add the [template](https://github.com/MaastrichtU-IDS/dsri-openshift-application
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/okd4-templates-anyuid/template-trinityrnaseq.yml
 ```
 
-This template uses the Trinity image hosted as a UM github package https://github.com/orgs/maastrichtu-ids/packages/container/package/trinityrnaseq
+This template uses the Trinity image hosted as a [UM github package](https://github.com/orgs/maastrichtu-ids/packages/container/package/trinityrnaseq) 
 
 :::caution Root permission required
 
