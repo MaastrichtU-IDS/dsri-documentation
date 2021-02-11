@@ -85,6 +85,48 @@ The following parameters can be provided:
 
 You can find the Storage name if you Go to the deployments page > Storage panel.
 
+### Create the Persistent Storage
+
+1. Switch to the **Administrator** view
+
+2. Go to the **Project** panel 
+
+3. Select your project
+
+4. Expand the **Storage** panel then go to the **Persistent Volume Claim** panel
+
+5. Click the button call **Create Persistent Volume Claim**
+
+   then you will redirect the wizard of Create Persistent Volume Claim 
+
+6. Provide the unique **Persistent Volume Claim Name** start with ` pvc-` 
+
+   example: ` pvc-filebrowser`
+
+7. Select the **Access Mode** **` RWO`**and **Storage Size**
+
+   | Access Mode   | CLI abbreviation | Description                                               |
+   | :------------ | :--------------- | :-------------------------------------------------------- |
+   | ReadWriteOnce | `RWO`            | The volume can be mounted as read-write by a single node. |
+   | ReadOnlyMany  | `ROX`            | The volume can be mounted as read-only by many nodes.     |
+   | ReadWriteMany | `RWX`            | The volume can be mounted as read-write by many nodes.    |
+
+8. Click **Create**
+
+<img src="/dsri-documentation/img/screenshot_pvc_storage.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+
+
+<img src="/dsri-documentation/img/screenshot_pvc_storage_create.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+:::info 
+
+The DSRI using the [**Openshift Container Stroage**](https://www.openshift.com/products/container-storage/) (` OCS`)  which is based on [**CEPH**](https://ceph.io/ceph-storage/) offers `ReadWriteOnce` access mode. 
+
+* `ReadWriteOnce` ([**RWO**](https://docs.openshift.com/container-platform/4.6/storage/understanding-persistent-storage.html)) volumes cannot be mounted on multiple nodes. If a node fails, the system does not allow the attached RWO volume to be mounted on a new node because it is already assigned to the failed node. If you encounter a multi-attach error message as a result, force delete the pod on a shut down or crashed node.
+
+:::
+
 This deployment require to have  root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)  or create a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) to request root access or to create persistent volume for your project if you don't have them .
 
 :::info Credentials
