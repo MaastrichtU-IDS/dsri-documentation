@@ -67,6 +67,30 @@ Some Applications such as **Jupyter** template automatically creates a persisten
 
 :::
 
+### Connect the Existing Persistent Storage
+
+On the **Topology** page select your application,
+
+1. Click **Action** on your application
+
+2. Select the **Add Storage** option from the dropdown list.
+
+3. Select the **Use Existing Claim** option from the Add Storage wizard and Select the Claim
+
+4. Add the **Mount Path**
+
+5. Save
+
+<img src="/dsri-documentation/img/screenshot_existing_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+<img src="/dsri-documentation/img/screenshot_add_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+:::info
+
+You can try above method if you want to connect **more applications to the same storage**
+
+:::
+
 ### Use the dynamic storage
 
 Dynamic **persistent** volumes can be created automatically by an application template.
