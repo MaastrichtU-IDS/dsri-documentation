@@ -53,6 +53,38 @@ To quickly access it from the terminal you can use the **Terminal** tab in the p
 
 <img src="/dsri-documentation/img/screenshot-deploy-ubuntu.png" alt="Deploy Ubuntu" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
+
+
+## Trinity RNA Seq
+
+Trinity assembles transcript sequences from Illumina RNA-Seq data. It represents a novel method for the efficient and robust the new reconstruction of transcriptomes from RNA-seq data. [GitHub](https://github.com/trinityrnaseq/trinityrnaseq)
+
+<img src="/dsri-documentation/img/screenshot_trinityrnaseq.png" alt="Deploy Trinity RNA Seq" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+
+
+Add the [template](https://github.com/MaastrichtU-IDS/dsri-openshift-applications/blob/main/okd4-templates-anyuid/template-trinityrnaseq.yml) to your project:
+
+```bash
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/okd4-templates-anyuid/template-trinityrnaseq.yml
+```
+
+This template uses the Trinity image hosted as a UM github package https://github.com/orgs/maastrichtu-ids/packages/container/package/trinityrnaseq
+
+:::caution Root permission required
+
+🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+
+:::
+
+:::info Persistent data folder
+
+📂 Use the `/usr/local/src/work` folder (home of the root user) to store your data in the existing persistent storage
+
+We enabled the port `8787` in the Ubuntu container if you need to deploy applications.
+
+:::
+
 ## File browser
 
 Deploy a file browser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume in case you need it (JupyterLab, RStudio and VisualStudio Code server already include a file browser)
