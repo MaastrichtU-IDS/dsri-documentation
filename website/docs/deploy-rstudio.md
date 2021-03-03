@@ -5,6 +5,12 @@ title: RStudio
 
 RStudio can be easily deployed from the [OpenShift web UI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog).
 
+:::tip Username
+
+the default username is **rstudio**
+
+:::
+
 ## RStudio with root user
 
 :::caution Root permission required
