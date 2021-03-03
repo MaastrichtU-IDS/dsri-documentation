@@ -37,7 +37,7 @@ You can view this 1 minute video to guide you through the process to get the sto
 
 <div className="container">
     <video width="100%" height="100%" autoplay muted loop controls>
-        <source src="/dsri-documentation/img/screencast_dsri_deploy_template.webm" type="video/webm"/>
+        <source src="/dsri-documentation/img/DSRI-Introduction.mp4" type="video/mp4"/>
     </video>
 </div>
 
