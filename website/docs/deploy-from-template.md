@@ -42,9 +42,11 @@ You can view this 1 minute video to guide you through the process to get the sto
 </div>
 
 
-1. Retrieve the name of the storage you are going to use to host your application data
-
-2. Check the informations about the applications you are going to start (such as the path of the persistent storage in the container application, or if this application run as root)
+1. Go to the **Add** and select the template **From Catalog** 
+2. **Instantiate Template** 
+3. Fill the details in template wizard such as **application name , password**
+4. Click **Create**
+5. You can find the application URL from **Routes** under the **Resources tab**.
 
 <img src="/dsri-documentation/img/screenshot_template_information.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
