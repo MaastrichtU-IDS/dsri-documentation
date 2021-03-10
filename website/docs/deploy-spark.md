@@ -1,45 +1,37 @@
 ---
 id: deploy-spark
-title: Start a Spark cluster
+title: Spark cluster
 ---
 
+:::warning Request access to the Spark Operator
 
-:::warning Work in progress
-
-Deploying an [Apache Spark](https://spark.apache.org/) cluster is a **work in progress** on the DSRI, **[contact us](/dsri-documentation/help)** if you are interested in trying it out.
+To be able to deploy Spark you will need to [ask the DSRI admins](/dsri-documentation/help) to enable the Spark Operator in your project. It will be done quickly, once enabled you will be able to start a Spark cluster in a few clicks.
 
 :::
 
-
-## Create the template
-
-The following services are deployed by this Spark template:
-
-* a JupyterLab all-spark-notebook
-* a configurable Spark cluster from [CSCfi/spark-openshift](https://github.com/CSCfi/spark-openshift)
-* a storage automatically created
-
-Create the template:
-
-```shell
-oc apply -f https://raw.githubusercontent.com/vemonet/spark-openshift/master/spark-template-dsri.yml
-```
-
 ## Deploy a Spark cluster
 
-Go to the DSRI OpenShift web UI catalog and click on the **Apache Spark (Persistent)** application.
+Once the DSRI admins have enabled the Spark Operator your project, you should found a **Spark Cluster** entry in the Catalog (in the **Operator Backed** category)
 
-<img src="/dsri-documentation/img/screenshot-deploy-spark.png" alt="Deploy Apache Spark" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/dsri-documentation/img/screenshot-spark-operator1.png" alt="Apache Spark in the Catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-You will be prompted various parameters to configure your Spark cluster resources.
+Click on the **Spark Cluster** entry to deploy a Spark cluster.
 
-:::caution 1 cluster per project
+You will be presented a form where you can provide the number of Spark workers in your cluster. 
 
-Only 1 Spark cluster should be deployed by project.
+Additionally you can provide a label which can be helpful later to manage or delete the cluster, use the name of your application and the label `app`, e.g.: `app=my-spark-cluster`
+
+<img src="/dsri-documentation/img/screenshot-spark-operator2.png" alt="Deploy a Apache Spark cluster" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+:::tip Change 
+
+The number of Spark workers can be easily updated later in the Spark deployment YAML file.
 
 :::
 
 ## Run on Spark
+
+You can now start a spark-enabled JupyterLab, or any other spark-enabled applications, to use the Spark cluster deployed.
 
 ### Using PySpark
 
@@ -66,19 +58,3 @@ Get all objects part of the Spark cluster:
 ```bash
 oc get all,secret,configmaps --selector app=spark
 ```
-
-## Delete the Spark template
-
-In case you want to delete or update the Spark template:
-
-```shell
-oc delete -f https://raw.githubusercontent.com/vemonet/spark-openshift/master/spark-template-dsri.yml
-```
-
-## Alternative: deploy Spark with Helm
-
-You can use Helm to deploy Spark on OpenShift.
-
-1. Install Helm following instructions at [this page](/dsri-documentation/docs/helm).
-
-2. Install Microsoft Spark charts, with Zeppelin notebook and Livy API: https://artifacthub.io/packages/helm/microsoft/spark

@@ -10,7 +10,7 @@
         "collapsed": false,
         "items": [
           "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-database",
-          "catalog-opendatahub", "catalog-openmpi", "neuroscience", "deploy-on-gpu", "catalog-utilities"
+          "deploy-spark", "catalog-openmpi", "neuroscience", "deploy-on-gpu", "catalog-utilities"
         ]
       },
       "guide-dockerfile-to-openshift", "deploy-from-docker", "operators", "helm"
