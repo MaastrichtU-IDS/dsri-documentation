@@ -95,7 +95,7 @@ Contact us to install Apache Drill
 
 :::
 
-Use the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-containers/tree/master/kubernetes) for Kubernetes from MapR.
+Use the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-containers/tree/master/kubernetes) for Kubernetes.
 
 ## NoSQL databases
 

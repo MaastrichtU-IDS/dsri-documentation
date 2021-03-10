@@ -4,7 +4,7 @@ title: Introduction
 slug: /
 ---
 
-The Data Science Research Infrastructure is an [OKD](https://www.okd.io/) cluster (the open source version of [OpenShift](https://www.openshift.com/)), using the [MapR](https://mapr.com/) Distributed File System, and [Kubernetes](https://kubernetes.io/) containers orchestration.
+The Data Science Research Infrastructure is an [OKD 4.6](https://www.okd.io/) cluster, the open source version of [OpenShift](https://www.openshift.com/), using [RedHat Ceph Storage](https://www.redhat.com/en/technologies/storage/ceph).
 
 The DSRI provides a graphical user interface on top of the [Kubernetes](https://kubernetes.io/) containers orchestration to easily deploy and manage services. 
 
