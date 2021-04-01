@@ -9,7 +9,7 @@
         "label": "Data Science catalog",
         "collapsed": false,
         "items": [
-          "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-database",
+          "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-database", "deploy-matlab",
           "deploy-spark", "catalog-openmpi", "neuroscience", "deploy-on-gpu", "catalog-utilities"
         ]
       },
