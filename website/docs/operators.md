@@ -25,9 +25,9 @@ Install the `operator-sdk` tool. See the [official documentation](https://sdk.op
 
 Operators can be built using 3 different approaches:
 
-* **Helm**: simpler to define from regular deployments in YAML, but less capabilities for complete auto-update and insights. 
+* **Helm**: a framework to define the deployment logic based on regular kubernetes YAML, but less capabilities for complete auto-update and insights. 
 * **Ansible**: define the deployment logic with Ansible, provide maximum capabilities.
-* **Golang**: define the deployment logic in Golang, provide maximum capabilities.
+* **Golang**: define the deployment logic in Golang, provide maximum capabilities, but require more code.
 
 ### External resources
 
