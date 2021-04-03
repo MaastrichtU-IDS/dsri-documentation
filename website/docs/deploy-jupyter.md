@@ -6,55 +6,21 @@ title: Jupyter Notebooks
 Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
 
-## Use JupyterLab with root user
+## Start JupyterLab
 
-:::caution Root permission required
+Start a JupyterLab container based on the [official Jupyter docker stacks](https://github.com/jupyter/docker-stacks) (debian), with `sudo` privileges to install anything you need (e.g. pip or apt packages)
 
-🔒 You need root containers (aka. anyuid) enabled in your project to start this application.
+You can start a container using the **JupyterLab with root privileges (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+
+Provide a few parameters, and Instantiate the template. The DSRI will automatically create a persistent volume to store data you will put in the `/home/jovyan` folder. 
+
+:::info Find a persistent volume storage
+
+You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
 :::
-
-We will deploy the JupyterLab image with root user available at: [`ghcr.io/vemonet/jupyterlab`](https://github.com/users/vemonet/packages/container/package/jupyterlab)
-
-This JupyterLab image comes with a Python 3.8 kernel with autocomplete and linting, a Java kernel and a SPARQL kernel.
-
-Create the template in your project catalog if it is not present:
-
-```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-jupyterlab-root.yml
-```
-
-You can deploy it using the **JupyterLab with root user (Persistent)** solutions in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog), the application will use an existing persistent storage to store your data.
 
 <img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-The following parameters can be provided:
-
-1. Provide a unique **Application name**
-2. The **Password** is safely stored in a Secret.
-3. You can provide a **Git repository URL** with files to be downloaded and requirements to be installed at the start of the application. 
-4. **Storage name** (only for persistent): the storage Persistent Volume Claim (PVC)
-5. **Storage folder** (only for persistent): path to the Notebook data folder in the Persistent Volume Claim storage, retrieve it in your project **Storage** page
-
-:::tip Automatically install packages when the application starts
-
-Pip requirements, apt packages and Jupyterlab extensions are installed from `requirements.txt`, `packages.txt` and `extensions.txt` requirement files. 
-
-:::
-
-Try the following Notebooks to work on a RDF Knowledge Graph about COVID-19 related publications: https://github.com/vemonet/covid-kg-notebooks
-
-> The JupyterLab Docker image has been built from [amalic/Jupyterlab](https://github.com/amalic/Jupyterlab) image.
-
-## Use the official Jupyter docker stack
-
-Start JupyterLab images from the [official Jupyter docker stack](https://github.com/jupyter/docker-stacks) with **regular `jovyan` user, without `sudo` privileges**.
-
-Create the template in your project catalog:
-
-```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/restricted/template-jupyterlab-restricted.yml
-```
 
 You can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
 
@@ -64,21 +30,9 @@ You can use any image based on the official Jupyter docker stack: https://github
 * `jupyter/r-notebook`
 * `jupyter/pyspark-notebook`
 * `jupyter/all-spark-notebook`
-* `ghcr.io/maastrichtu-ids/jupyterlab` (with Java and SPARQL kernels)
+* `ghcr.io/maastrichtu-ids/jupyterlab` (with Java and SPARQL kernels, and autocomplete for Python)
 
-Or build your own using this repository as example: https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift 📦
-
-:::warning Restricted user
-
-**You will not be root user**⚠️ you will be able to install new `pip` packages, but you will not have `sudo` privileges (so no installation of `apt` or `yum` packages)
-
-:::
-
-:::info Persistent data folder
-
-By default the working directory is `/home/jovyan`, the application will automatically create a persistent storage to store your data (find it in the **Storage** page of your project).
-
-:::
+You can also build your own image, feel free to use this repository as example to extend a JupyterLab image: https://github.com/MaastrichtU-IDS/jupyterlab
 
 ## Use git in JupyterLab
 
@@ -124,7 +78,7 @@ We recommend to use SSH instead of HTTPS connection when possible, checkout [her
 :::
 
 
-## Start JupyterHub
+## Advanced: JupyterHub
 
 :::info For multiple users
 
@@ -160,14 +114,10 @@ You will need to register a new GitHub OAuth application for your JupyterHub ins
 
 3. Add authorized GitHub users to the JupyterHub users when submitting the template to deploy JupyterHub in the OpenShift web UI. It can be changed from the **Admin** tab in the JupyterHub UI later.
 
-:::info Dynamic storage
-
-Persistent volumes are automatically created for each instance started in JupyterHub to insure persistence of the data even if the instances or JupyterHub are stopped.
-
-:::
+Persistent volumes are automatically created for each instance started in JupyterHub to insure persistence of the data even if the instances or JupyterHub are stopped. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
 :::warning Restricted user
 
-The users will be able to install new `pip` packages in their JupyterLab instance, but they will not have `sudo` privileges (so they cannot install `apt` or `yum` packages for example)
+The users will be able to install new `pip` packages in their JupyterLab instance, but they will not have `sudo` privileges (so they cannot install `apt` or `yum` packages for example). This can be changed by editing the KubeSpawner python script in the ConfigMap to use `serviceAccountName: anyuid`
 
 :::
