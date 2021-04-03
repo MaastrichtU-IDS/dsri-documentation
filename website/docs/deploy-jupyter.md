@@ -3,8 +3,6 @@ id: deploy-jupyter
 title: Jupyter Notebooks
 ---
 
-Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
-
 
 ## Start JupyterLab
 

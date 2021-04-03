@@ -3,7 +3,7 @@ id: catalog-utilities
 title: Utilities
 ---
 
-Feel free to propose new services using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
+Feel free to propose new services using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls), or to request them by creating [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
 ## Ubuntu
 
@@ -45,19 +45,13 @@ To quickly access it from the terminal you can use the **Terminal** tab in the p
 
 ## Trinity RNA Seq
 
-Trinity assembles transcript sequences from Illumina RNA-Seq data. It represents a novel method for the efficient and robust the new reconstruction of transcriptomes from RNA-seq data. See the [GitHub](https://github.com/trinityrnaseq/trinityrnaseq)
+Trinity assembles transcript sequences from Illumina RNA-Seq data. It represents a novel method for the efficient and robust the new reconstruction of transcriptomes from RNA-seq data. See [their documentation](https://github.com/trinityrnaseq/trinityrnaseq/wiki).
 
-You can start a container using the **trinityrnaseq (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can start a container using the **Trinity RNA-Seq (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
 <img src="/dsri-documentation/img/screenshot_trinityrnaseq.png" alt="Deploy Trinity RNA Seq" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-Add the [template](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/templates/template-trinityrnaseq.yml) to your project:
-
-```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/okd4-templates-anyuid/template-trinityrnaseq.yml
-```
-
-This template uses the Trinity image hosted in the [UM IDS github container registry](https://github.com/orgs/maastrichtu-ids/packages/container/package/trinityrnaseq) 
+This template uses the Trinity RNA-Seq image hosted in the [UM IDS GitHub Container Registry](https://github.com/orgs/maastrichtu-ids/packages/container/package/trinityrnaseq) 
 
 :::info Persistent data folder
 
@@ -129,5 +123,3 @@ Default credentials will be username `admin` and password `admin`
 Please **change the password in the Filebrowser Web UI** once it has been created.
 
 :::
-
-<img src="/dsri-documentation/img/screenshot-filebrowser-login.png" alt="File browser Web UI" style={{maxWidth: '50%', maxHeight: '50%'}} />

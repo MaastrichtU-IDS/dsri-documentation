@@ -2,7 +2,7 @@
   "docs": {
     "Get started": ["introduction", "access-dsri", "create-dsri-project", "deploy-from-template", 
       "openshift-install", "openshift-load-data",
-      "openshift-delete-services", "prepare-project-for-dsri"],
+      "openshift-delete-services", "guide-monitoring", "prepare-project-for-dsri"],
     "Deploy applications": [ 
       {
         "type": "category",
@@ -15,7 +15,7 @@
       },
       "guide-dockerfile-to-openshift", "deploy-from-docker", "operators", "helm"
     ],
-    "Guides": [ "guide-monitoring", "guide-known-issues", "login-docker-registry", "openshift-commands", "openshift-storage",  
+    "Guides": [ "guide-known-issues", "login-docker-registry", "openshift-commands", "openshift-storage",  
       "guide-publish-image", 
       "openshift-delete-objects", "tools-machine-learning", 
       {
