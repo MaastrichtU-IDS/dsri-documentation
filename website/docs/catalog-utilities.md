@@ -9,10 +9,10 @@ Feel free to propose new services using [pull requests](https://github.com/Maast
 
 Start Ubuntu with the `root` user which has `sudo` permissions to install anything.
 
-Add the [template](https://github.com/MaastrichtU-IDS/dsri-openshift-applications/blob/main/templates-anyuid/template-ubuntu-root-persistent.yml) to your project:
+Add the [template](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/templates/template-ubuntu-root.yml) to your project:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-ubuntu-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-ubuntu-root.yml
 ```
 
 This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
@@ -63,10 +63,10 @@ Trinity assembles transcript sequences from Illumina RNA-Seq data. It represents
 
 
 
-Add the [template](https://github.com/MaastrichtU-IDS/dsri-openshift-applications/blob/main/okd4-templates-anyuid/template-trinityrnaseq.yml) to your project:
+Add the [template](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/templates/template-trinityrnaseq.yml) to your project:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/okd4-templates-anyuid/template-trinityrnaseq.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/okd4-templates-anyuid/template-trinityrnaseq.yml
 ```
 
 This template uses the Trinity image hosted as a [UM github package](https://github.com/orgs/maastrichtu-ids/packages/container/package/trinityrnaseq) 
@@ -98,7 +98,7 @@ Deploy a file browser on your persistent volume. This will provide a web UI to u
 Add the file browser template:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-filebrowser.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-filebrowser.yml
 ```
 
 Then the file browser can be deployed from the [OpenShift Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog):

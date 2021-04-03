@@ -37,22 +37,17 @@ parameters:
 - name: GRAPHDB_JAVA_MEMORY
   displayName: GraphDB java memory
   description: Maximum memory allocated to java for GraphDB (-xms and -xmx)
-  value: 4g
+  value: 8g
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
-  description: Size of the storage used for the notebook (approximate).
+  description: Size of the storage used for the application.
   value: 20Gi
   required: true
 - name: APPLICATION_IMAGE
   displayName: Application Docker image name 
-  description: Image name in the DSRI registry, needs to be build manually first
+  description: The GraphDB image needs to be build manually first and publish in your project
   value: graphdb:latest
-  required: true
-- name: DEFAULT_GRAPH
-  displayName: Triplestore default graph
-  description: The defult graph used by the Virtuoso triplestore
-  value: https://w3id.org/um/graph
   required: true
 # - name: LOG_LEVEL
 #   displayName: Triplestore log level

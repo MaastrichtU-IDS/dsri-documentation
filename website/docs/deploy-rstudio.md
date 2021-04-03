@@ -24,7 +24,7 @@ Run RStudio with `sudo` privileges, can be useful if need to install additional 
 Create the template in your project catalog if not present:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-rstudio-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-rstudio-root.yml
 ```
 
 The application will use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
@@ -42,7 +42,7 @@ Start a RStudio application, with a complementary Shiny server, using a **regula
 Create the template in your project catalog:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-restricted/template-rstudio-shiny-dynamic.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-rstudio-shiny.yml
 ```
 
 Use the **RStudio with Shiny (Dynamic)** template in the OpenShift web UI catalog. It will automatically create a persistent storage for the data.
@@ -55,11 +55,7 @@ Image optimized for DSRI OpenShift, does not require root containers enabled. Bu
 
 ## Use Git in RStudio
 
-The fastest way to get started is to use `git` from the terminal, for example to clone the git repository:
-
-```bash
-git clone https://github.com/MaastrichtU-IDS/dsri-openshift-applications.git
-```
+The fastest way to get started is to use `git` from the terminal, for example to clone a git repository use `git clone`
 
 You can also check how to enable Git integration in RStudio at https://support.rstudio.com/hc/en-us/articles/200532077
 

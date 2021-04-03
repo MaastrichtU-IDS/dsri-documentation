@@ -21,7 +21,7 @@ This JupyterLab image comes with a Python 3.8 kernel with autocomplete and linti
 Create the template in your project catalog if it is not present:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-jupyterlab-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-jupyterlab-root.yml
 ```
 
 You can deploy it using the **JupyterLab with root user (Persistent)** solutions in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog), the application will use an existing persistent storage to store your data.

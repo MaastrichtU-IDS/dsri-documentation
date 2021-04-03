@@ -16,7 +16,7 @@ Those templates will run VSCode with the `coder` user which has `sudo` privilege
 Create the templates in your project catalog:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-vscode-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-vscode-root.yml
 ```
 
 You can deploy it using the **VisualStudio Code with root user** solutions in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog):
@@ -40,7 +40,7 @@ Packages installed:
 Create the template in your project catalog:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-restricted/template-vscode-dynamic.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/restricted/template-vscode-restricted.yml
 ```
 
 :::warning Restricted user
@@ -57,11 +57,7 @@ We recommend to **use Google Chrome** web browser as pasting in the terminal (`c
 
 ## Use Git in VSCode
 
-You will need to use `git` from the terminal to clone the git repository, for example:
-
-```bash
-git clone https://github.com/MaastrichtU-IDS/dsri-openshift-applications.git
-```
+You will need to use `git` from the terminal to clone the git repository with `git clone`
 
 :::tip Login to GitHub
 

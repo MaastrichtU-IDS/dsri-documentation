@@ -18,7 +18,7 @@ Run RStudio with `sudo` privileges, can be useful if need to install additional 
 Create the template in your project catalog if not present:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-rstudio-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-rstudio-root.yml
 ```
 
 The application will use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.

@@ -12,7 +12,6 @@
   doap:homepage <https://maastrichtu-ids.github.io/dsri-documentation> ;
   doap:bug-database <https://github.com/MaastrichtU-IDS/dsri-documentation/issues> ;
   doap:wiki <https://maastrichtu-ids.github.io/dsri-documentation/docs/introduction> ;
-  doap:download-page <https://github.com/MaastrichtU-IDS/dsri-openshift-applications> ;
   doap:service-endpoint <https://app.dsri.unimaas.nl:8443> ;
   doap:mailing-list <DSRI-SUPPORT-L@maastrichtuniversity.nl> ;
   doap:category "Research" ;

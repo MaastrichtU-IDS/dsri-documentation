@@ -21,7 +21,7 @@ This JupyterLab image comes with a Python 3.8 kernel with autocomplete and linti
 Create the template in your project catalog if it is not present:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-jupyterlab-root-persistent.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-jupyterlab-root.yml
 ```
 
 You can deploy it using the **JupyterLab with root user (Persistent)** solutions in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog), the application will use an existing persistent storage to store your data.
@@ -53,7 +53,7 @@ Start JupyterLab images from the [official Jupyter docker stack](https://github.
 Create the template in your project catalog:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-restricted/template-jupyterlab-dynamic.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/restricted/template-jupyterlab-restricted.yml
 ```
 
 You can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
@@ -145,7 +145,7 @@ Checkout the [different authenticators implemented by JupyterHub](https://jupyte
 Create the template in your project catalog:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-restricted/template-jupyterhub-github-auth.yml
+oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/restricted/template-jupyterhub-github-auth.yml
 ```
 
 A custom image can be built and provided when deploying JupyterHub, see this repository as example to build a JupyterLab Docker image supported by OpenShift: https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift
