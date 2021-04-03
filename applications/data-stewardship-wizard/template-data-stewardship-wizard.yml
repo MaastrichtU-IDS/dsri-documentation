@@ -1,0 +1,337 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: data-stewardship-wizard
+  labels:
+      template: data-stewardship-wizard
+  annotations:
+    openshift.io/display-name: Data Stewardship Wizard
+    description: |-
+      Start JupyterLab with the 'root' user using the image defined at https://github.com/vemonet/Jupyterlab
+
+      📂 Use the `/notebooks` folder (workspace of the JupyterLab UI) to store your data in the existing persistent storage
+      
+      You can provide the URL to a GitHub/GitLab repository to be copied in the notebook automatically.
+      The container will install requirements from files present at the root of the git repository (in this order):
+      - packages.txt: install apt-get packages
+      - requirements.txt: install pip packages
+      - extensions.txt: install Jupyterlab extensions
+
+      Visit https://github.com/vemonet/Jupyterlab for more details and to customize the image
+
+      🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+    iconClass: icon-shadowman
+    tags: fair,data,management
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    # template.openshift.io/bindable: 'false'
+labels:
+  template: data-stewardship-wizard
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be unique in the project. It will be used to generate the application
+    URL.
+  value: data-stewardship-wizard
+  required: true
+- name: PASSWORD
+  displayName: password
+  description: The password of the data stewardship wizard.
+  from: "[a-zA-Z0-9]{16}"
+  generate: expression
+  required: true
+# - name: GIT_REPOSITORY_URL
+#   displayName: Git repository URL
+#   description: URL to the Git repository that will be cloned. Dependencies from the
+#     requirements.txt will be installed at runtime, and the repository will be cloned
+#     in the workspace.
+#   # value: https://github.com/vemonet/translator-sparql-notebook
+#   required: false
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage used for the notebook (approximate).
+  value: 10Gi
+  required: true
+# - name: APPLICATION_IMAGE
+#   displayName: Application Docker image
+#   description: See https://github.com/vemonet/Jupyterlab for more details and to customize the image
+#   value: ghcr.io/vemonet/jupyterlab:latest
+#   required: true
+
+objects:
+# - apiVersion: v1
+#   kind: Secret
+#   metadata:
+#     annotations:
+#       template.openshift.io/expose-password: "{.data['application-password']}"
+#     name: "${APPLICATION_NAME}"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   stringData:
+#     application-password: "${PASSWORD}"
+    
+# - apiVersion: "v1"
+#   kind: "PersistentVolumeClaim"
+#   metadata:
+#     name: ${APPLICATION_NAME}
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   spec:
+#     accessModes:
+#       - "ReadWriteMany"
+#     resources:
+#       requests:
+#         storage: ${STORAGE_SIZE}
+
+# - kind: ImageStream
+#   apiVersion: image.openshift.io/v1
+#   metadata:
+#     name: ${APPLICATION_NAME}
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   spec:
+#     tags:
+#     - name: latest
+#       from:
+#         kind: DockerImage
+#         name: ${APPLICATION_IMAGE}
+#       importPolicy:
+#         scheduled: true
+#     lookupPolicy:
+#       local: true
+
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+# - apiVersion: apps/v1
+#   kind: Deployment
+  metadata:
+    name: rabbitmq
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    replicas: 1
+    # strategy: {}
+    selector:
+      # matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      spec:
+        serviceAccountName: rabbitmq
+        containers:
+        - name: rabbitmq
+          image: rabbitmq:3.8.2-management
+          env:
+          - name: RABBITMQ_DEFAULT_PASS
+            value: guest
+          - name: RABBITMQ_DEFAULT_USER
+            value: guest
+          # serviceAccountName: anyuid
+          serviceAccountName: rabbitmq
+          # nodeSelector:
+          #   dsri.unimaas.nl/cpu: 'true'
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
+            fsGroup: 2000
+            supplementalGroups:
+            - 999/1
+            uidRange:
+            - 0-999
+          # resources: {}
+          # THIS config SHOULD GO TO THE wizard server 
+          volumeMounts:
+            - name: config
+              mountPath: "engine-wizard/config/application.yml"
+        volumes:
+        - name: config
+          configMap:
+            name: "${APPLICATION_NAME}-cfg"
+            defaultMode: 420
+        restartPolicy: Always
+  # status: {}
+
+- kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-cfg"
+    labels:
+      app: "${APPLICATION_NAME}"
+  data:
+    # https://github.com/ds-wizard/engine-backend/blob/develop/engine-wizard/config/application-test.yml.example
+    # Docker: https://github.com/ds-wizard/dsw-deployment-example/tree/master/server
+    application.yml: |
+      general:
+        clientUrl: http://localhost:8080
+        secret: "b7zFNUhFYIFLmDSFKFkp0Bnp8Z3uWGnH"
+        serviceToken: "ids-token"
+
+      database:
+        host: mongo
+        databaseName: wizard
+        port: 27017
+        authEnabled: false
+        username:
+        password:
+
+      messaging:
+        username: guest
+        password: guest
+
+      mail:
+        enabled: false
+        name:
+        email:
+        host:
+        port:
+        ssl:
+        authEnabled:
+        username:
+        password:
+    build-info.yml: |
+      name: Engine
+      version: 1.0.0
+      builtAt: 2017/10/25 19:50:20Z
+    localization.json: |
+      {}
+    integration.yml: ""
+
+# To deploy the client:
+        # env:
+        #   - name: API_URL
+        #     value: "http://localhost:3000"
+
+# Deploy the Wizard server
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    # - type: ImageChange
+    #   imageChangeParams:
+    #     automatic: true
+    #     containerNames:
+    #     - wizard-server
+    #     from:
+    #       kind: ImageStreamTag
+    #       name: ${APPLICATION_NAME}:latest
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}"
+      spec:
+        serviceAccountName: anyuid
+        # nodeSelector:
+        #   dsri.unimaas.nl/cpu: 'true'
+        volumes:
+        - name: config
+          configMap:
+            name: data-stewardship-wizard-cfg
+            defaultMode: 420
+        # - name: data
+        #   persistentVolumeClaim:
+        #     claimName: "${APPLICATION_NAME}"
+        containers:
+        - name: wizard-server
+          image: datastewardshipwizard/wizard-server:2.11.0
+          # image: ${APPLICATION_NAME}:latest
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+          # resources:
+          #   limits:
+          #     cpu: '64'
+          #     memory: 200Gi
+          #   requests:
+          #     cpu: '2'
+          #     memory: 4Gi
+          volumeMounts:
+          - name: config
+            mountPath: /application/engine-wizard/config
+            # mountPath: /application/engine-wizard/config/application.yml
+          # - name: data
+          #   mountPath: "/data"
+          #   subPath: "${STORAGE_FOLDER}"
+
+          # env:
+          # - name: PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       key: application-password
+          #       name: "${APPLICATION_NAME}"
+          # - name: GIT_URL
+          #   value: "${GIT_REPOSITORY_URL}"
+        automountServiceAccountToken: false
+
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: wizard-server-3000
+#   namespace: data-stewardship-wizard
+#   labels:
+#     app: wizard-server
+#     app.kubernetes.io/component: wizard-server
+#     app.kubernetes.io/instance: wizard-server
+#     app.kubernetes.io/part-of: mongo-app
+#     app.openshift.io/runtime-version: 2.11.0
+# spec:
+#   ports:
+#     - name: 3000-tcp
+#       protocol: TCP
+#       port: 3000
+#       targetPort: 3000
+#   selector:
+#     app: wizard-server
+#     deploymentconfig: wizard-server
+
+
+# - kind: Service
+#   apiVersion: v1
+#   metadata:
+#     name: "${APPLICATION_NAME}"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   spec:
+#     ports:
+#     - name: 3000-tcp
+#       protocol: TCP
+#       port: 3000
+#       targetPort: 3000
+#     selector:
+#       app: "${APPLICATION_NAME}"
+#       deploymentconfig: "${APPLICATION_NAME}"
+# - kind: Route
+#   apiVersion: route.openshift.io/v1
+#   metadata:
+#     name: "${APPLICATION_NAME}"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   spec:
+#     host: ''
+#     to:
+#       kind: Service
+#       name: "${APPLICATION_NAME}"
+#       weight: 100
+#     port:
+#       targetPort: 3000-tcp
+#     tls:
+#       termination: edge
+#       insecureEdgeTerminationPolicy: Redirect

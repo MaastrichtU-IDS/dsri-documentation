@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Workspace\path\kompose.exe convert
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mongo
+  name: mongo
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mongo
+    spec:
+      containers:
+      - image: mongo:4.2.3
+        name: mongo
+        resources: {}
+      restartPolicy: Always
+status: {}

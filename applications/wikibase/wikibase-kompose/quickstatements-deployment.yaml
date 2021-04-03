@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: quickstatements
+  name: quickstatements
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: quickstatements
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/default: "true"
+        io.kompose.service: quickstatements
+    spec:
+      containers:
+        - env:
+            - name: QS_PUBLIC_SCHEME_HOST_AND_PORT
+              value: http://localhost:9191
+            - name: WB_ITEM_NAMESPACE
+              value: "120"
+            - name: WB_ITEM_PREFIX
+              value: 'Item:'
+            - name: WB_PROPERTY_NAMESPACE
+              value: "122"
+            - name: WB_PROPERTY_PREFIX
+              value: 'Property:'
+            - name: WB_PUBLIC_SCHEME_HOST_AND_PORT
+              value: http://localhost:8181
+            - name: WIKIBASE_SCHEME_AND_HOST
+              value: http://wikibase.svc
+          image: wikibase/quickstatements:latest
+          name: quickstatements
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /quickstatements/data
+              name: quickstatements-data
+      restartPolicy: Always
+      volumes:
+        - name: quickstatements-data
+          persistentVolumeClaim:
+            claimName: quickstatements-data
+status: {}

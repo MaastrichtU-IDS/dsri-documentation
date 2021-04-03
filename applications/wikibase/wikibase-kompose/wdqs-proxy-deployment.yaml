@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: wdqs-proxy
+  name: wdqs-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: wdqs-proxy
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/default: "true"
+        io.kompose.service: wdqs-proxy
+    spec:
+      containers:
+        - env:
+            - name: PROXY_PASS_HOST
+              value: wdqs.svc:9999
+          image: wikibase/wdqs-proxy
+          name: wdqs-proxy
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}

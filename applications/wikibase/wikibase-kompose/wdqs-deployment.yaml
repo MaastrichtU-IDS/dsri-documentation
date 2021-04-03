@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: wdqs
+  name: wdqs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: wdqs
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/default: "true"
+        io.kompose.service: wdqs
+    spec:
+      containers:
+        - args:
+            - /runBlazegraph.sh
+          env:
+            - name: WDQS_HOST
+              value: wdqs.svc
+            - name: WDQS_PORT
+              value: "9999"
+            - name: WIKIBASE_HOST
+              value: wikibase.svc
+          image: wikibase/wdqs:0.3.40
+          name: wdqs
+          ports:
+            - containerPort: 9999
+          resources: {}
+          volumeMounts:
+            - mountPath: /wdqs/data
+              name: query-service-data
+      restartPolicy: Always
+      volumes:
+        - name: query-service-data
+          persistentVolumeClaim:
+            claimName: query-service-data
+status: {}

@@ -1,0 +1,224 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: virtuoso-triplestore
+  annotations:
+    openshift.io/display-name: Virtuoso triplestore
+    description: |-
+      Start a OpenLink Virtuoso triplestore, with a SPARQL endpoint
+
+      📂 Use the `/data` folder in the container to store your data in the persistent storage
+
+      Visit https://www.github.com/tenforce/docker-virtuoso for more details about the image used
+    iconClass: icon-3scale
+    tags: triplestore,graph,database,rdf,sparql
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-database#start-virtuoso-triplestore
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: virtuoso-triplestore
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be unique in the project. It will be used to generate the application
+    URL.
+  value: virtuoso
+  required: true
+- name: PASSWORD
+  displayName: Triplestore admin password
+  description: The password of the dba user.
+  from: "[a-zA-Z0-9]{16}"
+  generate: expression
+  required: true
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage used for the notebook (approximate).
+  value: 20Gi
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: Application Docker image
+  description: Based on jupyter/docker-stacks images
+  value: tenforce/virtuoso:latest
+  required: true
+- name: DEFAULT_GRAPH
+  displayName: Triplestore default graph
+  description: The defult graph used by the Virtuoso triplestore
+  value: https://w3id.org/um/graph
+  required: true
+- name: LOG_LEVEL
+  displayName: Triplestore log level
+  description: "Amount of log produced: 0 is minimum, 7 is maximum"
+  value: "0"
+  required: true
+
+objects:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
+    
+- apiVersion: "v1"
+  kind: "PersistentVolumeClaim"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      importPolicy:
+        scheduled: true
+    lookupPolicy:
+      local: true
+
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - virtuoso-triplestore
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}"
+      spec:
+        serviceAccountName: anyuid
+        # nodeSelector:
+        #   dsri.unimaas.nl/cpu: 'true'
+        # securityContext:
+        #   runAsUser: 1000
+        #   runAsGroup: 3000
+        #   fsGroup: 2000
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
+        containers:
+        - name: virtuoso-triplestore
+          image: ${APPLICATION_NAME}:latest
+          ports:
+          - containerPort: 8890
+            protocol: TCP
+          # resources:
+          #   limits:
+          #     cpu: '64'
+          #     memory: 200Gi
+          #   requests:
+          #     cpu: '2'
+          #     memory: 4Gi
+          volumeMounts:
+          - name: data
+            mountPath: "/data"
+            # subPath: "${STORAGE_FOLDER}"
+          # securityContext:
+          #   # Run as root https://dev.to/techworld_with_nana/run-pod-with-root-privileges-41n9
+          #   allowPrivilegeEscalation: false
+          #   runAsUser: 0
+          env:
+          - name: DBA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: SPARQL_UPDATE
+            value: "true"
+          - name: DEFAULT_GRAPH
+            value: "${DEFAULT_GRAPH}"
+          - name: VIRT_Database_ErrorLogLevel
+            value: "${LOG_LEVEL}"
+          - name: VIRT_Parameters_DirsAllowed
+            value: "., /data, /usr/local/virtuoso-opensource/share/virtuoso/vad, /usr/local/virtuoso-opensource/var/lib/virtuoso/db"
+          - name: VIRT_SPARQL_ResultSetMaxRows
+            value: "999999999999999999"
+          - name: VIRT_SPARQL_MaxQueryCostEstimationTime
+            value: "100000"
+          - name: VIRT_SPARQL_MaxQueryExecutionTime
+            value: "6000"
+          - name: VIRT_VDB_VDBDisconnectTimeout
+            value: "7200000"
+          - name: VIRT_Client_SQL_QUERY_TIMEOUT
+            value: "14400000"
+          - name: VIRT_CLient_SQL_TXN_TIMEOUT
+            value: "14400000"
+          - name: VIRT_Parameters_Timeout
+            value: "7200"
+          - name: VIRT_Parameters_TransactionAfterImageLimit
+            value: "5000000000"
+          - name: VIRT_Parameters_NumberOfBuffers
+            value: "493674"
+          # To use up to 4G of RAM according to documentation
+        automountServiceAccountToken: false
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8890-tcp
+      protocol: TCP
+      port: 8890
+      targetPort: 8890
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8890-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: wdqs-frontend
+  name: wdqs-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: wdqs-frontend
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/default: "true"
+        io.kompose.service: wdqs-frontend
+    spec:
+      containers:
+        - env:
+            - name: WDQS_HOST
+              value: wdqs-proxy.svc
+            - name: WIKIBASE_HOST
+              value: wikibase.svc
+          image: wikibase/wdqs-frontend:latest
+          name: wdqs-frontend
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}

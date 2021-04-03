@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Workspace\path\kompose.exe convert
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dsw-client
+  name: dsw-client
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: dsw-client
+    spec:
+      containers:
+      - env:
+        - name: API_URL
+          value: http://localhost:3000
+        image: datastewardshipwizard/wizard-client:2.10.0
+        name: dsw-client
+        ports:
+        - containerPort: 80
+        resources: {}
+      hostname: dsw_client
+      restartPolicy: Always
+status: {}

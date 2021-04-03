@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: wikibase
+  name: wikibase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: wikibase
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/default: "true"
+        io.kompose.service: wikibase
+    spec:
+      containers:
+        - env:
+            - name: DB_NAME
+              value: my_wiki
+            - name: DB_PASS
+              value: sqlpass
+            - name: DB_SERVER
+              value: mysql.svc:3306
+            - name: DB_USER
+              value: wikiuser
+            - name: MW_ADMIN_EMAIL
+              value: admin@example.com
+            - name: MW_ADMIN_NAME
+              value: WikibaseAdmin
+            - name: MW_ADMIN_PASS
+              value: WikibaseDockerAdminPass
+            - name: MW_ELASTIC_HOST
+              value: elasticsearch.svc
+            - name: MW_ELASTIC_PORT
+              value: "9200"
+            - name: MW_WG_SECRET_KEY
+              value: secretkey
+            - name: QS_PUBLIC_SCHEME_HOST_AND_PORT
+              value: http://localhost:9191
+          image: wikibase/wikibase:1.35-bundle
+          name: wikibase
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/www/html/images
+              name: mediawiki-images-data
+            - mountPath: /quickstatements/data
+              name: quickstatements-data
+      restartPolicy: Always
+      volumes:
+        - name: mediawiki-images-data
+          persistentVolumeClaim:
+            claimName: mediawiki-images-data
+        - name: quickstatements-data
+          persistentVolumeClaim:
+            claimName: quickstatements-data
+status: {}

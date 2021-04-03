@@ -1,0 +1,196 @@
+# ---
+# apiVersion: image.openshift.io/v1
+# kind: ImageStream
+# metadata:
+#   name: nvidia-tensorflow-gpu
+# spec:
+#   lookupPolicy:
+#     local: true
+#   tags: 
+#     - name: 19.11-tf2-py3
+#       from: 
+#         kind: DockerImage
+#         name: nvcr.io/nvidia/tensorflow:19.11-tf2-py3
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+labels:
+  template: gpu-tensorflow-jupyterlab
+metadata:
+  name: gpu-tensorflow-jupyterlab
+  annotations:
+    openshift.io/display-name: Tensorflow on GPU with JupyterLab (Persistent)
+    description: |-
+      Start JupyterLab to run Tensorflow using GPUs with the root user. 
+    
+      📂 Use the `/workspace/notebooks` folder (workspace of the JupyterLab UI) to store your data in the existing persistent storage
+
+      🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+    iconClass: icon-python
+    tags: python,jupyter,gpu
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-on-gpu
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    template.openshift.io/bindable: 'false'
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be unique in the project. It will be used to generate the application
+    URL.
+  value: gpu-tensorflow-jupyterlab
+  required: true
+- name: JUPYTER_TOKEN
+  displayName: Notebook token
+  description: The token to access the notebook
+  value: mytoken
+  required: true
+# - name: PASSWORD
+#   displayName: Notebook password
+#   description: The password of the Jupyter Notebook.
+#   from: "[a-zA-Z0-9]{16}"
+#   generate: expression
+#   required: true
+# - name: IMAGE_NAME
+#   displayName: Docker image used
+#   description: Name of the Docker image used to run jupyter lab on DSRI GPUs
+#   value: 'nvcr.io/nvidia/tensorflow:19.11-tf2-py3'
+#   required: true
+- name: STORAGE_NAME
+  displayName: Storage name
+  description: Name of the Persistent Volume Claim used for storage.
+  value: pvc-mapr-projects-myproject
+  required: true
+- name: STORAGE_FOLDER
+  displayName: Storage folder
+  description: Path to the folder used to store your application data in the the Persistent Volume Claim (leave empty to use the root folder of the storage)
+  value: gpu-tensorflow-jupyterlab
+  required: false
+- name: GPU_LIMIT
+  displayName: Number of GPU assigned
+  description: 8 in total in the cluster.
+  value: '1'
+  required: true
+# - name: MEMORY_LIMIT
+#   displayName: Memory limit
+#   description: Maximum RAM memory available for the application.
+#   value: "60Gi"
+#   required: true
+# - name: CPU_LIMIT
+#   displayName: CPU limit
+#   description: Number of CPUs available for the application (in millicore, 1 CPU = 1000m).
+#   value: "10000m"
+#   required: true
+objects:
+
+# - apiVersion: v1
+#   kind: Secret
+#   metadata:
+#     annotations:
+#       template.openshift.io/expose-password: "{.data['application-password']}"
+#     name: "${APPLICATION_NAME}"
+#   stringData:
+#     application-password: "${PASSWORD}"
+
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        serviceAccountName: anyuid
+        nodeSelector:
+          nvidia.com/gpu: 'true'
+        containers:
+          - command:
+              - jupyter
+              - lab
+            image: nvcr.io/nvidia/tensorflow:19.11-tf2-py3
+            # image: ${IMAGE_NAME}
+            imagePullPolicy: IfNotPresent
+            name: nvidia-tensorflow-gpu
+            resources:
+              limits:
+                nvidia.com/gpu: '${GPU_LIMIT}'
+                # cpu: "${CPU_LIMIT}"
+                # memory: "${MEMORY_LIMIT}"
+            ports:
+              - containerPort: 6006
+                protocol: TCP
+              - containerPort: 6064
+                protocol: TCP
+              - containerPort: 8888
+                protocol: TCP
+            volumeMounts:
+              - name: workdir
+                mountPath: /workspace/notebooks
+                subPath: ${STORAGE_FOLDER}
+            env:
+              - name: JUPYTER_TOKEN
+                value: ${JUPYTER_TOKEN}
+              # - name: PASSWORD
+              #   valueFrom:
+              #     secretKeyRef:
+              #       key: application-password
+              #       name: "${APPLICATION_NAME}"
+        volumes:
+          - name: workdir
+            persistentVolumeClaim:
+              claimName: ${STORAGE_NAME}
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      type: Rolling
+    test: false
+    triggers:
+      - type: ConfigChange
+      # - imageChangeParams:
+      #     automatic: true
+      #     containerNames:
+      #       - nvidia-tensorflow-gpu
+      #     from:
+      #       kind: ImageStreamTag
+      #       name: 'nvidia-tensorflow-gpu:19.11-tf2-py3'
+      #   type: ImageChange
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8888-tcp
+      protocol: TCP
+      port: 8888
+      targetPort: 8888
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8888-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect

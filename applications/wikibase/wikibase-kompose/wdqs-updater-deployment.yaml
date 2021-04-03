@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: wdqs-updater
+  name: wdqs-updater
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: wdqs-updater
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/default: "true"
+        io.kompose.service: wdqs-updater
+    spec:
+      containers:
+        - args:
+            - /runUpdate.sh
+          env:
+            - name: WDQS_HOST
+              value: wdqs.svc
+            - name: WDQS_PORT
+              value: "9999"
+            - name: WIKIBASE_HOST
+              value: wikibase.svc
+          image: wikibase/wdqs:0.3.40
+          name: wdqs-updater
+          resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,201 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: rstudio-root-dynamic
+  annotations:
+    openshift.io/display-name: RStudio
+    description: |-
+      Start RStudio with the rstudio user which has root permissions (sudo).
+
+      📂 Use the /home/rstudio folder (workspace of the RStudio UI) to store your data in a persistent storage automatically created.
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+      
+      This template uses rocker RStudio image hosted in the GitHub Container Registry.
+      Visit https://github.com/MaastrichtU-IDS/rstudio for more details and to customize the image
+      Visit original rocker image at https://hub.docker.com/r/rocker/rstudio/
+
+      🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+    iconClass: icon-play
+    tags: R,rstudio,root,persistent
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-rstudio
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    # template.openshift.io/bindable: 'false'
+labels:
+  template: rstudio-root-dynamic
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be unique in the project. It will be used to generate the application
+    URL.
+  value: rstudio-root
+  required: true
+- name: PASSWORD
+  displayName: RStudio password
+  description: The password of the RStudio user. 
+  from: "[a-zA-Z0-9]{16}"
+  generate: expression
+  required: true
+# - name: APPLICATION_MEMORY
+#   displayName: Application memory
+#   description: Maximum RAM available for the application.
+#   value: 5Gi
+#   required: true
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage used for the notebook (approximate).
+  value: 10Gi
+  required: true
+- name: OPENBLAS_NUM_THREADS
+  displayName: Number of threads for OpenBLAS
+  description: Restricting the number of thread allocated to OpenBLAS can speed up computations using OpenBLAS (leave empty for default 64)
+  value: "1"
+  required: false
+- name: APPLICATION_IMAGE
+  displayName: Application Docker image
+  description: See https://github.com/MaastrichtU-IDS/rstudio for more details and to customize the image
+  value: ghcr.io/maastrichtu-ids/rstudio
+  required: true
+objects:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
+
+- apiVersion: "v1"
+  kind: "PersistentVolumeClaim"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+      template: rstudio-root-dynamic
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      importPolicy:
+        scheduled: true
+    lookupPolicy:
+      local: true
+
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - rstudio-container
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}"
+      spec:
+        serviceAccountName: anyuid
+        #nodeSelector:
+        #  dsri.unimaas.nl/cpu: 'true'
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
+        containers:
+        - name: rstudio-container
+          image: ${APPLICATION_NAME}:latest
+          ports:
+          - containerPort: 8787
+            protocol: TCP
+          # resources:
+          #   limits:
+          #     cpu: '64'
+          #     memory: 200Gi
+          #   requests:
+          #     cpu: '2'
+          #     memory: 4Gi
+          volumeMounts:
+          - name: data
+            mountPath: "/home/rstudio"
+          env:
+          - name: USER
+            value: "rstudio"
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: ROOT
+            value: "TRUE"
+          - name: OPENBLAS_NUM_THREADS
+            value: "${OPENBLAS_NUM_THREADS}"
+        automountServiceAccountToken: false
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8787-tcp
+      protocol: TCP
+      port: 8787
+      targetPort: 8787
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8787-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect

@@ -1,0 +1,193 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: ontotext-graphdb
+  annotations:
+    openshift.io/display-name: Virtuoso triplestore
+    description: |-
+      Start a Ontotext GraphDB triplestore, with a SPARQL endpoint
+
+      Login with the admin username, using admin as password, and change the password at the first connection ⚠️
+
+      📂 We use the folder `/opt/graphdb/home` in the container to store the database and import folder in the persistent storage
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+
+      Visit https://github.com/Ontotext-AD/graphdb-docker for more details about the image used
+    iconClass: icon-3scale
+    tags: triplestore,graph,database,rdf,sparql
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-database#ontotext-graphdb-triplestore
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: ontotext-graphdb
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be unique in the project. It will be used to generate the application
+    URL.
+  value: graphdb
+  required: true
+# - name: PASSWORD
+#   displayName: Triplestore admin password
+#   description: The password of the dba user.
+#   from: "[a-zA-Z0-9]{16}"
+#   generate: expression
+#   required: true
+- name: GRAPHDB_JAVA_MEMORY
+  displayName: GraphDB java memory
+  description: Maximum memory allocated to java for GraphDB (-xms and -xmx)
+  value: 4g
+  required: true
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage used for the notebook (approximate).
+  value: 20Gi
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: Application Docker image name 
+  description: Image name in the DSRI registry, needs to be build manually first
+  value: graphdb:latest
+  required: true
+- name: DEFAULT_GRAPH
+  displayName: Triplestore default graph
+  description: The defult graph used by the Virtuoso triplestore
+  value: https://w3id.org/um/graph
+  required: true
+# - name: LOG_LEVEL
+#   displayName: Triplestore log level
+#   description: "Amount of log produced: 0 is minimum, 7 is maximum"
+#   value: "0"
+#   required: true
+
+objects:
+# - apiVersion: v1
+#   kind: Secret
+#   metadata:
+#     annotations:
+#       template.openshift.io/expose-password: "{.data['application-password']}"
+#     name: "${APPLICATION_NAME}"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   stringData:
+#     application-password: "${PASSWORD}"
+    
+- apiVersion: "v1"
+  kind: "PersistentVolumeClaim"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - ontotext-graphdb
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}"
+      spec:
+        serviceAccountName: anyuid
+        # nodeSelector:
+        #   dsri.unimaas.nl/cpu: 'true'
+        # securityContext:
+        #   runAsUser: 1000
+        #   runAsGroup: 3000
+        #   fsGroup: 2000
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
+        containers:
+        - name: ontotext-graphdb
+          image: ${APPLICATION_IMAGE}
+          ports:
+          - containerPort: 7200
+            protocol: TCP
+          # resources:
+          #   limits:
+          #     cpu: '64'
+          #     memory: 200Gi
+          #   requests:
+          #     cpu: '2'
+          #     memory: 4Gi
+          volumeMounts:
+          - name: data
+            mountPath: "/opt/graphdb/home"
+          env:
+          - name: GDB_JAVA_OPTS
+            value: |
+              -Xmx${GRAPHDB_JAVA_MEMORY} -Xms${GRAPHDB_JAVA_MEMORY}
+              -Dgraphdb.home=/opt/graphdb/home
+              -Dgraphdb.workbench.importDirectory=/opt/graphdb/home/import
+              -Dgraphdb.workbench.cors.enable=true
+              -Denable-context-index=true
+              -Dentity-pool-implementation=transactional
+              -Dgraphdb.append.request.id.headers=true
+              -Dreuse.vars.in.subselects=true
+          # - name: DBA_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       key: application-password
+          #       name: "${APPLICATION_NAME}"
+        automountServiceAccountToken: false
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 7200-tcp
+      protocol: TCP
+      port: 7200
+      targetPort: 7200
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 7200-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect

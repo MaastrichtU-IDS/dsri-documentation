@@ -1,0 +1,58 @@
+version: '3'
+services:
+
+  dsw_server:
+    image: datastewardshipwizard/wizard-server:2.10.0
+    restart: always
+    hostname: dsw_server
+    ports:
+      - 3000:3000
+    depends_on:
+      - rabbitmq
+      - mongo
+    volumes:
+      - ./server/application.yml:/application/engine-wizard/config/application.yml:ro
+      - ./server/integration.yml:/application/engine-wizard/config/integration.yml:ro
+
+  dsw_client:
+    image: datastewardshipwizard/wizard-client:2.10.0
+    restart: always
+    hostname: dsw_client
+    ports:
+      - 8080:80
+    environment:
+      API_URL: http://localhost:3000
+
+  docworker:
+    image: datastewardshipwizard/document-worker:2.10.0
+    restart: always
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./docworker/config.yml:/app/config.yml:ro
+
+  mongo:
+    image: mongo:4.2.3
+    restart: always
+    # (!) Expose only for debugging locally or set-up authentication
+    # ports:
+    #   - 127.0.0.1:27017:27017
+    # command: mongod --auth
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: admin
+    #   MONGO_INITDB_ROOT_PASSWORD: secure-password
+    # (!) Mount and backup for persistent data
+    # volumes:
+    #  - mongo-data:/data/db
+    # OR (not working with Windows)
+    #  - ./mongo:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3.8.2-management
+    restart: always
+    # (!) Expose only for debugging locally or set-up authentication
+    # ports:
+    #   - 127.0.0.1:15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest

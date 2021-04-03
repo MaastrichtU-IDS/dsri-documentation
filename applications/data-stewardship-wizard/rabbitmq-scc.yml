@@ -1,0 +1,27 @@
+kind: SecurityContextConstraints
+apiVersion: security.openshift.io/v1
+metadata:
+  name: rabbitmq-cluster
+allowPrivilegedContainer: false
+runAsUser:
+  type: RunAsAny
+  # type: MustRunAsRange
+seLinuxContext:
+  type: MustRunAs
+fsGroup:
+  type: MustRunAs
+supplementalGroups:
+  type: RunAsAny
+requiredDropCapabilities:
+  - "ALL"
+allowedCapabilities:
+  - "FOWNER"
+  - "CHOWN"
+  - "DAC_OVERRIDE"
+volumes:
+  - "configMap"
+  - "secret"
+  - "persistentVolumeClaim"
+  - "downwardAPI"
+  - "emptyDir"
+  - "projected"
