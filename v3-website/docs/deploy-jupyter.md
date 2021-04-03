@@ -64,7 +64,7 @@ You can use any image based on the official Jupyter docker stack: https://github
 * `jupyter/r-notebook`
 * `jupyter/pyspark-notebook`
 * `jupyter/all-spark-notebook`
-* `ghcr.io/maastrichtu-ids/jupyterlab` (with SPARQL and Java kernels)
+* `ghcr.io/maastrichtu-ids/jupyterlab` (with Java and SPARQL kernels)
 
 Or build your own using this repository as example: https://github.com/MaastrichtU-IDS/jupyterlab-on-openshift 📦
 
