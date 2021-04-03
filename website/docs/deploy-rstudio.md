@@ -3,37 +3,25 @@ id: deploy-rstudio
 title: RStudio
 ---
 
-RStudio can be easily deployed from the [OpenShift web UI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog).
+Feel free to propose new deployments using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls) or request new ones by creating a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).
 
-:::tip Username
+## Start RStudio
 
-the default username is **rstudio**
+Start a RStudio container based on [Rocker RStudio tidyverse images](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) (debian), with `sudo` privileges to install anything you need (e.g. pip or apt packages)
 
-:::
+You can start a container using the **JupyterLab (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
-## RStudio with root user
+Provide a few parameters, and Instantiate the template. The DSRI will automatically create a persistent volume to store data you will put in the `/home/rstudio` folder. The username will be **rstudio**
 
-:::caution Root permission required
+:::info Find your persistent volume storage
 
-🔒 You need root containers (aka. anyuid) enabled in your project to start this application.
+You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
-:::
-
-Run RStudio with `sudo` privileges, can be useful if need to install additional packages that requires `sudo`
-
-Create the template in your project catalog if not present:
-
-```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-rstudio-root.yml
-```
-
-The application will use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
-
-:::info Official documentation
-See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
 :::
 
 <img src="/dsri-documentation/img/screenshot-deploy-rstudio.png" alt="Deploy RStudio" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
 
 ## RStudio with Shiny server
 

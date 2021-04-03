@@ -2,9 +2,9 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: vscode-root-dynamic
+  name: vscode-root
   annotations:
-    openshift.io/display-name: VisualStudio Code with root user (Persistent)
+    openshift.io/display-name: VisualStudio Code server (Persistent)
     description: |-
       Start VisualStudio Code server with the coder user which has root permissions (sudo) 
 
@@ -25,13 +25,13 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
     # template.openshift.io/bindable: 'false'
 labels:
-  template: vscode-root-dynamic
+  template: vscode-root
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
   description: Must be unique in the project. It will be used to generate the application
     URL.
-  value: vscode-root
+  value: vscode
   required: true
 - name: PASSWORD
   displayName: Password

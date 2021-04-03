@@ -6,7 +6,7 @@ labels:
 metadata:
   name: jupyterlab-root
   annotations:
-    openshift.io/display-name: JupyterLab with root privileges (persistent)
+    openshift.io/display-name: JupyterLab (persistent)
     description: |-
       Start JupyterLab images as the `jovyan` user, with sudo privileges to install anything you need. 
 

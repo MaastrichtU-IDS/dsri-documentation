@@ -10,11 +10,11 @@ Feel free to propose new deployments using [pull requests](https://github.com/Ma
 
 Start a JupyterLab container based on the [official Jupyter docker stacks](https://github.com/jupyter/docker-stacks) (debian), with `sudo` privileges to install anything you need (e.g. pip or apt packages)
 
-You can start a container using the **JupyterLab with root privileges (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can start a container using the **JupyterLab (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
 Provide a few parameters, and Instantiate the template. The DSRI will automatically create a persistent volume to store data you will put in the `/home/jovyan` folder. 
 
-:::info Find a persistent volume storage
+:::info Find your persistent volume storage
 
 You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 

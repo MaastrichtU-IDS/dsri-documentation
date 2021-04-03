@@ -2,9 +2,9 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: ubuntu-root-persistent
+  name: ubuntu-root
   annotations:
-    openshift.io/display-name: Ubuntu with root user (Persistent)
+    openshift.io/display-name: Ubuntu (Persistent)
     description: |-
       Start ubuntu with the 'root' user which has sudo permissions to install anything.
 
@@ -24,7 +24,7 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
     # template.openshift.io/bindable: 'false'
 labels:
-  template: ubuntu-root-persistent
+  template: ubuntu-root
 message: |-
   A Ubuntu pod has been scheduled for creation in your project, and should be soon available.
   Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
@@ -35,7 +35,7 @@ parameters:
 - name: APPLICATION_NAME
   displayName: Application name
   description: Must be unique in the project. It will be used to generate the application URL
-  value: ubuntu-root
+  value: ubuntu
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size

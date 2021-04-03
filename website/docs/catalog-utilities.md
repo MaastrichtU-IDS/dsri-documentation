@@ -9,27 +9,17 @@ Feel free to propose new services using [pull requests](https://github.com/Maast
 
 Start Ubuntu with the `root` user which has `sudo` permissions to install anything.
 
-Add the [template](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/templates/template-ubuntu-root.yml) to your project:
-
-```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-ubuntu-root.yml
-```
+You can start a container using the **Ubuntu (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
 This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
 
-:::caution Root permission required
-
-🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
-
-:::
-
 :::info Persistent data folder
 
-📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage
-
-We enabled the port `8080` in the Ubuntu container if you need to deploy applications.
+📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
 :::
+
+We enabled the port `8080` in the Ubuntu container if you need to deploy applications.
 
 To quickly access it from the terminal you can use the **Terminal** tab in the pod page, or via your local terminal:
 
@@ -53,15 +43,13 @@ To quickly access it from the terminal you can use the **Terminal** tab in the p
 
 <img src="/dsri-documentation/img/screenshot-deploy-ubuntu.png" alt="Deploy Ubuntu" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-
-
 ## Trinity RNA Seq
 
-Trinity assembles transcript sequences from Illumina RNA-Seq data. It represents a novel method for the efficient and robust the new reconstruction of transcriptomes from RNA-seq data. [GitHub](https://github.com/trinityrnaseq/trinityrnaseq)
+Trinity assembles transcript sequences from Illumina RNA-Seq data. It represents a novel method for the efficient and robust the new reconstruction of transcriptomes from RNA-seq data. See the [GitHub](https://github.com/trinityrnaseq/trinityrnaseq)
+
+You can start a container using the **trinityrnaseq (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
 <img src="/dsri-documentation/img/screenshot_trinityrnaseq.png" alt="Deploy Trinity RNA Seq" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-
 
 Add the [template](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/templates/template-trinityrnaseq.yml) to your project:
 
@@ -69,51 +57,32 @@ Add the [template](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/ma
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/okd4-templates-anyuid/template-trinityrnaseq.yml
 ```
 
-This template uses the Trinity image hosted as a [UM github package](https://github.com/orgs/maastrichtu-ids/packages/container/package/trinityrnaseq) 
-
-:::caution Root permission required
-
-🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
-
-:::
+This template uses the Trinity image hosted in the [UM IDS github container registry](https://github.com/orgs/maastrichtu-ids/packages/container/package/trinityrnaseq) 
 
 :::info Persistent data folder
 
-📂 Use the `/usr/local/src/work` folder (home of the root user) to store your data in the existing persistent storage
-
-We enabled the port `8787` in the Ubuntu container if you need to deploy applications.
+📂 Use the `/usr/local/src/work` folder (home of the root user) to store your data in the existing persistent storage. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
 :::
+
+We enabled the port `8787` in the container, if you need to deploy applications.
 
 ## File browser
 
 Deploy a file browser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume in case you need it (JupyterLab, RStudio and VisualStudio Code server already include a file browser)
 
-:::caution Root permission required
-
-🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
-
-:::
-
-Add the file browser template:
-
-```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-filebrowser.yml
-```
-
-Then the file browser can be deployed from the [OpenShift Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog):
+You can start a container using the **File Browser for existing storage** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
 <img src="/dsri-documentation/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-We can only deploy file browser as a Persistent deployment.
-
-🗄️ **Persistent**: use an existing Persistent Volume Claim (PVC) for a persistent storage of the data.
+You can only deploy file browser on an existing Persistent Volume Claim, this enables you to add a web UI to access this storage.
 
 The following parameters can be provided:
 
 1. Provide a unique **Application name**. It will be used to generate the application URL.
-2. The **Storage name** of the Persistent Volume Claim  (PVC) that will be exposed by the filebrowser.
-3. **Storage subpath** in the the Persistent Volume Claim that will be exposed by the filebrowser. Let it empty to use the Root folder of the persistent volume.
+2. Provide a **Password**, you will need to hash the password first for extra security, use this quick docker command to do it: `docker run filebrowser/filebrowser hash mypassword`
+3. The **Storage name** of the Persistent Volume Claim  (PVC) that will be exposed by the filebrowser.
+4. **Storage subpath** in the the Persistent Volume Claim that will be exposed by the filebrowser. Let it empty to use the Root folder of the persistent volume.
 
 You can find the Storage name if you Go to the deployments page > Storage panel.
 

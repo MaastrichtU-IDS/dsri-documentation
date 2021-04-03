@@ -2,7 +2,7 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: rstudio-root-dynamic
+  name: rstudio-root
   annotations:
     openshift.io/display-name: RStudio
     description: |-
@@ -29,7 +29,7 @@ parameters:
   displayName: Application name
   description: Must be unique in the project. It will be used to generate the application
     URL.
-  value: rstudio-root
+  value: rstudio
   required: true
 - name: PASSWORD
   displayName: RStudio password

@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: trinityrnaseq
   annotations:
-    openshift.io/display-name: trinityrnaseq with root user (Persistent)
+    openshift.io/display-name: trinityrnaseq (Persistent)
     description: |-
       Start trinityrnaseq with the 'root' user which has sudo permissions to install anything.
 
