@@ -1,13 +1,15 @@
 ---
 id: create-dsri-project
-title: Create New Project
+title: Create a new Project
 ---
 
 ## Create a project using the web UI
 
-:::info 
+:::caution Avoid creating multiple projects
 
-If allowed by your cluster administrator, you can create a new project.
+Try to avoid to create multiple projects for nothing please. Be responsible and delete applications you are not using anymore in your project to free resources, instead of creating a new project with a different number at the end.
+
+It is also easier to connect your different applications containers and storages when you create them in the same project.
 
 :::
 
@@ -15,7 +17,7 @@ You can create a project using the **Developer** perspective, as follows:
 
 1. Click the **Project** drop-down menu to see a list of all available projects. Select **Create Project**.
 
-2. In the **Create Project** dialog box, enter a unique name, such as `dsri-workshop-project`, in the **Name** field.
+2. In the **Create Project** dialog box, enter a unique name in the **Name** field. Use a short and meaningful name for your project as the project identifier is unique across all projects, such as `legal-text-analysis` or `ml-covid-pathways`
 
 3. Add the **Display Name** ` DSR Workshop`and **Description** ` DSRI Community Workshop Projects`details for the project.
 
