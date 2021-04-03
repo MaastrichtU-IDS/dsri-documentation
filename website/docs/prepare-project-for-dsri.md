@@ -27,9 +27,13 @@ If you prefer your local environment for development, and only run big tasks on 
 * Make sure your code **does not use absolute paths**. For example, `C://Desktop/myproject/data` will not work when running on the DSRI, use a relative path such as `../data`
 * **Use `git`** to synchronize your local development code with the code on the DSRI
 
+<!--
+
 ## Define your deployment strategy
 
 <img src="/dsri-documentation/img/dsri-deploy-flowchart.png" alt="DSRI deployment flowchart" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+-->
 
 ## Get your data ready
 
@@ -53,7 +57,10 @@ Make sure you **upload the data to a folder mounted on a persistent storage** in
 
 Same as for your laptop, you will need to install and use the `oc cp` command to copy data to your application pod. See the [Load data](/dsri-documentation/docs/openshift-load-data) documentation page for more informations.
 
+<!--
 
 ### Data is in a AWS S3 bucket
 
 > To be developed
+
+-->
