@@ -27,7 +27,7 @@ If no suitable image can be found on [DockerHub](https://hub.docker.com/), it ca
 
 ---
 
-## Deploy the image on OpenShift
+## Deploy the image on DSRI
 
 Once you have a Docker image for your application you can deploy it using the [DSRI web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/projects).
 
@@ -40,6 +40,20 @@ Go to the [Overview page](https://console-openshift-console.apps.dsri2.unimaas.n
   * Click **Deploy**.
 
 <img src="/dsri-documentation/img/screenshot-deploy_image_from_ui.png" alt="Deploy image from UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+:::caution Fix a common problem
+
+Once the application is deployed it will most probably fail because it has not been optimized to work with OpenShift random user ID. You will need to add an entry to the deployment to enable your image to run using any user ID.
+
+:::
+
+Go to **Topology**, click on your application node, click on the **Actions** button of your application details, and **Edit deployment**. In the deployment YAML search for `spec:` which has a `containers:` as child, and add the following under `spec:`
+
+```yaml
+spec:
+  serviceAccountName: anyuid
+  containers: ...
+```
 
 :::info Access the application
 

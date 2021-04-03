@@ -32,9 +32,9 @@ oc new-build --name dockerfile-to-okd --binary
 
 ---
 
-### Build image
+### Build the image
 
-Start a new build with the example files we provided.
+Start a new build on the DSRI with the files provided:
 
 ```shell
 cd dockerfile-to-okd
@@ -43,7 +43,7 @@ oc start-build dockerfile-to-okd --from-dir=. --follow --wait
 
 ---
 
-### Create app
+### Create your app
 
 Create a new app using the build we just created:
 

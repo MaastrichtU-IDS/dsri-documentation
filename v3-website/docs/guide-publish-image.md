@@ -86,8 +86,8 @@ docker push ghcr.io/github-username/my-image:latest
 For example, to the [MaastrichtU-IDS organization Container Registry on GitHub](https://github.com/orgs/MaastrichtU-IDS/packages):
 
 ```bash
-docker build -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:latest .
-docker push ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:latest
+docker build -t ghcr.io/maastrichtu-ids/jupyterlab:latest .
+docker push ghcr.io/maastrichtu-ids/jupyterlab:latest
 ```
 
 :::info Created automatically
