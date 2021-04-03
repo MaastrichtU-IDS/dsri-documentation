@@ -36,13 +36,7 @@ You can also build your own image, feel free to use this repository as example t
 
 ## Use git in JupyterLab
 
-You can use the [JupyterLab Git extension](https://github.com/jupyterlab/jupyterlab-git) to clone and manage your `git` repositories.
-
-It will prompt you for a username and password if the repository is private.
-
-<img src="https://raw.githubusercontent.com/jupyterlab/jupyterlab-git/master/docs/figs/preview.gif" alt="JupyterLab Git extension" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-You can also use `git` from the terminal.
+You can always use `git` from the terminal.
 
 :::caution Configure username
 
@@ -76,6 +70,12 @@ git config --global credential.helper 'store --file ~/.git-credentials'
 We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
 
 :::
+
+You can also enable and use the [JupyterLab Git extension](https://github.com/jupyterlab/jupyterlab-git) to clone and manage your `git` repositories.
+
+It will prompt you for a username and password if the repository is private.
+
+<img src="https://raw.githubusercontent.com/jupyterlab/jupyterlab-git/master/docs/figs/preview.gif" alt="JupyterLab Git extension" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 ## Advanced: JupyterHub
