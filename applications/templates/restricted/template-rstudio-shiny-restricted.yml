@@ -8,9 +8,9 @@ message: |-
 metadata:
   name: rstudio-shiny
   annotations:
-    openshift.io/display-name: RStudio with Shiny server (Dynamic)
+    openshift.io/display-name: RStudio with Shiny server (persistent)
     description: |-
-      Starts RStudio Server with Shiny server.
+      Starts RStudio Server with Shiny server, with a restricted user.
 
       📂 Use the `/mnt/APPLICATION_NAME` folder (workspace of the RStudio UI) to store your data in the persistent storage automatically created
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims

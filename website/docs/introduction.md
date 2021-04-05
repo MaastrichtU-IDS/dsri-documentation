@@ -84,6 +84,12 @@ If you are working at Maastricht University, **see [this page](https://maastrich
 
 :::
 
+## The DSRI in a nutshell
+
+Here is a diagram providing a simplified explanation of how the DSRI works, using popular data science applications as examples (JupyterLab, RStudio, VSCode server)
+
+<img src="/dsri-documentation/img/dsri_simplified_overview.png" alt="DSRI in a nutshell " style={{maxWidth: '100%', maxHeight: '100%'}} />
+
 ## The DSRI specifications
 
 ### Software

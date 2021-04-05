@@ -9,33 +9,35 @@ Start a RStudio container based on [Rocker RStudio tidyverse images](https://git
 
 You can start a container using the **JupyterLab (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
-Provide a few parameters, and Instantiate the template. The DSRI will automatically create a persistent volume to store data you will put in the `/home/rstudio` folder. The username will be **rstudio**
-
-:::info Find your persistent volume storage
-
-You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
-
-:::
+Provide a few parameters, and Instantiate the template. The username will be **rstudio**, and the DSRI will automatically create a persistent volume to store data you will put in the `/home/rstudio` folder. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
 <img src="/dsri-documentation/img/screenshot-deploy-rstudio.png" alt="Deploy RStudio" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
+:::info Official image documentation
+
 See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
 
-## RStudio with Shiny server
+:::
 
-Start a RStudio application, with a complementary Shiny server, using a **regular `rstudio` user, without `sudo` privileges**.
+## Restricted RStudio with Shiny server
 
-Create the template in your project catalog:
+Start a RStudio application, with a complementary Shiny server, using a regular `rstudio` user, **without `sudo` privileges**.
 
-```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/template-rstudio-shiny.yml
-```
+Create the template in your project:
 
-Use the **RStudio with Shiny (Dynamic)** template in the OpenShift web UI catalog. It will automatically create a persistent storage for the data.
+* In the DSRI web UI, go to **+ Add**, then click on **YAML**, add the content of the [template-rstudio-shiny-restricted.yml](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/restricted/template-rstudio-shiny-restricted.yml) file, and validate.
+
+* You can also do it using the terminal:
+
+  ```bash
+  oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/restricted/template-rstudio-shiny-restricted.yml
+  ```
+
+Once the template has been created in your project, use the **RStudio with Shiny server (persistent)** template in the OpenShift web UI catalog. It will automatically create a persistent storage for the data.
 
 :::caution No sudo privileges
 
-Image optimized for DSRI OpenShift, does not require root containers enabled. But you will not have `sudo` privileges in the application.
+You will not have `sudo` privileges in the application.
 
 :::
 
