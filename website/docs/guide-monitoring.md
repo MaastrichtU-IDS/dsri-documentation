@@ -45,7 +45,7 @@ oc get events
 
 :::
 
-2. When a pod is running you can check its logs in the **Logs** tab ( after going to the pod page).
+2. When a pod is running you can check its logs in the **Logs** tab (after going to the pod page). It will show the logs output of the container, equivalent to doing `docker logs`.
 
 :::info Get help
 
