@@ -19,6 +19,30 @@ You can also use the `oc` CLI to get the services in your project:
 oc get services
 ```
 
+### Start PostgreSQL 🐘
+
+Use the **Postgresql** template in the DSRI OpenShift web UI catalog to start a SQL database. 
+
+:::tip Connect to the database
+
+When the database has been deployed, you can connect from another pod using your favorite language and connector.
+
+:::
+
+Example with the `psql` Command Line Interface:
+
+```bash
+apt-get update && apt-get install postgresql-client -y
+```
+
+Connect to the Postgresql database using the service name (change depending on the username and database name you chose):
+
+```bash
+psql -h postgresql-db -U postgres db
+```
+
+<!-- MariaDB and MySQL not working
+
 ### Start MariaDB 🦦
 
 Use the **MariaDB** template in the DSRI OpenShift web UI catalog.
@@ -65,27 +89,7 @@ mysql -h example-mysql -p
 
 > Alternatively, MySQL databases can be started using Helm, see the [Helm documentation page](/dsri-documentation/docs/helm#install-a-helm-chart) for more details.
 
-### Start PostgreSQL 🐘
-
-Use the **Postgresql** template in the DSRI OpenShift web UI catalog.
-
-:::tip Connect to the database
-
-When the database has been deployed, you can connect from another pod using your favorite language and connector.
-
-:::
-
-Example with the `psql` Command Line Interface:
-
-```bash
-apt-get update && apt-get install postgresql-client -y
-```
-
-Connect to the Postgresql database using the service name (change depending on the username and database name you chose):
-
-```bash
-psql -h postgresql-db -U postgres db
-```
+-->
 
 ### Start Apache Drill 🔩
 
