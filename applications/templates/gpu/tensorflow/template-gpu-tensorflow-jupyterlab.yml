@@ -19,7 +19,7 @@ labels:
 metadata:
   name: gpu-tensorflow-jupyterlab
   annotations:
-    openshift.io/display-name: Tensorflow on GPU with JupyterLab (Persistent)
+    openshift.io/display-name: Tensorflow on GPU with JupyterLab
     description: |-
       Start JupyterLab to run Tensorflow using GPUs with the root user. 
     

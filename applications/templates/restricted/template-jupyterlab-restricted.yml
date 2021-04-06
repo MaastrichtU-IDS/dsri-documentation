@@ -6,7 +6,7 @@ labels:
 metadata:
   name: jupyterlab-restricted
   annotations:
-    openshift.io/display-name: JupyterLab with restricted user (persistent)
+    openshift.io/display-name: JupyterLab with restricted user
     description: |-
       Start JupyterLab images with regular 'jovyan' user, without sudo privileges. 
 

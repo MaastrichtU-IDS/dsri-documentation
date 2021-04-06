@@ -8,7 +8,7 @@ message: |-
 metadata:
   name: rstudio-shiny
   annotations:
-    openshift.io/display-name: RStudio with Shiny server (persistent)
+    openshift.io/display-name: RStudio with Shiny server
     description: |-
       Starts RStudio Server with Shiny server, with a restricted user.
 

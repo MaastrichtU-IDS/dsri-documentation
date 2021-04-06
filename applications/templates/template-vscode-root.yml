@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: vscode-root
   annotations:
-    openshift.io/display-name: VisualStudio Code server (Persistent)
+    openshift.io/display-name: VisualStudio Code server
     description: |-
       Start VisualStudio Code server with the coder user which has root permissions (sudo) 
 

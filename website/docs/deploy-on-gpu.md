@@ -19,8 +19,8 @@ Once your project has been granted access to GPUs, you can deploy applications o
 * Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
 * **Filter** the catalog for  "**JupyterLab on GPU**"
 * Choose one of the available templates:
-  * **Pytorch on GPU with JupyterLab (Persistent)**.
-  * **Tensorflow on GPU with JupyterLab (Persistent)**
+  * **Pytorch on GPU with JupyterLab**.
+  * **Tensorflow on GPU with JupyterLab**
 
 The following parameters can be provided:
 
@@ -39,8 +39,8 @@ Now that your template is created and its accessible from the **Topology** page 
 * Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
 * **Filter** the catalog for "**VSCode on GPU**"
 * Choose one of the available templates:
-  * **Tensorflow on GPU with VisualStudio (Persistent)**
-  * **PyTorch on GPU with VisualStudio (Persistent)**
+  * **Tensorflow on GPU with VisualStudio**
+  * **PyTorch on GPU with VisualStudio**
 
 For those pods VSCode cannot be accessed directly on a DSRI URL, you will need to forward the port to your localhost:
 

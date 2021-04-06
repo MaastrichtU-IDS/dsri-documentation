@@ -4,7 +4,7 @@ metadata:
   # creationTimestamp: null
   name: apache-zeppelin-spark
   annotations:
-    openshift.io/display-name: Zeppelin notebook for Spark (Persistent)
+    openshift.io/display-name: Zeppelin notebook for Spark
     description: |-
       Start an Apache Zeppelin notebook with the 'root' user which has sudo permissions to install anything.
 

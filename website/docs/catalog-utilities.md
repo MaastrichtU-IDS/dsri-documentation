@@ -9,7 +9,7 @@ Feel free to propose new services using [pull requests](https://github.com/Maast
 
 Start Ubuntu with the `root` user which has `sudo` permissions to install anything.
 
-You can start a container using the **Ubuntu (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can start a container using the **Ubuntu** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
 This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
 

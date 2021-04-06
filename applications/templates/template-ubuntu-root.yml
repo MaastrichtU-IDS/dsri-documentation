@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: ubuntu-root
   annotations:
-    openshift.io/display-name: Ubuntu (Persistent)
+    openshift.io/display-name: Ubuntu
     description: |-
       Start ubuntu with the 'root' user which has sudo permissions to install anything.
 

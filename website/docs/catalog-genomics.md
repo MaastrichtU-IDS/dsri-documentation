@@ -9,7 +9,7 @@ Feel free to propose new services using [pull requests](https://github.com/Maast
 
 Trinity assembles transcript sequences from Illumina RNA-Seq data. It represents a novel method for the efficient and robust the new reconstruction of transcriptomes from RNA-seq data. See [their documentation](https://github.com/trinityrnaseq/trinityrnaseq/wiki).
 
-You can start a container using the **Trinity RNA-Seq (persistent)** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can start a container using the **Trinity RNA-Seq** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
 <img src="/dsri-documentation/img/screenshot_trinityrnaseq.png" alt="Deploy Trinity RNA Seq" style={{maxWidth: '100%', maxHeight: '100%'}} />
 

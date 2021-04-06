@@ -6,7 +6,7 @@ labels:
 metadata:
   name: gpu-pytorch-vscode
   annotations:
-    openshift.io/display-name: PyTorch on GPU with VisualStudio (Persistent)
+    openshift.io/display-name: PyTorch on GPU with VisualStudio
     description: |-
       Create and deploy VisualStudio Code to run PyTorch using GPUs with the root user.
       

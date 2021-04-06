@@ -6,7 +6,7 @@ labels:
 metadata:
   name: gpu-pytorch-jupyterlab
   annotations:
-    openshift.io/display-name: Pytorch on GPU with JupyterLab (Persistent)
+    openshift.io/display-name: Pytorch on GPU with JupyterLab
     description: |-
       Start Pytorch on GPU using the root user. Provide the number of GPUs to run.
       

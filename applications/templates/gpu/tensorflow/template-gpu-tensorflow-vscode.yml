@@ -19,7 +19,7 @@ labels:
 metadata:
   name: gpu-tensorflow-vscode
   annotations:
-    openshift.io/display-name: Tensorflow on GPU with VisualStudio (Persistent)
+    openshift.io/display-name: Tensorflow on GPU with VisualStudio
     description: |-
       Start VisualStudio Code with Tensorflow using GPUs with the root user.
       

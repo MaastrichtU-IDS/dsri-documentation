@@ -24,7 +24,7 @@ Create the template in your project catalog if it is not present:
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-openshift-applications/main/templates-anyuid/template-jupyterlab-root.yml
 ```
 
-You can deploy it using the **JupyterLab with root user (Persistent)** solutions in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog), the application will use an existing persistent storage to store your data.
+You can deploy it using the **JupyterLab with root user** solutions in the [Catalog web UI](https://app.dsri.unimaas.nl:8443/console/catalog), the application will use an existing persistent storage to store your data.
 
 <img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style={{maxWidth: '100%', maxHeight: '100%'}} />
 

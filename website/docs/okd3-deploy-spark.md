@@ -27,7 +27,7 @@ oc apply -f https://raw.githubusercontent.com/vemonet/spark-openshift/master/spa
 
 ## Deploy a Spark cluster
 
-Go to the DSRI OpenShift web UI catalog and click on the **Apache Spark (Persistent)** application.
+Go to the DSRI OpenShift web UI catalog and click on the **Apache Spark** application.
 
 <img src="/dsri-documentation/img/screenshot-deploy-spark.png" alt="Deploy Apache Spark" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
