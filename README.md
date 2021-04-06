@@ -115,6 +115,14 @@ Embed a Google docs presentation (size does not change dynamically). You can che
 }
 ```
 
+## Video
+
+Convert mkv to webm:
+
+```bash
+ffmpeg -i video_dsri_introduction.mkv -c:v libvpx -crf 10 -c:a libvorbis video_dsri_introduction.webm
+```
+
 ## Acknowledgments
 
 Documentation website generated using [Docusaurus](https://docusaurus.io/).
