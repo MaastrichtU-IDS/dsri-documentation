@@ -94,7 +94,7 @@ function Home() {
         {/* Video img/video_dsri_introduction.webm */}
         <div className="container">
           <h1 style={{textAlign: 'center'}}>
-            How do you deploy an application on the DSRI? (1min)
+            How do you deploy an application on the DSRI?
           </h1>
           <video width="100%" height="100%" controls>
             {/* <source src="img/video_dsri_introduction.mkv" type="video/webm"/> */}
