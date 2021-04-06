@@ -14,15 +14,15 @@ Here are some advantages to migrate to [OKD](https://www.okd.io/) 4.6:
 
 :::caution No GPU yet
 
-We are will migrate the GPU node to the new cluster soon. But it is currently still deployed on the old cluster, you will need to use the old cluster to deploy an application on GPU.
+We will migrate the GPU node to the new cluster soon. But it is currently still deployed on the old cluster, you will need to use the old cluster to deploy an application on GPU.
 
 :::
 
 ## Migrate your applications
 
-All templates you have been using on the previous version of the DSRI have been adapted to the new cluster (with improvements in some cases), so you can easily restart the same application using a template on the new cluster
+All templates you have been using on the previous version of the DSRI have been adapted to the new cluster (with improvements in some cases!), so you can easily restart the same application using a template on the new cluster (e.g. RStudio, JupyterLab, VSCode, databases, etc)
 
-If you deployed a custom application you should be able to start it on the new cluster the same way you started it before
+If you deployed a custom application you should be able to start it on the new cluster the same way you started it before.
 
 ## Migrate your data
 
@@ -31,7 +31,7 @@ The easiest way to migrate your data from the old to the new cluster is to use t
 For this example, we will consider a RStudio application named `rstudio-root`, with the persistent volume in `/home/rstudio`, but the same process can be applied to any other application deployed on the DSRI
 
 1. Login to the [old cluster](https://app.dsri.unimaas.nl:8443/console/catalog) with `oc login`
-2. Get the pod ID of your RStudio application (it should look like `rstudio-root-1-bkpdf`)
+2. Get the pod ID of your RStudio application (it should look like `rstudio-root-1-bkpdf`, you can also get it through the DSRI web UI)
 
 ```bash
 oc get pod --selector app=rstudio-root
@@ -53,7 +53,7 @@ oc cp rstudio-1-gcfev:/home/rstudio ./rstudio-data
 
 :::tip 
 
-If you need to migrate large files it will be faster to do it on UMnet or UM Eduroam WiFi. The ideal would be to use a ethernet (wired) connection. 
+If you need to migrate large files it will be faster to do it on the UMnet, or Eduroam WiFi at UM. The ideal would be to use a ethernet (wired) connection. 
 
 :::
 
