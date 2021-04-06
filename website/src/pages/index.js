@@ -91,13 +91,14 @@ function Home() {
             </div>
           </section>
         )}
-        {/* Video img/screencast_dsri_deploy_template.webm */}
+        {/* Video img/video_dsri_introduction.webm */}
         <div className="container">
           <h1 style={{textAlign: 'center'}}>
             How do you deploy an application on the DSRI? (1min)
           </h1>
           <video width="100%" height="100%" controls>
-            <source src="img/DSRI-Introduction.mp4" type="video/mp4"/>
+            {/* <source src="img/video_dsri_introduction.mkv" type="video/webm"/> */}
+            <source src="img/video_dsri_introduction.webm" type="video/webm"/>
           </video>
         </div>
       </main>

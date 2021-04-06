@@ -91,11 +91,11 @@ module.exports={
   ],
   "themeConfig": {
     "hideableSidebar": true,
-    "announcementBar": {
-      "id": 'supportus',
-      "content":
-        '⭐️ If you like the DSRI, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/MaastrichtU-IDS/dsri-documentation">GitHub</a>! ⭐️',
-    },
+    // "announcementBar": {
+    //   "id": 'supportus',
+    //   "content":
+    //     '⭐️ If you like the DSRI, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/MaastrichtU-IDS/dsri-documentation">GitHub</a>! ⭐️',
+    // },
     "navbar": {
       "hideOnScroll": false,
       "title": "Data Science Research Infrastructure",
