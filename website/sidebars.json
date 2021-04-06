@@ -2,7 +2,7 @@
   "docs": {
     "Get started": ["introduction", "access-dsri", "create-dsri-project", "deploy-from-template", 
       "openshift-install", "openshift-load-data",
-      "openshift-delete-services", "guide-monitoring", "prepare-project-for-dsri"],
+      "openshift-delete-services", "guide-monitoring", "prepare-project-for-dsri", "openshift-migrate-project"],
     "Deploy applications": [ 
       {
         "type": "category",
