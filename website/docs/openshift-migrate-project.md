@@ -7,10 +7,13 @@ If you currently have a project on the [previous version of the DSRI](https://ap
 
 Here are some advantages to migrate to [OKD](https://www.okd.io/) 4.6:
 
-* 🗃️ **Automated persistent storage**: the DSRI can now automatically create persistent volumes for applications started from templates, and you can create more volumes yourself (on the previous version you could only use storage created by admins)
-* ⚡ **Faster storage I/O**, such as reading and writing to files. 3 storage classes are now available for different uses (regular filesystem, bloc and object storage). The new storage (Ceph) is easier to extend and more adapted to Data Science workloads.
-* 📊 **Better monitoring** tools: the monitoring view now shows the details of resources used for each application (CPU, memory, storage, network, etc)
-* 🖥️ **Developer oriented** interface: the interface has been improved to focus more on developers who simply want to deploy applications (and hide some of the Kubernetes complexity that is more focused toward )
+🗃️ **Automated persistent storage**: the DSRI can now automatically create persistent volumes for applications started from templates, and you can create more volumes yourself (on the previous version you could only use storage created by admins)
+
+⚡ **Faster storage I/O**, such as reading and writing to files. 3 storage classes are now available for different uses (regular filesystem, bloc and object storage). The new storage (Ceph) is better documented, easier to use, and more adapted to Data Science workloads.
+
+📊 **Better monitoring** tools: the monitoring view now shows the details of resources used for each application (CPU, memory, storage, network, etc)
+
+🖥️ **Developer oriented interface**: the interface has been improved to focus more on developers who simply want to deploy applications. It hides some of the Kubernetes complexity, which is more for experienced sysadmins, in the Administrator view)
 
 :::caution No GPU yet
 
@@ -37,14 +40,14 @@ For this example, we will consider a RStudio application named `rstudio-root`, w
 oc get pod --selector app=rstudio-root
 ```
 
-3. Copy data in the persistent storage of the RStudio application to your laptop (in a `rstudio-data` folder)
+3. Copy the data from the persistent storage of the old RStudio application to your laptop (in a `rstudio-data` folder)
 
 ```bash
 oc cp rstudio-root-1-bkpdf:/home/rstudio ./rstudio-data
 ```
 
 4. Once the data has been downloaded you can login to the new cluster with `oc login`
-5. Start your application on the new cluster, and get its pod ID (we will use `rstudio-1-gcfev` for this example)
+5. Start your new application on the new cluster, and get its pod ID (we will use `rstudio-1-gcfev` as pod ID for this example)
 6. Copy the `rstudio-data` folder to the new application permanent volume (`/home/rstudio` for RStudio)
 
 ```bash
