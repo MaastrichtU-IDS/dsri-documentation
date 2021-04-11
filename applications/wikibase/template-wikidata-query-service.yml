@@ -8,20 +8,19 @@ metadata:
   annotations:
     openshift.io/display-name: Wikidata Query Service
     description: |-
-      Start Wikibase query service
+      Start the Wikibase Query Service
+
+      Deploying: wdqs (Blazegraph), wdqs-proxy, wdqs-frontend
+      Based on https://github.com/wmde/wikibase-docker
     iconClass: icon-mediawiki
-    tags: python,jupyter,notebook
+    tags: wikibase,blazegraph,query,wikidata
     openshift.io/provider-display-name: Institute of Data Science, UM
-    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 parameters:
 - name: APPLICATION_NAME
   value: wikidata-query-service
   required: true
-# - name: NOTEBOOK_IMAGE
-#   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
-#   required: true
-#   description: You can use any image based on https://github.com/jupyter/docker-stacks
 - name: PASSWORD
   description: The password/token to access the application
   required: true
@@ -43,31 +42,18 @@ parameters:
 #   value: "2"
 #   required: true
 objects:
-# - kind: ConfigMap
-#   apiVersion: v1
-#   metadata:
-#     name: "${APPLICATION_NAME}-cfg"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   data:
-#     jupyter_notebook_config.py: |
-#       import os
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
 
-#       password = os.environ.get('JUPYTER_NOTEBOOK_PASSWORD')
-
-#       if password:
-#           import notebook.auth
-#           c.NotebookApp.password = notebook.auth.passwd(password)
-#           del password
-#           del os.environ['JUPYTER_NOTEBOOK_PASSWORD']
-
-#       image_config_file = '/home/jovyan/.jupyter/jupyter_notebook_config.py'
-
-#       if os.path.exists(image_config_file):
-#           with open(image_config_file) as fp:
-#               exec(compile(fp.read(), image_config_file, 'exec'), globals())
-
-## DEPLOY QUERY SERVICE BASE
+## DEPLOY QUERY SERVICE BASE(blazegraph)
 - apiVersion: "v1"
   kind: "PersistentVolumeClaim"
   metadata:
@@ -80,17 +66,6 @@ objects:
     resources:
       requests:
         storage: ${STORAGE_SIZE}
-
-- apiVersion: v1
-  kind: Secret
-  metadata:
-    annotations:
-      template.openshift.io/expose-password: "{.data['application-password']}"
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  stringData:
-    application-password: "${PASSWORD}"
 
 - kind: DeploymentConfig
   apiVersion: v1
@@ -153,20 +128,6 @@ objects:
         - name: query-service-data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}-query-service-data"
-
-# Output of the r2rml in:
-# /data/export
-
-# File to upload
-# namespace=kb
-# propertyFile=/RWStore.properties
-# fileOrDirs=/data/import
-# format=n-triples
-# defaultGraph=http://defaultGraph
-# quiet=false
-# verbose=0
-# closure=false
-# durableQueues=true
 
 - kind: Service
   apiVersion: v1
@@ -258,8 +219,8 @@ objects:
     ports:
     - name: 8989-tcp
       protocol: TCP
-      port: 80
-      targetPort: 8989
+      port: 8989
+      targetPort: 80
     selector:
       app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}-proxy"
@@ -342,8 +303,8 @@ objects:
     ports:
     - name: 8989-tcp
       protocol: TCP
-      port: 80
-      targetPort: 8989
+      port: 8989
+      targetPort: 80
     selector:
       app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}-frontend"
@@ -365,3 +326,24 @@ objects:
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
+
+## Might be necessary (config files to be mounted like a volume)
+# - kind: ConfigMap
+#   apiVersion: v1
+#   metadata:
+#     name: "${APPLICATION_NAME}-cfg"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   data:
+#     jupyter_notebook_config.py: |
+#       import os
+#       password = os.environ.get('JUPYTER_NOTEBOOK_PASSWORD')
+#       if password:
+#           import notebook.auth
+#           c.NotebookApp.password = notebook.auth.passwd(password)
+#           del password
+#           del os.environ['JUPYTER_NOTEBOOK_PASSWORD']
+#       image_config_file = '/home/jovyan/.jupyter/jupyter_notebook_config.py'
+#       if os.path.exists(image_config_file):
+#           with open(image_config_file) as fp:
+#               exec(compile(fp.read(), image_config_file, 'exec'), globals())
