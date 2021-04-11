@@ -1,1 +1,367 @@
-# Check current deployment in nwa project
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+labels:
+  template: wikidata-query-service
+metadata:
+  name: wikidata-query-service
+  annotations:
+    openshift.io/display-name: Wikidata Query Service
+    description: |-
+      Start Wikibase query service
+    iconClass: icon-mediawiki
+    tags: python,jupyter,notebook
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+parameters:
+- name: APPLICATION_NAME
+  value: wikidata-query-service
+  required: true
+# - name: NOTEBOOK_IMAGE
+#   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
+#   required: true
+#   description: You can use any image based on https://github.com/jupyter/docker-stacks
+- name: PASSWORD
+  description: The password/token to access the application
+  required: true
+  # generate: expression
+  # from: "[a-zA-Z0-9]{12}"
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
+  value: 10Gi
+  required: true
+# - name: MEMORY_LIMIT
+#   displayName: Memory limit
+#   description: Maximum RAM memory available for the application.
+#   value: "5Gi"
+#   required: true
+# - name: CPU_LIMIT
+#   displayName: CPU limit
+#   description: Number of CPUs available for the application.
+#   value: "2"
+#   required: true
+objects:
+# - kind: ConfigMap
+#   apiVersion: v1
+#   metadata:
+#     name: "${APPLICATION_NAME}-cfg"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   data:
+#     jupyter_notebook_config.py: |
+#       import os
+
+#       password = os.environ.get('JUPYTER_NOTEBOOK_PASSWORD')
+
+#       if password:
+#           import notebook.auth
+#           c.NotebookApp.password = notebook.auth.passwd(password)
+#           del password
+#           del os.environ['JUPYTER_NOTEBOOK_PASSWORD']
+
+#       image_config_file = '/home/jovyan/.jupyter/jupyter_notebook_config.py'
+
+#       if os.path.exists(image_config_file):
+#           with open(image_config_file) as fp:
+#               exec(compile(fp.read(), image_config_file, 'exec'), globals())
+
+## DEPLOY QUERY SERVICE BASE
+- apiVersion: "v1"
+  kind: "PersistentVolumeClaim"
+  metadata:
+    name: ${APPLICATION_NAME}-query-service-data
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          alpha.image.policy.openshift.io/resolve-names: "*"
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}"
+      spec:
+        serviceAccountName: anyuid
+        # nodeSelector:
+        #   dsri.unimaas.nl/cpu: 'true'
+        containers:
+        - name: wdqs-service-container
+          image: "wikibase/wdqs:0.3.40"
+          command:
+          - /runBlazegraph.sh
+          ports:
+          - containerPort: 9999
+            protocol: TCP
+          # resources:
+          #   requests: 
+          #     cpu: "${CPU_LIMIT}"
+          #     memory: "${MEMORY_LIMIT}"
+          #   limits:
+          #     cpu: "128"
+          #     memory: "300Gi"
+          env:
+          - name: WIKIBASE_HOST
+            value: "wikibase.svc"
+          - name: WDQS_HOST
+            value: "${APPLICATION_NAME}"
+            # value: "wdqs.svc"
+          - name: WDQS_PORT
+            value: "9999"
+          volumeMounts:
+          - name: query-service-data
+            mountPath: "/wdqs/data"
+        automountServiceAccountToken: false
+        # securityContext:
+        #   runAsUser: 0
+        #   supplementalGroups:
+        #   - 100
+        volumes:
+        - name: query-service-data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}-query-service-data"
+
+# Output of the r2rml in:
+# /data/export
+
+# File to upload
+# namespace=kb
+# propertyFile=/RWStore.properties
+# fileOrDirs=/data/import
+# format=n-triples
+# defaultGraph=http://defaultGraph
+# quiet=false
+# verbose=0
+# closure=false
+# durableQueues=true
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 9999-tcp
+      protocol: TCP
+      port: 9999
+      targetPort: 9999
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    type: ClusterIP
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 9999-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+
+## DEPLOY QUERY SERVICE PROXY
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-proxy"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-proxy"
+    template:
+      metadata:
+        annotations:
+          alpha.image.policy.openshift.io/resolve-names: "*"
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}-proxy"
+      spec:
+        serviceAccountName: anyuid
+        # nodeSelector:
+        #   dsri.unimaas.nl/cpu: 'true'
+        containers:
+        - name: wdqs-proxy-container
+          image: "wikibase/wdqs-proxy"
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          # resources:
+          #   requests: 
+          #     cpu: "${CPU_LIMIT}"
+          #     memory: "${MEMORY_LIMIT}"
+          #   limits:
+          #     cpu: "128"
+          #     memory: "300Gi"
+          env:
+          - name: PROXY_PASS_HOST
+            value: "${APPLICATION_NAME}:9999"
+        automountServiceAccountToken: false
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-proxy"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8989-tcp
+      protocol: TCP
+      port: 80
+      targetPort: 8989
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-proxy"
+    type: ClusterIP
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-proxy"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-proxy"
+      weight: 100
+    port:
+      targetPort: 8989-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+
+## DEPLOY QUERY SERVICE FRONTEND
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-frontend"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-frontend"
+    template:
+      metadata:
+        annotations:
+          alpha.image.policy.openshift.io/resolve-names: "*"
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}-frontend"
+      spec:
+        serviceAccountName: anyuid
+        # nodeSelector:
+        #   dsri.unimaas.nl/cpu: 'true'
+        containers:
+        - name: wdqs-frontend-container
+          image: "wikibase/wdqs-frontend:latest"
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          # resources:
+          #   requests: 
+          #     cpu: "${CPU_LIMIT}"
+          #     memory: "${MEMORY_LIMIT}"
+          #   limits:
+          #     cpu: "128"
+          #     memory: "300Gi"
+          env:
+          - name: WIKIBASE_HOST
+            value: "${APPLICATION_NAME}"
+            # We use blazegraph service instead of Wikibase
+          #   value: "wikibase.svc"
+          - name: WDQS_HOST
+            value: "${APPLICATION_NAME}-proxy"
+        automountServiceAccountToken: false
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-frontend"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8989-tcp
+      protocol: TCP
+      port: 80
+      targetPort: 8989
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-frontend"
+    type: ClusterIP
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-frontend"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-frontend"
+      weight: 100
+    port:
+      targetPort: 8989-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
