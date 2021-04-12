@@ -10,8 +10,7 @@ metadata:
 
       📂 Use the `/usr/local/src/work` folder (home of the root user) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
-      🔗 We enabled the port 8787 in the cellprofiler container if you need to expose applications
-      
+
       To run the CellProfiler in the terminal:
       cellprofiler --help
       cellprofiler --run
@@ -122,7 +121,7 @@ objects:
           image: ${APPLICATION_NAME}:latest
           command: [ "tail", "-f", "/dev/null"]
           ports:
-          - containerPort: 8787
+          - containerPort: 8080
             protocol: TCP
           # resources:
           #   limits:
@@ -137,21 +136,21 @@ objects:
             mountPath: "/usr/local/src/work"
         automountServiceAccountToken: false
 
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 8787-tcp
-      protocol: TCP
-      port: 8787
-      targetPort: 8787
-    selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+# - kind: Service
+#   apiVersion: v1
+#   metadata:
+#     name: "${APPLICATION_NAME}"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   spec:
+#     ports:
+#     - name: 8787-tcp
+#       protocol: TCP
+#       port: 8787
+#       targetPort: 8787
+#     selector:
+#       app: "${APPLICATION_NAME}"
+#       deploymentconfig: "${APPLICATION_NAME}"
 
 # - kind: Route
 #   apiVersion: route.openshift.io/v1
