@@ -24,7 +24,8 @@
         "items": [
           "workflows-introduction", "workflows-argo", "workflows-nextflow", "workflows-cwl"
         ]
-      }
+      },
+      "glossary"
     ],
     "Legacy cluster OKD 3.11": [ 
       {
