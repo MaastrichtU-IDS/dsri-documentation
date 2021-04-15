@@ -56,29 +56,59 @@ Then define the **parameters** the user will be able to define in the DSRI catal
 ```yaml
 parameters:
 - name: APPLICATION_NAME
-  description: Use a name without spaces, use - to separate words
+  displayName: Name for the application
+  description: Must be without spaces (use -), and unique in the project.
   value: jupyterlab
   required: true
-- name: NOTEBOOK_IMAGE
+- name: APPLICATION_IMAGE
+  displayName: Jupyter notebook Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
   required: true
   description: You can use any image based on https://github.com/jupyter/docker-stacks
 - name: PASSWORD
-  description: The password/token to access JupyterLab
+  displayName: JupyterLab UI Password
+  description: The password/token to access the JupyterLab web UI
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
-  value: 10Gi
+  value: 5Gi
   required: true
 ```
 
-Then we will describe all objects deployed when we instantiate this template (to start an application). First we define the **PersistentVolumeClaim**, which is a persistent storage on which we will mount the `/home/jovyan` folder to avoid loosing data if our application is restarted.
+We can then refer to those parameters value (filled by the users of the template) in the rest of the template using this syntax: `${APPLICATION_NAME}`
+
+We will now describe all objects deployed when we instantiate this template (to start an application). 
+
+First we define the **ImageStream** object to import the Docker image(s) of your application(s) on the DSRI cluster
+
+Setting the `importPolicy: scheduled` to `true` will have the DSRI to automatically check for new version of this image, which can be useful if you want to always have the latest published version of an applications. Visit the [OpenShift ImageStreams documentation](https://docs.openshift.com/container-platform/4.6/openshift_images/image-streams-manage.html) for more details. Be careful as enabling this feature without real need will cause the DSRI to query DockerHub more, which might require you to login to DockerHub to increase your pull request quota.
+
+```yaml
+objects:
+- kind: "ImageStream"
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      importPolicy:
+        scheduled: true
+    lookupPolicy:
+      local: true
+```
+
+Then we define the **PersistentVolumeClaim**, which is a persistent storage on which we will mount the `/home/jovyan` folder to avoid loosing data if our application is restarted.
 
 Any file outside of a persistent volume can be lost at any moment if the pod restart, usually it only consists in temporary file if you are properly working in the persistent volume folder. This can be useful also if your application is crashing, stopping and restarting your pod (application) might fix it.
 
 ```yaml
-objects:
 - kind: "PersistentVolumeClaim"
   apiVersion: "v1"
   metadata:
@@ -100,8 +130,6 @@ Then the **Secret** to store the password
 - kind: "Secret"
   apiVersion: v1
   metadata:
-    annotations:
-      template.openshift.io/expose-password: "{.data['application-password']}"
     name: "${APPLICATION_NAME}"
     labels:
       app: ${APPLICATION_NAME}
@@ -109,9 +137,9 @@ Then the **Secret** to store the password
     application-password: "${PASSWORD}"
 ```
 
-Then **DeploymentConfig** (aka. Deployment) of JupyterLab, if you want to deploy another application alongside JupyterLab you can do it by adding as many deployments as you want! (and use the same or different persistent volume claims for storage).
+Then **DeploymentConfig** (aka. Deployment) of JupyterLab, if you want to deploy another application alongside JupyterLab you can do it by adding as many deployments as you want! (and use the same or different persistent volume claims for storage). Checkout the [OpenShift Deployments documentation](https://docs.openshift.com/container-platform/4.6/applications/deployments/what-deployments-are.html) for more details.
 
-In this first block we will define the strategy to recreate our applications if the config change, this can also be done when a new latest docker image is available, to always use an up-to-date version of an image.
+In this first block we will define the strategy to recreate our applications if the config change, this can also be done when a new latest docker image is available, to always use an up-to-date version of an image. We chose the `Recreate` release option to make sure the container is properly recreated, but you can also use `Rolling` to have a downtime free transition between deployments.
 
 ```yaml
 - kind: "DeploymentConfig"
@@ -119,37 +147,43 @@ In this first block we will define the strategy to recreate our applications if 
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
-      app: ${APPLICATION_NAME}
+      app: "${APPLICATION_NAME}"
   spec:
+    replicas: 1
     strategy:
       type: Recreate
     triggers:
     - type: ConfigChange
-    replicas: 1
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - jupyter-notebook
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
     selector:
-      app: ${APPLICATION_NAME}
+      app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}"
-    template:
-      metadata:
-        annotations:
-          alpha.image.policy.openshift.io/resolve-names: "*"
-        labels:
-          app: ${APPLICATION_NAME}
-          deploymentconfig: "${APPLICATION_NAME}"
 ```
 
-Then we define the spec of the pod that will be deployed by this **DeploymentConfig**.
+Then we define the spec of the **pod** that will be deployed by this DeploymentConfig.
 
 Setting the `serviceAccountName: anyuid` is required for most Docker containers as it allows to run a container using any user ID (e.g. root). Otherwise OpenShift expect to use a random user ID, which is require to build the Docker image especially to work with random user IDs.
 
 We then create the `containers:` array which is where we will define the containers deployed in the pod. It is recommended to deploy 1 container per pod, as it enables a better separation and management of the applications, apart if you know what you are doing. You can also provide the command to run at the start of the container to overwrite the default one, and define the exposed ports (here 8080).
 
 ```yaml
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}"
       spec:
         serviceAccountName: "anyuid"
         containers:
         - name: jupyter-notebook
-          image: "${NOTEBOOK_IMAGE}"
+          image: "${APPLICATION_NAME}:latest"
           command:
           - "start-notebook.sh"
           - "--no-browser"
@@ -272,20 +306,23 @@ metadata:
     
 parameters:
 - name: APPLICATION_NAME
-  description: Use a name without spaces, use - to separate words
+  displayName: Name for the application
+  description: Must be without spaces (use -), and unique in the project.
   value: jupyterlab
   required: true
-- name: NOTEBOOK_IMAGE
+- name: APPLICATION_IMAGE
+  displayName: Jupyter notebook Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
   required: true
   description: You can use any image based on https://github.com/jupyter/docker-stacks
 - name: PASSWORD
-  description: The password/token to access JupyterLab
+  displayName: JupyterLab UI Password
+  description: The password/token to access the JupyterLab web UI
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
-  value: 10Gi
+  value: 5Gi
   required: true
     
 objects:
@@ -305,8 +342,6 @@ objects:
 - kind: "Secret"
   apiVersion: v1
   metadata:
-    annotations:
-      template.openshift.io/expose-password: "{.data['application-password']}"
     name: "${APPLICATION_NAME}"
     labels:
       app: ${APPLICATION_NAME}
@@ -318,29 +353,35 @@ objects:
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
-      app: ${APPLICATION_NAME}
+      app: "${APPLICATION_NAME}"
   spec:
+    replicas: 1
     strategy:
       type: Recreate
     triggers:
     - type: ConfigChange
-    replicas: 1
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - jupyter-notebook
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
     selector:
-      app: ${APPLICATION_NAME}
+      app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}"
+
     template:
       metadata:
-        annotations:
-          alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
-          app: ${APPLICATION_NAME}
+          app: "${APPLICATION_NAME}"
           deploymentconfig: "${APPLICATION_NAME}"
-
       spec:
         serviceAccountName: "anyuid"
         containers:
         - name: jupyter-notebook
-          image: "${NOTEBOOK_IMAGE}"
+          image: "${APPLICATION_NAME}:latest"
           command:
           - "start-notebook.sh"
           - "--no-browser"
