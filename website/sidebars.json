@@ -13,7 +13,7 @@
           "deploy-spark", "catalog-openmpi", "neuroscience", "catalog-genomics", "catalog-imaging", "deploy-on-gpu", "catalog-utilities"
         ]
       },
-      "guide-dockerfile-to-openshift", "deploy-from-docker", "operators", "helm"
+      "guide-dockerfile-to-openshift", "deploy-from-docker", "anatomy-of-an-application", "operators", "helm"
     ],
     "Guides": [ "guide-known-issues", "login-docker-registry", "openshift-commands", "openshift-storage",  
       "guide-publish-image", 
