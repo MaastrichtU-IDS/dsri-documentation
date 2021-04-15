@@ -33,17 +33,14 @@ metadata:
     openshift.io/display-name: JupyterLab
     description: |-
       Start JupyterLab images as the `jovyan` user, with sudo privileges to install anything you need. 
-
       📂 Use the `/home/jovyan` folder (workspace of the JupyterLab UI) to store your data in the persistent storage automatically created
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
-      
       You can use any image based on the official Jupyter docker stack https://github.com/jupyter/docker-stacks
       - jupyter/tensorflow-notebook
       - jupyter/r-notebook
       - jupyter/all-spark-notebook
       - ghcr.io/maastrichtu-ids/jupyterlab (with Java and SPARQL kernels)
       Or build your own! Checkout https://github.com/MaastrichtU-IDS/jupyterlab for an example of custom image
-
       Once JupyterLab is deployed you can install any pip packages, JupyterLab extensions, and apt packages.
     iconClass: icon-python
     tags: python,jupyter,notebook
@@ -78,8 +75,8 @@ Then we will describe all objects deployed when we instantiate this template (to
 
 ```yaml
 objects:
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
   metadata:
     name: ${APPLICATION_NAME}
     labels:
@@ -96,8 +93,8 @@ objects:
 Then the secret to store the password
 
 ```yaml
-- apiVersion: v1
-  kind: Secret
+- kind: "Secret"
+  apiVersion: v1
   metadata:
     annotations:
       template.openshift.io/expose-password: "{.data['application-password']}"
@@ -111,7 +108,7 @@ Then the secret to store the password
 Then deployment of JupyterLab, if you want to deploy another application alongside JupyterLab you can do it by adding as many deployments as you want! (and use the same or different persistent volume claims for storage)
 
 ```yaml
-- kind: DeploymentConfig
+- kind: "DeploymentConfig"
   apiVersion: v1
   metadata:
     name: "${APPLICATION_NAME}"
@@ -135,11 +132,11 @@ Then deployment of JupyterLab, if you want to deploy another application alongsi
           deploymentconfig: "${APPLICATION_NAME}"
 ```
 
-Then we define the spec of the pod that will be deployed
+Then we define the spec of the pod that will be deployed by this deployment config.
 
 Setting the `serviceAccountName: anyuid` is required for most Docker containers as it allows to run a container using any user ID (e.g. root). Otherwise OpenShift expect to use a random user ID, which is require to build the Docker image especially to work with random user IDs.
 
-We then create the `containers:` array which is where we will define the containers deployed in the pod. It is recommended to deploy 1 container per pod, as it enables a better separation and management of the applications, apart if you know what you are doing.
+We then create the `containers:` array which is where we will define the containers deployed in the pod. It is recommended to deploy 1 container per pod, as it enables a better separation and management of the applications, apart if you know what you are doing. You can also provide the command to run at the start of the container to overwrite the default one, and define the exposed ports (here 8080).
 
 ```yaml
       spec:
@@ -151,11 +148,6 @@ We then create the `containers:` array which is where we will define the contain
           - start-notebook.sh
           - "--no-browser"
           - "--ip=0.0.0.0"
-```
-
-Then define the ports exposed by your container, here 8888
-
-```yaml
           ports:
           - containerPort: 8888
             protocol: TCP
@@ -201,7 +193,7 @@ Then we define the security context to allow JupyterLab to run as root, this is 
 Then we create the service to expose the port 8888 of our JupyterLab container on the project network. This means that the JupyterLab web UI will reachable by all other application deployed in your project using its application name as hostname (e.g. `jupyterlab`)
 
 ```yaml
-- kind: Service
+- kind: "Service"
   apiVersion: v1
   metadata:
     name: "${APPLICATION_NAME}"
@@ -222,7 +214,7 @@ Then we create the service to expose the port 8888 of our JupyterLab container o
 Then we define the route which will automatically generate a URL for the service of your application based following this template: `APPLICATION_NAME-PROJECT_ID-DSRI_URL`
 
 ```yaml
-- kind: Route
+- kind: "Route"
   apiVersion: v1
   metadata:
     name: "${APPLICATION_NAME}"
@@ -241,9 +233,178 @@ Then we define the route which will automatically generate a URL for the service
       insecureEdgeTerminationPolicy: Redirect
 ```
 
-### Add a configuration file
+## The complete example
 
-This practice is a bit advanced and is not required for most deployments, but you can easily create a `ConfigMap` object to define any file to be provided at runtime to the application. For example here we are going to define a `jupyter_notebook_config.py` which will be run at runtime (to do something with the notebook password)
+```yaml
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+labels:
+  template: jupyterlab-root
+metadata:
+  name: jupyterlab-root
+  annotations:
+    openshift.io/display-name: JupyterLab
+    description: |-
+      Start JupyterLab images as the `jovyan` user, with sudo privileges to install anything you need. 
+      📂 Use the `/home/jovyan` folder (workspace of the JupyterLab UI) to store your data in the persistent storage automatically created
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+      You can use any image based on the official Jupyter docker stack https://github.com/jupyter/docker-stacks
+      - jupyter/tensorflow-notebook
+      - jupyter/r-notebook
+      - jupyter/all-spark-notebook
+      - ghcr.io/maastrichtu-ids/jupyterlab (with Java and SPARQL kernels)
+      Or build your own! Checkout https://github.com/MaastrichtU-IDS/jupyterlab for an example of custom image
+      Once JupyterLab is deployed you can install any pip packages, JupyterLab extensions, and apt packages.
+    iconClass: icon-python
+    tags: python,jupyter,notebook
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    
+parameters:
+- name: APPLICATION_NAME
+  description: Use a name without spaces, use - to separate words
+  value: jupyterlab
+  required: true
+- name: NOTEBOOK_IMAGE
+  value: ghcr.io/maastrichtu-ids/jupyterlab:latest
+  required: true
+  description: You can use any image based on https://github.com/jupyter/docker-stacks
+- name: PASSWORD
+  description: The password/token to access JupyterLab
+  required: true
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
+  value: 10Gi
+  required: true
+    
+objects:
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+
+- kind: "Secret"
+  apiVersion: v1
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
+
+- kind: "DeploymentConfig"
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          alpha.image.policy.openshift.io/resolve-names: "*"
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}"
+
+      spec:
+        serviceAccountName: anyuid
+        containers:
+        - name: jupyter-notebook
+          image: "${NOTEBOOK_IMAGE}"
+          command:
+          - start-notebook.sh
+          - "--no-browser"
+          - "--ip=0.0.0.0"
+          ports:
+          - containerPort: 8888
+            protocol: TCP
+
+          env:
+          - name: JUPYTER_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: JUPYTER_ENABLE_LAB
+            value: "yes"
+          - name: GRANT_SUDO
+            value: "yes"
+
+          volumeMounts:
+          - name: data
+            mountPath: "/home/jovyan"
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
+
+        securityContext:
+          runAsUser: 0
+          supplementalGroups:
+          - 100
+        automountServiceAccountToken: false
+
+- kind: "Service"
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8888-tcp
+      protocol: TCP
+      port: 8888
+      targetPort: 8888
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    type: ClusterIP
+
+- kind: "Route"
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8888-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+```
+
+## Add a configuration file
+
+This practice is a bit advanced and is not required for most deployments, but you can easily create a **ConfigMap** object to define any file to be provided at runtime to the application. For example here we are going to define a `jupyter_notebook_config.py` which will be run at runtime (to do something with the notebook password)
 
 ```yaml
 - kind: ConfigMap
@@ -267,7 +428,7 @@ This practice is a bit advanced and is not required for most deployments, but yo
               exec(compile(fp.read(), image_config_file, 'exec'), globals())
 ```
 
-We will then need to mount this config file like a persistent volume at where we want it to be, change the volumes and volumeMounts of your DeploymentConfig:
+We will then need to mount this config file like a persistent volume at where we want it to be, change the **volumes** and **volumeMounts** of your **DeploymentConfig**:
 
 ```yaml
           volumeMounts:
@@ -295,16 +456,16 @@ Finally change the `jupyter-notebook` container start command to include this co
           - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"
 ```
 
-### Define resource limits
+## Define resource limits
 
-You can also define resources request and limits for each DeploymentConfig, in `spec:`
+You can also define resources request and limits for each **DeploymentConfig**, in `spec:`
 
 ```yaml
         spec:
           resources:
             requests: 
-              cpu: "${CPU_LIMIT}"
-              memory: "${MEMORY_LIMIT}"
+              cpu: "1"
+              memory: "2Gi"
             limits:
               cpu: "128"
               memory: "300Gi"
