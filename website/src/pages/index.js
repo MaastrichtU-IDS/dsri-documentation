@@ -98,9 +98,7 @@ function Home() {
           </h1>
           <video width="100%" height="100%" controls>
             {/* <source src="img/video_dsri_introduction.mkv" type="video/webm"/> */}
-            {/* <source src="img/video_dsri_introduction.webm" type="video/webm"/> */}
-            {/* <source src="https://www.youtube.com/watch?v=Y0BjotH1LiE&list=PLbsccgpTx-94RU2UyWo9VsojG4MCTKGUF&index=2" type="video/webm"/> */}
-            <iframe width="560" height="315" src="https://www.youtube.com/watch?v=Y0BjotH1LiE&list=PLbsccgpTx-94RU2UyWo9VsojG4MCTKGUF&index=2" frameborder="0" allowfullscreen></iframe>
+            <source src="img/video_dsri_introduction.webm" type="video/webm"/>
           </video>
         </div>
       </main>
