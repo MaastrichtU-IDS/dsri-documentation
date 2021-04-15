@@ -4,6 +4,8 @@ Templates and deployments for the Data Science Research Infrastructure (DSRI).
 
 [Browse the list of Icons](https://rawgit.com/openshift/openshift-logos-icon/master/demo.html) for Templates in the Catalog.
 
+See also: https://access.redhat.com/solutions/5648261
+
 Convert JSON to YAML: https://www.json2yaml.com
 
 **See also**:
