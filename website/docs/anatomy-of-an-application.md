@@ -77,32 +77,7 @@ parameters:
 Then we will describe all objects deployed when we instantiate this template (to start an application). First we define the PersistentVolumeClaim, which is the storage 
 
 ```yaml
-
 objects:
-- kind: ConfigMap
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}-cfg"
-    labels:
-      app: "${APPLICATION_NAME}"
-  data:
-    jupyter_notebook_config.py: |
-      import os
-
-      password = os.environ.get('JUPYTER_NOTEBOOK_PASSWORD')
-
-      if password:
-          import notebook.auth
-          c.NotebookApp.password = notebook.auth.passwd(password)
-          del password
-          del os.environ['JUPYTER_NOTEBOOK_PASSWORD']
-
-      image_config_file = '/home/jovyan/.jupyter/jupyter_notebook_config.py'
-
-      if os.path.exists(image_config_file):
-          with open(image_config_file) as fp:
-              exec(compile(fp.read(), image_config_file, 'exec'), globals())
-
 - apiVersion: "v1"
   kind: "PersistentVolumeClaim"
   metadata:
