@@ -24,8 +24,7 @@ labels:
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
-  description: Must be unique in the project. It will be used to generate the application
-    URL.
+  description: Must be without spaces (use -), and unique in the project.
   value: graphdb
   required: true
 # - name: PASSWORD

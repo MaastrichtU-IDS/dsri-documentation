@@ -32,6 +32,7 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 parameters:
 - name: APPLICATION_NAME
+  description: Must be without spaces (use -), and unique in the project.
   value: jupyterlab
   required: true
 - name: NOTEBOOK_IMAGE

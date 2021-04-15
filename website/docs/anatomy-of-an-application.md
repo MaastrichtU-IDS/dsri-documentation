@@ -80,7 +80,7 @@ objects:
   metadata:
     name: ${APPLICATION_NAME}
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   spec:
     accessModes:
       - "ReadWriteMany"
@@ -100,7 +100,7 @@ Then the secret to store the password
       template.openshift.io/expose-password: "{.data['application-password']}"
     name: "${APPLICATION_NAME}"
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   stringData:
     application-password: "${PASSWORD}"
 ```
@@ -113,7 +113,7 @@ Then deployment of JupyterLab, if you want to deploy another application alongsi
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   spec:
     strategy:
       type: Recreate
@@ -121,14 +121,14 @@ Then deployment of JupyterLab, if you want to deploy another application alongsi
     - type: ConfigChange
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
       deploymentconfig: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
-          app: "${APPLICATION_NAME}"
+          app: ${APPLICATION_NAME}
           deploymentconfig: "${APPLICATION_NAME}"
 ```
 
@@ -140,12 +140,12 @@ We then create the `containers:` array which is where we will define the contain
 
 ```yaml
       spec:
-        serviceAccountName: anyuid
+        serviceAccountName: "anyuid"
         containers:
         - name: jupyter-notebook
           image: "${NOTEBOOK_IMAGE}"
           command:
-          - start-notebook.sh
+          - "start-notebook.sh"
           - "--no-browser"
           - "--ip=0.0.0.0"
           ports:
@@ -198,7 +198,7 @@ Then we create the service to expose the port 8888 of our JupyterLab container o
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   spec:
     ports:
     - name: 8888-tcp
@@ -206,7 +206,7 @@ Then we create the service to expose the port 8888 of our JupyterLab container o
       port: 8888
       targetPort: 8888
     selector:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
       deploymentconfig: "${APPLICATION_NAME}"
     type: ClusterIP
 ```
@@ -219,7 +219,7 @@ Then we define the route which will automatically generate a URL for the service
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   spec:
     host: ''
     to:
@@ -286,7 +286,7 @@ objects:
   metadata:
     name: ${APPLICATION_NAME}
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   spec:
     accessModes:
       - "ReadWriteMany"
@@ -301,7 +301,7 @@ objects:
       template.openshift.io/expose-password: "{.data['application-password']}"
     name: "${APPLICATION_NAME}"
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   stringData:
     application-password: "${PASSWORD}"
 
@@ -310,7 +310,7 @@ objects:
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   spec:
     strategy:
       type: Recreate
@@ -318,23 +318,23 @@ objects:
     - type: ConfigChange
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
       deploymentconfig: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
-          app: "${APPLICATION_NAME}"
+          app: ${APPLICATION_NAME}
           deploymentconfig: "${APPLICATION_NAME}"
 
       spec:
-        serviceAccountName: anyuid
+        serviceAccountName: "anyuid"
         containers:
         - name: jupyter-notebook
           image: "${NOTEBOOK_IMAGE}"
           command:
-          - start-notebook.sh
+          - "start-notebook.sh"
           - "--no-browser"
           - "--ip=0.0.0.0"
           ports:
@@ -342,7 +342,7 @@ objects:
             protocol: TCP
 
           env:
-          - name: JUPYTER_TOKEN
+          - name: "JUPYTER_TOKEN"
             valueFrom:
               secretKeyRef:
                 key: application-password
@@ -371,7 +371,7 @@ objects:
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   spec:
     ports:
     - name: 8888-tcp
@@ -379,7 +379,7 @@ objects:
       port: 8888
       targetPort: 8888
     selector:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
       deploymentconfig: "${APPLICATION_NAME}"
     type: ClusterIP
 
@@ -388,7 +388,7 @@ objects:
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   spec:
     host: ''
     to:
@@ -412,7 +412,7 @@ This practice is a bit advanced and is not required for most deployments, but yo
   metadata:
     name: "${APPLICATION_NAME}-cfg"
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
   data:
     jupyter_notebook_config.py: |
       import os
@@ -450,7 +450,7 @@ Finally change the `jupyter-notebook` container start command to include this co
 
 ```yaml
           command:
-          - start-notebook.sh
+          - "start-notebook.sh"
           - "--no-browser"
           - "--ip=0.0.0.0"
           - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"

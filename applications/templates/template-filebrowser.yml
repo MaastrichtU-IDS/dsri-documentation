@@ -31,8 +31,7 @@ message: The filebrowser has been deployed with default login/password (admin/ad
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
-  description: Must be unique in the project. It will be used to generate the application
-    URL.
+  description: Must be without spaces (use -), and unique in the project.
   value: filebrowser
   required: true
 - name: APPLICATION_PASSWORD
