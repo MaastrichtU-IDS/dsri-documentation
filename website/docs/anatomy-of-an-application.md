@@ -3,11 +3,11 @@ id: anatomy-of-an-application
 title: Anatomy of a DSRI application
 ---
 
-This page will present you how an applications is typically built using an OpenShift template. There are other ways to describe applications on OpenShift cluster (here the DSRI), such as Helm or Operators. But OpenShift templates are the easiest and quickest way to build an application that can be deployed from the DSRI web UI catalog in a few clicks, and by providing a few parameters.
+This page will present you how an applications is typically built using an **OpenShift template**. There are other ways to describe applications on OpenShift cluster (here the DSRI), such as Helm or Operators. But OpenShift templates are the easiest and quickest way to build an application that can be deployed from the DSRI web UI catalog in a few clicks, and by providing a few parameters.
 
-You will need to have a basic understanding of what a docker container is to fully understand this tutorial, and not be afraid to read to YAML files. YAML is a human-friendly format to read and write configuration files, it's just about objects and arrays, like JSON, but easy to read.
+It is better to have a basic understanding of what a docker container is to fully understand this walkthrough, but it should already gives a good idea of the different objects deployed with each DSRI application.
 
-We will use the template used to deploy JupyterLab as example, and we will describe the goal, importance and caveats of each parts. Checkout the [complete JupyterLab template here](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/templates/template-jupyterlab-root.yml) (it will be slightly different with a bit more comments, but there are globally the same)
+We will use the template used to deploy JupyterLab as example, and we will describe the goal, importance and caveats of each parts of the application definition. Checkout the [complete JupyterLab template here](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/templates/template-jupyterlab-root.yml) (it will be slightly different with a bit more comments, but there are globally the same)
 
 You will see that deploying on Kubernetes (and by extension, here OpenShift), is just about defining objects in a YAML file, like a complex `docker-compose.yml` file. 
 
@@ -19,7 +19,9 @@ The amount of objects might seems a bit overwhelming at first, but this is what 
 
 ## Application walkthrough
 
-First, you need to create your template objects, this will be the main object we will create here as all other objects defined will be deployed by this template.
+First, you need to create your **Template** objects, this will be the main object we will create here as all other objects defined will be deployed by this template. 
+
+In this part we mainly just provide the description and informations that will be shown to users when deploying the application from the DSRI web UI catalog.
 
 ```yaml
 ---
@@ -49,7 +51,7 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 ```
 
-Then define the params the user will be able to define via the DSRI catalog web UI.  `APPLICATION_NAME` is the most important as it will be used everywhere to create the objects and identify the application.
+Then define the **parameters** the user will be able to define in the DSRI catalog web UI when instantiating the application.  `APPLICATION_NAME` is the most important as it will be used everywhere to create the objects and identify the application.
 
 ```yaml
 parameters:
@@ -71,7 +73,9 @@ parameters:
   required: true
 ```
 
-Then we will describe all objects deployed when we instantiate this template (to start an application). First we define the PersistentVolumeClaim, which is the storage 
+Then we will describe all objects deployed when we instantiate this template (to start an application). First we define the **PersistentVolumeClaim**, which is a persistent storage on which we will mount the `/home/jovyan` folder to avoid loosing data if our application is restarted.
+
+Any file outside of a persistent volume can be lost at any moment if the pod restart, usually it only consists in temporary file if you are properly working in the persistent volume folder. This can be useful also if your application is crashing, stopping and restarting your pod (application) might fix it.
 
 ```yaml
 objects:
@@ -90,7 +94,7 @@ objects:
 ```
 
 
-Then the secret to store the password
+Then the **Secret** to store the password
 
 ```yaml
 - kind: "Secret"
@@ -105,7 +109,9 @@ Then the secret to store the password
     application-password: "${PASSWORD}"
 ```
 
-Then deployment of JupyterLab, if you want to deploy another application alongside JupyterLab you can do it by adding as many deployments as you want! (and use the same or different persistent volume claims for storage)
+Then **DeploymentConfig** (aka. Deployment) of JupyterLab, if you want to deploy another application alongside JupyterLab you can do it by adding as many deployments as you want! (and use the same or different persistent volume claims for storage).
+
+In this first block we will define the strategy to recreate our applications if the config change, this can also be done when a new latest docker image is available, to always use an up-to-date version of an image.
 
 ```yaml
 - kind: "DeploymentConfig"
@@ -132,7 +138,7 @@ Then deployment of JupyterLab, if you want to deploy another application alongsi
           deploymentconfig: "${APPLICATION_NAME}"
 ```
 
-Then we define the spec of the pod that will be deployed by this deployment config.
+Then we define the spec of the pod that will be deployed by this **DeploymentConfig**.
 
 Setting the `serviceAccountName: anyuid` is required for most Docker containers as it allows to run a container using any user ID (e.g. root). Otherwise OpenShift expect to use a random user ID, which is require to build the Docker image especially to work with random user IDs.
 
@@ -153,7 +159,7 @@ We then create the `containers:` array which is where we will define the contain
             protocol: TCP
 ```
 
-Then define the environment variables used in your container, usually the password and most parameters are set here, such as enabling `sudo` in the container.
+Then define the **environment variables** used in your container, usually the password and most parameters are set here, such as enabling `sudo` in the container.
 
 ```yaml
           env:
@@ -168,7 +174,7 @@ Then define the environment variables used in your container, usually the passwo
             value: "yes"
 ```
 
-Then we need to mount the previously created PersistentVolume on `/home/jovyan` , the workspace of JupyterLab. Be careful: `volumeMounts` is in the `containers:` object, and `volumes` is defined in the `spec:` object
+Then we need to mount the previously created **PersistentVolume** on `/home/jovyan` , the workspace of JupyterLab. Be careful: `volumeMounts` is in the `containers:` object, and `volumes` is defined in the `spec:` object
 
 ```yaml
           volumeMounts:
@@ -180,7 +186,7 @@ Then we need to mount the previously created PersistentVolume on `/home/jovyan` 
             claimName: "${APPLICATION_NAME}"
 ```
 
-Then we define the security context to allow JupyterLab to run as root, this is not required for most applications, just a specificity of the official Jupyter images to run with root privileges.
+Then we define the **securityContext** to allow JupyterLab to run as root, this is not required for most applications, just a specificity of the official Jupyter images to run with root privileges.
 
 ```yaml
         securityContext:
@@ -190,7 +196,7 @@ Then we define the security context to allow JupyterLab to run as root, this is 
         automountServiceAccountToken: false
 ```
 
-Then we create the service to expose the port 8888 of our JupyterLab container on the project network. This means that the JupyterLab web UI will reachable by all other application deployed in your project using its application name as hostname (e.g. `jupyterlab`)
+Then we create the **Service** to expose the port 8888 of our JupyterLab container on the project network. This means that the JupyterLab web UI will reachable by all other application deployed in your project using its application name as hostname (e.g. `jupyterlab`)
 
 ```yaml
 - kind: "Service"
@@ -211,7 +217,7 @@ Then we create the service to expose the port 8888 of our JupyterLab container o
     type: ClusterIP
 ```
 
-Then we define the route which will automatically generate a URL for the service of your application based following this template: `APPLICATION_NAME-PROJECT_ID-DSRI_URL`
+Then we define the **Route** which will automatically generate a URL for the service of your application based following this template: `APPLICATION_NAME-PROJECT_ID-DSRI_URL`
 
 ```yaml
 - kind: "Route"
