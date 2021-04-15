@@ -3,7 +3,9 @@ id: anatomy-of-an-application
 title: Anatomy of a DSRI application
 ---
 
-This page will present you how an applications is typically built using an **OpenShift template**. There are other ways to describe applications on OpenShift cluster (here the DSRI), such as Helm or Operators. But OpenShift templates are the easiest and quickest way to build an application that can be deployed from the DSRI web UI catalog in a few clicks, and by providing a few parameters.
+This page will present you how an applications is typically built using an **OpenShift template**. This will also help you understand more in general the different objects that needs to be defined when **deploying an application on a Kubernetes cluster**. Even if OpenShift templates can only be deployed to OpenShift, the objects they define are the same as in Kubernetes (apart from the Route which becomes Ingress).
+
+There are other ways to describe applications on OpenShift cluster (here the DSRI), such as Helm or Operators. But OpenShift templates are the easiest and quickest way to build an application that can be deployed from the DSRI web UI catalog in a few clicks, and by providing a few parameters.
 
 It is better to have a basic understanding of what a docker container is to fully understand this walkthrough, but it should already gives a good idea of the different objects deployed with each DSRI application.
 
