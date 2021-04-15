@@ -32,22 +32,23 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 parameters:
 - name: APPLICATION_NAME
+  displayName: Name for the application
   description: Must be without spaces (use -), and unique in the project.
   value: jupyterlab
   required: true
-- name: NOTEBOOK_IMAGE
+- name: APPLICATION_IMAGE
+  displayName: Jupyter notebook Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
   required: true
   description: You can use any image based on https://github.com/jupyter/docker-stacks
 - name: PASSWORD
-  description: The password/token to access JupyterLab
+  displayName: JupyterLab UI Password
+  description: The password/token to access the JupyterLab web UI
   required: true
-  # generate: expression
-  # from: "[a-zA-Z0-9]{12}"
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
-  value: 10Gi
+  value: 5Gi
   required: true
 # - name: MEMORY_LIMIT
 #   displayName: Memory limit
@@ -60,50 +61,47 @@ parameters:
 #   value: "2"
 #   required: true
 objects:
-# - kind: ConfigMap
-#   apiVersion: v1
-#   metadata:
-#     name: "${APPLICATION_NAME}-cfg"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   data:
-#     jupyter_notebook_config.py: |
-#       import os
+- kind: "ImageStream"
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: jupyterlab-root
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      # importPolicy:
+      #   scheduled: true
+    lookupPolicy:
+      local: true
 
-#       password = os.environ.get('JUPYTER_NOTEBOOK_PASSWORD')
-
-#       if password:
-#           import notebook.auth
-#           c.NotebookApp.password = notebook.auth.passwd(password)
-#           del password
-#           del os.environ['JUPYTER_NOTEBOOK_PASSWORD']
-
-#       image_config_file = '/home/jovyan/.jupyter/jupyter_notebook_config.py'
-
-#       if os.path.exists(image_config_file):
-#           with open(image_config_file) as fp:
-#               exec(compile(fp.read(), image_config_file, 'exec'), globals())
-
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
   metadata:
     name: ${APPLICATION_NAME}
     labels:
       app: "${APPLICATION_NAME}"
+      template: jupyterlab-root
   spec:
     accessModes:
       - "ReadWriteMany"
     resources:
       requests:
         storage: ${STORAGE_SIZE}
+
 - apiVersion: v1
   kind: Secret
   metadata:
-    annotations:
-      template.openshift.io/expose-password: "{.data['application-password']}"
+    # annotations:
+    #   template.openshift.io/expose-password: "{.data['application-password']}"
     name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
+      template: jupyterlab-root
   stringData:
     application-password: "${PASSWORD}"
 
@@ -113,38 +111,46 @@ objects:
     name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
+      template: jupyterlab-root
   spec:
+    replicas: 1
     strategy:
       type: Recreate
+      # type: Rolling
     triggers:
     - type: ConfigChange
-    replicas: 1
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - jupyter-notebook
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
     selector:
       app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}"
     template:
       metadata:
-        annotations:
-          alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
           app: "${APPLICATION_NAME}"
           deploymentconfig: "${APPLICATION_NAME}"
       spec:
-        serviceAccountName: anyuid
+        serviceAccountName: "anyuid"
         # nodeSelector:
         #   dsri.unimaas.nl/cpu: 'true'
         containers:
         - name: jupyter-notebook
-          image: "${NOTEBOOK_IMAGE}"
+          image: "${APPLICATION_NAME}:latest"
           command:
-          - start-notebook.sh
+          - "start-notebook.sh"
           - "--no-browser"
           - "--ip=0.0.0.0"
           # - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"
           ports:
           - containerPort: 8888
             protocol: TCP
-          # SPARK UI if needed
+          # SPARK UI if all-spark notebook deployed
           - containerPort: 4040 
             protocol: TCP
           - containerPort: 4041
@@ -157,7 +163,6 @@ objects:
           #     cpu: "128"
           #     memory: "300Gi"
           env:
-          # - name: JUPYTER_NOTEBOOK_PASSWORD
           - name: JUPYTER_TOKEN
             valueFrom:
               secretKeyRef:
@@ -191,6 +196,7 @@ objects:
     name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
+      template: jupyterlab-root
   spec:
     ports:
     - name: 8888-tcp
@@ -226,6 +232,7 @@ objects:
     name: "${APPLICATION_NAME}-spark-ui"
     labels:
       app: "${APPLICATION_NAME}"
+      template: jupyterlab-root
   spec:
     ports:
     - name: 4040-tcp
@@ -236,3 +243,24 @@ objects:
       app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}"
     type: ClusterIP
+
+
+# - kind: ConfigMap
+#   apiVersion: v1
+#   metadata:
+#     name: "${APPLICATION_NAME}-cfg"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   data:
+#     jupyter_notebook_config.py: |
+#       import os
+#       password = os.environ.get('JUPYTER_NOTEBOOK_PASSWORD')
+#       if password:
+#           import notebook.auth
+#           c.NotebookApp.password = notebook.auth.passwd(password)
+#           del password
+#           del os.environ['JUPYTER_NOTEBOOK_PASSWORD']
+#       image_config_file = '/home/jovyan/.jupyter/jupyter_notebook_config.py'
+#       if os.path.exists(image_config_file):
+#           with open(image_config_file) as fp:
+#               exec(compile(fp.read(), image_config_file, 'exec'), globals())

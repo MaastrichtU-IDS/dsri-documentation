@@ -124,6 +124,8 @@ objects:
       deploymentconfig: "${APPLICATION_NAME}"
     template:
       metadata:
+        annotations:
+          alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
           app: "${APPLICATION_NAME}"
           deploymentconfig: "${APPLICATION_NAME}"
