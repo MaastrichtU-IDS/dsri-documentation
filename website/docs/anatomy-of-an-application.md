@@ -233,7 +233,9 @@ Then we define the route which will automatically generate a URL for the service
       insecureEdgeTerminationPolicy: Redirect
 ```
 
-## The complete example
+## The complete application
+
+Here is a complete file to describe the JupyterLab deployment template, you can add it to your project catalog by going to **+ Add** in the DSRI web UI, then click on the option to add a **YAML** file content, and copy paste the template YAML.
 
 ```yaml
 ---

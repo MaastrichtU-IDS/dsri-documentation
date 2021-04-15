@@ -18,7 +18,7 @@ Kubernetes, also known as K8s, is an open-source system for automating deploymen
 More Information: https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/
 
 
-## Openshift
+## OpenShift
 
 [Red Hat OpenShift](https://www.openshift.com/) is a hybrid cloud, enterprise Kubernetes application platform, trusted by 2,000+ organizations.
 
