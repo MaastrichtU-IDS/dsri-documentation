@@ -36,15 +36,15 @@ parameters:
   description: Must be without spaces (use -), and unique in the project.
   value: jupyterlab
   required: true
+- name: PASSWORD
+  displayName: JupyterLab UI Password
+  description: The password/token to access the JupyterLab web UI
+  required: true
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
   required: true
   description: You can use any image based on https://github.com/jupyter/docker-stacks
-- name: PASSWORD
-  displayName: JupyterLab UI Password
-  description: The password/token to access the JupyterLab web UI
-  required: true
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.

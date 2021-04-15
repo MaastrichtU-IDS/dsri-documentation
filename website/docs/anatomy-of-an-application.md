@@ -9,7 +9,9 @@ There are other ways to describe applications on OpenShift cluster (here the DSR
 
 It is better to have a basic understanding of what a docker container is to fully understand this walkthrough, but it should already gives a good idea of the different objects deployed with each DSRI application.
 
-We will use the template used to deploy JupyterLab as example, and we will describe the goal, importance and caveats of each parts of the application definition. Checkout the [complete JupyterLab template here](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/templates/template-jupyterlab-root.yml) (it will be slightly different with a bit more comments, but there are globally the same)
+We will use the template used to deploy JupyterLab as example, and we will describe the goal, importance and caveats of each parts of the application definition. But the same template and instructions can be easily reused for other applications with a web UI to access.
+
+Checkout the [complete JupyterLab template here](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/templates/template-jupyterlab-root.yml) (it will be slightly different with a bit more comments, but there are globally the same)
 
 You will see that deploying on Kubernetes (and by extension, here OpenShift), is just about defining objects in a YAML file, like a complex `docker-compose.yml` file. 
 
@@ -62,15 +64,15 @@ parameters:
   description: Must be without spaces (use -), and unique in the project.
   value: jupyterlab
   required: true
+- name: PASSWORD
+  displayName: JupyterLab UI Password
+  description: The password/token to access the JupyterLab web UI
+  required: true
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
   required: true
   description: You can use any image based on https://github.com/jupyter/docker-stacks
-- name: PASSWORD
-  displayName: JupyterLab UI Password
-  description: The password/token to access the JupyterLab web UI
-  required: true
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
@@ -80,7 +82,7 @@ parameters:
 
 We can then refer to those parameters value (filled by the users of the template) in the rest of the template using this syntax: `${APPLICATION_NAME}`
 
-We will now describe all objects deployed when we instantiate this template (to start an application). 
+We will now **describe all objects deployed** when we instantiate this template (to start an application). 
 
 First we define the **ImageStream** object to import the Docker image(s) of your application(s) on the DSRI cluster
 
@@ -139,9 +141,11 @@ Then the **Secret** to store the password
     application-password: "${PASSWORD}"
 ```
 
-Then **DeploymentConfig** (aka. Deployment) of JupyterLab, if you want to deploy another application alongside JupyterLab you can do it by adding as many deployments as you want! (and use the same or different persistent volume claims for storage). Checkout the [OpenShift Deployments documentation](https://docs.openshift.com/container-platform/4.6/applications/deployments/what-deployments-are.html) for more details.
+Then the **DeploymentConfig** (aka. Deployment) define how to deploy the JupyterLab image, if you want to deploy another application alongside JupyterLab you can do it by adding as many deployments as you want! (and use the same, or different, persistent volume claims for storage). Checkout the [OpenShift Deployments documentation](https://docs.openshift.com/container-platform/4.6/applications/deployments/what-deployments-are.html) for more details.
 
-In this first block we will define the strategy to recreate our applications if the config change, this can also be done when a new latest docker image is available, to always use an up-to-date version of an image. We chose the `Recreate` release option to make sure the container is properly recreated, but you can also use `Rolling` to have a downtime free transition between deployments.
+In this first block we will define the strategy to update and recreate our applications if you change the YAML configuration, or when a new latest docker image is updated, allowing your service to always use the latest up-to-date version of a software without any intervention from you. 
+
+We chose the `Recreate` release option to make sure the container is properly recreated and avoid unnecessary resources consumption, but you can also use `Rolling` to have a downtime free transition between deployments.
 
 ```yaml
 - kind: "DeploymentConfig"
@@ -153,10 +157,10 @@ In this first block we will define the strategy to recreate our applications if 
   spec:
     replicas: 1
     strategy:
-      type: Recreate
+      type: "Recreate"
     triggers:
-    - type: ConfigChange
-    - type: ImageChange
+    - type: "ConfigChange"
+    - type: "ImageChange"
       imageChangeParams:
         automatic: true
         containerNames:
@@ -184,7 +188,7 @@ We then create the `containers:` array which is where we will define the contain
       spec:
         serviceAccountName: "anyuid"
         containers:
-        - name: jupyter-notebook
+        - name: "jupyter-notebook"
           image: "${APPLICATION_NAME}:latest"
           command:
           - "start-notebook.sh"
@@ -202,7 +206,7 @@ Then define the **environment variables** used in your container, usually the pa
           - name: JUPYTER_TOKEN
             valueFrom:
               secretKeyRef:
-                key: application-password
+                key: "application-password"
                 name: "${APPLICATION_NAME}"
           - name: JUPYTER_ENABLE_LAB
             value: "yes"
@@ -312,15 +316,15 @@ parameters:
   description: Must be without spaces (use -), and unique in the project.
   value: jupyterlab
   required: true
+- name: PASSWORD
+  displayName: JupyterLab UI Password
+  description: The password/token to access the JupyterLab web UI
+  required: true
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
   required: true
   description: You can use any image based on https://github.com/jupyter/docker-stacks
-- name: PASSWORD
-  displayName: JupyterLab UI Password
-  description: The password/token to access the JupyterLab web UI
-  required: true
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
