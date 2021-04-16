@@ -607,3 +607,13 @@ You can also define resources request and limits for each **DeploymentConfig**, 
               memory: "300Gi"
 ```
 
+## Build your own application template
+
+The easiest way to build a template for a new application is to start from this JupyterLab template:
+
+* Replace `jupyterlab-root` by your application name
+* Replace `8888` by your application
+* Change the template and parameters descriptions to match your application
+* Remove the `securityContext` part, and other objects you do not need
+
+If you need to start multiple containers, copy/paste the objects you need to create and edit them
