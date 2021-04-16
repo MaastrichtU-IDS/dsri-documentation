@@ -28,7 +28,8 @@ metadata:
       If this repo contains files with list of packages in the root folder, they will be installed at start:
       - requirements.txt for pip packages
       - packages.txt for apt packages
-      Use this repository to clone a repository with examples to use the DSRI: https://github.com/MaastrichtU-IDS/dsri-demo
+      You can use this URL to clone a repository with some examples to use the DSRI: 
+      https://github.com/MaastrichtU-IDS/dsri-demo
     iconClass: icon-python
     tags: python,jupyter,notebook
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -287,6 +288,7 @@ objects:
           os.system('cat packages.txt | xargs sudo apt-get install -y')
         if os.path.exists('requirements.txt'):
           os.system('pip install -r requirements.txt')
+        os.chdir(home_dir)
 
 
 # - kind: ConfigMap

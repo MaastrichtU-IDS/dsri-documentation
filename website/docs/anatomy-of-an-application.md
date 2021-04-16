@@ -522,6 +522,7 @@ For example here we are going to define a python script that will be run when st
           os.system('cat packages.txt | xargs sudo apt-get install -y')
         if os.path.exists('requirements.txt'):
           os.system('pip install -r requirements.txt')
+        os.chdir(home_dir)
 ```
 
 We will then need to mount this config file like a persistent volume at where we want it to be, change the **volumes** and **volumeMounts** of your **DeploymentConfig**.

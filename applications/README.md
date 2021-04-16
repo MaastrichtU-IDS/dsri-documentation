@@ -25,7 +25,7 @@ Clone this repository and go in the `applications` folder:
 
 ```bash
 git clone https://github.com/MaastrichtU-IDS/dsri-documentation.git
-cd applications
+cd dsri-documentation/applications
 ```
 
 ### Data science templates
@@ -36,7 +36,7 @@ Use a bash terminal to upload popular all data science templates with privileged
 for template in $( ls templates/*.yml ); do oc apply -f ${template} ; done
 ```
 
-Upload templates of popular applications with restricted user (jupyterlab, vscode, rstudio):
+Upload templates of some popular applications with restricted user (jupyterlab, vscode, rstudio):
 
 ```bash
 for template in $( ls templates/restricted/*.yml ); do oc apply -f ${template} ; done
@@ -47,7 +47,7 @@ for template in $( ls templates/restricted/*.yml ); do oc apply -f ${template} ;
 Tensorflow and PyTorch templates to run on GPU:
 
 ```bash
-for template in $( ls templates/gpu/*/*.yml ); do oc apply -f ${template} ; done
+for template in $( ls gpu/*/*.yml ); do oc apply -f ${template} ; done
 ```
 
 ## Create custom Docker image
