@@ -4,6 +4,7 @@
       "openshift-install", "openshift-load-data",
       "openshift-delete-services", "guide-monitoring", "prepare-project-for-dsri", "openshift-migrate-project"],
     "Deploy applications": [ 
+      "guide-dockerfile-to-openshift", "deploy-from-docker", "anatomy-of-an-application", "operators", "helm",
       {
         "type": "category",
         "label": "Data Science catalog",
@@ -12,8 +13,7 @@
           "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-database", "deploy-matlab",
           "deploy-spark", "catalog-openmpi", "neuroscience", "catalog-genomics", "catalog-imaging", "deploy-on-gpu", "catalog-utilities"
         ]
-      },
-      "guide-dockerfile-to-openshift", "deploy-from-docker", "anatomy-of-an-application", "operators", "helm"
+      }
     ],
     "Guides": [ "guide-known-issues", "login-docker-registry", "openshift-commands", "openshift-storage",  
       "guide-publish-image", 
