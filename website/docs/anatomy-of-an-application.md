@@ -55,6 +55,8 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 ```
 
+### Parameters
+
 Then define the **parameters** the user will be able to define in the DSRI catalog web UI when instantiating the application.  `APPLICATION_NAME` is the most important as it will be used everywhere to create the objects and identify the application.
 
 ```yaml
@@ -84,6 +86,8 @@ We can then refer to those parameters value (filled by the users of the template
 
 We will now **describe all objects deployed** when we instantiate this template (to start an application). 
 
+### Image
+
 First we define the **ImageStream** object to import the Docker image(s) of your application(s) on the DSRI cluster
 
 Setting the `importPolicy: scheduled` to `true` will have the DSRI to automatically check for new version of this image, which can be useful if you want to always have the latest published version of an applications. Visit the [OpenShift ImageStreams documentation](https://docs.openshift.com/container-platform/4.6/openshift_images/image-streams-manage.html) for more details. Be careful as enabling this feature without real need will cause the DSRI to query DockerHub more, which might require you to login to DockerHub to increase your pull request quota.
@@ -108,6 +112,8 @@ objects:
       local: true
 ```
 
+### Create storage
+
 Then we define the **PersistentVolumeClaim**, which is a persistent storage on which we will mount the `/home/jovyan` folder to avoid loosing data if our application is restarted.
 
 Any file outside of a persistent volume can be lost at any moment if the pod restart, usually it only consists in temporary file if you are properly working in the persistent volume folder. This can be useful also if your application is crashing, stopping and restarting your pod (application) might fix it.
@@ -127,6 +133,7 @@ Any file outside of a persistent volume can be lost at any moment if the pod res
         storage: ${STORAGE_SIZE}
 ```
 
+### Secret
 
 Then the **Secret** to store the password
 
@@ -140,6 +147,8 @@ Then the **Secret** to store the password
   stringData:
     application-password: "${PASSWORD}"
 ```
+
+### Deployment
 
 Then the **DeploymentConfig** (aka. Deployment) define how to deploy the JupyterLab image, if you want to deploy another application alongside JupyterLab you can do it by adding as many deployments as you want! (and use the same, or different, persistent volume claims for storage). Checkout the [OpenShift Deployments documentation](https://docs.openshift.com/container-platform/4.6/applications/deployments/what-deployments-are.html) for more details.
 
@@ -173,6 +182,8 @@ We chose the `Recreate` release option to make sure the container is properly re
       deploymentconfig: "${APPLICATION_NAME}"
 ```
 
+### Pod spec
+
 Then we define the spec of the **pod** that will be deployed by this DeploymentConfig.
 
 Setting the `serviceAccountName: anyuid` is required for most Docker containers as it allows to run a container using any user ID (e.g. root). Otherwise OpenShift expect to use a random user ID, which is require to build the Docker image especially to work with random user IDs.
@@ -199,6 +210,8 @@ We then create the `containers:` array which is where we will define the contain
             protocol: TCP
 ```
 
+### Environment variables in the container
+
 Then define the **environment variables** used in your container, usually the password and most parameters are set here, such as enabling `sudo` in the container.
 
 ```yaml
@@ -214,6 +227,8 @@ Then define the **environment variables** used in your container, usually the pa
             value: "yes"
 ```
 
+### Mount storage
+
 Then we need to mount the previously created **PersistentVolume** on `/home/jovyan` , the workspace of JupyterLab. Be careful: `volumeMounts` is in the `containers:` object, and `volumes` is defined in the `spec:` object
 
 ```yaml
@@ -226,7 +241,9 @@ Then we need to mount the previously created **PersistentVolume** on `/home/jovy
             claimName: "${APPLICATION_NAME}"
 ```
 
-Then we define the **securityContext** to allow JupyterLab to run as root, this is not required for most applications, just a specificity of the official Jupyter images to run with root privileges.
+### Security context
+
+Then we define the **securityContext** to allow JupyterLab to run as root, this is **not required for most applications**, just a specificity of the official Jupyter images to run with root privileges.
 
 ```yaml
         securityContext:
@@ -235,6 +252,8 @@ Then we define the **securityContext** to allow JupyterLab to run as root, this 
           - 100
         automountServiceAccountToken: false
 ```
+
+### Service
 
 Then we create the **Service** to expose the port 8888 of our JupyterLab container on the project network. This means that the JupyterLab web UI will reachable by all other application deployed in your project using its application name as hostname (e.g. `jupyterlab`)
 
@@ -257,7 +276,9 @@ Then we create the **Service** to expose the port 8888 of our JupyterLab contain
     type: ClusterIP
 ```
 
-Then we define the **Route** which will automatically generate a URL for the service of your application based following this template: `APPLICATION_NAME-PROJECT_ID-DSRI_URL`
+### Route
+
+Finally, we define the **Route** which will automatically generate a URL for the service of your application based following this template: `APPLICATION_NAME-PROJECT_ID-DSRI_URL`
 
 ```yaml
 - kind: "Route"
@@ -332,6 +353,21 @@ parameters:
   required: true
     
 objects:
+- kind: "ImageStream"
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+    lookupPolicy:
+      local: true
+
 - kind: "PersistentVolumeClaim"
   apiVersion: "v1"
   metadata:
@@ -459,7 +495,9 @@ objects:
 
 ## Add a configuration file
 
-This practice is a bit advanced and is not required for most deployments, but you can easily create a **ConfigMap** object to define any file to be provided at runtime to the application. For example here we are going to define a `jupyter_notebook_config.py` which will be run at runtime (to do something with the notebook password)
+This practice is more advanced, and is not required for most deployments, but you can easily create a **ConfigMap** object to define any file to be provided at runtime to the application.
+
+For example here we are going to define a python script that will be run when starting JupyterLab (`jupyter_notebook_config.py`). It will clone the git repository URL, provided by the user when creating the template, at the start of JupyterLab in the workspace. If this repo contains files with list of packages in the root folder (`requirements.txt` and `packages.txt`), they will be installed at start
 
 ```yaml
 - kind: ConfigMap
@@ -467,23 +505,26 @@ This practice is a bit advanced and is not required for most deployments, but yo
   metadata:
     name: "${APPLICATION_NAME}-cfg"
     labels:
-      app: ${APPLICATION_NAME}
+      app: "${APPLICATION_NAME}"
   data:
+    # Clone git repo, then install requirements.txt and packages.txt
     jupyter_notebook_config.py: |
       import os
-      password = os.environ.get('JUPYTER_NOTEBOOK_PASSWORD')
-      if password:
-          import notebook.auth
-          c.NotebookApp.password = notebook.auth.passwd(password)
-          del password
-          del os.environ['JUPYTER_NOTEBOOK_PASSWORD']
-      image_config_file = '/home/jovyan/.jupyter/jupyter_notebook_config.py'
-      if os.path.exists(image_config_file):
-          with open(image_config_file) as fp:
-              exec(compile(fp.read(), image_config_file, 'exec'), globals())
+      git_url = os.environ.get('GIT_URL')
+      home_dir = os.environ.get('HOME')
+      os.chdir(home_dir)
+      if git_url:
+        repo_id = git_url.rsplit('/', 1)[-1]
+        os.system('git clone --quiet --recursive ' + git_url)
+        os.chdir(repo_id)
+        if os.path.exists('packages.txt'):
+          os.system('sudo apt-get update')
+          os.system('cat packages.txt | xargs sudo apt-get install -y')
+        if os.path.exists('requirements.txt'):
+          os.system('pip install -r requirements.txt')
 ```
 
-We will then need to mount this config file like a persistent volume at where we want it to be, change the **volumes** and **volumeMounts** of your **DeploymentConfig**:
+We will then need to mount this config file like a persistent volume at where we want it to be, change the **volumes** and **volumeMounts** of your **DeploymentConfig**.
 
 ```yaml
           volumeMounts:
@@ -501,7 +542,7 @@ We will then need to mount this config file like a persistent volume at where we
             name: "${APPLICATION_NAME}-cfg"
 ```
 
-Finally change the `jupyter-notebook` container start command to include this config file:
+Then change the `jupyter-notebook` container start command to include this config file:
 
 ```yaml
           command:
@@ -510,6 +551,45 @@ Finally change the `jupyter-notebook` container start command to include this co
           - "--ip=0.0.0.0"
           - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"
 ```
+
+Add the **optional parameter** to get the git URL to clone when the user create the template:
+
+```yaml
+parameters:
+- name: GIT_URL
+  displayName: URL of the git repository to clone (optional)
+  required: false
+  description: Source code will be automatically cloned, then requirements.txt and packages.txt content will be automatically installed if presents
+```
+
+Finally, add the git URL parameter provided by the user as **environment variable** of the container, so that it is picked up by the config script when running at the start of JupyterLab:
+
+```yaml
+          env:
+          - name: GIT_URL
+            value: "${GIT_URL}"
+```
+
+## Add automated health checks
+
+You can add **readiness and liveness probes** to a container to automatically check if the web application is up and ready. This will allow to wait for the JupyterLab web UI to be accessible before showing the application as ready in the Topology. Useful if you are cloning a repository and installing packages, which will take more time to start JupyterLab.
+
+```yaml
+        containers:
+        - name: jupyter-notebook
+          readinessProbe: 
+            tcpSocket:
+              port: 8888
+          livenessProbe: 
+            initialDelaySeconds: 15 
+            tcpSocket:  
+              port: 8888 
+          failureThreshold: 40
+          periodSeconds: 10
+          timeoutSeconds: 2
+```
+
+Checkout the [OpenShift Application health documentation](https://docs.openshift.com/container-platform/4.6/applications/application-health.html) for more details.
 
 ## Define resource limits
 
@@ -525,3 +605,4 @@ You can also define resources request and limits for each **DeploymentConfig**, 
               cpu: "128"
               memory: "300Gi"
 ```
+

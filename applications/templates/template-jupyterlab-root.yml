@@ -13,7 +13,7 @@ metadata:
       📂 Use the `/home/jovyan` folder (workspace of the JupyterLab UI) to store your data in the persistent storage automatically created
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
       
-      You can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
+      🐳 You can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
       - jupyter/minimal-notebook
       - jupyter/scipy-notebook
       - jupyter/datascience-notebook (with Julia kernel)
@@ -24,7 +24,11 @@ metadata:
       - ghcr.io/maastrichtu-ids/jupyterlab (with Java and SPARQL kernels)
       Or build your own! Checkout https://github.com/MaastrichtU-IDS/jupyterlab for an example of custom image
 
-      Once JupyterLab is deployed you can install any pip packages, JupyterLab extensions, and apt packages.
+      📥 You can provide the URL to a git repository which will be cloned in your workspace at the start of JupyterLab. 
+      If this repo contains files with list of packages in the root folder, they will be installed at start:
+      - requirements.txt for pip packages
+      - packages.txt for apt packages
+      Use this repository to clone a repository with examples to use the DSRI: https://github.com/MaastrichtU-IDS/dsri-demo
     iconClass: icon-python
     tags: python,jupyter,notebook
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -40,6 +44,10 @@ parameters:
   displayName: JupyterLab UI Password
   description: The password/token to access the JupyterLab web UI
   required: true
+- name: GIT_URL
+  displayName: URL of a git repository to clone in the workspace (optional)
+  required: false
+  description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
@@ -146,7 +154,7 @@ objects:
           - "start-notebook.sh"
           - "--no-browser"
           - "--ip=0.0.0.0"
-          # - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"
+          - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"
           ports:
           - containerPort: 8888
             protocol: TCP
@@ -155,13 +163,6 @@ objects:
             protocol: TCP
           - containerPort: 4041
             protocol: TCP
-          # resources:
-          #   requests: 
-          #     cpu: "${CPU_LIMIT}"
-          #     memory: "${MEMORY_LIMIT}"
-          #   limits:
-          #     cpu: "128"
-          #     memory: "300Gi"
           env:
           - name: JUPYTER_TOKEN
             valueFrom:
@@ -172,11 +173,30 @@ objects:
             value: "yes"
           - name: GRANT_SUDO
             value: "yes"
+          - name: GIT_URL
+            value: "${GIT_URL}"
           volumeMounts:
           - name: data
             mountPath: "/home/jovyan"
-          # - name: configs
-          #   mountPath: "/etc/jupyter/openshift"
+          - name: configs
+            mountPath: "/etc/jupyter/openshift"
+          readinessProbe: 
+            tcpSocket:
+              port: 8888
+          livenessProbe: 
+            initialDelaySeconds: 15 
+            tcpSocket:  
+              port: 8888 
+          failureThreshold: 40
+          periodSeconds: 10
+          timeoutSeconds: 2
+          # resources:
+          #   requests: 
+          #     cpu: "${CPU_LIMIT}"
+          #     memory: "${MEMORY_LIMIT}"
+          #   limits:
+          #     cpu: "128"
+          #     memory: "300Gi"
         automountServiceAccountToken: false
         securityContext:
           runAsUser: 0
@@ -186,9 +206,9 @@ objects:
         - name: data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
-        # - name: configs
-        #   configMap:
-        #     name: "${APPLICATION_NAME}-cfg"
+        - name: configs
+          configMap:
+            name: "${APPLICATION_NAME}-cfg"
 
 - kind: Service
   apiVersion: v1
@@ -245,6 +265,30 @@ objects:
     type: ClusterIP
 
 
+- kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-cfg"
+    labels:
+      app: "${APPLICATION_NAME}"
+  data:
+    # Clone git repo, then install requirements.txt and packages.txt
+    jupyter_notebook_config.py: |
+      import os
+      git_url = os.environ.get('GIT_URL')
+      home_dir = os.environ.get('HOME')
+      os.chdir(home_dir)
+      if git_url:
+        repo_id = git_url.rsplit('/', 1)[-1]
+        os.system('git clone --quiet --recursive ' + git_url)
+        os.chdir(repo_id)
+        if os.path.exists('packages.txt'):
+          os.system('sudo apt-get update')
+          os.system('cat packages.txt | xargs sudo apt-get install -y')
+        if os.path.exists('requirements.txt'):
+          os.system('pip install -r requirements.txt')
+
+
 # - kind: ConfigMap
 #   apiVersion: v1
 #   metadata:
@@ -252,15 +296,34 @@ objects:
 #     labels:
 #       app: "${APPLICATION_NAME}"
 #   data:
-#     jupyter_notebook_config.py: |
-#       import os
-#       password = os.environ.get('JUPYTER_NOTEBOOK_PASSWORD')
-#       if password:
-#           import notebook.auth
-#           c.NotebookApp.password = notebook.auth.passwd(password)
-#           del password
-#           del os.environ['JUPYTER_NOTEBOOK_PASSWORD']
-#       image_config_file = '/home/jovyan/.jupyter/jupyter_notebook_config.py'
-#       if os.path.exists(image_config_file):
-#           with open(image_config_file) as fp:
-#               exec(compile(fp.read(), image_config_file, 'exec'), globals())
+#     entrypoint.sh: |
+#       #!/bin/bash
+
+#       CMD="start-notebook.sh --ip=0.0.0.0 --no-browser"
+#       # CMD="jupyter lab --allow-root --ip=0.0.0.0 --no-browser"
+
+#       if [[ -v GIT_URL ]]; then
+#         git clone $GIT_URL $HOME
+#       fi
+
+#       if [ -f $HOME/packages.txt ]; then
+#         echo "INFO: Found packages.txt file in folder /notebooks. Executing it to install apt packages."
+#         apt-get update
+#         cat packages.txt | xargs apt-get install -y
+#       else
+#         echo "INFO: packages.txt not found in folder /notebooks --> Continuing"
+#       fi
+
+#       if [ -f $HOME/requirements.txt ]; then
+#         echo "INFO: Found requirements.txt file in folder /notebooks. Installing via \"pip install -r requirements.txt\""
+#         pip install -r requirements.txt
+#       else
+#         echo "INFO: requirements.txt not found in folder /notebooks --> Continuing"
+#       fi
+
+#       if [ -f $HOME/extensions.txt ]; then
+#         echo "INFO: Found extensions.txt file in folder /notebooks. Installing via \"jupyter extension install --user\""
+#         cat extensions.txt | xargs -I {} jupyter {} install --user
+#       else
+#         echo "INFO: extensions.txt not found in folder /notebooks --> Continuing"
+#       fi  
