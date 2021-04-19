@@ -302,7 +302,7 @@ Finally, we define the **Route** which will automatically generate a URL for the
 
 ## The complete application
 
-Here is a complete file to describe the JupyterLab deployment template, you can add it to your project catalog by going to **+ Add** in the DSRI web UI, then click on the option to add a **YAML** file content, and copy paste the template YAML.
+Here is a complete file to describe the JupyterLab deployment template, you can add it to your project catalog by going to **+Add** in the DSRI web UI, then click on the option to add a **YAML** file content, and copy paste the template YAML.
 
 ```yaml
 ---
@@ -525,7 +525,7 @@ For example here we are going to define a python script that will be run when st
         os.chdir(home_dir)
 ```
 
-We will then need to mount this config file like a persistent volume at where we want it to be, change the **volumes** and **volumeMounts** of your **DeploymentConfig**.
+We will then need to mount this config file like a persistent volume in the path we want it to be (here `/etc/jupyter/openshift`), change the **volumes** and **volumeMounts** of your **DeploymentConfig**:
 
 ```yaml
           volumeMounts:
