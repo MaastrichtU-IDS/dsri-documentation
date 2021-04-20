@@ -12,6 +12,8 @@ If you want to run on GPU, **contact the [DSRI support team](mailto:dsri-support
 
 :::
 
+We are using images provided by Nvidia, and optimized for GPU. We currently deployed Tensorflow and PyTorch with JupyterLab and VSCode, but any image available in the Nvidia catalog should be easy to deploy: https://ngc.nvidia.com/catalog/containers
+
 ## JupyterLab on GPU
 
 Once your project has been granted access to GPUs, you can deploy applications on GPU from the catalog:
@@ -31,6 +33,16 @@ The following parameters can be provided:
 5. **Storage subpath**: path to the Notebook folder in the Persistent Volume Claim storage
 
 Now that your template is created and its accessible from the **Topology** page of OpenShift web UI.
+
+You can now access the JupyterLab UI, install your dependencies and run your experiments.
+
+Use the **`notebooks` folder** in the JupyterLab workspace to store your code and data persistently, you can also take a look into the examples provided by Nvidia.
+
+Use the following command to see your current GPU usage:
+
+```bash
+nvidia-smi
+```
 
 ## VSCode on GPU
 
@@ -58,6 +70,14 @@ oc port-forward <pod_id> 8080:8080
 ```
 
 4. Access VisualStudio Code on http://localhost:8080
+
+Use the **`/root` folder** to store your code and data persistently.
+
+Use the following command to see your current GPU usage:
+
+```bash
+nvidia-smi
+```
 
 :::caution Use Chrome
 
