@@ -19,7 +19,15 @@ The technology to use needs to be **chosen depending on your use-case**.
 
 :::
 
-## Already tested
+## Current solutions on the DSRI
+
+Those solutions can easily be deployed on the DSRI. Let
+
+### GitHub Actions workflows
+
+GitHub Actions allows you to define automatically containerized workflows through a simple YAML file hosted in your GitHub repository.
+
+See the [page about GitHub Actions runners](https://maastrichtu-ids.github.io/dsri-documentation/docs/workflows-github-runners) for more details, and to deploy runners on the DSRI.
 
 ### Argo
 
@@ -27,6 +35,38 @@ The technology to use needs to be **chosen depending on your use-case**.
 
 * Workflows easy to define using Kubernetes-like YAML files.
 * Easy to define if your workflow is composed of Docker containers to run with arguments.
+
+:::info Contact us
+
+[Contact us](/help) if you want to run Argo workflow on the DSRI
+
+:::
+
+## More options
+
+Let us know if you are interested in deploying, and using, any of those workflows on the DSRI.
+
+### Kubeflow
+
+Optimized for Tensorflow workflows on Kubernetes.
+
+Pipelines written in Python.
+
+### Apache Airflow
+
+Define, schedule and run workflows. 
+
+Can be deployed with OpenDataHub, see also [this deployment for OpenShift](https://github.com/majordomusio/openshift-airflow).
+
+See also: Airflow on [Kubernetes blog](https://kubernetes.io/blog/2018/06/28/airflow-on-kubernetes-part-1-a-different-kind-of-operator/), and Kubernetes in [Airflow documentation](https://airflow.apache.org/docs/stable/kubernetes.html).
+
+### Volcano
+
+Run batch pipelines on Kubernetes with [Volcano](https://volcano.sh/). 
+
+* More a scheduler than a workflow engine. 
+
+* Volcano can be used to run Spark, Kubeflow or KubeGene workflows.
 
 ### Nextflow
 
@@ -43,24 +83,6 @@ Define your workflow in a Bash script fashion, providing input, output and the c
   * [workflows-cwl](https://github.com/Duke-GCB/calrissian/)
 * Propose a GUI to build the workflows: [Rabix Composer](https://rabix.io/)
 
-## To be implemented
-
-### Apache Airflow
-
-Define, schedule and run workflows. See [this deployment for OpenShift](https://github.com/majordomusio/openshift-airflow).
-
-See also: Airflow on [Kubernetes blog](https://kubernetes.io/blog/2018/06/28/airflow-on-kubernetes-part-1-a-different-kind-of-operator/), and Kubernetes in [Airflow documentation](https://airflow.apache.org/docs/stable/kubernetes.html).
-
-### Apache Spark
-
-Write programs running in parallel using Java, Python, R, Scala or SQL with the [Spark](https://spark.apache.org/) framework.
-
-### Kubeflow
-
-Optimized for Tensorflow workflows on Kubernetes.
-
-Pipelines written in Python.
-
 ### KubeGene
 
 [KubeGene](https://kubegene.io/) is a turn-key genome sequencing workflow management framework.
@@ -70,14 +92,6 @@ See the [Workflow example](https://github.com/kubegene/kubegene/blob/master/exam
 ### Seldon
 
 [Open-source platform](https://www.seldon.io/tech/) for rapidly deploying machine learning models on Kubernetes. Manage, serve and scale models built in any framework on Kubernetes.
-
-### Volcano
-
-Run batch pipelines on Kubernetes with [Volcano](https://volcano.sh/). 
-
-* More a scheduler than a workflow engine. 
-
-* Volcano can be used to run Spark, Kubeflow or KubeGene workflows.
 
 :::info Contact us
 

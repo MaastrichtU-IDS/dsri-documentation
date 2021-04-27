@@ -8,9 +8,10 @@ metadata:
     description: |-
       Start a OpenLink Virtuoso triplestore, with a SPARQL endpoint
 
-      📂 Use the `/data` folder in the container to store your data in the persistent storage
+      📂 Use the `/database` folder in the container to store your data in the persistent storage
 
-      Visit https://www.github.com/tenforce/docker-virtuoso for more details about the image used
+      Visit https://github.com/openlink/virtuoso-opensource for more details about the Virtuoso triplestore
+      Visit https://hub.docker.com/r/openlink/virtuoso-opensource-7 for more details about the image
     iconClass: icon-openjdk
     tags: triplestore,graph,database,rdf,sparql
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -27,22 +28,22 @@ parameters:
 - name: PASSWORD
   displayName: Triplestore admin password
   description: The password of the dba user.
-  from: "[a-zA-Z0-9]{16}"
-  generate: expression
+  # from: "[a-zA-Z0-9]{16}"
+  # generate: expression
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage used for the notebook (approximate).
-  value: 20Gi
+  value: 10Gi
   required: true
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
-  description: Based on jupyter/docker-stacks images
-  value: tenforce/virtuoso:latest
+  description: Docker image to deploy the Virtuoso triplestore
+  value: openlink/virtuoso-opensource-7:latest
   required: true
 - name: DEFAULT_GRAPH
   displayName: Triplestore default graph
-  description: The defult graph used by the Virtuoso triplestore
+  description: The default graph used by the Virtuoso triplestore
   value: https://w3id.org/um/graph
   required: true
 - name: LOG_LEVEL
@@ -125,10 +126,6 @@ objects:
         serviceAccountName: anyuid
         # nodeSelector:
         #   dsri.unimaas.nl/cpu: 'true'
-        # securityContext:
-        #   runAsUser: 1000
-        #   runAsGroup: 3000
-        #   fsGroup: 2000
         volumes:
         - name: data
           persistentVolumeClaim:
@@ -139,6 +136,8 @@ objects:
           ports:
           - containerPort: 8890
             protocol: TCP
+          - containerPort: 1111
+            protocol: TCP
           # resources:
           #   limits:
           #     cpu: '64'
@@ -148,14 +147,17 @@ objects:
           #     memory: 4Gi
           volumeMounts:
           - name: data
-            mountPath: "/data"
-            # subPath: "${STORAGE_FOLDER}"
-          # securityContext:
-          #   # Run as root https://dev.to/techworld_with_nana/run-pod-with-root-privileges-41n9
-          #   allowPrivilegeEscalation: false
-          #   runAsUser: 0
+            mountPath: "/database"
           env:
+          # http://vos.openlinksw.com/owiki/wiki/VOS/VirtRDFPerformanceTuning
+          # http://docs.openlinksw.com/virtuoso/rdfperfgeneral/
+          # https://github.com/tenforce/docker-virtuoso/blob/master/virtuoso.ini
           - name: DBA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: DAV_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: application-password
@@ -166,10 +168,18 @@ objects:
             value: "${DEFAULT_GRAPH}"
           - name: VIRT_Database_ErrorLogLevel
             value: "${LOG_LEVEL}"
+          - name: VIRT_SPARQL_ShortenLongURIs
+            value: "1"
+          - name: VIRT_SPARQL_MaxCacheExpiration
+            value: "1"
+          - name: VIRT_SPARQL_ExternalQuerySource
+            value: "1"
+          - name: VIRT_SPARQL_ExternalXsltSource
+            value: "1"
           - name: VIRT_Parameters_DirsAllowed
             value: "., /data, /usr/local/virtuoso-opensource/share/virtuoso/vad, /usr/local/virtuoso-opensource/var/lib/virtuoso/db"
           - name: VIRT_SPARQL_ResultSetMaxRows
-            value: "999999999999999999"
+            value: "1048576"
           - name: VIRT_SPARQL_MaxQueryCostEstimationTime
             value: "100000"
           - name: VIRT_SPARQL_MaxQueryExecutionTime
@@ -186,7 +196,16 @@ objects:
             value: "5000000000"
           - name: VIRT_Parameters_NumberOfBuffers
             value: "493674"
-          # To use up to 4G of RAM according to documentation
+            # To use up to 4G of RAM according to documentation
+          - name: VIRT_Parameters_TempDBSize
+            value: "100000000"
+          - name: VIRT_Database_MaxCheckpointRemap
+            value: "125000"
+          - name: VIRT_TempDatabase_MaxCheckpointRemap
+            value: "125000"
+          - name: VIRT_URIQA_DefaultHost
+            value: "w3id.org/um"
+            # URL used as base for generated URI (e.g. graph in webDAV)
         automountServiceAccountToken: false
 
 - kind: Service
