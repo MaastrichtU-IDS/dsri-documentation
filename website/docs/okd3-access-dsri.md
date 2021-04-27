@@ -22,7 +22,7 @@ You need to be connected to the UM network to access the DSRI.
 
   ```bash
   sudo apt install openconnect
-  sudo openconnect -u YOUR.USER --authgroup 01-Employees vpn-rw1.maastrichtuniversity.nl
+  sudo openconnect -u YOUR.USER --authgroup 01-Employees vpn.maastrichtuniversity.nl
   ```
 
   > Provide your UM password when prompted.

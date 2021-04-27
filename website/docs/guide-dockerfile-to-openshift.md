@@ -165,7 +165,7 @@ You will need to connect to the UM VPN in your workflow by defining 2 secrets fo
 - name: Connect to the VPN
   run: |
     sudo apt-get install -y openconnect network-manager-openconnect
-    echo '${{ secrets.VPN_PASSWORD }}' | sudo openconnect --passwd-on-stdin --no-xmlpost --non-inter --background --authgroup 01-Employees --user ${{ secrets.VPN_USER }} vpn-rw1.maastrichtuniversity.nl
+    echo '${{ secrets.VPN_PASSWORD }}' | sudo openconnect --passwd-on-stdin --no-xmlpost --non-inter --background --authgroup 01-Employees --user ${{ secrets.VPN_USER }} vpn.maastrichtuniversity.nl
     sleep 10
 ```
 
@@ -280,7 +280,7 @@ jobs:
 	- name: Connect to the VPN
       run: |
         sudo apt-get install -y openconnect network-manager-openconnect
-        echo '${{ secrets.VPN_PASSWORD }}' | sudo openconnect --passwd-on-stdin --no-xmlpost --non-inter --background --authgroup 01-Employees --user ${{ secrets.VPN_USER }} vpn-rw1.maastrichtuniversity.nl
+        echo '${{ secrets.VPN_PASSWORD }}' | sudo openconnect --passwd-on-stdin --no-xmlpost --non-inter --background --authgroup 01-Employees --user ${{ secrets.VPN_USER }} vpn.maastrichtuniversity.nl
         sleep 10
 
     # oc-login works on all platforms, but oc must be installed first.

@@ -8,7 +8,7 @@ metadata:
     description: |-
       Start a Ontotext GraphDB triplestore, with a SPARQL endpoint
 
-      Login with the admin username, using admin as password, and change the password at the first connection ⚠️
+      🔒 After accessing GraphDB for the first time you can easily enable security, and define a password for the admin user.
 
       📂 We use the folder `/opt/graphdb/home` in the container to store the database and import folder in the persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims

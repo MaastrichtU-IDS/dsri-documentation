@@ -7,9 +7,11 @@ Feel free to propose new services using [pull requests](https://github.com/Maast
 
 ## Ubuntu
 
+### With the terminal
+
 Start Ubuntu with the `root` user which has `sudo` permissions to install anything.
 
-You can start a container using the **Ubuntu** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can start the application using the **Ubuntu** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
 This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
 
@@ -42,6 +44,20 @@ To quickly access it from the terminal you can use the **Terminal** tab in the p
    ```
 
 <img src="/dsri-documentation/img/screenshot-deploy-ubuntu.png" alt="Deploy Ubuntu" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+### With a web UI
+
+Start Ubuntu with a web UI accessible via a URL. You will be the `root` user which has `sudo` permissions to install anything.
+
+You can start the application using the **Ubuntu with web UI** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+
+This template uses the Docker image defined at https://github.com/fcwu/docker-ubuntu-vnc-desktop
+
+:::caution Less stable than the official image
+
+This image might be less stable than the original Ubuntu image. Let us know on Slack if you have any problem!
+
+:::
 
 
 ## File browser

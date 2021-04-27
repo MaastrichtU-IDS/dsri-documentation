@@ -1,27 +1,50 @@
 ---
 id: catalog-openmpi
-title: OpenMPI
+title: Run MPI jobs
 ---
 
-OpenMPI can be deployed and run on the DSRI. We use the [MPI Operator from Kubeflow](https://github.com/kubeflow/mpi-operator).
+We deployed the [MPI Operator](https://github.com/kubeflow/mpi-operator) from Kubeflow to run MPI jobs on the DSRI.
 
-See the [Kubeflow documentation to create a MPI job](https://www.kubeflow.org/docs/components/training/mpi/#creating-an-mpi-job) on OpenShift.
+> The MPI Operator makes it easy to run allreduce-style distributed training on Kubernetes. Please check out [this blog post](https://medium.com/kubeflow/introduction-to-kubeflow-mpi-operator-and-industry-adoption-296d5f2e6edc) for an introduction to MPI Operator and its industry adoption.
 
-Create Tensorflow Benchmark:
+## Run MPI jobs on CPU
+
+Checkout the [repository of the CPU benchmark](https://github.com/kubeflow/mpi-operator/tree/master/examples/horovod) for a complete example of an MPI job: python script, `Dockerfile`, and the job deployment YAML.
+
+Clone the repository, and go to the example folder:
 
 ```bash
-git clone https://github.com/kubeflow/mpi-operator.git && cd mpi-operator
-oc create -f examples/v1alpha2/tensorflow-benchmarks.yaml
+git clone https://github.com/kubeflow/mpi-operator.git
+cd mpi-operator/examples/horovod
 ```
 
-See the GPU benchmarks for examples of MPI job definitions:
+Open the `tensorflow-mnist.yaml` file and change the first line:
 
-* [MPI TensorFlow benchmark](https://github.com/kubeflow/mpi-operator/blob/master/examples/v1alpha2/tensorflow-benchmarks.yaml)
-* [MPI TensorFlow ImageNet benchmark](https://github.com/kubeflow/mpi-operator/blob/master/examples/v1alpha2/tensorflow-benchmarks-imagenet.yaml)
+```yaml
+# From
+apiVersion: kubeflow.org/v1
+# To
+apiVersion: kubeflow.org/v1alpha2
+```
+
+Run the job in the current project on the DSRI:
+
+```bash
+oc create -f tensorflow-mnist.yaml
+```
+
+You should see the 2 workers and the main job running in your project **Topology** page in the DSRI web UI.
+
+You can now take a look at, and edit, the different files to run your custom MPI job on the DSRI:
+
+🐍 [`tensorflow_mnist.py`](https://github.com/kubeflow/mpi-operator/blob/master/examples/horovod/tensorflow_mnist.py): the python script with the actual job to run
+🐳 [`Dockerfile.cpu`](https://github.com/kubeflow/mpi-operator/blob/master/examples/horovod/Dockerfile.cpu): the Dockerfile to define the image of the containers in which your job will run (install dependencies)
+⛵️ [`tensorflow-mnist.yaml`](https://github.com/kubeflow/mpi-operator/blob/master/examples/horovod/tensorflow-mnist.yaml): the YAML file to define the MPI deployment on Kubernetes (number and limits of workers, `mpirun` command, etc)
+
+See the [Kubeflow documentation to create a MPI job](https://www.kubeflow.org/docs/components/training/mpi/#creating-an-mpi-job) for more details.
 
 :::info Contact us
 
-Contact us on  the DSRI Slack **#helpdesk** channel to discuss the deployment of OpenMPI on the DSRI.
+Feel free to contact us on  the DSRI Slack **#helpdesk** channel to discuss the use of MPI on the DSRI.
 
 :::
-

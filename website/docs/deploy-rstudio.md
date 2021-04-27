@@ -72,3 +72,7 @@ We recommend to use SSH instead of HTTPS connection when possible, checkout [her
 
 :::
 
+## Run jobs in RStudio 
+
+Checkout this package to run chunks of R code as jobs directly through RStudio: https://github.com/lindeloev/job
+

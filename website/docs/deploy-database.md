@@ -41,29 +41,7 @@ Connect to the Postgresql database using the service name (change depending on t
 psql -h postgresql-db -U postgres db
 ```
 
-<!-- MariaDB and MySQL not working
-
-### Start MariaDB 🦦
-
-Use the **MariaDB** template in the DSRI OpenShift web UI catalog.
-
-:::tip Connect to the database
-
-When the database has been deployed, you can connect from another pod using your favorite language and connector.
-
-:::
-
-Example with the `mysql` Command Line Interface:
-
-```bash
-apt-get update && apt-get install mariadb-client -y
-```
-
-Connect to the MariaDB database using the service name:
-
-```bash
-mysql -h example-mysql -p
-```
+Checkout the [dsri-demo repository](https://github.com/MaastrichtU-IDS/dsri-demo) for a quick demo for accessing and using a PostgreSQL database from a Jupyter notebook on the DSRI.
 
 ### Start MySQL 🐬
 
@@ -87,9 +65,33 @@ Connect to the MySQL database using the service name:
 mysql -h example-mysql -p
 ```
 
+Checkout the [dsri-demo repository](https://github.com/MaastrichtU-IDS/dsri-demo) for a quick demo for accessing and using a MySQL database from a Jupyter notebook on the DSRI.
+
 > Alternatively, MySQL databases can be started using Helm, see the [Helm documentation page](/dsri-documentation/docs/helm#install-a-helm-chart) for more details.
 
--->
+<!-- MariaDB not working
+
+### Start MariaDB 🦦
+
+Use the **MariaDB** template in the DSRI OpenShift web UI catalog.
+
+:::tip Connect to the database
+
+When the database has been deployed, you can connect from another pod using your favorite language and connector.
+
+:::
+
+Example with the `mysql` Command Line Interface:
+
+```bash
+apt-get update && apt-get install mariadb-client -y
+```
+
+Connect to the MariaDB database using the service name:
+
+```bash
+mysql -h example-mysql -p
+```
 
 ### Start Apache Drill 🔩
 
@@ -100,6 +102,8 @@ Contact us to install Apache Drill
 :::
 
 Use the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-containers/tree/master/kubernetes) for Kubernetes.
+
+-->
 
 ## NoSQL databases
 
@@ -129,9 +133,17 @@ Use the service name as hostname to connect from another pod in the same project
 
 ## Graph databases
 
-### Start Virtuoso triplestore
+### OpenLink Virtuoso triplestore
 
-Search for the **Virtuoso triplestore** template.
+Search for the **Virtuoso triplestore** template in the DSRI web UI catalog. Instantiate the template to create a Virtuoso triplestore in your project.
+
+The deployment is based on the latest open source version of Virtuoso: https://hub.docker.com/r/openlink/virtuoso-opensource-7
+
+:::tip Connect to the database
+
+Use the service name as hostname to connect from another pod in the same project.
+
+:::
 
 ### Ontotext GraphDB triplestore
 
@@ -164,6 +176,12 @@ oc start-build graphdb --from-dir=free-edition --follow --wait
 You can now use the **Ontotext GraphDB** template to deploy a GraphDB instance on DSRI. 
 
 Use the name of the ImageStream when instantiating the template, you can check if the image was properly built in **Search** > Filter **Resources** for ImageStreams
+
+:::tip Connect to the database
+
+Use the service name as hostname to connect from another pod in the same project.
+
+:::
 
 <!-- 
 
