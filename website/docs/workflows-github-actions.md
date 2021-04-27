@@ -3,22 +3,22 @@ id: workflows-github-actions
 title: Deploy GitHub Runners
 ---
 
-Deploy a GitHub Actions runner to run workflows simple to define using YAML, and hosted in your GitHub repository on the DSRI.
-
-This allows you to run larger workloads than on GitHub-hosted runners, which are limited to 7G RAM, 1 CPU and 6h per job.
-
-For more informations about GitHub Actions workflows: https://github.com/features/actions
+Deploy a GitHub Actions runner to run workflows simple to define using YAML, and hosted in your GitHub repository on the DSRI. This allows you to run larger workloads than on GitHub-hosted runners, which are limited to 7G RAM, 1 CPU and 6h per job.
 
 Here are some of the advantage of GitHub Actions:
 
-* A step can be any Bash command, or a reusable Action from [GitHub Marketplace](https://github.com/marketplace/), which can be easily define from a Docker container, and share with your collaborators
+* A step can be any Bash command, or a reusable Action from the [GitHub Marketplace](https://github.com/marketplace/), which can be easily define from a Docker container, and share with your collaborators
 * Parallelization can easily be added manually or dynamically to up to 255 jobs
 * It provides a good logging system directly available in your repository on GitHub
-* Easy to define triggers (on code push, cron job, manual request), and secrets (such as passwords)
+* Define triggers (on code push, cron job, manual request), and secrets (such as passwords) easily
 
-## Install
+For more informations about GitHub Actions workflows, go to https://github.com/features/actions
 
-Install the Helm repository to be able to deploy the GitHub Actions Runner:
+## Install the chart
+
+You will need to have Helm installed on your computer to deploy a GitHub Actions Runner, see the [Helm docs](/docs/helm) for more details.
+
+Install the Helm chart to be able to deploy the GitHub Actions Runner on the DSRI:
 
 ```bash
 helm repo add openshift-actions-runner https://redhat-actions.github.io/openshift-actions-runner-chart
@@ -27,27 +27,38 @@ helm repo update
 
 Then create a GitHub Personal Access Token as per the instructions in the [runner image README](https://github.com/redhat-actions/openshift-actions-runner#pat-guidelines).
 
-**tl;dr:** Go to your Settings: https://github.com/settings/tokens and check:
+**tl;dr:** go to your Settings on GitHub: https://github.com/settings/tokens, click the button to create a new token, give it a meaningful name (e.g. `DSRI Runner my-project`), and check the following permissions:
 
-* `repo` (maybe also `workflow`?)
-* `admin:org` if the Runner is for an organization
+✅️ `repo` (maybe also `workflow`?)
 
-### Runner for organization
+✅️ `admin:org` if the Runner is for an organization
 
-Provide the token previously created and the organization name
+## Deploy a Runner 
+
+Before deploying the runner, make sure you are in the project where you want to deploy it:
+
+```bash
+oc project my-project
+```
+
+### For an organization
+
+Deploy a runner available for all repositories of an organization (you can fine tune the access via GitHub Settings)
+
+1. Provide the token previously created, and the organization name
 
 ```bash
 export GITHUB_PAT="TOKEN"
-export GITHUB_OWNER=MaastrichtU-IDS
+export GITHUB_OWNER=My-Org
 ```
 
-Deploy the runner for MaastrichtU-IDS organization:
+2. Deploy the runner for the organization:
 
 ```bash
 helm install actions-runner openshift-actions-runner/actions-runner \
     --set-string githubPat=$GITHUB_PAT \
     --set-string githubOwner=$GITHUB_OWNER \
-    --set runnerLabels="{ dsri, bio2rdf }" \
+    --set runnerLabels="{ dsri, my-org }" \
     --set replicas=3 \
     --set privileged=true \
     --set memoryRequest="512Mi" \
@@ -58,7 +69,7 @@ helm install actions-runner openshift-actions-runner/actions-runner \
 
 > Checkout [all available parameters here](https://github.com/redhat-actions/openshift-actions-runner-chart/blob/main/values.yaml)
 
-Check the deployment:
+3. Check the deployment:
 
 ```bash
 helm get manifest actions-runner | kubectl get -f -
@@ -66,7 +77,7 @@ helm get manifest actions-runner | kubectl get -f -
 
 Go to your organization Settings page on GitHub, then go to the **Actions** tab, and scroll to the bottom. In the list of active runners you should see the runners you just deployed. 
 
-### Runner for repository
+### For a repository
 
 You can also deploy a runner for a specific repository:
 
@@ -87,10 +98,10 @@ helm install actions-runner openshift-actions-runner/actions-runner \
     --set-string githubPat=$GITHUB_PAT \
     --set-string githubOwner=$GITHUB_OWNER \
     --set-string githubRepository=$GITHUB_REPO \
-    --set runnerLabels="{ dsri, bio2rdf }"
+    --set runnerLabels="{ dsri, anything-helpful }"
 ```
 
-### Uninstall the runner
+## Uninstall the runner
 
 ```bash
 helm uninstall actions-runner

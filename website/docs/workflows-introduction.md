@@ -27,7 +27,7 @@ Those solutions can easily be deployed on the DSRI. Let
 
 GitHub Actions allows you to define automatically containerized workflows through a simple YAML file hosted in your GitHub repository.
 
-See the [page about GitHub Actions runners](https://maastrichtu-ids.github.io/dsri-documentation/docs/workflows-github-runners) for more details, and to deploy runners on the DSRI.
+See the [page about GitHub Actions runners](/docs/workflows-github-actions) for more details, and to deploy runners on the DSRI.
 
 ### Argo
 
