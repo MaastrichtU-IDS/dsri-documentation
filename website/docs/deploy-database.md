@@ -131,15 +131,39 @@ Use the service name as hostname to connect from another pod in the same project
 
 ### Start Virtuoso triplestore
 
-Search for the **Virtuoso** template 
-
-
+Search for the **Virtuoso triplestore** template.
 
 ### Ontotext GraphDB triplestore
 
 Use the official DockerHub image if you have an enterprise license. Or [build](/dsri-documentation/guide-dockerfile-to-openshift) GraphDB free edition image from [graphdb-docker on GitHub](https://github.com/Ontotext-AD/graphdb-docker).
 
-Use the
+After copying the `.zip` file in the `graphdb-docker/free-edition` folder, go the `graphdb-docker` folder in your terminal:
+
+```bash
+cd graphdb-docker
+```
+
+Before creating your GraphDB ImageStream, make sure you are in the right project:
+
+```bash
+oc project my-project
+```
+
+Create the ImageStream for GraphDB:
+
+```bash
+oc new-build --name graphdb --binary
+```
+
+Build the image on the DSRI and save it in the ImageStream:
+
+```bash
+oc start-build graphdb --from-dir=free-edition --follow --wait
+```
+
+You can now use the **Ontotext GraphDB** template to deploy a GraphDB instance on DSRI. 
+
+Use the name of the ImageStream when instantiating the template, you can check if the image was properly built in **Search** > Filter **Resources** for ImageStreams
 
 <!-- 
 

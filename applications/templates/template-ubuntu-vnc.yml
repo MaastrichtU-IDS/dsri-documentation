@@ -2,27 +2,25 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: ubuntu-root
+  name: ubuntu-vnc
   annotations:
-    openshift.io/display-name: Ubuntu
+    openshift.io/display-name: Ubuntu with web UI
     description: |-
-      Start Ubuntu Linux (Debian-based) with the 'root' user which has sudo permissions to install anything.
+      Start Ubuntu Linux (Debian-based) accessible via a web interface URL
+      Your user has sudo permissions to install anything.
 
-      📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage
+      📂 Use the `/root` folder (home of your user) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
-      🔗 We enabled the port 8080 in the Ubuntu container if you need to deploy applications
       
-      Image based on official ubuntu image, hosted in the GitHub Container Registry.
-      Visit https://github.com/MaastrichtU-IDS/ubuntu for more details on the image
-      Visit original Ubuntu image at https://hub.docker.com/_/ubuntu
+      Visit https://github.com/fcwu/docker-ubuntu-vnc-desktop for more details on the image
     iconClass: icon-ubuntu
-    tags: ubuntu,root,persistent
+    tags: ubuntu,ui,vnc,root,persistent
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-utilities#ubuntu
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
     # template.openshift.io/bindable: 'false'
 labels:
-  template: ubuntu-root
+  template: ubuntu-vnc
 message: |-
   A Ubuntu pod has been scheduled for creation in your project, and should be soon available.
   Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
@@ -35,6 +33,15 @@ parameters:
   description: Must be without spaces (use -), and unique in the project.
   value: ubuntu
   required: true
+- name: PASSWORD
+  displayName: Ubuntu Password
+  description: The password of your user and to access Ubuntu from the web UI
+  required: true
+# - name: User
+#   displayName: Ubuntu Username
+#   description: The username in Ubuntu
+#   required: true
+#   value: ubuntu
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage used for the notebook (approximate).
@@ -42,8 +49,8 @@ parameters:
   required: true
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
-  description: See https://github.com/MaastrichtU-IDS/ubuntu for more details on the image
-  value: ghcr.io/maastrichtu-ids/ubuntu:latest
+  description: See https://github.com/fcwu/docker-ubuntu-vnc-desktop for more details on the image
+  value: dorowu/ubuntu-desktop-lxde-vnc:latest
   required: true
 
 objects:
@@ -66,7 +73,7 @@ objects:
     name: ${APPLICATION_NAME}
     labels:
       app: ${APPLICATION_NAME}
-      template: ubuntu-root-dynamic
+      template: ubuntu-vnc
   spec:
     tags:
     - name: latest
@@ -77,6 +84,16 @@ objects:
       #   scheduled: true
     lookupPolicy:
       local: true
+
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+      template: ubuntu-vnc
+  stringData:
+    application-password: "${PASSWORD}"
 
 - kind: DeploymentConfig
   apiVersion: apps.openshift.io/v1
@@ -110,17 +127,33 @@ objects:
         serviceAccountName: anyuid
         #nodeSelector:
         # dsri.unimaas.nl/cpu: 'true'
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
         containers:
         - name: ubuntu-container
-          image: ${APPLICATION_NAME}:latest
-          command: [ "tail", "-f", "/dev/null"]
+          image: "${APPLICATION_NAME}:latest"
+          # command: [ "tail", "-f", "/dev/null"]
           ports:
-          - containerPort: 8080
+          - containerPort: 80
             protocol: TCP
+          - containerPort: 5900
+            protocol: TCP
+          env:
+          - name: HTTP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: VNC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          # - name: USER
+          #   value: "${USERNAME}"
           # resources:
           #   limits:
           #     cpu: '64'
@@ -130,8 +163,17 @@ objects:
           #     memory: 4Gi
           volumeMounts:
           - name: data
-            # mountPath: "/data"
             mountPath: "/root"
+            # mountPath: "/root"
+          - name: dshm
+            mountPath: "/dev/shm"
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
+        - name: dshm
+          emptyDir:
+            medium: Memory
         automountServiceAccountToken: false
 
 - kind: Service
@@ -142,28 +184,28 @@ objects:
       app: "${APPLICATION_NAME}"
   spec:
     ports:
-    - name: 8080-tcp
+    - name: 6080-tcp
       protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 6080
+      targetPort: 80
     selector:
       app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}"
 
-# - kind: Route
-#   apiVersion: route.openshift.io/v1
-#   metadata:
-#     name: "${APPLICATION_NAME}"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   spec:
-#     host: ''
-#     to:
-#       kind: Service
-#       name: "${APPLICATION_NAME}"
-#       weight: 100
-#     port:
-#       targetPort: 8787-tcp
-#     tls:
-#       termination: edge
-#       insecureEdgeTerminationPolicy: Redirect
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 6080-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect

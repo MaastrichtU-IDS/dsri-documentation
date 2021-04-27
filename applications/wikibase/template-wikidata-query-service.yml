@@ -8,7 +8,7 @@ metadata:
   annotations:
     openshift.io/display-name: Wikidata Query Service
     description: |-
-      Start the Wikibase Query Service
+      Start the Wikibase Query Service (used for Wikidata)
 
       Deploying: wdqs (Blazegraph), wdqs-proxy, wdqs-frontend
       Based on https://github.com/wmde/wikibase-docker
@@ -19,7 +19,7 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 parameters:
 - name: APPLICATION_NAME
-  value: wikidata-query-service
+  value: wikidata
   required: true
 - name: PASSWORD
   description: The password/token to access the application
@@ -70,7 +70,7 @@ objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}-query"
     labels:
       app: "${APPLICATION_NAME}"
   spec:
@@ -84,11 +84,9 @@ objects:
       deploymentconfig: "${APPLICATION_NAME}"
     template:
       metadata:
-        annotations:
-          alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}-query"
       spec:
         serviceAccountName: anyuid
         # nodeSelector:
@@ -110,9 +108,9 @@ objects:
           #     memory: "300Gi"
           env:
           - name: WIKIBASE_HOST
-            value: "wikibase.svc"
-          - name: WDQS_HOST
             value: "${APPLICATION_NAME}"
+          - name: WDQS_HOST
+            value: "${APPLICATION_NAME}-query"
             # value: "wdqs.svc"
           - name: WDQS_PORT
             value: "9999"
@@ -132,7 +130,7 @@ objects:
 - kind: Service
   apiVersion: v1
   metadata:
-    name: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}-query"
     labels:
       app: "${APPLICATION_NAME}"
   spec:
@@ -143,19 +141,19 @@ objects:
       targetPort: 9999
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-query"
     type: ClusterIP
 - kind: Route
   apiVersion: v1
   metadata:
-    name: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}-query"
     labels:
       app: "${APPLICATION_NAME}"
   spec:
     host: ''
     to:
       kind: Service
-      name: "${APPLICATION_NAME}"
+      name: "${APPLICATION_NAME}-query"
       weight: 100
     port:
       targetPort: 9999-tcp
@@ -182,8 +180,6 @@ objects:
       deploymentconfig: "${APPLICATION_NAME}-proxy"
     template:
       metadata:
-        annotations:
-          alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
           app: "${APPLICATION_NAME}"
           deploymentconfig: "${APPLICATION_NAME}-proxy"
@@ -206,7 +202,7 @@ objects:
           #     memory: "300Gi"
           env:
           - name: PROXY_PASS_HOST
-            value: "${APPLICATION_NAME}:9999"
+            value: "${APPLICATION_NAME}-query:9999"
         automountServiceAccountToken: false
 
 - kind: Service
@@ -262,8 +258,6 @@ objects:
       deploymentconfig: "${APPLICATION_NAME}-frontend"
     template:
       metadata:
-        annotations:
-          alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
           app: "${APPLICATION_NAME}"
           deploymentconfig: "${APPLICATION_NAME}-frontend"
@@ -287,10 +281,11 @@ objects:
           env:
           - name: WIKIBASE_HOST
             value: "${APPLICATION_NAME}"
-            # We use blazegraph service instead of Wikibase
+            # TODO: We use blazegraph service instead of Wikibase
           #   value: "wikibase.svc"
           - name: WDQS_HOST
             value: "${APPLICATION_NAME}-proxy"
+            # value: "${APPLICATION_NAME}-query"
         automountServiceAccountToken: false
 
 - kind: Service
@@ -326,6 +321,416 @@ objects:
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
+
+
+## DEPLOY MySQL
+- apiVersion: "v1"
+  kind: "PersistentVolumeClaim"
+  metadata:
+    name: ${APPLICATION_NAME}-mysql
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-mysql"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-mysql"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}-mysql"
+      spec:
+        # serviceAccountName: anyuid
+        containers:
+        - name: mysql-container
+          image: "mariadb:10.3"
+          ports:
+          - containerPort: 3306
+            protocol: TCP
+          # resources:
+          #   requests: 
+          #     cpu: "${CPU_LIMIT}"
+          #     memory: "${MEMORY_LIMIT}"
+          #   limits:
+          #     cpu: "128"
+          #     memory: "300Gi"
+          env:
+          - name: MYSQL_RANDOM_ROOT_PASSWORD
+            value: "yes"
+          - name: MYSQL_DATABASE
+            value: "my_wiki"
+          - name: MYSQL_USER
+            value: "wikiuser"
+          - name: MYSQL_PASSWORD
+            value: "sqlpass"
+          volumeMounts:
+          - name: data
+            mountPath: "/var/lib/mysql"
+        automountServiceAccountToken: false
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}-mysql"
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-mysql"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 3306-tcp
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-mysql"
+    type: ClusterIP
+
+
+## DEPLOY ElasticSearch
+# - apiVersion: "v1"
+#   kind: "PersistentVolumeClaim"
+#   metadata:
+#     name: ${APPLICATION_NAME}-elasticsearch
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   spec:
+#     accessModes:
+#       - "ReadWriteMany"
+#     resources:
+#       requests:
+#         storage: ${STORAGE_SIZE}
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-elasticsearch"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-elasticsearch"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}-elasticsearch"
+      spec:
+        # serviceAccountName: anyuid
+        containers:
+        - name: elasticsearch-container
+          image: "wikibase/elasticsearch:6.5.4-extra"
+          ports:
+          - containerPort: 9200
+            protocol: TCP
+          env:
+          - name: discovery.type
+            value: "single-node"
+          - name: ES_JAVA_OPTS
+            value: "-Xms512m -Xmx512m"
+        #   volumeMounts:
+        #   - name: data
+        #     mountPath: "/var/lib/mysql"
+        # automountServiceAccountToken: false
+        # volumes:
+        # - name: data
+        #   persistentVolumeClaim:
+        #     claimName: "${APPLICATION_NAME}-elasticsearch"
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-elasticsearch"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 9200-tcp
+      protocol: TCP
+      port: 9200
+      targetPort: 9200
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-elasticsearch"
+    type: ClusterIP
+
+
+
+## DEPLOY QuickStatements
+# depends_on: - wikibase
+- apiVersion: "v1"
+  kind: "PersistentVolumeClaim"
+  metadata:
+    name: ${APPLICATION_NAME}-quickstatements
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-quickstatements"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-quickstatements"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}-quickstatements"
+      spec:
+        serviceAccountName: anyuid
+        containers:
+        - name: quickstatements-container
+          image: "wikibase/elasticsearch:6.5.4-extra"
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          env:
+          - name: QS_PUBLIC_SCHEME_HOST_AND_PORT
+            value: "http://localhost:9191"
+          - name: WB_PUBLIC_SCHEME_HOST_AND_PORT
+            value: "http://localhost:8181"
+          - name: WIKIBASE_SCHEME_AND_HOST
+            value: "http://${APPLICATION_NAME}"
+          - name: WB_PROPERTY_NAMESPACE
+            value: "122"
+          - name: WB_PROPERTY_PREFIX
+            value: "Property:"
+          - name: WB_ITEM_NAMESPACE
+            value: "120"
+          - name: WB_ITEM_PREFIX
+            value: "Item:"
+          volumeMounts:
+          - name: data
+            mountPath: "/quickstatements/data"
+        automountServiceAccountToken: false
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}-quickstatements"
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-quickstatements"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 9191-tcp
+      protocol: TCP
+      port: 9191
+      targetPort: 80
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-quickstatements"
+    type: ClusterIP
+
+
+
+## DEPLOY Updater
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-updater"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}-updater"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}-updater"
+      spec:
+        serviceAccountName: anyuid
+        containers:
+        - name: updater-container
+          image: "wikibase/wdqs:0.3.40"
+          command:
+            - "/runUpdate.sh"
+          # ports:
+          # - containerPort: 3306
+          #   protocol: TCP
+          # resources:
+          #   requests: 
+          #     cpu: "${CPU_LIMIT}"
+          #     memory: "${MEMORY_LIMIT}"
+          #   limits:
+          #     cpu: "128"
+          #     memory: "300Gi"
+          env:
+          - name: WIKIBASE_HOST
+            value: "${APPLICATION_NAME}"
+          - name: WDQS_HOST
+            value: "${APPLICATION_NAME}-query"
+          - name: WDQS_PORT
+            value: "9999"
+        automountServiceAccountToken: false
+
+
+## DEPLOY WIKIBASE
+- apiVersion: "v1"
+  kind: "PersistentVolumeClaim"
+  metadata:
+    name: ${APPLICATION_NAME}-wikibase
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}"
+      spec:
+        serviceAccountName: anyuid
+        containers:
+        - name: wikibase-container
+          image: "wikibase/wikibase:1.35-bundle"
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          env:
+          - name: DB_SERVER
+            value: "${APPLICATION_NAME}-mysql"
+            # value: "${APPLICATION_NAME}-mysql:3306"
+          - name: DB_USER
+            value: "wikiuser"
+          - name: DB_PASS
+            value: "sqlpass"
+          - name: DB_NAME
+            value: "my_wiki"
+          - name: QS_PUBLIC_SCHEME_HOST_AND_PORT
+            value: "http://localhost:9191"
+          - name: MW_ELASTIC_HOST
+            value: "${APPLICATION_NAME}-elasticsearch"
+          - name: MW_ELASTIC_PORT
+            value: "9200"
+          # TODO: Change login params here
+          - name: MW_ADMIN_NAME
+            value: "WikibaseAdmin"
+          - name: MW_ADMIN_PASS
+            value: "WikibaseDockerAdminPass"
+          - name: MW_ADMIN_EMAIL
+            value: "admin@example.com"
+          - name: MW_WG_SECRET_KEY
+            value: "secretkey"
+
+          volumeMounts:
+          - name: quickstatements-data
+            mountPath: "/quickstatements/data"
+          - name: mediawiki-images-data
+            mountPath: "/var/www/html/images"
+        automountServiceAccountToken: false
+        volumes:
+        - name: quickstatements-data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}-quickstatements"
+        - name: mediawiki-images-data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}-wikibase"
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-wikibase"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8181-tcp
+      protocol: TCP
+      port: 8181
+      targetPort: 80
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    type: ClusterIP
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-wikibase"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-wikibase"
+      weight: 100
+    port:
+      targetPort: 8181-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+
 
 ## Might be necessary (config files to be mounted like a volume)
 # - kind: ConfigMap

@@ -11,6 +11,8 @@ Helm charts can be defined as [Operators](/docs/operators) (if they are packaged
 
 :::
 
+See the official [documentation for Helm on OpenShift](https://docs.openshift.com/container-platform/4.6/cli_reference/helm_cli/getting-started-with-helm-on-openshift-container-platform.html).
+
 ## Install the Helm client
 
 ### Install Golang

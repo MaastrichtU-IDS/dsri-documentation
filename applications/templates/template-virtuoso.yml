@@ -11,7 +11,7 @@ metadata:
       📂 Use the `/data` folder in the container to store your data in the persistent storage
 
       Visit https://www.github.com/tenforce/docker-virtuoso for more details about the image used
-    iconClass: icon-3scale
+    iconClass: icon-openjdk
     tags: triplestore,graph,database,rdf,sparql
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-database#start-virtuoso-triplestore

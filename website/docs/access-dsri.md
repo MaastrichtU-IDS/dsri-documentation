@@ -18,11 +18,11 @@ You need to be connected to the UM network to access the DSRI.
 * Connect to **UMnet** or **eduroam** WiFi at Maastricht University
 * For **students**, use the Athena Student Desktop at [athenadesktop.maastrichtuniversity.nl](https://athenadesktop.maastrichtuniversity.nl)
 
-* For **Linux**, use `openconnect` to connect to the UM VPN:
+* For **Linux**, use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
 
   ```bash
   sudo apt install openconnect
-  sudo openconnect -u YOUR.USER --authgroup 01-Employees vpn-rw1.maastrichtuniversity.nl
+  sudo openconnect -u YOUR.USER --authgroup 01-Employees vpn.maastrichtuniversity.nl
   ```
 
   > Provide your UM password when prompted.

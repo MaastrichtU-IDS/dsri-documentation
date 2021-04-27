@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: ontotext-graphdb
   annotations:
-    openshift.io/display-name: Virtuoso triplestore
+    openshift.io/display-name: Ontotext GraphDB
     description: |-
       Start a Ontotext GraphDB triplestore, with a SPARQL endpoint
 
@@ -14,7 +14,7 @@ metadata:
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
 
       Visit https://github.com/Ontotext-AD/graphdb-docker for more details about the image used
-    iconClass: icon-3scale
+    iconClass: icon-datavirt
     tags: triplestore,graph,database,rdf,sparql
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-database#ontotext-graphdb-triplestore
@@ -97,7 +97,7 @@ objects:
         - ontotext-graphdb
         from:
           kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:latest
+          name: ${APPLICATION_IMAGE}
     replicas: 1
     selector:
       app: "${APPLICATION_NAME}"
@@ -146,6 +146,7 @@ objects:
               -Dentity-pool-implementation=transactional
               -Dgraphdb.append.request.id.headers=true
               -Dreuse.vars.in.subselects=true
+            # -Dgraphdb.global.page.cache=4G
           # - name: DBA_PASSWORD
           #   valueFrom:
           #     secretKeyRef:
