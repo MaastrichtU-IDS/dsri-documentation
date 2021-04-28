@@ -1,5 +1,5 @@
 ---
-id: catalog-openmpi
+id: mpi-jobs
 title: Run MPI jobs
 ---
 

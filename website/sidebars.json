@@ -11,7 +11,7 @@
         "collapsed": false,
         "items": [
           "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-database", "deploy-matlab",
-          "deploy-spark", "catalog-openmpi", "neuroscience", "catalog-genomics", "catalog-imaging", "deploy-on-gpu", "catalog-utilities"
+          "deploy-spark", "mpi-jobs", "neuroscience", "catalog-genomics", "catalog-imaging", "deploy-on-gpu", "catalog-utilities"
         ]
       }
     ],
