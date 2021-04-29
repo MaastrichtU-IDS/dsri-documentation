@@ -183,6 +183,12 @@ Use the service name as hostname to connect from another pod in the same project
 
 :::
 
+### AllegroGraph
+
+[AllegroGraph®](https://franz.com/agraph/) is a modern, high-performance, persistent graph database. It supports  SPARQL, RDFS++, and Prolog reasoning from numerous client applications. 
+
+AllegroGraph has not been tested on DSRI yet, but it can be deployed on Kubernetes using Helm, cf. https://www.github.com/franzinc/agraph-examples/tree/master/clustering%2Fkubernetes%2Fmmr%2Fkubernetes-mmr.md
+
 <!-- 
 
 ### Blazegraph triplestore

@@ -10,7 +10,7 @@ The DSRI provides a graphical user interface on top of the [Kubernetes](https://
 
 :::tip New DSRI version!
 
-This documentation cover the **new DSRI version using OKD4.6** available at https://console-openshift-console.apps.dsri2.unimaas.nl
+This documentation cover the **new DSRI version using OKD4.6**, which is available at https://console-openshift-console.apps.dsri2.unimaas.nl
 
 You can find the documentation for the legacy DSRI version using OKD 3.11 [here](/docs/okd3-introduction).
 
@@ -121,5 +121,4 @@ See the following presentation about the Data Science Research Infrastructure
 <a href="/dsri-documentation/resource/2021-04-DSRI-Community-Event.pdf" target="_blank" rel="noopener noreferrer">
  <img src="/dsri-documentation/resource/DSRI-community-event.png" style={{maxWidth: '100%', maxHeight: '100%'}} alt="DSRI April 2021 Community Event Presentation" />
 </a>
-
 
