@@ -16,11 +16,15 @@ If those solutions don't work due to the files size, try one of the solutions be
 
 ## Upload large files with the `oc` tool
 
-Copy a file, or directory, from your local filesystem to an OpenShift pod.
+The best way to upload large files or folders from a laptop or server to the DSRI is to use the `oc` command line interface.
 
-For files that are updated regularly, we recommend using `rsync` (see [below](/dsri-documentation/docs/openshift-load-data#rsync)) as it synchronizes the file if it already exists, preventing duplication and making synchronization faster. 
+:::tip Install the client
 
-But `oc cp` can fix issues met with rsync, such as copying symlinks for example, or files too big.
+To install the `oc` client on your laptop/server, visit the [Install the client](/docs/openshift-install) page
+
+:::
+
+`oc cp` directly copy, and overwrite existing files, from a laptop or server to an Application pod on the DSRI.
 
 First get the `<pod_id>` using your application name:
 
@@ -50,11 +54,11 @@ oc cp <pod-id>:<path_to_copy> <local_destination>
 
 ## Synchronizes files
 
-You can also use the `oc` command to [synchronizes](https://docs.openshift.com/enterprise/3.1/dev_guide/copy_files_to_container.html) local directories to an application on the DSRI.
+For files that are updated regularly, you can use `rsync` as it synchronizes the files if they already exist, preventing duplication and making synchronization faster. But
 
 :::caution Faster but less stable
 
-Rsync is usually faster than `oc cp` if you want to update data already uploaded without re-uploading everything. But it has more chances to fail (when `oc cp` should work in most cases)
+Rsync is less reliable than `cp`, e.g. when copying symlinks.
 
 :::
 
