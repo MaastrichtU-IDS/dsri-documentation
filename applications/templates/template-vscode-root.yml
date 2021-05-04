@@ -35,7 +35,7 @@ parameters:
 - name: PASSWORD
   displayName: Password
   description: The password to access the VSCode application
-  value: mypassword
+  # value: mypassword
   # from: "[a-zA-Z0-9]{16}"
   # generate: expression
   required: true
@@ -51,14 +51,14 @@ parameters:
   required: true
 
 objects:
-# - apiVersion: v1
-#   kind: Secret
-#   metadata:
-#     annotations:
-#       template.openshift.io/expose-password: "{.data['application-password']}"
-#     name: "${APPLICATION_NAME}"
-#   stringData:
-#     application-password: "${PASSWORD}"
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    # annotations:
+    #   template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
 
 - apiVersion: "v1"
   kind: "PersistentVolumeClaim"
@@ -145,11 +145,11 @@ objects:
             mountPath: "/home/coder/project"
           env:
           - name: PASSWORD
-            value: ${PASSWORD}
-          #   valueFrom:
-          #     secretKeyRef:
-          #       key: application-password
-          #       name: "${APPLICATION_NAME}"
+            # value: ${PASSWORD}
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
           # - name: GIT_URL
           #   value: "${GIT_REPOSITORY_URL}"
         automountServiceAccountToken: false
