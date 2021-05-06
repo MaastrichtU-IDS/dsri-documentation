@@ -58,3 +58,6 @@ Running a UI with VNC (e.g. FSLeyes) is still a work in progress. See [this issu
 
 :::
 
+## Use the GPUs
+
+More details about using GPU with FSL: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/GPU

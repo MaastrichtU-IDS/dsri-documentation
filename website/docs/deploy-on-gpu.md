@@ -84,3 +84,36 @@ nvidia-smi
 We recommend to **use Google Chrome** web browser as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
 
 :::
+
+## Install GPU driver in any image
+
+See the latest official [Nvidia docs](https://nvidia.github.io/nvidia-container-runtime) to install the `nvidia-container-runtime` (all packages and drivers required to access the GPU from your application)
+
+Here is an example of commands to add to a debian based `Dockerfile` to install the GPU drivers:
+
+```dockerfile
+RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \
+    apt-key add - \ &&
+    distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \ &&
+    curl -s -L https://nvidia.github.io/nvidia-container-runtime/$distribution/nvidia-container-runtime.list | 
+RUN apt-get update \ &&
+    apt-get install -y nvidia-container-runtime
+```
+
+Then, build the FSL on GPU in your DSRI project using `oc` from the folder where your put the `Dockerfile`:
+
+```bash
+oc new-build --name fsl-gpu --binary
+oc start-build fsl-gpu --from-dir=. --follow --wait
+oc new-app fsl-gpu
+```
+
+You will then need to edit the deployment to add the GPU NodeSelector, the `serviceAccountName: anyuid` and add a persistent storage
+
+```bash
+oc edit fsl-gpu
+```
+
+
+
+See also: official [Nvidia docs for CUDA]( https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#debian-installation)
