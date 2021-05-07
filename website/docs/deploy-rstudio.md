@@ -7,7 +7,7 @@ title: RStudio
 
 Start a RStudio container based on [Rocker RStudio tidyverse images](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) (debian), with `sudo` privileges to install anything you need (e.g. pip or apt packages)
 
-You can start a container using the **JupyterLab** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can start a container using the **RStudio** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
 Provide a few parameters, and Instantiate the template. The username will be **rstudio**, and the DSRI will automatically create a persistent volume to store data you will put in the `/home/rstudio` folder. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
