@@ -18,7 +18,7 @@ git clone https://github.com/kubeflow/mpi-operator.git
 cd mpi-operator/examples/horovod
 ```
 
-Open the `tensorflow-mnist.yaml` file and fix the `apiVersion` on the first line:
+Open the `tensorflow-mnist.yaml` file, and fix the `apiVersion` on the first line:
 
 ```yaml
 # From
@@ -43,7 +43,7 @@ Once this has been set, run the job in the current project on the DSRI:
 oc create -f tensorflow-mnist.yaml
 ```
 
-You should see the 2 workers and the main job running in your project **Topology** page in the DSRI web UI.
+You should see the 2 workers and the main job running in your project **Topology** page in the DSRI web UI (cf. [this comment](https://github.com/kubeflow/mpi-operator/blob/master/examples/horovod/tensorflow_mnist.py#L92) if you are facing issue with `.keras/datasets` when it runs).
 
 You can now take a look at, and edit, the different files to run your custom MPI job on the DSRI:
 
