@@ -8,14 +8,17 @@ metadata:
     description: |-
       Start RStudio with the rstudio user which has root permissions (sudo).
 
+      🐳 Available images with this template:
+      bioconductor/bioconductor_docker:devel
+      rocker/rstudio
+      rocker/tidyverse
+      ghcr.io/maastrichtu-ids/rstudio
+
+      Images based on rocker can be deployed: https://hub.docker.com/r/rocker/rstudio/
+      Visit https://github.com/MaastrichtU-IDS/rstudio for more details to build and customize the image
+
       📂 Use the /home/rstudio folder (workspace of the RStudio UI) to store your data in a persistent storage automatically created.
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
-      
-      This template uses rocker RStudio image hosted in the GitHub Container Registry.
-      Visit https://github.com/MaastrichtU-IDS/rstudio for more details and to customize the image
-      Visit original rocker image at https://hub.docker.com/r/rocker/rstudio/
-
-      🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
     iconClass: icon-play
     tags: R,rstudio,root,persistent
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -25,22 +28,20 @@ metadata:
 labels:
   template: rstudio-root-dynamic
 parameters:
+- name: APPLICATION_IMAGE
+  displayName: RStudio Docker image
+  description: Check on the right to see which images can be used to start RStudio
+  # value: ghcr.io/maastrichtu-ids/rstudio
+  required: true
+- name: PASSWORD
+  displayName: RStudio password
+  description: The password of the RStudio user. 
+  required: true
 - name: APPLICATION_NAME
   displayName: Application name
   description: Must be without spaces (use -), and unique in the project.
   value: rstudio
   required: true
-- name: PASSWORD
-  displayName: RStudio password
-  description: The password of the RStudio user. 
-  from: "[a-zA-Z0-9]{16}"
-  generate: expression
-  required: true
-# - name: APPLICATION_MEMORY
-#   displayName: Application memory
-#   description: Maximum RAM available for the application.
-#   value: 5Gi
-#   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage used for the notebook (approximate).
@@ -51,11 +52,6 @@ parameters:
   description: Restricting the number of thread allocated to OpenBLAS can speed up computations using OpenBLAS (leave empty for default 64)
   value: "1"
   required: false
-- name: APPLICATION_IMAGE
-  displayName: Application Docker image
-  description: See https://github.com/MaastrichtU-IDS/rstudio for more details and to customize the image
-  value: ghcr.io/maastrichtu-ids/rstudio
-  required: true
 objects:
 - apiVersion: v1
   kind: Secret

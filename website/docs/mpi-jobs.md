@@ -18,7 +18,7 @@ git clone https://github.com/kubeflow/mpi-operator.git
 cd mpi-operator/examples/horovod
 ```
 
-Open the `tensorflow-mnist.yaml` file and change the first line:
+Open the `tensorflow-mnist.yaml` file and fix the `apiVersion` on the first line:
 
 ```yaml
 # From
@@ -27,7 +27,17 @@ apiVersion: kubeflow.org/v1
 apiVersion: kubeflow.org/v1alpha2
 ```
 
-Run the job in the current project on the DSRI:
+You will also need to specify those containers can run with the `root` user by adding the `serviceAccountName` between `spec:` and `container:` for the launcher and the runners:
+
+```yaml
+      template:
+        spec:
+          serviceAccountName: anyuid
+          containers:
+          - image: docker.io/kubeflow/mpi-horovod-mnist
+```
+
+Once this has been set, run the job in the current project on the DSRI:
 
 ```bash
 oc create -f tensorflow-mnist.yaml
@@ -50,3 +60,4 @@ See the [Kubeflow documentation to create a MPI job](https://www.kubeflow.org/do
 Feel free to contact us on  the DSRI Slack **#helpdesk** channel to discuss the use of MPI on the DSRI.
 
 :::
+
