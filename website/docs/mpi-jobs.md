@@ -97,15 +97,15 @@ spec:
 
 ```
 
-3. Once this has been set, run the job in the current project on the DSRI (`oc project my-project`):
+3. Once this has been set, create the job in your current project on the DSRI (change with `oc project my-project`):
 
 ```bash
 oc create -f tensorflow-mnist.yaml
 ```
 
-You should see the 2 workers and the main job running in your project **Topology** page in the DSRI web UI.
+You should see the 2 workers and the main job running in your project **Topology** page in the DSRI web UI. You can then easily check the logs of the launcher and workers.
 
-You can now take a look at, and edit, the different files to run your custom MPI job on the DSRI:
+To run your own MPI job on the DSRI, you can take a look at, and edit, the different files provided by the [MPI Operator example](https://github.com/kubeflow/mpi-operator/tree/master/examples/horovod):
 
 🐍 [`tensorflow_mnist.py`](https://github.com/kubeflow/mpi-operator/blob/master/examples/horovod/tensorflow_mnist.py): the python script with the actual job to run
 
@@ -113,7 +113,7 @@ You can now take a look at, and edit, the different files to run your custom MPI
 
 ⛵️ [`tensorflow-mnist.yaml`](https://github.com/kubeflow/mpi-operator/blob/master/examples/horovod/tensorflow-mnist.yaml): the YAML file to define the MPI deployment on Kubernetes (number and limits of workers, `mpirun` command, etc)
 
-See the [Kubeflow documentation to create a MPI job](https://www.kubeflow.org/docs/components/training/mpi/#creating-an-mpi-job) for more details.
+Visit the [Kubeflow documentation to create a MPI job](https://www.kubeflow.org/docs/components/training/mpi/#creating-an-mpi-job) for more details.
 
 :::info Contact us
 
