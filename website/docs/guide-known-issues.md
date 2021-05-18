@@ -26,13 +26,13 @@ You may increase the limit by authenticating and upgrading: https://www.docker.c
 You can solve this by creating a secret to login to DockerHub in your project:
 
 ```bash
-oc -n <project> create secret docker-registry <secret-name> --docker-server=docker.io --docker-username=<dockerhub-username> --docker-password=<dockerhub-password> --docker-email=<email-address>
+oc create secret docker-registry dockerhub-login --docker-server=docker.io --docker-username=dockerhub_username --docker-password=dockerhub_password --docker-email=example@mail.com
 ```
 
 Linking the login secret to the default service account:
 
 ```bash
-oc secrets link default <secret-name> --for=pull
+oc secrets link default dockerhub-login --for=pull
 ```
 
 :::tip
