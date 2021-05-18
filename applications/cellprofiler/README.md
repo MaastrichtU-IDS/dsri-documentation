@@ -1,12 +1,15 @@
+## Run CellProfiler pipelines
+
+* DSRI docs (to improve): https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-imaging
+
 * Check the `templates` folder for the CellProfiler template (it is already created in the global catalog)
+  * Mirror of the CellProfiler image: https://github.com/vemonet/cellprofiler (avoid DockerHub limits)
 
-* Mirror of the CellProfiler image: https://github.com/vemonet/cellprofiler
+* Check the scripts to run a CellProfiler pipeline on the DSRI:
+  * From Linux: `run_cellprofiler.sh`
+  * From Windows: `run_cellprofiler.ps1`
 
-* Check the scripts to upload and run a CellProfiler pipeline:
-  * For Linux: `run_cellprofiler.sh`
-  * For Windows: `run_cellprofiler.ps1`
-
-CellProfiler cmd args:
+* CellProfiler cmd arguments:
 
 ```bash
   -p PIPELINE_FILENAME, --pipeline=PIPELINE_FILENAME, --project=PIPELINE_FILENAME
