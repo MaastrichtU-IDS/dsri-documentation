@@ -9,6 +9,7 @@
 oc project cellprofiler
 
 export POD_ID=$(oc get pod --selector app=cellprofiler --no-headers -o=custom-columns=NAME:.metadata.name)
+echo $POD_ID
 
 oc cp workflow_folder $POD_ID:/root
 
