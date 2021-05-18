@@ -9,7 +9,10 @@
   * From Linux: `run_cellprofiler.sh`
   * From Windows: `run_cellprofiler.ps1`
 
-* CellProfiler cmd arguments:
+**Note about storage**: Every user in MERLN has their own unique access to a `U:\Firstname.Lastname` folder for storage (login with UM account)
+We cannot oc cp from their server to this user folder. We need to access this user storage directly from the CellProfiler pod on the DSRI
+
+### Command arguments
 
 ```bash
   -p PIPELINE_FILENAME, --pipeline=PIPELINE_FILENAME, --project=PIPELINE_FILENAME
