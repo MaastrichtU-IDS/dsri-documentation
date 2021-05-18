@@ -10,7 +10,7 @@ export POD_ID=$(oc get pod --selector app=cellprofiler --no-headers -o=custom-co
 echo $POD_ID
 
 # Copy the required folders and files to the pod on the DSRI
-oc cp workflow_folder $POD_ID:/root
+oc cp workflow_folder $POD_ID:/usr/local/src/work
 
 # Run the workflow uploaded at the previous step
 oc exec $POD_ID -- cellprofiler --help

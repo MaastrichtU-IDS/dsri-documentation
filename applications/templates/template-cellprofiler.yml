@@ -8,7 +8,7 @@ metadata:
     description: |-
       Start the CellProfiler with the 'root' user which has sudo permissions to install anything.
 
-      📂 Use the `/usr/local/src/work` folder (home of the root user) to store your data in the existing persistent storage
+      📂 Use the `/usr/local/src` folder to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
 
       To run the CellProfiler in the terminal:
@@ -16,7 +16,11 @@ metadata:
       cellprofiler --run
       cellprofiler --run-headless
 
-      Image from https://hub.docker.com/r/cellprofiler/cellprofiler
+      Use the GitHub mirror to avoid DockerHub pull limits (cf. https://github.com/vemonet/cellprofiler): 
+      ghcr.io/vemonet/cellprofiler
+
+      Or use the official image from https://hub.docker.com/r/cellprofiler/cellprofiler
+      cellprofiler/cellprofiler:4.1.3
     iconClass: icon-amq
     tags: cellprofiler,persistent
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -45,7 +49,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
   description: See https://hub.docker.com/r/cellprofiler/cellprofiler for more details on the image
-  value: cellprofiler/cellprofiler:4.1.3
+  value: ghcr.io/vemonet/cellprofiler:latest
   required: true
 
 objects:
@@ -133,7 +137,7 @@ objects:
           volumeMounts:
           - name: data
             # mountPath: "/data"
-            mountPath: "/usr/local/src/work"
+            mountPath: "/usr/local/src"
         automountServiceAccountToken: false
 
 # - kind: Service
