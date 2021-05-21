@@ -130,6 +130,7 @@ objects:
         containers:
         - name: vscode-container
           image: ${APPLICATION_IMAGE}:latest
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8080
             protocol: TCP

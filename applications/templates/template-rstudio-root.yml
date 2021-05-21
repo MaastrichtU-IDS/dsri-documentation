@@ -136,6 +136,7 @@ objects:
         containers:
         - name: rstudio-container
           image: ${APPLICATION_NAME}:latest
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8787
             protocol: TCP

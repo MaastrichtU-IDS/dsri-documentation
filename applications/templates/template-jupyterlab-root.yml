@@ -83,8 +83,8 @@ objects:
       from:
         kind: DockerImage
         name: ${APPLICATION_IMAGE}
-      # importPolicy:
-      #   scheduled: true
+      importPolicy:
+        scheduled: true
     lookupPolicy:
       local: true
 
@@ -151,6 +151,7 @@ objects:
         containers:
         - name: jupyter-notebook
           image: "${APPLICATION_NAME}:latest"
+          imagePullPolicy: IfNotPresent
           command:
           - "start-notebook.sh"
           - "--no-browser"

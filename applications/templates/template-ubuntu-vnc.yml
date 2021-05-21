@@ -130,6 +130,7 @@ objects:
         containers:
         - name: ubuntu-container
           image: "${APPLICATION_NAME}:latest"
+          imagePullPolicy: IfNotPresent
           # command: [ "tail", "-f", "/dev/null"]
           ports:
           - containerPort: 80

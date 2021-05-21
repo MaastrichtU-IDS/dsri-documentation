@@ -98,6 +98,7 @@ objects:
         containers:
         - name: filebrowser-container
           image: ${APPLICATION_NAME}:latest
+          imagePullPolicy: IfNotPresent
           args: ["--password", "${APPLICATION_PASSWORD}"]
           # env:
           #   FB_PASSWORD: "${APPLICATION_PASSWORD}"
