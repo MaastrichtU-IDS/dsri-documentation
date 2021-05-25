@@ -44,6 +44,6 @@ From the [Institute of Data Science](https://maastrichtuniversity.nl/ids) (IDS) 
 - **Marcel Brouwers ** - System, Security and Network Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
 - **Chris Kuipers** - System, Security and Network Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
 - **Jordy Frijns** - System, Security and Network Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Rob Schlooz** - Project Manager from [IDS](https://maastrichtuniversity.nl/ids)
-- **Michel Dumontier** - Project Investigator from [IDS](https://maastrichtuniversity.nl/ids)
+- **Rob Schlooz** - Project Manager at [IDS](https://maastrichtuniversity.nl/ids)
+- **Michel Dumontier** - Project Investigator at [IDS](https://maastrichtuniversity.nl/ids)
 
