@@ -39,9 +39,11 @@ Contact us at **[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@m
 
 From the [Institute of Data Science](https://maastrichtuniversity.nl/ids) (IDS) and [Information and Communications Technology Services](https://maastrichtuniversity.nl/icts) (ICTS) at [Maastricht University](https://maastrichtuniversity.nl).
 
-- **Vincent Emonet** - Data Science engineer at [IDS](https://maastrichtuniversity.nl/ids)
-- **Binosha Weerarathna** - Data Science engineer at [IDS](https://maastrichtuniversity.nl/ids)
-- **Marcel Brouwers ** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Chris Kuipers** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Jordy Frijns** - System, Security and Network engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Michel Dumontier** - Project investigator from [IDS](https://maastrichtuniversity.nl/ids)
+- **Vincent Emonet** - Data Science Engineer at [IDS](https://maastrichtuniversity.nl/ids)
+- **Binosha Weerarathna** - Data Science Engineer at [IDS](https://maastrichtuniversity.nl/ids)
+- **Marcel Brouwers ** - System, Security and Network Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
+- **Chris Kuipers** - System, Security and Network Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
+- **Jordy Frijns** - System, Security and Network Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
+- **Rob Schlooz** - Project Manager from [IDS](https://maastrichtuniversity.nl/ids)
+- **Michel Dumontier** - Project Investigator from [IDS](https://maastrichtuniversity.nl/ids)
+
