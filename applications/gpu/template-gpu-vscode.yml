@@ -12,13 +12,11 @@ metadata:
       
       📂 Use the `/root` folder (workspace of the VSCode UI) to store your data in the existing persistent storage
 
-      🐳 Docker images based on images provided by Nvidia
+      🐳 Docker images based on images provided by Nvidia (cf. https://github.com/MaastrichtU-IDS/code-server)
       - Tensorflow:
-      ghcr.io/maastrichtu-ids/nvidia-gpu-tf2-vscode:19.11-tf2-py3
-      Source: https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/applications/gpu/tensorflow
+      ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow-21.05-tf2-py3
       - PyTorch:
-      ghcr.io/maastrichtu-ids/nvidia-gpu-pytorch-vscode:19.11-py3
-      Source: https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/applications/gpu/pytorch
+      ghcr.io/maastrichtu-ids/code-server-gpu:pytorch-21.05-py3
     iconClass: icon-kubevirt
     tags: python,gpu,vscode
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -34,8 +32,8 @@ parameters:
   required: true
 - name: IMAGE_NAME
   displayName: Docker image used
-  description: 'Or PyTorch: ghcr.io/maastrichtu-ids/nvidia-gpu-pytorch-vscode:19.11-py3'
-  value: 'ghcr.io/maastrichtu-ids/nvidia-gpu-tf2-vscode:19.11-tf2-py3'
+  description: 'Use PyTorch: ghcr.io/maastrichtu-ids/code-server-gpu:pytorch-21.05-py3'
+  value: 'ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow-21.05-tf2-py3'
   required: true
 - name: PASSWORD
   displayName: VisualStudio password

@@ -18,7 +18,7 @@ metadata:
       https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
       - PyTorch:
       nvcr.io/nvidia/pytorch:21.05-py3
-      https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
+      https://ngc.nvidia.com/catalog/containers/nvidia:pytorch
     iconClass: icon-python
     tags: python,jupyter,gpu
     openshift.io/provider-display-name: Institute of Data Science, UM
