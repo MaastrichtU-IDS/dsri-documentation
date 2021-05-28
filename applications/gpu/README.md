@@ -1,3 +1,13 @@
+## Create templates in a project
+
+1. Go to the project with `oc project my-project`
+
+2. Run from this folder:
+
+```bash
+for template in $( ls *.yml ); do oc apply -f ${template} ; done
+```
+
 ## Build custom VisualStudio Code images
 
 cf. https://github.com/MaastrichtU-IDS/code-server
