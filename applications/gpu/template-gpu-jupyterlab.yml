@@ -125,7 +125,7 @@ objects:
           - command:
               - jupyter
               - lab
-            image: ${APPLICATION_IMAGE}:latest
+            image: ${APPLICATION_NAME}:latest
             # image: ${IMAGE_NAME}
             imagePullPolicy: IfNotPresent
             name: gpu-jupyterlab

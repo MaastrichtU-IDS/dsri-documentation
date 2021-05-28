@@ -1,5 +1,8 @@
+## Build custom VisualStudio Code images
 
-### Log to Nvidia NGC repository
+cf. https://github.com/MaastrichtU-IDS/code-server
+
+## Log to Nvidia NGC repository
 
 To access some Nvidia Docker images you might need to be logged to the NGC repository
 
