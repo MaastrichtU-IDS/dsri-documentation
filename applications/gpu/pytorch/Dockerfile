@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:19.12-py3
+FROM nvcr.io/nvidia/pytorch:21.05-py3
 
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 

@@ -1,22 +1,5 @@
-## Tensorflow on GPU
+## Tensorflow on GPU with VisualStudio Code
 
-### With JupyterLab
-
-Add template to the current project catalog:
-
-```bash
-oc create -f template-tf-gpu-jupyter-persistent.yml
-```
-
-> This template uses `nvcr.io/nvidia/tensorflow:19.11-tf2-py3`
-
-### With VisualStudio Code
-
-Add template to the current project catalog:
-
-```bash
-oc create -f template-tf-gpu-vscode-persistent.yml
-```
 
 This template uses a custom image based on `nvcr.io/nvidia/tensorflow:19.11-tf2-py3`
 

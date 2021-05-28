@@ -1,31 +1,24 @@
-# ---
-# apiVersion: image.openshift.io/v1
-# kind: ImageStream
-# metadata:
-#   name: nvidia-tensorflow-gpu
-# spec:
-#   lookupPolicy:
-#     local: true
-#   tags: 
-#     - name: 19.11-tf2-py3
-#       from: 
-#         kind: DockerImage
-#         name: nvcr.io/nvidia/tensorflow:19.11-tf2-py3
 ---
 kind: Template
 apiVersion: template.openshift.io/v1
 labels:
-  template: gpu-tensorflow-jupyterlab
+  template: gpu-jupyterlab
 metadata:
-  name: gpu-tensorflow-jupyterlab
+  name: gpu-jupyterlab
   annotations:
-    openshift.io/display-name: Tensorflow on GPU with JupyterLab
+    openshift.io/display-name: Python on GPU with JupyterLab
     description: |-
-      Start JupyterLab to run Tensorflow using GPUs with the root user. 
+      Start JupyterLab to run Tensorflow or PyTorch using GPUs with the root user. 
     
       📂 Use the `/workspace/notebooks` folder (workspace of the JupyterLab UI) to store your data in the existing persistent storage
 
-      🐳 Docker image provided by Nvidia: nvcr.io/nvidia/tensorflow:19.11-tf2-py3
+      🐳 Docker images provided by Nvidia:
+      - Tensorflow:
+      nvcr.io/nvidia/tensorflow:21.05-tf2-py3
+      https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
+      - PyTorch:
+      nvcr.io/nvidia/pytorch:21.05-py3
+      https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
     iconClass: icon-python
     tags: python,jupyter,gpu
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -37,7 +30,12 @@ parameters:
   displayName: Application name
   description: Must be unique in the project. It will be used to generate the application
     URL.
-  value: gpu-tensorflow-jupyterlab
+  value: gpu-jupyterlab
+  required: true
+- name: IMAGE_NAME
+  displayName: Docker image used
+  description: 'Also available: nvcr.io/nvidia/pytorch:21.05-py3'
+  value: 'nvcr.io/nvidia/tensorflow:21.05-tf2-py3'
   required: true
 - name: JUPYTER_TOKEN
   displayName: Notebook token
@@ -46,8 +44,8 @@ parameters:
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
-  description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
-  value: 5Gi
+  description: Size of the storage allocated to the notebook persistent storage in `/workspace/notebooks`.
+  value: 20Gi
   required: true
 - name: GPU_LIMIT
   displayName: Number of GPU assigned
@@ -55,27 +53,6 @@ parameters:
   value: '1'
   required: true
 
-# - name: PASSWORD
-#   displayName: Notebook password
-#   description: The password of the Jupyter Notebook.
-#   from: "[a-zA-Z0-9]{16}"
-#   generate: expression
-#   required: true
-# - name: IMAGE_NAME
-#   displayName: Docker image used
-#   description: Name of the Docker image used to run jupyter lab on DSRI GPUs
-#   value: 'nvcr.io/nvidia/tensorflow:19.11-tf2-py3'
-#   required: true
-# - name: STORAGE_NAME
-#   displayName: Storage name
-#   description: Name of the Persistent Volume Claim used for storage.
-#   value: pvc-mapr-projects-myproject
-#   required: true
-# - name: STORAGE_FOLDER
-#   displayName: Storage folder
-#   description: Path to the folder used to store your application data in the the Persistent Volume Claim (leave empty to use the root folder of the storage)
-#   value: gpu-tensorflow-jupyterlab
-#   required: false
 # - name: MEMORY_LIMIT
 #   displayName: Memory limit
 #   description: Maximum RAM memory available for the application.
@@ -95,7 +72,24 @@ objects:
 #       template.openshift.io/expose-password: "{.data['application-password']}"
 #     name: "${APPLICATION_NAME}"
 #   stringData:
-#     application-password: "${PASSWORD}"
+#     application-password: "${JUPYTER_TOKEN}"
+
+- kind: "ImageStream"
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${IMAGE_NAME}
+      importPolicy:
+        scheduled: false
+    lookupPolicy:
+      local: true
 
 - kind: "PersistentVolumeClaim"
   apiVersion: "v1"
@@ -103,7 +97,6 @@ objects:
     name: ${APPLICATION_NAME}
     labels:
       app: "${APPLICATION_NAME}"
-      template: gpu-tensorflow-jupyterlab
   spec:
     accessModes:
       - "ReadWriteMany"
@@ -132,10 +125,10 @@ objects:
           - command:
               - jupyter
               - lab
-            image: nvcr.io/nvidia/tensorflow:19.11-tf2-py3
+            image: ${APPLICATION_IMAGE}:latest
             # image: ${IMAGE_NAME}
             imagePullPolicy: IfNotPresent
-            name: nvidia-tensorflow-gpu
+            name: gpu-jupyterlab
             resources:
               limits:
                 nvidia.com/gpu: '${GPU_LIMIT}'
@@ -155,7 +148,7 @@ objects:
             env:
               - name: JUPYTER_TOKEN
                 value: ${JUPYTER_TOKEN}
-              # - name: PASSWORD
+              # - name: JUPYTER_TOKEN
               #   valueFrom:
               #     secretKeyRef:
               #       key: application-password
@@ -175,10 +168,10 @@ objects:
       # - imageChangeParams:
       #     automatic: true
       #     containerNames:
-      #       - nvidia-tensorflow-gpu
+      #       - gpu-jupyterlab
       #     from:
       #       kind: ImageStreamTag
-      #       name: 'nvidia-tensorflow-gpu:19.11-tf2-py3'
+      #       name: ${APPLICATION_NAME}:latest
       #   type: ImageChange
 
 - kind: Service
