@@ -24,8 +24,6 @@ metadata:
       Start VisualStudio Code with Tensorflow using GPUs with the root user.
       
       📂 Use the `/root` folder (workspace of the VSCode UI) to store your data in the existing persistent storage
-
-      🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
     iconClass: icon-kubevirt
     tags: python,gpu,vscode,ide
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -44,25 +42,14 @@ parameters:
   description: The password to access VisualStudio Code
   value: mypassword
   required: true
-# - name: PASSWORD
-#   displayName: Notebook password
-#   description: The password of the Jupyter Notebook.
-#   from: "[a-zA-Z0-9]{16}"
-#   generate: expression
-#   required: true
-- name: STORAGE_NAME
-  displayName: Storage name
-  description: Name of the Persistent Volume Claim used for storage.
-  value: pvc-mapr-projects-myproject
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
+  value: 5Gi
   required: true
-- name: STORAGE_FOLDER
-  displayName: Storage folder
-  description: Path to the folder used to store your application data in the the Persistent Volume Claim (leave empty to use the root folder of the storage)
-  value: gpu-tensorflow-vscode
-  required: false
 - name: GPU_LIMIT
   displayName: Number of GPU assigned
-  description: 8 in total in the cluster.
+  description: 8 in total in the cluster. And your quota is 1 by default
   value: '1'
   required: true
 # - name: MEMORY_LIMIT
@@ -85,6 +72,20 @@ objects:
 #     name: "${APPLICATION_NAME}"
 #   stringData:
 #     application-password: "${PASSWORD}"
+
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+      template: gpu-tensorflow-jupyterlab
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
 
 - kind: DeploymentConfig
   apiVersion: apps.openshift.io/v1
@@ -130,7 +131,7 @@ objects:
             volumeMounts:
               - name: workdir
                 mountPath: /root
-                subPath: ${STORAGE_FOLDER}
+                # subPath: ${STORAGE_FOLDER}
             env:
               - name: PASSWORD
                 value: ${PASSWORD}
@@ -142,7 +143,7 @@ objects:
         volumes:
           - name: workdir
             persistentVolumeClaim:
-              claimName: ${STORAGE_NAME}
+              claimName: ${APPLICATION_NAME}
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}

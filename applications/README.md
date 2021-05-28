@@ -44,7 +44,7 @@ for template in $( ls templates/restricted/*.yml ); do oc apply -f ${template} ;
 
 ### GPU templates
 
-Tensorflow and PyTorch templates to run on GPU:
+Add Tensorflow and PyTorch templates to your project, to run on GPU:
 
 ```bash
 for template in $( ls gpu/*/*.yml ); do oc apply -f ${template} ; done

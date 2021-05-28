@@ -25,13 +25,13 @@ metadata:
     
       📂 Use the `/workspace/notebooks` folder (workspace of the JupyterLab UI) to store your data in the existing persistent storage
 
-      🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
+      🐳 Docker image provided by Nvidia: nvcr.io/nvidia/tensorflow:19.11-tf2-py3
     iconClass: icon-python
     tags: python,jupyter,gpu
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-on-gpu
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
-    template.openshift.io/bindable: 'false'
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
@@ -44,6 +44,17 @@ parameters:
   description: The token to access the notebook
   value: mytoken
   required: true
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
+  value: 5Gi
+  required: true
+- name: GPU_LIMIT
+  displayName: Number of GPU assigned
+  description: 8 in total in the cluster. And your quota is 1 by default
+  value: '1'
+  required: true
+
 # - name: PASSWORD
 #   displayName: Notebook password
 #   description: The password of the Jupyter Notebook.
@@ -55,21 +66,16 @@ parameters:
 #   description: Name of the Docker image used to run jupyter lab on DSRI GPUs
 #   value: 'nvcr.io/nvidia/tensorflow:19.11-tf2-py3'
 #   required: true
-- name: STORAGE_NAME
-  displayName: Storage name
-  description: Name of the Persistent Volume Claim used for storage.
-  value: pvc-mapr-projects-myproject
-  required: true
-- name: STORAGE_FOLDER
-  displayName: Storage folder
-  description: Path to the folder used to store your application data in the the Persistent Volume Claim (leave empty to use the root folder of the storage)
-  value: gpu-tensorflow-jupyterlab
-  required: false
-- name: GPU_LIMIT
-  displayName: Number of GPU assigned
-  description: 8 in total in the cluster.
-  value: '1'
-  required: true
+# - name: STORAGE_NAME
+#   displayName: Storage name
+#   description: Name of the Persistent Volume Claim used for storage.
+#   value: pvc-mapr-projects-myproject
+#   required: true
+# - name: STORAGE_FOLDER
+#   displayName: Storage folder
+#   description: Path to the folder used to store your application data in the the Persistent Volume Claim (leave empty to use the root folder of the storage)
+#   value: gpu-tensorflow-jupyterlab
+#   required: false
 # - name: MEMORY_LIMIT
 #   displayName: Memory limit
 #   description: Maximum RAM memory available for the application.
@@ -90,6 +96,20 @@ objects:
 #     name: "${APPLICATION_NAME}"
 #   stringData:
 #     application-password: "${PASSWORD}"
+
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+      template: gpu-tensorflow-jupyterlab
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
 
 - kind: DeploymentConfig
   apiVersion: apps.openshift.io/v1
@@ -131,7 +151,7 @@ objects:
             volumeMounts:
               - name: workdir
                 mountPath: /workspace/notebooks
-                subPath: ${STORAGE_FOLDER}
+                # subPath: ${STORAGE_FOLDER}
             env:
               - name: JUPYTER_TOKEN
                 value: ${JUPYTER_TOKEN}
@@ -143,7 +163,7 @@ objects:
         volumes:
           - name: workdir
             persistentVolumeClaim:
-              claimName: ${STORAGE_NAME}
+              claimName: ${APPLICATION_NAME}
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
