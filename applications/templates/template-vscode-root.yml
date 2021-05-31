@@ -8,7 +8,7 @@ metadata:
     description: |-
       Start VisualStudio Code server with the coder user which has root permissions (sudo) 
 
-      📂 Use the /home/coder/project folder (workspace of the VSCode UI) to store your data in the existing persistent storage
+      📂 Use the /home/coder folder (workspace of the VSCode UI) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
       
       Python 3 and Java 11 already installed. You can install packages with 'apt-get' after starting the server.
@@ -16,16 +16,14 @@ metadata:
       Image based on codercom/code-server image, hosted in the GitHub Container Registry.
       Visit https://github.com/MaastrichtU-IDS/code-server for more details and to customize the image
       Visit original codercom image at https://hub.docker.com/r/codercom/code-server
-
-      🔒 You need root containers enabled (aka. anyuid) in your project to start this application.
     iconClass: icon-kubevirt
     tags: visualstudio,vscode,root,persistent
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-vscode
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
-    # template.openshift.io/bindable: 'false'
 labels:
   template: vscode-root
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
@@ -41,7 +39,7 @@ parameters:
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
-  description: Size of the storage used for the notebook (approximate).
+  description: Size of the storage used for the notebook workspace.
   value: 10Gi
   required: true
 - name: APPLICATION_IMAGE
@@ -143,7 +141,7 @@ objects:
           #     memory: 4Gi
           volumeMounts:
           - name: data
-            mountPath: "/home/coder/project"
+            mountPath: "/home/coder"
           env:
           - name: PASSWORD
             # value: ${PASSWORD}
