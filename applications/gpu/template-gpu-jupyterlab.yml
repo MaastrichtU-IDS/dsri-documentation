@@ -145,6 +145,8 @@ objects:
               - name: workdir
                 mountPath: /workspace/notebooks
                 # subPath: ${STORAGE_FOLDER}
+              - name: dshm
+                mountPath: /dev/shm                
             env:
               - name: JUPYTER_TOKEN
                 value: ${JUPYTER_TOKEN}
@@ -157,6 +159,9 @@ objects:
           - name: workdir
             persistentVolumeClaim:
               claimName: ${APPLICATION_NAME}
+          - name: dshm
+            emptyDir:
+              medium: Memory                   
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}

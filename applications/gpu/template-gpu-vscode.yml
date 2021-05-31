@@ -146,6 +146,8 @@ objects:
               - name: workdir
                 mountPath: /root
                 # subPath: ${STORAGE_FOLDER}
+              - name: dshm
+                mountPath: /dev/shm
             env:
               - name: PASSWORD
                 value: ${PASSWORD}
@@ -158,6 +160,9 @@ objects:
           - name: workdir
             persistentVolumeClaim:
               claimName: ${APPLICATION_NAME}
+          - name: dshm
+            emptyDir:
+              medium: Memory     
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}
