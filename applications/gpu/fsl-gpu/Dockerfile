@@ -8,7 +8,9 @@
 # 
 #     https://github.com/ReproNim/neurodocker
 
-FROM debian:stretch
+FROM nvcr.io/nvidia/tensorflow:21.05-tf2-py3
+# FROM nvcr.io/nvidia/pytorch:21.05-py3
+# FROM debian:stretch
 
 USER root
 
@@ -42,14 +44,14 @@ RUN export ND_ENTRYPOINT="/neurodocker/startup.sh" \
     && chmod -R 777 /neurodocker && chmod a+s /neurodocker
 
 ## TODO: Trying to install GPU driver
-RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \
-    apt-key add - \ &&
-    distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \ &&
-    curl -s -L https://nvidia.github.io/nvidia-container-runtime/$distribution/nvidia-container-runtime.list | 
-    # tee /etc/apt/sources.list.d/nvidia-container-runtime.list
+# RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \
+#     apt-key add - \ &&
+#     distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \ &&
+#     curl -s -L https://nvidia.github.io/nvidia-container-runtime/$distribution/nvidia-container-runtime.list | 
+#     # tee /etc/apt/sources.list.d/nvidia-container-runtime.list
 
-RUN apt-get update \ &&
-    apt-get install -y nvidia-container-runtime
+# RUN apt-get update \ &&
+#     apt-get install -y nvidia-container-runtime
 
 
 ENTRYPOINT ["/neurodocker/startup.sh"]
