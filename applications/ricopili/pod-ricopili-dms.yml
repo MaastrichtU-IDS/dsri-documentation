@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ricopili-dms-gwas
+spec:
+  restartPolicy: OnFailure
+  containers:
+  # - image: bruggerk/ricopili:2019_Feb_18.001b1
+  - image: bruggerk/ricopili:latest
+    name: ricopili
+    command: ["tail", "-f", "/dev/null"]
+    # args: ["-f", "/dev/null"]
+    resources:
+      limits:
+        memory: 128G
+        cpu: "32"
+    volumeMounts:
+      - name: workdir
+        mountPath: /data
+  volumes:
+    - name: workdir
+      persistentVolumeClaim:
+        claimName: pvc-mapr-projects-dms-gwas
