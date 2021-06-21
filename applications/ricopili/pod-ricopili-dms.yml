@@ -6,6 +6,7 @@ spec:
   restartPolicy: OnFailure
   containers:
   # - image: bruggerk/ricopili:2019_Feb_18.001b1
+  # https://github.com/bruggerk/ricopili_docker
   - image: bruggerk/ricopili:latest
     name: ricopili
     command: ["tail", "-f", "/dev/null"]
