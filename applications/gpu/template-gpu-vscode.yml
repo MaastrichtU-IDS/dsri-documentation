@@ -128,6 +128,8 @@ objects:
             imagePullPolicy: IfNotPresent
             name: gpu-vscode
             resources:
+              requests:
+                nvidia.com/gpu: '${GPU_LIMIT}'
               limits:
                 nvidia.com/gpu: '${GPU_LIMIT}'
                 # cpu: "${CPU_LIMIT}"
