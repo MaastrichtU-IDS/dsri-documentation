@@ -139,7 +139,8 @@ objects:
                 protocol: TCP
               - containerPort: 8081
                 protocol: TCP
-                # networkPort: 8080
+              - containerPort: 6006
+                protocol: TCP
             # Required for VSCode?
             # hostNetwork: true
             # TODO: OpenShift cannot route this, it requires port-forward
@@ -216,6 +217,41 @@ objects:
       weight: 100
     port:
       targetPort: 8081-tcp
+
+# Service and Route for Tensorboard
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 6006-tcp
+      protocol: TCP
+      port: 6006
+      targetPort: 6006
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-tensorboard"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 6006-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
 
 # - kind: Route
 #   apiVersion: route.openshift.io/v1

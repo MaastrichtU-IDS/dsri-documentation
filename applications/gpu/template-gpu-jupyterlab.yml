@@ -15,10 +15,10 @@ metadata:
       🐳 Docker images provided by Nvidia:
       - Tensorflow:
       nvcr.io/nvidia/tensorflow:21.05-tf2-py3
-      https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
+      Check the latest version available here: https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
       - PyTorch:
       nvcr.io/nvidia/pytorch:21.05-py3
-      https://ngc.nvidia.com/catalog/containers/nvidia:pytorch
+      Check the latest version available here: https://ngc.nvidia.com/catalog/containers/nvidia:pytorch
     iconClass: icon-python
     tags: python,jupyter,gpu
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -137,12 +137,12 @@ objects:
                 # cpu: "${CPU_LIMIT}"
                 # memory: "${MEMORY_LIMIT}"
             ports:
-              - containerPort: 6006
-                protocol: TCP
-              - containerPort: 6064
-                protocol: TCP
               - containerPort: 8888
                 protocol: TCP
+              - containerPort: 6006
+                protocol: TCP
+              # - containerPort: 6064
+              #   protocol: TCP
             volumeMounts:
               - name: workdir
                 mountPath: /workspace/notebooks
@@ -211,6 +211,41 @@ objects:
       weight: 100
     port:
       targetPort: 8888-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+# Service and Route for Tensorboard
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 6006-tcp
+      protocol: TCP
+      port: 6006
+      targetPort: 6006
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-tensorboard"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 6006-tcp
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
