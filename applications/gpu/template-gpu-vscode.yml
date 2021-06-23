@@ -117,8 +117,8 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
       spec:
         serviceAccountName: anyuid
-        nodeSelector:
-          nvidia.com/gpu: 'true'
+        # nodeSelector:
+        #   nvidia.com/gpu: 'true'
         containers:
           - image: ${APPLICATION_NAME}:latest
             command:
@@ -191,14 +191,18 @@ objects:
       app: "${APPLICATION_NAME}"
   spec:
     ports:
-    - name: 8080-tcp
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
     - name: 8081-tcp
       protocol: TCP
       port: 8081
       targetPort: 8081
+    # - name: 8080-tcp
+    #   port: 8080
+    #   protocol: TCP
+    #   targetPort: 8080
+    # - name: 6006-tcp
+    #   protocol: TCP
+    #   port: 6006
+    #   targetPort: 6006
     selector:
       app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}"
@@ -218,23 +222,7 @@ objects:
     port:
       targetPort: 8081-tcp
 
-# Service and Route for Tensorboard
-# - kind: Service
-#   apiVersion: v1
-#   metadata:
-#     name: "${APPLICATION_NAME}"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   spec:
-#     ports:
-#     - name: 6006-tcp
-#       protocol: TCP
-#       port: 6006
-#       targetPort: 6006
-#     selector:
-#       app: "${APPLICATION_NAME}"
-#       deploymentconfig: "${APPLICATION_NAME}"
-
+# Route for Tensorboard?
 # - kind: Route
 #   apiVersion: route.openshift.io/v1
 #   metadata:
@@ -249,24 +237,6 @@ objects:
 #       weight: 100
 #     port:
 #       targetPort: 6006-tcp
-#     tls:
-#       termination: edge
-#       insecureEdgeTerminationPolicy: Redirect
-
-# - kind: Route
-#   apiVersion: route.openshift.io/v1
-#   metadata:
-#     name: "${APPLICATION_NAME}-8080"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   spec:
-#     host: ''
-#     to:
-#       kind: Service
-#       name: "${APPLICATION_NAME}"
-#       weight: 100
-#     port:
-#       targetPort: 8080-tcp
 #     tls:
 #       termination: edge
 #       insecureEdgeTerminationPolicy: Redirect
