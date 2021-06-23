@@ -44,6 +44,15 @@ Use the following command to see your current GPU usage:
 nvidia-smi
 ```
 
+You can easily use **TensorBoard 📈** to explore your machine learning runs. It is already pre-installed and ready-to-use in ouyr JupyterLab for GPU templates.
+
+All you need is to follow the usual process to run tensorboard: https://www.tensorflow.org/tensorboard/get_started
+
+1. Add the tensorboard callback to your `model.fit()` function
+
+2. Then start Tensorboard in the terminal with `tensorboard --logdir logs` (change the directory depending on where the logs of your runs are stored), it should tell you that tensorboard as been started on port 6006
+3. Open the Tensorboard view from the JupyterLab welcome page
+
 ## VSCode on GPU
 
 2 templates are available to deploy VisualStudio Code on GPU:
