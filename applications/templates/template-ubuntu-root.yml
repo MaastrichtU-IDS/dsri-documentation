@@ -7,6 +7,7 @@ metadata:
     openshift.io/display-name: Ubuntu
     description: |-
       Start Ubuntu Linux (Debian-based) with the 'root' user which has sudo permissions to install anything.
+      Some basic packages for development have been installed: gfortran, git, build-essentials, curl, wget, python3
 
       📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
