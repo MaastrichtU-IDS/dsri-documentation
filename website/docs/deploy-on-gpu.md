@@ -36,7 +36,7 @@ Now that your template is created and its accessible from the **Topology** page 
 
 You can now access the JupyterLab UI, install your dependencies and run your experiments.
 
-Use the **`notebooks` folder** in the JupyterLab workspace to store your code and data persistently, you can also take a look into the examples provided by Nvidia.
+Use the **`persistent` folder** in the JupyterLab workspace to store your code and data persistently, you can also take a look into the examples provided by Nvidia.
 
 Use the following command to see your current GPU usage:
 
@@ -44,7 +44,9 @@ Use the following command to see your current GPU usage:
 nvidia-smi
 ```
 
-You can easily use **TensorBoard 📈** to explore your machine learning runs. It is already pre-installed and ready-to-use in ouyr JupyterLab for GPU templates.
+### TensorBoard logs visualization
+
+You can easily use [**TensorBoard 📈**](https://www.tensorflow.org/tensorboard) to explore your machine learning runs. It is already pre-installed and ready-to-use in ouyr JupyterLab for GPU templates.
 
 All you need is to follow the usual process to run tensorboard: https://www.tensorflow.org/tensorboard/get_started
 
