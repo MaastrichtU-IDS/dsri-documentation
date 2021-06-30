@@ -146,9 +146,12 @@ objects:
             volumeMounts:
               - name: workdir
                 mountPath: /workspace/persistent
-                # subPath: ${STORAGE_FOLDER}
+                subPath: workspace
+              - name: homedir
+                mountPath: /root
+                subPath: home
               - name: dshm
-                mountPath: /dev/shm                
+                mountPath: /dev/shm
             env:
               - name: JUPYTER_TOKEN
                 value: ${JUPYTER_TOKEN}
