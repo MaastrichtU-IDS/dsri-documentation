@@ -10,9 +10,10 @@
 
 FROM nvcr.io/nvidia/tensorflow:21.05-tf2-py3
 # FROM nvcr.io/nvidia/pytorch:21.05-py3
-# FROM debian:stretch
+# FROM debian:stretch  
 
 USER root
+WORKDIR /root
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
@@ -28,8 +29,8 @@ RUN export ND_ENTRYPOINT="/neurodocker/startup.sh" \
            curl \
            locales \
            unzip \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
+    # && apt-get clean \
+    # && rm -rf /var/lib/apt/lists/* \
     && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
     && dpkg-reconfigure --frontend=noninteractive locales \
     && update-locale LANG="en_US.UTF-8" \
@@ -53,8 +54,6 @@ RUN export ND_ENTRYPOINT="/neurodocker/startup.sh" \
 # RUN apt-get update \ &&
 #     apt-get install -y nvidia-container-runtime
 
-
-ENTRYPOINT ["/neurodocker/startup.sh"]
 
 ENV FSLDIR="/opt/fsl-6.0.3" \
     PATH="/opt/fsl-6.0.3/bin:$PATH" \
@@ -99,6 +98,7 @@ RUN apt-get update -qq \
     && echo "Installing FSL conda environment ..." \
     && bash /opt/fsl-6.0.3/etc/fslconf/fslpython_install.sh -f /opt/fsl-6.0.3
 
+
 RUN echo '{ \
     \n  "pkg_manager": "apt", \
     \n  "instructions": [ \
@@ -114,3 +114,7 @@ RUN echo '{ \
     \n    ] \
     \n  ] \
     \n}' > /neurodocker/neurodocker_specs.json
+
+# ENTRYPOINT ["/neurodocker/startup.sh"]
+# EXPOSE 8888
+# ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--port=8888", "--no-browser"]

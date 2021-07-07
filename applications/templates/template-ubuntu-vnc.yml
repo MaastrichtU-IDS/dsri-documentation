@@ -4,15 +4,20 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: ubuntu-vnc
   annotations:
-    openshift.io/display-name: Ubuntu with web UI
+    openshift.io/display-name: Ubuntu with desktop interface
     description: |-
-      Start Ubuntu Linux (Debian-based) accessible via a web interface URL
-      Your user has sudo permissions to install anything.
+      Start a Ubuntu Linux (Debian-based) workspace accessible via a desktop interface
+
+      You can use this template to deploy various desktop environments:
+      - Ubuntu (cf. https://github.com/fcwu/docker-ubuntu-vnc-desktop):
+      dorowu/ubuntu-desktop-lxde-vnc:latest
+      - NeuroDesk (cf. https://github.com/NeuroDesk/vnm)
+      docker.pkg.github.com/neurodesk/neurodesk/vnm2:20210113
+
+      Visit https://github.com/fcwu/docker-ubuntu-vnc-desktop for more details on the image
 
       📂 Use the `/root` folder (home of your user) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
-      
-      Visit https://github.com/fcwu/docker-ubuntu-vnc-desktop for more details on the image
     iconClass: icon-ubuntu
     tags: ubuntu,ui,vnc,root,persistent
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -49,7 +54,7 @@ parameters:
   required: true
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
-  description: See https://github.com/fcwu/docker-ubuntu-vnc-desktop for more details on the image
+  description: The docker image used to start the container (e.g. Ubuntu or NeuroDesk)
   value: dorowu/ubuntu-desktop-lxde-vnc:latest
   required: true
 

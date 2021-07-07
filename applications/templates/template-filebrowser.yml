@@ -8,8 +8,8 @@ metadata:
     description: |-
       Deploy a filebrowser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume.
 
-      You need to hash the password first, use this docker command to generate the password, then double each $ to escape them:
-      docker run filebrowser/filebrowser hash mypassword
+      You need to hash the password first, use this docker command on your laptop to generate the password (replace yourpassword by your password), then double each $ to escape them:
+      docker run filebrowser/filebrowser hash yourpassword
 
       🔑 Default credentials are
       - login: admin
