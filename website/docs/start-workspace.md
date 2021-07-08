@@ -167,3 +167,4 @@ Here are some examples of `Dockerfile` for various type of web applications:
 * [VisualStudio Code server](https://github.com/MaastrichtU-IDS/code-server/blob/main/Dockerfile)
 * [Python web app](https://github.com/MaastrichtU-IDS/knowledge-collaboratory-api/blob/master/Dockerfile)
 
+See the guide to [Publish a Docker image](/docs/guide-publish-image) for more details on this topic.

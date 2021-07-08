@@ -2,7 +2,7 @@
   "docs": {
     "Get started": ["introduction", "access-dsri", "start-workspace",
       "openshift-install", "openshift-load-data",
-      "openshift-delete-services", "guide-monitoring", "prepare-project-for-dsri", "openshift-migrate-project"],
+      "openshift-delete-services", "guide-monitoring"],
     "Deploy applications": [ 
       "guide-dockerfile-to-openshift", "deploy-from-docker", "anatomy-of-an-application", "operators", "helm",
       {
@@ -15,17 +15,16 @@
         ]
       }
     ],
-    "Guides": [ "guide-known-issues", "project-management", "login-docker-registry", "openshift-commands", "openshift-storage",  
-      "guide-publish-image", 
-      "openshift-delete-objects", "tools-machine-learning", 
+    "Guides": [ "prepare-project-for-dsri", "guide-known-issues", "project-management", "login-docker-registry", 
+      "openshift-commands", "openshift-storage", "guide-publish-image", 
+      "openshift-delete-objects", "tools-machine-learning", "glossary",
       {
         "type": "category",
         "label": "Workflows",
         "items": [
           "workflows-introduction", "workflows-github-actions", "workflows-argo", "workflows-nextflow", "workflows-cwl"
         ]
-      },
-      "glossary"
+      }
     ]
   }
 }
