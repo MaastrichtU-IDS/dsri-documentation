@@ -1,5 +1,5 @@
 ---
-id: create-dsri-project
+id: project-management
 title: Create a new Project
 ---
 
@@ -54,7 +54,7 @@ You need to be logged in to the DSRI and [copy the login command](https://maastr
 
 :::caution Reuse your project
 
-Only create new projects when it is necessary (for a new project). You can easily [clean up your current project](https://maastrichtu-ids.github.io/dsri-documentation/docs/create-dsri-project#delete-a-project-using-the-web-ui) instead of creating a new one every time you want to try something.
+Only create new projects when it is necessary (for a new project). You can easily [clean up your current project](https://maastrichtu-ids.github.io/dsri-documentation/docs/project-management#delete-a-project-using-the-web-ui) instead of creating a new one every time you want to try something.
 
 :::
 

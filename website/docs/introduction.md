@@ -6,54 +6,28 @@ slug: /
 
 The Data Science Research Infrastructure is an [OKD 4.6](https://www.okd.io/) cluster, the open source version of [OpenShift](https://www.openshift.com/), using [RedHat Ceph Storage](https://www.redhat.com/en/technologies/storage/ceph).
 
-The DSRI provides a graphical user interface on top of the [Kubernetes](https://kubernetes.io/) containers orchestration to easily deploy and manage services. 
-
-:::tip New DSRI version!
-
-This documentation cover the **new DSRI version using OKD4.6**, which is available at https://console-openshift-console.apps.dsri2.unimaas.nl
-
-You can find the documentation for the legacy DSRI version using OKD 3.11 [here](/docs/okd3-introduction).
-
-:::
-
-## Which DSRI version should you use?
-
-### New OKD 4.6 cluster
-
-You need to start applications on CPU 
-
-Storage of applications deployed in the new cluster is automated.
-
-### Legacy OKD 3.11 cluster
-
-You need to run applications on GPU (TensorFlow, PyTorch...)
-
-Storage of applications deployed in the legacy cluster needs to be manually configured.
-
-If you need to run applications on GPU, visit the [documentation for the legacy cluster](/docs/okd3-introduction).
+The DSRI provides a graphical user interface on top of the [Kubernetes](https://kubernetes.io/) containers orchestration to easily deploy and manage workspaces and services. 
 
 ## Getting started
 
 ### What can be done on the DSRI ✔️
 
-Run Data Science applications in [Docker container 🐳](https://www.docker.com/) on the [UM network](https://vpn.maastrichtuniversity.nl/), such as:
+The DSRI works best when you work with code, scripts to run, and web applications. Especially if they require an important amount of computing resources. If you work on desktop softwares with graphical user interface, such as Matlab or Spyder, the installation will be much more complex, and usually using your laptop will be more comfortable, stable and reactive than accessing a desktop interface on a remote server through the UM VPN.
+
+Here is a non-exhaustive list of some of the services that can easily be deployed on the DSRI:
 
 * Multiple flavors of [JupyterLab](https://github.com/jupyter/docker-stacks) (scipy, tensorflow, all-spark, and more)
 * JupyterHub with GitHub authentication
 * RStudio, with a complementary Shiny server
 * VisualStudio [Code server](https://github.com/cdr/code-server)
 * Tensorflow or PyTorch on Nvidia GPU (with JupyterLab or VisualStudio Code)
-* Apache Flink cluster for streaming applications
-* Or any program installed in a Docker image!
-
-<!--
 
 * SQL databases (MariaDB, MySQL, PostgreSQL)
 * NoSQL databases (MongoDB, Redis)
 * Graph databases (GraphDB, Blazegraph, Virtuoso)
-* Apache Spark for distributed computing
-* Dask cluster for python distribution computing
--->
+* Apache Flink cluster for streaming applications
+* Apache Spark cluster for distributed computing
+* Or any program installed in a Docker image!
 
 :::caution Data storage
 
@@ -84,7 +58,7 @@ If you are working at Maastricht University, **see [this page](https://maastrich
 
 :::
 
-## The DSRI in a nutshell
+## The DSRI architecture
 
 Here is a diagram providing a simplified explanation of how the DSRI works, using popular data science applications as examples (JupyterLab, RStudio, VSCode server)
 

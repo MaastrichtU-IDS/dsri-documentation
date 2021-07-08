@@ -5,12 +5,6 @@ title: Start your workspace
 
 This page will help you to start a workspace to run your code and experiments on the DSRI in a container. 
 
-## When to use the DSRI?
-
-The DSRI works best when you work with code, scripts to run, and web applications. Especially if they require an important amount of computing resources. 
-
-If you work on desktop softwares with graphical user interface, such as Matlab or Spyder, the installation will be much more complex, and usually using your laptop will be more comfortable, stable and reactive than accessing a desktop interface on a remote server through the VPN.
-
 ## Introduction to containers
 
 Anything running in DSRI needs to be running in a docker container. Docker containers are lightweight Virtual Machines, you can see them as a clean minimalist Linux computers with only what you need to run your programs installed. This allows you to completely control the environment where your code runs, and avoid conflicts.
