@@ -19,6 +19,8 @@ metadata:
       - PyTorch:
       nvcr.io/nvidia/pytorch:21.05-py3
       Check the latest version available here: https://ngc.nvidia.com/catalog/containers/nvidia:pytorch
+      - FSL, built with NeuroDocker (use /root as workspace):
+      ghcr.io/maastrichtu-ids/jupyterlab:fsl-gpu
     iconClass: icon-python
     tags: python,jupyter,gpu
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -52,6 +54,11 @@ parameters:
   description: 8 in total in the cluster. And your quota is 1 by default
   value: '1'
   required: true
+# - name: WORKDIR
+#   displayName: Workspace path
+#   description: Path to the workspace in the container (stored in persistent storage). By default Nvidia images uses /workspace/persistent
+#   value: /workspace/persistent
+#   required: true
 
 # - name: MEMORY_LIMIT
 #   displayName: Memory limit
@@ -65,14 +72,14 @@ parameters:
 #   required: true
 objects:
 
-# - apiVersion: v1
-#   kind: Secret
-#   metadata:
-#     annotations:
-#       template.openshift.io/expose-password: "{.data['application-password']}"
-#     name: "${APPLICATION_NAME}"
-#   stringData:
-#     application-password: "${JUPYTER_TOKEN}"
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${JUPYTER_TOKEN}"
 
 - kind: "ImageStream"
   apiVersion: image.openshift.io/v1
@@ -126,8 +133,10 @@ objects:
               - jupyter
               - lab
             image: ${APPLICATION_NAME}:latest
-            # image: ${IMAGE_NAME}
             imagePullPolicy: IfNotPresent
+            ## In case the ImageStream does not update properly:
+            # image: ${IMAGE_NAME}
+            # imagePullPolicy: Always
             name: gpu-jupyterlab
             resources:
               requests:
@@ -144,24 +153,22 @@ objects:
               # - containerPort: 6064
               #   protocol: TCP
             volumeMounts:
-              - name: workdir
+              - name: data
                 mountPath: /workspace/persistent
                 subPath: workspace
-              - name: homedir
+              - name: data
                 mountPath: /root
                 subPath: home
               - name: dshm
                 mountPath: /dev/shm
             env:
               - name: JUPYTER_TOKEN
-                value: ${JUPYTER_TOKEN}
-              # - name: JUPYTER_TOKEN
-              #   valueFrom:
-              #     secretKeyRef:
-              #       key: application-password
-              #       name: "${APPLICATION_NAME}"
+                valueFrom:
+                  secretKeyRef:
+                    key: application-password
+                    name: "${APPLICATION_NAME}"
         volumes:
-          - name: workdir
+          - name: data
             persistentVolumeClaim:
               claimName: ${APPLICATION_NAME}
           - name: dshm

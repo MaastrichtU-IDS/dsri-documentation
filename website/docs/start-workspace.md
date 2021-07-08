@@ -3,7 +3,7 @@ id: start-workspace
 title: Start your workspace
 ---
 
-This page will help you to start a workspace to run your code and experiments on the DSRI in a docker container. 
+This page will help you to start a workspace to run your code and experiments on the DSRI in a container. 
 
 ## When to use the DSRI?
 
@@ -13,7 +13,7 @@ If you work on desktop softwares with graphical user interface, such as Matlab o
 
 ## Introduction to containers
 
-Anything running in DSRI needs to be running in a Docker container. Docker containers are lightweight Virtual Machines, you can see them as a clean minimalist Linux computers with only what you need to run your programs installed. This allows you to completely control the environment and avoid conflicts.
+Anything running in DSRI needs to be running in a docker container. Docker containers are lightweight Virtual Machines, you can see them as a clean minimalist Linux computers with only what you need to run your programs installed. This allows you to completely control the environment where your code runs, and avoid conflicts.
 
 When running experiments we can start from existing images that have been already published for popular data science applications with a web interface. You can use, for example, JupyterLab when running python, RStudio when running R, or VisualStudio Code if you prefer.
 
@@ -21,7 +21,7 @@ Once you access a running container, you can install anything you need like if i
 
 ## Pick an interface
 
-First step to get your code running on the DSRI is to pick a base interface, we prepared generic Docker images for data science with your favorite web UI pre-installed to access it
+First step to get your code running on the DSRI is to pick a base interface, and a start a container based on this interface. We prepared generic Docker images for data science workspaces with your favorite web UI pre-installed to access it. So you just need to choose your favorite workspace, and start it from the DSRI Catalog.
 
 1. Login to the DSRI dashboard
 2. Select your project, or create one with a meaningful short name representing your project, e.g. `drug-repurposing-graph`
@@ -49,7 +49,7 @@ For people who are used to the terminal and just want to run scripts, it provide
 
 **Any web interface**
 
-You can easily run and access most programs with a web interface on the DSRI. You can use the template **Custom workspace** if your application is exposed on port 8888. Otherwise checkout the page [Anatomy of a DSRI application](/docs/anatomy-of-an-application) for more details.
+You can easily run and access most programs with a web interface on the DSRI. You can use the template **Custom workspace** if your application is exposed on port 8888. Otherwise visit the page [Anatomy of a DSRI application](/docs/anatomy-of-an-application) for more details. 
 
 **Desktop interface**
 
@@ -57,15 +57,33 @@ There is the possibility to start a container as a Linux operating system with a
 
 You will get an Ubuntu computer with a simple Desktop interface, running on the DSRI, that you can access directly in your web browser. The desktop interface is accessed through a web application by using noVNC, which exposes the VNC connection without needing a VNC client.
 
+:::info More applications
+
+You can also find more documentation on the different applications that can be deployed from the DSRI under **Deploy applications** in the menu on the left.
+
+:::
+
 ## Start your workspace
 
-Once you chose your favorite way to run your experiments, you can click on the application you want to use for your workspace. Checkout the description to learn more details about the application that will be deployed. Then click on **Instantiate Template**, and fill the parameters, such as the password to access the web UI. Note that the application name needs to be unique in the project. Finally click on the **Create** button.
+Once you chose your favorite way to run your experiments, you can click on the application you want to use for your workspace. Checkout the description to learn more details about the application that will be deployed. 
+
+Then click on **Instantiate Template**, and fill the parameters, such as the password to access the web UI. Note that the application name needs to be unique in the project. Finally click on the **Create** button.
 
 <img src="/dsri-documentation/img/screenshot_template_configuration.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-Once started you should see your application in your project dashboard, it can take a few seconds to a few minutes to pull the docker image and start the application. Once the application has started you will be able to access it by clicking on its circle, then click the **Route**, that has been automatically generated for the web interface, in the Resources tab.
+Once started you should see your application in your project dashboard, it can take a few seconds to a few minutes to pull the docker image and start the application. 
+
+Once the application has started you will be able to access it by clicking on its circle, then click the **Route**, that has been automatically generated for the web interface, in the Resources tab.
+
+:::info Check the workshop
+
+For a more detailed tutorial, you can follow the [workshop to start Data Science applications on the DSRI](https://maastrichtu-ids.github.io/dsri-workshop-start-app/)
+
+:::
 
 ## Install your dependencies
+
+Once the workspace is started, you can install the different dependencies you need to run your experiments.
 
 It is recommended to save all the commands you used to install the different requirements in a script (e.g. `install.sh`). This will insure you can reinstall the environment easily and faithfully if the container is restarted. You can also use them to create a Docker image with everything prepared for your application.
 
@@ -78,11 +96,11 @@ apt-get install -y build-essentials wget curl
 
 ## Run your code
 
-Then use the web UI to run your code as you like to do: notebooks, rstudio, execute via VSCode
+You can use your web interface to run your code as you like to do: notebooks, rstudio, execute via VSCode
 
-Note that for jobs which are running for a long time the web UI is not always the best solution, e.g. Jupyter notebooks can be quite instable when running a 30 min job.
+Note that for jobs which are running for a long time the web UI is not always the best solution, e.g. Jupyter notebooks can be quite instable when running a 30 min codeblock.
 
-A quick solution for that is to run your code in scripts, using the bash terminal. You can use the `nohup` and `&` to run your script in the background, so that you can even disconnect, and come back later to check the results and logs.
+A quick solution for that is to run your code in scripts, using the bash terminal. You can use the `nohup` prefix, and `&` suffix to run your script in the background, so that you can even disconnect, and come back later to check the results and logs.
 
 For example with a python script, you would do:
 
