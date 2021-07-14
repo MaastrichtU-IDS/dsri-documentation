@@ -166,6 +166,8 @@ objects:
           volumeMounts:
           - name: data
             mountPath: "${WORKDIR}"
+          - name: dshm
+            mountPath: /dev/shm
           # readinessProbe: 
           #   tcpSocket:
           #     port: 8888
@@ -188,6 +190,9 @@ objects:
         - name: data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
+        - name: dshm
+          emptyDir:
+            medium: Memory
 
 - kind: Service
   apiVersion: v1

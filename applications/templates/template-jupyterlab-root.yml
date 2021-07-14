@@ -191,6 +191,8 @@ objects:
             # mountPath: "${WORKDIR}"
           - name: configs
             mountPath: "/etc/jupyter/openshift"
+          - name: dshm
+            mountPath: /dev/shm
           readinessProbe: 
             tcpSocket:
               port: 8888
@@ -220,6 +222,9 @@ objects:
         - name: configs
           configMap:
             name: "${APPLICATION_NAME}-cfg"
+        - name: dshm
+          emptyDir:
+            medium: Memory
 
 - kind: Service
   apiVersion: v1

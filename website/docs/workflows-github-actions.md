@@ -58,13 +58,20 @@ export GITHUB_OWNER=My-Org
 helm install actions-runner openshift-actions-runner/actions-runner \
     --set-string githubPat=$GITHUB_PAT \
     --set-string githubOwner=$GITHUB_OWNER \
-    --set runnerLabels="{ dsri, my-org }" \
+    --set runnerLabels="{ dsri, $GITHUB_OWNER }" \
     --set replicas=3 \
-    --set privileged=true \
+    --set serviceAccountName=anyuid \
     --set memoryRequest="512Mi" \
-    --set memoryLimit="1Gi" \
+    --set memoryLimit="100Gi" \
     --set cpuRequest="100m" \
-    --set cpuLimit="250m"
+    --set cpuLimit="64"
+```
+
+You can also change the default runner image:
+
+```bash
+	--set runnerImage=ghcr.io/vemonet/github-actions-conda-runner \
+	--set runnerTag=latest
 ```
 
 > Checkout [all available parameters here](https://github.com/redhat-actions/openshift-actions-runner-chart/blob/main/values.yaml)
@@ -99,6 +106,17 @@ helm install actions-runner openshift-actions-runner/actions-runner \
     --set-string githubOwner=$GITHUB_OWNER \
     --set-string githubRepository=$GITHUB_REPO \
     --set runnerLabels="{ dsri, anything-helpful }"
+```
+
+## Define Actions to run on DSRI
+
+You can now set GitHub Action workflows, in the `.github/workflows` folder, to be run on this runner (the repository needs to be under the organization, or user you added the workflow to). The job will be sent to run on the DSRI:
+
+```yaml
+jobs:
+    your-job:
+      runs-on: ["self-hosted", "dsri", "my-org" ]
+      steps: ...
 ```
 
 ## Uninstall the runner
