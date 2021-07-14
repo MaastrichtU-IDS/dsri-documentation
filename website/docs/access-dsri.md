@@ -70,6 +70,12 @@ Only create new projects when it is necessary (for a new project). You can easil
 
 <img src="/dsri-documentation/img/screenshot_go_to_project.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
+:::information_desk_person:
+
+[Access permissions for developers to your project](https://maastrichtu-ids.github.io/dsri-documentation/docs/project-management/#access-permissions-for-developers-to-your-project)
+
+:::
+
 ## About the web UI
 
 Developers can use the web console to **visualize**, **browse**, and **manage** the contents of projects in new version of OKD4. 
