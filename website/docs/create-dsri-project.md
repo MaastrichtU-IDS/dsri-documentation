@@ -17,7 +17,7 @@ You can create a project using the **Developer** perspective, as follows:
 
 1. Click the **Project** drop-down menu to see a list of all available projects. Select **Create Project**.
 
-2. In the **Create Project** dialog box, enter a unique name in the **Name** field. Use a short and meaningful name for your project as the project identifier is unique across all projects, such as `legal-text-analysis` or `ml-covid-pathways`
+2. In the **Create Project** dialog box, enter a unique name in the **Name** field. Use a short and meaningful name for your project as the project identifier is unique across all projects, such as `workspace-yourname` or `ml-covid-pathways`
 
 3. Add the **Display Name** ` DSR Workshop`and **Description** ` DSRI Community Workshop Projects`details for the project.
 
@@ -50,7 +50,6 @@ You need to be logged in to the DSRI and [copy the login command](https://maastr
   oc new-project dsri-workshop --description="DSRI Workshop" \
       --display-name="DSRI Community Workshop Projects"
   ```
-  
 
 :::caution Reuse your project
 

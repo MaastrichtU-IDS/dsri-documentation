@@ -58,7 +58,7 @@ We recommend you to install the `oc` command line interface to perform additiona
 
 In the DSRI OpenShift web UI, applications are deployed in projects.
 
-1. Create a new project with a meaningful name describing what you are doing, such as "retail-behavior-analysis".
+1. Create a new project with a meaningful name describing what you are doing, such as `workspace-yourname`.
 
 2. Go to your project (applications are deployed in a project).
 

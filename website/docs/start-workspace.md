@@ -20,7 +20,7 @@ First step to get your code running on the DSRI is to pick the base interface yo
 We prepared generic Docker images for data science workspaces with your favorite web UI pre-installed to easily deploy your workspace. So you just need to choose your favorite workspace, start the container, access it, add your code, and install your dependencies.
 
 1. Login to the DSRI dashboard
-2. Select your project, or create one with a meaningful short name representing your project, e.g. `drug-repurposing-graph`
+2. Select your project, or create one with a meaningful short name representing your project, e.g. `workspace-yourname`
 3. Go to the **+Add** page, and select to add **From Catalog**
 
 <img src="/dsri-documentation/img/screenshot_access_catalog.png" alt="Access catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
