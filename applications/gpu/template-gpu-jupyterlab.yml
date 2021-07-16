@@ -6,20 +6,22 @@ labels:
 metadata:
   name: gpu-jupyterlab
   annotations:
-    openshift.io/display-name: Python on GPU with JupyterLab
+    openshift.io/display-name: JupyterLab on GPU
     description: |-
-      Start JupyterLab to run Tensorflow or PyTorch using GPUs with the root user. 
+      Start JupyterLab to run Tensorflow or PyTorch using GPUs with the root user.
+
+      📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
     
       📂 Use the `/workspace/persistent` folder (workspace of the JupyterLab UI) to store your data in the existing persistent storage
 
       🐳 Docker images provided by Nvidia:
-      - Tensorflow:
+      - Tensorflow (workspace is /workspace/persistent folder):
       nvcr.io/nvidia/tensorflow:21.05-tf2-py3
       Check the latest version available here: https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
-      - PyTorch:
+      - PyTorch (workspace is /workspace/persistent folder):
       nvcr.io/nvidia/pytorch:21.05-py3
       Check the latest version available here: https://ngc.nvidia.com/catalog/containers/nvidia:pytorch
-      - FSL, built with NeuroDocker (use /root as workspace):
+      - FSL, built with NeuroDocker (workspace is /root folder):
       ghcr.io/maastrichtu-ids/jupyterlab:fsl-gpu
     iconClass: icon-python
     tags: python,jupyter,gpu
@@ -32,11 +34,11 @@ parameters:
   displayName: Application name
   description: Must be unique in the project. It will be used to generate the application
     URL.
-  value: gpu-jupyterlab
+  value: jupyterlab-gpu
   required: true
 - name: IMAGE_NAME
   displayName: Docker image used
-  description: 'Also available: nvcr.io/nvidia/pytorch:21.05-py3'
+  description: 'Check the description on the right for more details about available images'
   value: 'nvcr.io/nvidia/tensorflow:21.05-tf2-py3'
   required: true
 - name: JUPYTER_TOKEN

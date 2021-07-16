@@ -6,7 +6,7 @@ labels:
 metadata:
   name: jupyterhub-github-auth
   annotations:
-    openshift.io/display-name: JupyterHub with GitHub authentication
+    openshift.io/display-name: JupyterHub with GitLab authentication
     description: |
       Start a JupyterHub application with GitHub OAuth authentication.
 
@@ -421,13 +421,15 @@ objects:
       c.KubeSpawner.environment = { 'JUPYTER_ENABLE_LAB': 'yes' }
 
       # Set user authentication https://jupyterhub.readthedocs.io/en/stable/reference/authenticators.html
-      from oauthenticator.github import GitHubOAuthenticator
-      c.JupyterHub.authenticator_class = GitHubOAuthenticator
+      from oauthenticator.gitlab import GitLabOAuthenticator
+      c.JupyterHub.authenticator_class = GitLabOAuthenticator
 
-      # TODO: Improve GitHub authentication
-      c.GitHubOAuthenticator.oauth_callback_url = 'https://${APPLICATION_NAME}-${OPENSHIFT_PROJECT}.app.dsri.unimaas.nl/hub/oauth_callback'
-      c.GitHubOAuthenticator.client_id = '${GITHUB_OAUTH_ID}'
-      c.GitHubOAuthenticator.client_secret = '${GITHUB_OAUTH_SECRET}'
+      # TODO: Improve GitLab authentication
+      # Create app here: https://gitlab.maastrichtuniversity.nl/-/profile/applications
+      # GitLab authenticator: https://github.com/jupyterhub/oauthenticator/blob/master/oauthenticator/gitlab.py
+      c.GitLabOAuthenticator.oauth_callback_url = 'https://${APPLICATION_NAME}-${OPENSHIFT_PROJECT}.app.dsri.unimaas.nl/hub/oauth_callback'
+      c.GitLabOAuthenticator.client_id = '${GITHUB_OAUTH_ID}'
+      c.GitLabOAuthenticator.client_secret = '${GITHUB_OAUTH_SECRET}'
 
       c.Authenticator.admin_users = { ${GITHUB_ADMIN} }
       c.Authenticator.whitelist = { ${GITHUB_USERS} }

@@ -6,13 +6,11 @@ labels:
 metadata:
   name: jupyterhub-github-auth
   annotations:
-    openshift.io/display-name: JupyterHub with GitHub authentication
+    openshift.io/display-name: JupyterHub with UM authentication
     description: |
-      Start a JupyterHub application with GitHub OAuth authentication.
+      Start a JupyterHub application with DSRI authentication.
 
-      👤 Authentication based on GitHub. Create a new OAuth app at https://github.com/settings/developers
-      Provide the following callback URL: https://APPLICATION_NAME-OPENSHIFT_PROJECT.app.dsri.unimaas.nl/hub/oauth_callback
-      e.g. for the ids-projects project: https://jupyterhub-ids-projects.app.dsri.unimaas.nl/hub/oauth_callback
+      👤 Authentication based on the DSRI login
       
       You can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
       - jupyter/scipy-notebook
@@ -79,26 +77,6 @@ parameters:
   description: Amount of memory available to each notebook.
   value: 512Mi
   required: true
-- name: GITHUB_OAUTH_ID
-  displayName: GitHub OAuth Client ID
-  description: GitHub OAuth app identifier. From https://github.com/settings/developers
-  required: true
-- name: GITHUB_OAUTH_SECRET
-  displayName: GitHub OAuth Client Secret
-  description: GitHub OAuth app secret.
-  required: true
-- name: GITHUB_ADMIN
-  displayName: Admin users (GitHub)
-  description: GitHub users who are admins of the JupyterHub. Use quotes and separate with a comma
-  required: true
-  value: |
-    "vemonet"
-- name: GITHUB_USERS
-  displayName: JupyterHub users (GitHub)
-  description: GitHub users who can use the JupyterHub. Use quotes and separate with a comma
-  required: true
-  value: |
-        "vemonet", "Binosha", "micheldumontier", "rcelebi", "GrigoriuAndreea", "kodymoodley", "pedrohserrano", "sabaturgay", "seunAdeks", "sunchang0124", "thendriks"
 objects:
 - kind: ServiceAccount
   apiVersion: v1
@@ -156,7 +134,7 @@ objects:
           deploymentconfig: "${APPLICATION_NAME}"
       spec:
         #nodeSelector:
-         # dsri.unimaas.nl/cpu: 'true'
+        # dsri.unimaas.nl/cpu: 'true'
         serviceAccountName: "${APPLICATION_NAME}-hub"
         initContainers:
         - name: wait-for-database
@@ -197,6 +175,8 @@ objects:
             value: postgres
           - name: JUPYTERHUB_COOKIE_SECRET
             value: "${COOKIE_SECRET}"
+          - name: JUPYTERHUB_SERVICE_NAME
+            value: "${APPLICATION_NAME}"
           volumeMounts:
           - name: config
             mountPath: "/opt/app-root/configs"
@@ -320,6 +300,7 @@ objects:
         from:
           kind: ImageStreamTag
           name: postgresql:12-el8
+          # name: postgresql:9.6
           namespace: openshift
       type: ImageChange
     - type: ConfigChange
@@ -421,16 +402,71 @@ objects:
       c.KubeSpawner.environment = { 'JUPYTER_ENABLE_LAB': 'yes' }
 
       # Set user authentication https://jupyterhub.readthedocs.io/en/stable/reference/authenticators.html
-      from oauthenticator.github import GitHubOAuthenticator
-      c.JupyterHub.authenticator_class = GitHubOAuthenticator
+      # From https://github.com/opendatahub-io/jupyterhub-odh
+      # Check config for OpenShift: https://github.com/opendatahub-io/jupyterhub-odh/blob/master/.jupyter/jupyterhub_config.py
+      # CURRENT ERROR: jupyterhub.crypto.NoEncryptionKeys: Encryption keys must be specified in JUPYTERHUB_CRYPT_KEY env
 
-      # TODO: Improve GitHub authentication
-      c.GitHubOAuthenticator.oauth_callback_url = 'https://${APPLICATION_NAME}-${OPENSHIFT_PROJECT}.app.dsri.unimaas.nl/hub/oauth_callback'
-      c.GitHubOAuthenticator.client_id = '${GITHUB_OAUTH_ID}'
-      c.GitHubOAuthenticator.client_secret = '${GITHUB_OAUTH_SECRET}'
+      jsp_api_dict = {
+          'KUBERNETES_SERVICE_HOST': os.environ['KUBERNETES_SERVICE_HOST'],
+          'KUBERNETES_SERVICE_PORT': os.environ['KUBERNETES_SERVICE_PORT'],
+          'JUPYTERHUB_LOGIN_URL': None
+      }
+      from oauthenticator.openshift import OpenShiftOAuthenticator
+      c.JupyterHub.authenticator_class = OpenShiftOAuthenticator
+      c.Authenticator.auto_login = True
+      c.Authenticator.enable_auth_state = True
+      c.OpenShiftOAuthenticator.auth_refresh_age = 300
+      c.OpenShiftOAuthenticator.refresh_pre_spawn = True
+      # Override scope as oauthenticator code doesn't set it correctly.
+      # Need to lodge a PR against oauthenticator to have this fixed.
+      #OpenShiftOAuthenticator.scope = ['user:info']
+      # Setup authenticator configuration using details from environment.
+      service_name = os.environ['JUPYTERHUB_SERVICE_NAME']
+      service_account_name = '%s-hub' %  service_name
+      service_account_path = '/var/run/secrets/kubernetes.io/serviceaccount'
+      with open(os.path.join(service_account_path, 'namespace')) as fp:
+          namespace = fp.read().strip()
+      client_id = 'system:serviceaccount:%s:%s' % (namespace, service_account_name)
+      c.OpenShiftOAuthenticator.client_id = client_id
+      with open(os.path.join(service_account_path, 'token')) as fp:
+          client_secret = fp.read().strip()
+      c.OpenShiftOAuthenticator.client_secret = client_secret
+      allowed_groups = os.environ.get('JUPYTERHUB_ALLOWED_GROUPS')
+      admin_groups = os.environ.get('JUPYTERHUB_ADMIN_GROUPS')
+      if allowed_groups:
+          c.OpenShiftOAuthenticator.allowed_groups = set(allowed_groups.split(','))
+      if admin_groups:
+          c.OpenShiftOAuthenticator.admin_groups = set(admin_groups.split(','))
+      # Work out hostname for the exposed route of the JupyterHub server. This is tricky as we need to use the REST API to query it.
+      verify_ssl = False
+      from kubernetes import client, config
+      from openshift.dynamic import DynamicClient
+      config.load_incluster_config()
+      configuration = client.Configuration()
+      configuration.verify_ssl = verify_ssl
+      oapi_client = DynamicClient(
+          client.ApiClient(configuration=configuration)
+      )
+      routes = oapi_client.resources.get(kind='Route', api_version='route.openshift.io/v1')
+      route_list = routes.get(namespace=namespace)
+      host = None
+      for route in route_list.items:
+          if route.metadata.name == service_name:
+              host = route.spec.host
+      if not host:
+          raise RuntimeError('Cannot calculate external host name for JupyterHub.')
+      c.OpenShiftOAuthenticator.oauth_callback_url = 'https://%s/hub/oauth_callback' % host
+      jsp_api_dict['JUPYTERHUB_LOGIN_URL'] = 'https://%s/hub/login' % host
 
-      c.Authenticator.admin_users = { ${GITHUB_ADMIN} }
-      c.Authenticator.whitelist = { ${GITHUB_USERS} }
+      # from oauthenticator.github import GitHubOAuthenticator
+      # c.JupyterHub.authenticator_class = GitHubOAuthenticator
+      # # TODO: Improve GitHub authentication
+      # c.GitHubOAuthenticator.oauth_callback_url = 'https://${APPLICATION_NAME}-${OPENSHIFT_PROJECT}.app.dsri.unimaas.nl/hub/oauth_callback'
+      # c.GitHubOAuthenticator.client_id = '${GITHUB_OAUTH_ID}'
+      # c.GitHubOAuthenticator.client_secret = '${GITHUB_OAUTH_SECRET}'
+
+      # c.Authenticator.admin_users = { ${GITHUB_ADMIN} }
+      # c.Authenticator.whitelist = { ${GITHUB_USERS} }
 
       # Set nodeSelector
       # c.KubeSpawner.node_selector = {'dsri.unimaas.nl/cpu': 'true'}

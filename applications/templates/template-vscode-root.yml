@@ -6,7 +6,9 @@ metadata:
   annotations:
     openshift.io/display-name: VisualStudio Code server
     description: |-
-      Start VisualStudio Code server with the coder user which has root permissions (sudo) 
+      Start VisualStudio Code server with the coder user which has sudo permissions
+
+      📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
 
       📂 Use the /home/coder/project folder (workspace of the VSCode UI) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims

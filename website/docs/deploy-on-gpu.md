@@ -19,10 +19,8 @@ We are using images provided by Nvidia, and optimized for GPU. We currently depl
 Once your project has been granted access to GPUs, you can deploy applications on GPU from the catalog:
 
 * Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
-* **Filter** the catalog for  "**JupyterLab on GPU**"
-* Choose one of the available templates:
-  * **Pytorch on GPU with JupyterLab**.
-  * **Tensorflow on GPU with JupyterLab**
+* **Filter** the catalog for  "**GPU**"
+* Choose one of the available templates: **JupyterLab on GPU**.
 
 The following parameters can be provided:
 
@@ -60,10 +58,8 @@ All you need is to follow the usual process to run tensorboard: https://www.tens
 2 templates are available to deploy VisualStudio Code on GPU:
 
 * Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
-* **Filter** the catalog for "**VSCode on GPU**"
-* Choose one of the available templates:
-  * **Tensorflow on GPU with VisualStudio**
-  * **PyTorch on GPU with VisualStudio**
+* **Filter** the catalog for "**GPU**"
+* Choose one of the available templates: **VisualStudio Code on GPU**
 
 For those pods VSCode cannot be accessed directly on a DSRI URL, you will need to forward the port to your localhost:
 

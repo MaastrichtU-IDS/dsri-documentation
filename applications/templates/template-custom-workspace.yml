@@ -10,6 +10,8 @@ metadata:
     description: |-
       Use this template to start a custom Docker image, and easily run your code through a web UI exposed on port 8888, such as JupyterLab or VSCode
 
+      📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
+
       📂 Use the workspace of the web UI (/root usually) to store your data in the persistent storage automatically created
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
       

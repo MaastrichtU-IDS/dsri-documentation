@@ -21,26 +21,18 @@ Unfortunately, we recommend to **use Google Chrome** web browser as pasting in t
 
 ## Use Git in VSCode
 
-You will need to use `git` from the terminal to clone the git repository with `git clone`
+The easiest way to login and clone a repository from GitHub is to use the built-in authentication system of VisualStudio Code, to do so click on **clone repository...** in the **Welcome** page, and follow the instructions in the top of the VisualStudio window.
 
-:::tip Login to GitHub
+If this solution does not work for you, you can use `git` from the terminal to clone the git repository with `git clone`. VisualStudio might ask you to login in the dialog box at the top of the page, enter your username and password when requested. For GitHub you might need to generate a token at https://github.com/settings/tokens to use as password.
 
-VisualStudio will prompt a window to give permission to GitHub in a web page if the repository is private, **this option does not work**, you need to cancel this window, then VSCode will ask your for username and password!
+Once the repository cloned, you can use git from the VSCode web UI to manage your `git` repositories (add, commit, push changes), or in the terminal.
 
-:::
-
-Once the repository cloned, you can use git from the VSCode web UI to manage your `git` repositories (add, commit, push changes).
-
-:::caution Configure git username
-
-Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
+Before committing to GitHub or GitLab, you might need to configure you username and email in VSCode terminal:
 
 ```bash
 git config --global user.name "Jean Dupont"
 git config --global user.email jeandupont@gmail.com
 ```
-
-:::
 
 :::info Save your git password
 

@@ -8,7 +8,7 @@ metadata:
     description: |-
       Start a OpenLink Virtuoso triplestore, with a SPARQL endpoint
 
-      📂 Use the `/database` folder in the container to store your data in the persistent storage
+      📂 Note: we use the `/database` folder in the container to store your data in the persistent storage
 
       Visit https://github.com/openlink/virtuoso-opensource for more details about the Virtuoso triplestore
       Visit https://hub.docker.com/r/openlink/virtuoso-opensource-7 for more details about the image
@@ -45,6 +45,11 @@ parameters:
   displayName: Triplestore default graph
   description: The default graph used by the Virtuoso triplestore
   value: https://w3id.org/um/graph
+  required: true
+- name: TRIPLESTORE_URL
+  displayName: URL where the triplestore will be publicly deployed
+  description: Only used to define the URL of data added via the DAV Linked Data Platform
+  value: https://w3id.org/um/data/
   required: true
 - name: LOG_LEVEL
   displayName: Triplestore log level
@@ -177,8 +182,6 @@ objects:
             value: "1"
           - name: VIRT_SPARQL_ExternalXsltSource
             value: "1"
-          - name: VIRT_Parameters_DirsAllowed
-            value: "., /data, /usr/local/virtuoso-opensource/share/virtuoso/vad, /usr/local/virtuoso-opensource/var/lib/virtuoso/db"
           - name: VIRT_SPARQL_ResultSetMaxRows
             value: "1048576"
           - name: VIRT_SPARQL_MaxQueryCostEstimationTime
@@ -205,8 +208,10 @@ objects:
           - name: VIRT_TempDatabase_MaxCheckpointRemap
             value: "125000"
           - name: VIRT_URIQA_DefaultHost
-            value: "w3id.org/um"
+            value: "${TRIPLESTORE_URL}"
             # URL used as base for generated URI (e.g. graph in webDAV)
+          # - name: VIRT_Parameters_DirsAllowed
+          #   value: "., /data, /opt/virtuoso-opensource/vad, /usr/local/virtuoso-opensource/share/virtuoso/vad, /usr/local/virtuoso-opensource/var/lib/virtuoso/db"
         automountServiceAccountToken: false
 
 - kind: Service

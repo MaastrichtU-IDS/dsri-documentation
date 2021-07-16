@@ -6,9 +6,11 @@ labels:
 metadata:
   name: gpu-vscode
   annotations:
-    openshift.io/display-name: Python on GPU with VisualStudio
+    openshift.io/display-name: VisualStudio Code on GPU
     description: |-
       Start VisualStudio Code with Tensorflow or PyTorch using GPUs with the root user.
+
+      📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
       
       📂 Use the `/root` folder (workspace of the VSCode UI) to store your data in the existing persistent storage
 
@@ -28,7 +30,7 @@ parameters:
   displayName: Application name
   description: Must be unique in the project. It will be used to generate the application
     URL.
-  value: gpu-vscode
+  value: vscode-gpu
   required: true
 - name: IMAGE_NAME
   displayName: Docker image used
