@@ -53,28 +53,29 @@ oc new-app dockerfile-to-okd
 
 To properly deploy your app on OpenShift you will need to define a few more parameters:
 
-- Enable root user access (with `serviceAccountName`)
-- Add persistent storage (with `volumes` and `containers: volumeMounts` )
+- Enable root user access (with `serviceAccountName`) by running this command:
+
+```bash
+oc patch deployment/dockerfile-to-okd --patch '{"spec":{"template": {"spec":{"serviceAccountName": "anyuid"}}}}'
+```
+
+- You can also add persistent storage (with `volumes` and `containers: volumeMounts` )
 
   - `${STORAGE_NAME}`: Name of your persistent volume claim in the **Storage** page of your project in the web UI
   - `${STORAGE_FOLDER}` : Name of the folder inside the persistent volume claim to store the application data (so you can store multiple applications on the same persistent volume claim)
 
-- Make sure the container will run on the right nodes (with the `nodeSelector`)
-
-Open the configuration of the started app:
+Open the configuration of the started app to fix its configuration:
 
 ```shell
-oc edit dockerfile-to-okd
+oc edit deployment/dockerfile-to-okd
 ```
 
-Add the following lines (replace the variables, such as `${STORAGE_NAME}` by your values):
+You can mount existing persistent volume this way (replace the variables, such as `${STORAGE_NAME}` by your values):
 
 ```yaml
     template:
       spec:
         serviceAccountName: anyuid
-        nodeSelector:
-          dsri.unimaas.nl/cpu: 'true'
         volumes:
         - name: data
           persistentVolumeClaim:
@@ -110,7 +111,13 @@ oc expose svc/dockerfile-to-okd
 oc get route
 ```
 
-You can now visit the route shown in the HOST/PORT output of the 'oc get route' command and see if you have successfully converted the docker file. 
+You can now visit the route shown in the HOST/PORT output of the `oc get route` command and see if you have successfully converted the docker file. 
+
+You can edit the created route to enable HTTPS with this command:
+
+```bash
+oc patch route/dockerfile-to-okd --patch '{"spec":{"tls": {"termination": "edge", "insecureEdgeTerminationPolicy": "Redirect"}}}'
+```
 
 ---
 
