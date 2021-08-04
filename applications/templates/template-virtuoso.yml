@@ -8,11 +8,16 @@ metadata:
     description: |-
       Start a OpenLink Virtuoso triplestore, with a SPARQL endpoint
 
-      📂 Note: we use the `/database` folder in the container to store your data in the persistent storage
+      You can start Virtuoso using 2 different popular images:
+      - Official OpenLink Virtuoso image (uses /database to store the data)
+      openlink/virtuoso-opensource-7:latest
+      - Alternative tenforce/virtuoso image (uses /data to store the data)
+      tenforce/virtuoso:latest
 
       Visit https://github.com/openlink/virtuoso-opensource for more details about the Virtuoso triplestore
       Visit https://hub.docker.com/r/openlink/virtuoso-opensource-7 for more details about the image
-    iconClass: icon-openjdk
+      Visit https://github.com/vemonet/virtuoso-ldp to enable the Linked Data Platform feature
+    iconClass: icon-kubevirt
     tags: triplestore,graph,database,rdf,sparql
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-database#start-virtuoso-triplestore
@@ -40,6 +45,11 @@ parameters:
   displayName: Application Docker image
   description: Docker image to deploy the Virtuoso triplestore
   value: openlink/virtuoso-opensource-7:latest
+  required: true
+- name: DATABASE_PATH
+  displayName: The database storage path
+  description: Change it to /data for the tenforce/virtuoso image
+  value: /database
   required: true
 - name: DEFAULT_GRAPH
   displayName: Triplestore default graph
@@ -154,6 +164,7 @@ objects:
           volumeMounts:
           - name: data
             mountPath: "/database"
+            # mountPath: "${DATABASE_PATH}"
           env:
           # http://vos.openlinksw.com/owiki/wiki/VOS/VirtRDFPerformanceTuning
           # http://docs.openlinksw.com/virtuoso/rdfperfgeneral/

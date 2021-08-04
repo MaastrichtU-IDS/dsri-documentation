@@ -80,6 +80,8 @@ objects:
     annotations:
       template.openshift.io/expose-password: "{.data['application-password']}"
     name: "${APPLICATION_NAME}"
+    labels:
+      app: ${APPLICATION_NAME}
   stringData:
     application-password: "${JUPYTER_TOKEN}"
 

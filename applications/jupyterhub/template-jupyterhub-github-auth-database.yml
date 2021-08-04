@@ -21,7 +21,7 @@ metadata:
       - jupyter/r-notebook
       - jupyter/pyspark-notebook
       - jupyter/all-spark-notebook
-      - ghcr.io/maastrichtu-ids/jupyterlab:sparql (with Java and SPARQL kernels)
+      - ghcr.io/maastrichtu-ids/jupyterlab (with Java and SPARQL kernels)
       Or build your own 📦
 
       Once JupyterLab is deployed you can install pip packages and JupyterLab extensions, but nothing that requires root privileges (such as installing apt or yum packages)
@@ -32,7 +32,7 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
-    template.openshift.io/bindable: 'false'
+    # template.openshift.io/bindable: 'false'
 
 parameters:
 - name: APPLICATION_NAME
@@ -47,7 +47,8 @@ parameters:
   required: true
 - name: JUPYTERHUB_IMAGE
   displayName: JupyterHub image
-  value: quay.io/jupyteronopenshift/jupyterhub:3.4.0
+  value: jupyterhub/jupyterhub:latest
+  # value: quay.io/jupyteronopenshift/jupyterhub:3.4.0
   required: true
 - name: NOTEBOOK_IMAGE
   displayName: Notebook image
@@ -93,12 +94,12 @@ parameters:
   required: true
   value: |
     "vemonet"
-- name: GITHUB_USERS
-  displayName: JupyterHub users (GitHub)
-  description: GitHub users who can use the JupyterHub. Use quotes and separate with a comma
-  required: true
-  value: |
-        "vemonet", "Binosha", "micheldumontier", "rcelebi", "GrigoriuAndreea", "kodymoodley", "pedrohserrano", "sabaturgay", "seunAdeks", "sunchang0124", "thendriks"
+# - name: GITHUB_USERS
+#   displayName: JupyterHub users (GitHub)
+#   description: GitHub users who can use the JupyterHub. Use quotes and separate with a comma
+#   required: true
+#   value: |
+#         "vemonet", "Binosha", "micheldumontier", "rcelebi", "kodymoodley", "sabaturgay", "seunAdeks", "sunchang0124", "thendriks"
 objects:
 - kind: ServiceAccount
   apiVersion: v1
@@ -123,6 +124,22 @@ objects:
     apiGroup: rbac.authorization.k8s.io
     kind: ClusterRole
     name: edit
+# Add anyuid for OpenShit
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    annotations:
+      openshift.io/description: Allows to deploy JupyterHub as anyuid
+    name: "${APPLICATION_NAME}-anyuid"
+    labels:
+      app: "${APPLICATION_NAME}"
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: system:openshift:scc:anyuid
+  subjects:
+  - kind: ServiceAccount
+    name: "${APPLICATION_NAME}-hub"
 - kind: DeploymentConfig
   apiVersion: apps.openshift.io/v1
   metadata:
@@ -155,24 +172,24 @@ objects:
           app: "${APPLICATION_NAME}"
           deploymentconfig: "${APPLICATION_NAME}"
       spec:
-        #nodeSelector:
-         # dsri.unimaas.nl/cpu: 'true'
+        # nodeSelector:
+        #   dsri.unimaas.nl/cpu: 'true'
         serviceAccountName: "${APPLICATION_NAME}-hub"
-        initContainers:
-        - name: wait-for-database
-          image: "${JUPYTERHUB_IMAGE}"
-          command:
-          - wait-for-database
-          resources:
-            limits:
-              memory: "${JUPYTERHUB_MEMORY}"
-          env:
-          - name: JUPYTERHUB_DATABASE_PASSWORD
-            value: "${DATABASE_PASSWORD}"
-          - name: JUPYTERHUB_DATABASE_HOST
-            value: "${APPLICATION_NAME}-db"
-          - name: JUPYTERHUB_DATABASE_NAME
-            value: postgres
+        # initContainers:
+        # - name: wait-for-database
+        #   image: "${JUPYTERHUB_IMAGE}"
+        #   command:
+        #   - wait-for-database
+        #   resources:
+        #     limits:
+        #       memory: "${JUPYTERHUB_MEMORY}"
+        #   env:
+        #   - name: JUPYTERHUB_DATABASE_PASSWORD
+        #     value: "${DATABASE_PASSWORD}"
+        #   - name: JUPYTERHUB_DATABASE_HOST
+        #     value: "${APPLICATION_NAME}-db"
+        #   - name: JUPYTERHUB_DATABASE_NAME
+        #     value: postgres
         containers:
         - name: jupyterhub
           image: "${JUPYTERHUB_IMAGE}"
@@ -371,44 +388,44 @@ objects:
       if not os.environ['JUPYTERHUB_NOTEBOOK_IMAGE']:
         c.KubeSpawner.profile_list = [
           {
-              'display_name': 'Minimal Notebook (Debian | Python 3.6)',
+              'display_name': 'Minimal Notebook (Debian | Python 3)',
               'kubespawner_override': {
                   'image_spec': 'jupyter/minimal-notebook:latest'
               }
           },
           {
-              'display_name': 'Data Science Notebook (Debian | Python 3.6 | SciPy packages | Julia kernel)',
+              'display_name': 'Julia Notebook (Debian | Python 3 | SciPy packages | Julia kernel)',
               'kubespawner_override': {
                   'image_spec': 'jupyter/datascience-notebook:latest'
               }
           },
           {
-              'display_name': 'Tensorflow Notebook (Debian | Python 3.6 | SciPy packages | Tensorflow)',
+              'display_name': 'Tensorflow Notebook (Debian | Python 3 | SciPy packages | Tensorflow)',
               'kubespawner_override': {
                   'image_spec': 'jupyter/tensorflow-notebook:latest'
               }
           },
           {
-              'display_name': 'R Notebook (Debian | Python 3.6 | R kernel)',
+              'display_name': 'R Notebook (Debian | Python 3 | R kernel)',
               'kubespawner_override': {
                   'image_spec': 'jupyter/r-notebook:latest'
               }
           },
           {
-              'display_name': 'all-spark Notebook (Debian | Python 3.6 | Java 11 | Spark | NodeJS 12)',
+              'display_name': 'all-spark Notebook (Debian | Python 3 | Java 11 | Spark | NodeJS )',
               'kubespawner_override': {
                   'image_spec': 'jupyter/all-spark-notebook:latest'
               }
           },
           {
-              'display_name': 'Java Notebook with SPARQL kernel (Debian | Python 3.6 | Java kernel | SPARQL kernel | NodeJS 12)',
+              'display_name': 'Data Science Notebook with Java and SPARQL kernel (Debian | Python 3 | Java kernel | SPARQL kernel | NodeJS)',
               'default': True,
               'kubespawner_override': {
-                  'image_spec': 'ghcr.io/maastrichtu-ids/jupyterlab:sparql'
+                  'image_spec': 'ghcr.io/maastrichtu-ids/jupyterlab'
               }
           },
           {
-              'display_name': 'PyROOT Data Science Notebook (CentOS 7 | Python 3.6 | pyROOT 6.22 | tensorflow 2.0)',
+              'display_name': 'PyROOT Data Science Notebook (CentOS 7 | Python 3 | pyROOT 6.22 | tensorflow 2.0)',
               'kubespawner_override': {
                   'image_spec': 'jackfrost373/jupyter-root:latest'
               }
@@ -416,8 +433,12 @@ objects:
         ]
 
       # Set notebook options
+      # from datetime import datetime
+      # from datetime import timedelta
       c.KubeSpawner.start_timeout = 300
       c.KubeSpawner.http_timeout = 200
+      # c.KubeSpawner.start_timeout = timedelta(seconds=300)
+      # c.KubeSpawner.http_timeout = timedelta(seconds=200)
       c.KubeSpawner.environment = { 'JUPYTER_ENABLE_LAB': 'yes' }
 
       # Set user authentication https://jupyterhub.readthedocs.io/en/stable/reference/authenticators.html
@@ -425,17 +446,17 @@ objects:
       c.JupyterHub.authenticator_class = GitHubOAuthenticator
 
       # TODO: Improve GitHub authentication
-      c.GitHubOAuthenticator.oauth_callback_url = 'https://${APPLICATION_NAME}-${OPENSHIFT_PROJECT}.app.dsri.unimaas.nl/hub/oauth_callback'
+      c.GitHubOAuthenticator.oauth_callback_url = 'https://${APPLICATION_NAME}-${OPENSHIFT_PROJECT}.apps.dsri2.unimaas.nl/hub/oauth_callback'
       c.GitHubOAuthenticator.client_id = '${GITHUB_OAUTH_ID}'
       c.GitHubOAuthenticator.client_secret = '${GITHUB_OAUTH_SECRET}'
 
       c.Authenticator.admin_users = { ${GITHUB_ADMIN} }
-      c.Authenticator.whitelist = { ${GITHUB_USERS} }
 
       # Set nodeSelector
       # c.KubeSpawner.node_selector = {'dsri.unimaas.nl/cpu': 'true'}
       c.KubeSpawner.supplemental_gids = ['100']
-      # c.KubeSpawner.service_account = 'restricted'
+      c.KubeSpawner.uid = 0
+      c.KubeSpawner.service_account = 'anyuid'
 
       # Set persistent storage
       c.KubeSpawner.user_storage_pvc_ensure = True
@@ -455,6 +476,7 @@ objects:
               'mountPath': '/home/jovyan'
           }
       ]
+    # c.Authenticator.whitelist = { ${GITHUB_USERS} }
 
     jupyterhub_config.sh: |
       pip install tornado==5.1.1 --force-reinstall
