@@ -81,7 +81,6 @@ RUN apt-get update -qq \
            libxt6 \
            sudo \
            wget \
-           nvidia-smi \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && echo "Downloading FSL ..." \
