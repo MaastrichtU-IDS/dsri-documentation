@@ -168,6 +168,7 @@ objects:
           - "--ip=0.0.0.0"
           - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"
           ports:
+          # - containerPort: ${{PORT}}
           - containerPort: 8888
             protocol: TCP
           # SPARK UI if all-spark notebook deployed

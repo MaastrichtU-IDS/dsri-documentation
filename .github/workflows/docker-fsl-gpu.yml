@@ -1,7 +1,4 @@
 name: Publish FSL with GPU image
-env:
-  IMAGE_ID: ghcr.io/maastrichtu-ids/jupyterlab:fsl-gpu
-
 on:
   workflow_dispatch:
   push:
@@ -10,7 +7,8 @@ on:
     paths:
     - 'applications/gpu/fsl-gpu/Dockerfile'
     - '.github/workflows/docker-fsl-gpu.yml'
-
+env:
+  IMAGE_ID: ghcr.io/maastrichtu-ids/jupyterlab:fsl-gpu
 jobs:
   push:
     runs-on: ubuntu-latest
