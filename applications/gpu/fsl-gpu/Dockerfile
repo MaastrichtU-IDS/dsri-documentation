@@ -4,6 +4,7 @@
 # https://ngc.nvidia.com/catalog/containers/nvidia:cuda
 ARG CUDA_VERSION=9.1-devel-ubuntu16.04
 # FSL 6.0.5: ARG CUDA_VERSION=10.2-devel-ubuntu18.04
+# Default build is Ubuntu: ARG CUDA_VERSION=10.2-devel
 
 FROM nvcr.io/nvidia/cuda:${CUDA_VERSION}
 # FROM nvcr.io/nvidia/tensorflow:21.05-tf2-py3
@@ -114,8 +115,8 @@ RUN echo '{ \
 ENV CONDA_DIR=/opt/conda \
     SHELL=/bin/bash \
     LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
-    PATH="${CONDA_DIR}/bin:${PATH}" 
+    LANGUAGE=en_US.UTF-8
+ENV PATH="${CONDA_DIR}/bin:${PATH}" 
 # Automatically download the latest release of conda miniforge
 RUN export download_url=$(curl -s https://api.github.com/repos/conda-forge/miniforge/releases/latest | grep browser_download_url | grep -P "Mambaforge-\d+((\.|-)\d+)*-Linux-x86_64.sh" | grep -v sha256 | cut -d '"' -f 4) && \
     echo "Downloading latest miniforge from $download_url" && \
