@@ -29,6 +29,12 @@ GitHub Actions allows you to define automatically containerized workflows throug
 
 See the [page about GitHub Actions runners](/docs/workflows-github-actions) for more details, and to deploy runners on the DSRI.
 
+### Apache Airflow
+
+Airflow is a platform to programmatically author, schedule and monitor workflows, aka. DAGs (directed acyclic graphs).
+
+See the [page about Airflow](/docs/workflows-airflow) for more details, and to deploy Airflow on the DSRI.
+
 ### Argo
 
 [Argo](https://argoproj.github.io/argo/) is a container native workflow engine for [Kubernetes](https://kubernetes.io/) supporting both [DAG](https://argoproj.github.io/docs/argo/examples/readme.html#dag) and [step based](https://argoproj.github.io/docs/argo/examples/readme.html#steps) workflows.

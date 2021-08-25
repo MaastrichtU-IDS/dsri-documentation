@@ -1,0 +1,362 @@
+# https://github.com/apache/airflow/blob/main/chart/values.yaml
+
+# User and group of airflow user
+uid: 50000
+gid: 0
+# Airflow home directory, used for mount paths
+airflowHome: /opt/airflow
+
+# Default airflow repository -- overrides all the specific images below
+defaultAirflowRepository: apache/airflow
+# Default airflow tag to deploy
+defaultAirflowTag: "2.1.3"
+# Airflow version (Used to make some decisions based on Airflow Version being deployed)
+airflowVersion: "2.1.3"
+
+# Airflow executor
+# Options: LocalExecutor, CeleryExecutor, KubernetesExecutor, CeleryKubernetesExecutor
+executor: "CeleryExecutor"
+
+# Git sync, cf. https://airflow.apache.org/docs/helm-chart/stable/manage-dags-files.html
+dags:
+  persistence:
+    # Enable persistent volume for storing dags
+    enabled: true
+    size: 1Gi
+    accessMode: ReadWriteOnce
+    # If using a custom storageClass, pass name here
+    storageClassName:
+    ## the name of an existing PVC to use
+    existingClaim:
+    
+  gitSync:
+    enabled: true
+    repo: https://github.com/MaastrichtU-IDS/dsri-documentation.git
+    branch: master
+    # subpath within the repo where dags are located, should be "" if dags are at repo root
+    subPath: "applications/airflow/dags"
+    rev: HEAD
+    depth: 1
+    maxFailures: 3
+
+    # if your repo needs a user name password
+    # you can load them to a secret like the one below
+    #   ---
+    #   apiVersion: v1
+    #   kind: Secret
+    #   metadata:
+    #     name: git-credentials
+    #   data:
+    #     GIT_SYNC_USERNAME: <base64_encoded_git_username>
+    #     GIT_SYNC_PASSWORD: <base64_encoded_git_password>
+    # and specify the name of the secret below
+    # credentialsSecret: git-credentials
+    #
+    # If you are using SSH url:
+    #   ---
+    #   apiVersion: v1
+    #   kind: Secret
+    #   metadata:
+    #     name: airflow-ssh-secret
+    #   data:
+    #     gitSshKey: <base64_encoded_data>
+    # and specify the name of the secret below
+    # sshKeySecret: airflow-ssh-secret
+    wait: 60
+
+# Images
+images:
+  airflow:
+    repository: ~
+    tag: ~
+    pullPolicy: IfNotPresent
+  pod_template:
+    repository: ~
+    tag: ~
+    pullPolicy: IfNotPresent
+  flower:
+    repository: ~
+    tag: ~
+    pullPolicy: IfNotPresent
+  statsd:
+    repository: apache/airflow
+    tag: airflow-statsd-exporter-2021.04.28-v0.17.0
+    pullPolicy: IfNotPresent
+  redis:
+    repository: redis
+    tag: 6-buster
+    pullPolicy: IfNotPresent
+  pgbouncer:
+    repository: apache/airflow
+    tag: airflow-pgbouncer-2021.04.28-1.14.0
+    pullPolicy: IfNotPresent
+  pgbouncerExporter:
+    repository: apache/airflow
+    tag: airflow-pgbouncer-exporter-2021.04.28-0.5.0
+    pullPolicy: IfNotPresent
+  gitSync:
+    repository: k8s.gcr.io/git-sync/git-sync
+    tag: v3.3.0
+    pullPolicy: IfNotPresent
+
+# If this is true and using LocalExecutor/KubernetesExecutor/CeleryKubernetesExecutor, the scheduler's
+# service account will have access to communicate with the api-server and launch pods.
+# If this is true and using CeleryExecutor/KubernetesExecutor/CeleryKubernetesExecutor, the workers
+# will be able to launch pods.
+allowPodLaunching: true
+
+# Environment variables for all airflow containers
+env: []
+# - name: ""
+#   value: ""
+
+# Secrets for all airflow containers
+secret: []
+# - envName: ""
+#   secretName: ""
+#   secretKey: ""
+
+# Airflow Worker Config
+workers:
+  # Number of airflow celery workers in StatefulSet
+  replicas: 3
+  serviceAccount:
+    create: false
+    name: anyuid
+  # Args to use when running Airflow workers (templated).
+  args:
+    - "bash"
+    - "-c"
+    # The format below is necessary to get `helm lint` happy
+    - |-
+      exec \
+      airflow {{ semverCompare ">=2.0.0" .Values.airflowVersion | ternary "celery worker" "worker" }}
+
+  persistence:
+    # Enable persistent volumes
+    enabled: true
+    # Volume size for worker StatefulSet
+    size: 100Gi
+    # If using a custom storageClass, pass name ref to all statefulSets here
+    storageClassName:
+
+  resources: {}
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #  requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+  # Grace period for tasks to finish after SIGTERM is sent from kubernetes
+  terminationGracePeriodSeconds: 600
+  # Tells kubernetes that its ok to evict when it wants to scale a node down.
+  safeToEvict: true
+
+  # Mount additional volumes into worker.
+  extraVolumes: []
+  extraVolumeMounts: []
+
+# Airflow scheduler settings
+scheduler:
+  # Airflow 2.0 allows users to run multiple schedulers,
+  # However this feature is only recommended for MySQL 8+ and Postgres
+  replicas: 1
+  serviceAccount:
+    create: false
+    name: anyuid
+
+  args: ["bash", "-c", "exec airflow scheduler"]
+  podDisruptionBudget:
+    enabled: false
+    config:
+      maxUnavailable: 1
+  safeToEvict: true
+  extraVolumes: []
+  extraVolumeMounts: []
+
+# Configuration for postgresql subchart, not recommended for production
+postgresql:
+  enabled: true
+  postgresqlPassword: postgres
+  postgresqlUsername: postgres
+
+# Airflow database config
+data:
+  metadataConnection:
+    user: postgres
+    pass: postgres
+    protocol: postgresql
+    host: ~
+    port: 5432
+    db: postgres
+    sslmode: disable
+  # resultBackendConnection defaults to the same database as metadataConnection
+
+# Airflow create user job settings
+createUserJob:
+  serviceAccount:
+    create: false
+    name: anyuid
+
+# Airflow database migration job settings
+migrateDatabaseJob:
+  # Create ServiceAccount
+  serviceAccount:
+    create: false
+    name: anyuid
+
+# Airflow webserver settings
+webserver:
+  serviceAccount:
+    create: false
+    name: anyuid
+  allowPodLogReading: true
+  replicas: 1
+  # Args to use when running the Airflow webserver (templated).
+  args: ["bash", "-c", "exec airflow webserver"]
+
+  # Create initial user.
+  defaultUser:
+    enabled: true
+    role: Admin
+    username: admin
+    email: vincent.emonet@maastrichtuniversity.nl
+    firstName: admin
+    lastName: user
+    password: admin
+
+  service:
+    type: ClusterIP
+    ports:
+      - name: airflow-ui
+        port: "{{ .Values.ports.airflowUI }}"
+    # To change the port used to access the webserver:
+    # ports:
+    #   - name: airflow-ui
+    #     port: 80
+    #     targetPort: airflow-ui
+    # To only expose a sidecar, not the webserver directly:
+    # ports:
+    #   - name: only_sidecar
+    #     port: 80
+    #     targetPort: 8888
+
+# Configuration for the redis provisioned by the chart
+redis:
+  enabled: true
+  serviceAccount:
+    create: false
+    name: anyuid
+
+  persistence:
+    # Enable persistent volumes
+    enabled: true
+    # Volume size for worker StatefulSet
+    size: 1Gi
+  password: ~
+
+# All ports used by chart
+ports:
+  flowerUI: 5555
+  airflowUI: 8080
+  workerLogs: 8793
+  redisDB: 6379
+  statsdIngest: 9125
+  statsdScrape: 9102
+  pgbouncer: 6543
+  pgbouncerScrape: 9127
+
+# Add common labels to all objects and pods defined in this chart.
+labels: {}
+
+# Whether the KubernetesExecutor can launch workers and pods in multiple namespaces
+# If true, it creates ClusterRole/ClusterRolebinding (with access to entire cluster)
+multiNamespaceMode: false
+
+logs:
+  persistence:
+    # Enable persistent volume for storing logs
+    enabled: true
+    size: 100Gi
+    # If using a custom storageClass, pass name here
+    storageClassName:
+    ## the name of an existing PVC to use
+    existingClaim:
+
+
+# Airflow Triggerer Config
+triggerer:
+  replicas: 1
+  args: ["bash", "-c", "exec airflow triggerer"]
+  serviceAccount:
+    create: false
+    name: anyuid
+
+# Flower settings
+flower:
+  # Enable flower. If True, and using CeleryExecutor/CeleryKubernetesExecutor, will deploy flower app.
+  enabled: true
+  serviceAccount:
+    create: false
+    name: anyuid
+  username: ~
+  password: ~
+  args:
+    - "bash"
+    - "-c"
+    # The format below is necessary to get `helm lint` happy
+    - |-
+      exec \
+      airflow {{ semverCompare ">=2.0.0" .Values.airflowVersion | ternary "celery flower" "flower" }}
+  service:
+    type: ClusterIP
+    ports:
+      - name: flower-ui
+        port: "{{ .Values.ports.flowerUI }}"
+
+# Statsd settings
+statsd:
+  enabled: true
+  serviceAccount:
+    create: false
+    name: anyuid
+  uid: 65534
+
+
+# PgBouncer settings
+pgbouncer:
+  enabled: false
+  serviceAccount:
+    create: false
+    name: anyuid
+  # Pool sizes
+  metadataPoolSize: 10
+  resultBackendPoolSize: 5
+  # Maximum clients that can connect to PgBouncer (higher = more file descriptors)
+  maxClientConn: 100
+  uid: 65534
+
+# This runs as a CronJob to cleanup old pods.
+cleanup:
+  enabled: false
+  schedule: "*/15 * * * *"
+  # Select certain nodes for airflow cleanup pods.
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+  serviceAccount:
+    create: false
+    name: anyuid
+
+# Elasticsearch logging configuration
+elasticsearch:
+  enabled: false
+  # an object representing the connection
+  # Example:
+  # connection:
+  #   user: ~
+  #   pass: ~
+  #   host: ~
+  #   port: ~
+  connection: {}

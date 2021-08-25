@@ -22,7 +22,8 @@
         "type": "category",
         "label": "Workflows",
         "items": [
-          "workflows-introduction", "workflows-github-actions", "workflows-argo", "workflows-nextflow", "workflows-cwl"
+          "workflows-introduction", "workflows-github-actions", "workflows-airflow", "workflows-argo", 
+          "workflows-nextflow", "workflows-cwl"
         ]
       }
     ]
