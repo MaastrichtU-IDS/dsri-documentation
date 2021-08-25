@@ -221,7 +221,7 @@ webserver:
     enabled: true
     role: Admin
     username: admin
-    email: vincent.emonet@maastrichtuniversity.nl
+    email: your.email@maastrichtuniversity.nl
     firstName: admin
     lastName: user
     password: admin
