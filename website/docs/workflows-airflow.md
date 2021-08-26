@@ -3,15 +3,7 @@ id: workflows-airflow
 title: Deploy Airflow
 ---
 
-Deploy Apache Airflow to run workflows (aka. DAGs), hosted in a Git repository, on the DSRI. 
-
-For more informations about Apache Airflow, go to https://airflow.apache.org
-
-Here are a few links for more details on the official Airflow Helm chart:
-
-* [Helm chart docs](https://airflow.apache.org/docs/helm-chart/stable/index.html)
-* [Helm chart source code](https://github.com/apache/airflow/tree/main/chart)
-* [Helm chart parameters](https://airflow.apache.org/docs/helm-chart/stable/parameters-ref.html)
+Deploy [Apache Airflow](https://airflow.apache.org) to run workflows (aka. DAGs), hosted in a Git repository, on the DSRI. 
 
 ## Install the chart
 
@@ -26,37 +18,48 @@ helm repo update
 
 ## Deploy Airflow
 
-You will need to define the parameters of your Airflow deployment in a `values.yml` file, use [this file](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/airflow/values.yml) as base, and edit it to use your own dags. Download the file:
+You can quickly deploy Airflow on the DSRI, with DAGs automatically synchronized with your Git repository. 
 
-```bash
-wget https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/airflow/values.yml
-```
-
-Deploy Airflow with the parameters defined in `values.yml` and a password for the web interface. The dags in Airflow will be automatically synchronized with the GitHub repository defined in the `gitSync` parameter:
+We use a [`values.yml` file](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/airflow/values.yml) with all default parameters pre-defined for the DSRI, so you just need to edit the password and git repository configuration in this command, and run it:
 
 ```bash
 helm install airflow apache-airflow/airflow \
-    -f values.yml \
-    --set webserver.defaultUser.password=yourpassword
+    -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/airflow/values.yml \
+    --set webserver.defaultUser.password=yourpassword \
+    --set dags.gitSync.repo=https://github.com/bio2kg/bio2kg-etl.git \
+    --set dags.gitSync.branch=main \
+    --set dags.gitSync.subPath=workflows/dags
 ```
 
-Fix the postgresql deployment (because setting the `serviceAccount.name` of the sub chart `postgresql` don't work, but should be possible according to the [official helm docs](https://helm.sh/docs/chart_template_guide/subcharts_and_globals/)):
+:::info 
+
+If you need to do more configuration you can download the a [`values.yml` file](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/airflow/values.yml), edit it directly to your settings and use this file locally with `-f values.yml`
+
+:::
+
+A few seconds after Airflow started to install, fix the postgresql deployment in a different terminal window (unfortunately setting the `serviceAccount.name` of the sub chart `postgresql` don't work, even if it should be possible according to the [official helm docs](https://helm.sh/docs/chart_template_guide/subcharts_and_globals/)):
 
 ```bash
 oc patch statefulset/airflow-postgresql --patch '{"spec":{"template":{"spec": {"serviceAccountName": "anyuid"}}}}'
 ```
 
-To access it you can forward the webserver on your machine http://localhost:8080
+Once Airflow finished to deploy, you can access it temporarily by forwarding the webserver on your machine at http://localhost:8080
 
 ```bash
-oc port-forward svc/airflow-webserver 8080
+oc port-forward svc/airflow-webserver 8080:8080
 ```
 
-Or expose the service on a URL (accessible when on the UM VPN) with HTTPS enabled:
+Or permanently expose the service on a URL (accessible when on the UM VPN) with HTTPS enabled:
 
 ```bash
 oc expose svc/airflow-webserver
 oc patch route/airflow-webserver --patch '{"spec":{"tls": {"termination": "edge", "insecureEdgeTerminationPolicy": "Redirect"}}}'
+```
+
+Finally, get the route to the Airflow web interface, or access it via the DSRI web UI:
+
+```bash
+oc get routes
 ```
 
 ## Example workflows
@@ -110,3 +113,16 @@ passing.set_upstream(start)
 ```bash
 helm uninstall airflow
 ```
+
+## See also
+
+Here are a few links for more details on the official Airflow Helm chart:
+
+* [Helm chart docs](https://airflow.apache.org/docs/helm-chart/stable/index.html)
+* [Helm chart source code](https://github.com/apache/airflow/tree/main/chart)
+* [Helm chart parameters](https://airflow.apache.org/docs/helm-chart/stable/parameters-ref.html)
+
+Other ways to deploy Airflow on OpenShift:
+
+* [Community Helm chart GitHub repo](https://github.com/airflow-helm/charts/tree/main/charts/airflow)
+* [Airflow template for OpenShift](https://github.com/CSCfi/airflow-openshift)

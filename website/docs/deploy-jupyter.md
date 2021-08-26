@@ -10,21 +10,24 @@ Start a JupyterLab container based on the [official Jupyter docker stacks](https
 
 You can start a container using the **JupyterLab** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
-Provide a few parameters, and Instantiate the template. The DSRI will automatically create a persistent volume to store data you will put in the `/home/jovyan` folder. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
+Provide a few parameters, such as the notebook password and base image, then instantiate the template. 
+
+The DSRI will automatically create a persistent volume to store data you will put in the `/home/jovyan` folder (the folder used by the notebook interface). You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
 <img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-You can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
+With this template you can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
 
-* `jupyter/scipy-notebook`
-* `jupyter/datascience-notebook` (with Julia kernel)
-* `jupyter/tensorflow-notebook`
-* `jupyter/r-notebook`
-* `jupyter/pyspark-notebook`
-* `jupyter/all-spark-notebook`
-* `ghcr.io/maastrichtu-ids/jupyterlab` (with Java and SPARQL kernels, and autocomplete for Python)
+* `ghcr.io/maastrichtu-ids/jupyterlab`: for data science and knowledge graphs, with Java and SPARQL kernels, and autocomplete for Python
+* `jupyter/scipy-notebook`: some packages for science are preinstalled 
+* `jupyter/datascience-notebook`: with Julia kernel
+* `jupyter/tensorflow-notebook`: with tensorflow package pre-installed
+* `jupyter/r-notebook`: to work with R
+* `jupyter/pyspark-notebook`: if you want to connect to a Spark cluster
+* `jupyter/all-spark-notebook`: if you want to run Spark locally in the notebook
 
 You can also build your own image, feel free to use this repository as example to extend a JupyterLab image: https://github.com/MaastrichtU-IDS/jupyterlab
+
 
 ## Use git in JupyterLab
 
@@ -70,6 +73,7 @@ It will prompt you for a username and password if the repository is private.
 <img src="https://raw.githubusercontent.com/jupyterlab/jupyterlab-git/master/docs/figs/preview.gif" alt="JupyterLab Git extension" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
+<!--
 ## Advanced: JupyterHub
 
 :::info For multiple users
@@ -112,4 +116,4 @@ Persistent volumes are automatically created for each instance started in Jupyte
 
 The users will be able to install new `pip` packages in their JupyterLab instance, but they will not have `sudo` privileges (so they cannot install `apt` or `yum` packages for example). This can be changed by editing the KubeSpawner python script in the ConfigMap to use `serviceAccountName: anyuid`
 
-:::
+::: -->
