@@ -7,7 +7,7 @@ Deploy [Apache Airflow](https://airflow.apache.org) to run workflows (aka. DAGs)
 
 ## Install the chart
 
-You will need to have Helm installed on your computer to deploy a GitHub Actions Runner, see the [Helm docs](/docs/helm) for more details.
+You will need to have Helm installed on your computer to deploy a Helm chart, see the [Helm docs](/docs/helm) for more details.
 
 Install the Helm chart to be able to deploy Airflow on the DSRI:
 
@@ -37,19 +37,19 @@ If you need to do more configuration you can download the a [`values.yml` file](
 
 :::
 
-A few seconds after Airflow started to install, fix the postgresql deployment in a different terminal window (unfortunately setting the `serviceAccount.name` of the sub chart `postgresql` don't work, even if it should be possible according to the [official helm docs](https://helm.sh/docs/chart_template_guide/subcharts_and_globals/)):
+A few seconds after Airflow started to install, you will need to fix the postgresql deployment in a different terminal window (unfortunately setting the `serviceAccount.name` of the sub chart `postgresql` don't work, even if it should be possible according to the [official helm docs](https://helm.sh/docs/chart_template_guide/subcharts_and_globals/)). Run this command to fix postgresql:
 
 ```bash
 oc patch statefulset/airflow-postgresql --patch '{"spec":{"template":{"spec": {"serviceAccountName": "anyuid"}}}}'
 ```
 
-Once Airflow finished to deploy, you can access it temporarily by forwarding the webserver on your machine at http://localhost:8080
+Once Airflow finished to deploy, you can access its web interface temporarily by forwarding the webserver on your machine at http://localhost:8080
 
 ```bash
 oc port-forward svc/airflow-webserver 8080:8080
 ```
 
-Or permanently expose the service on a URL (accessible when on the UM VPN) with HTTPS enabled:
+Or permanently expose the interface on a URL accessible when logged to the UM VPN, with HTTPS enabled:
 
 ```bash
 oc expose svc/airflow-webserver
