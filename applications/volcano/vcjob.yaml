@@ -1,0 +1,31 @@
+apiVersion: batch.volcano.sh/v1alpha1
+kind: Job
+metadata:
+  name: job-1
+spec:
+  minAvailable: 1
+  schedulerName: volcano
+  queue: test
+  policies:
+    - event: PodEvicted
+      action: RestartJob
+  tasks:
+    - replicas: 1
+      name: nginx
+      policies:
+      - event: TaskCompleted
+        action: CompleteJob
+      template:
+        spec:
+          containers:
+            - command:
+              - sleep
+              - 10m
+              image: nginx:latest
+              name: nginx
+              resources:
+                requests:
+                  cpu: 1
+                limits:
+                  cpu: 1
+          restartPolicy: Never
