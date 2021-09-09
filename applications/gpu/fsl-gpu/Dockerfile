@@ -111,27 +111,30 @@ RUN echo '{ \
     \n  ] \
     \n}' > /neurodocker/neurodocker_specs.json
 
+# Add conda to path
+ENV PATH="/opt/fsl-6.0.3/fslpython/condabin:${PATH}" 
+
 ## Install Conda
-ENV CONDA_DIR=/opt/conda \
-    SHELL=/bin/bash \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8
-ENV PATH="${CONDA_DIR}/bin:${PATH}" 
-# Automatically download the latest release of conda miniforge
-RUN export download_url=$(curl -s https://api.github.com/repos/conda-forge/miniforge/releases/latest | grep browser_download_url | grep -P "Mambaforge-\d+((\.|-)\d+)*-Linux-x86_64.sh" | grep -v sha256 | cut -d '"' -f 4) && \
-    echo "Downloading latest miniforge from $download_url" && \
-    curl -Lf -o miniforge.sh $download_url && \
-    # curl -Lf "https://github.com/conda-forge/miniforge/releases/download/${miniforge_version}/${miniforge_installer}" -o miniforge.sh && \
-    /bin/bash "miniforge.sh" -f -b -p "${CONDA_DIR}" && \
-    rm "miniforge.sh" && \
-    conda config --system --set auto_update_conda false && \
-    conda config --system --set show_channel_urls true
+# ENV CONDA_DIR=/opt/conda \
+#     SHELL=/bin/bash \
+#     LANG=en_US.UTF-8 \
+#     LANGUAGE=en_US.UTF-8
+# ENV PATH="${CONDA_DIR}/bin:${PATH}" 
+# # Automatically download the latest release of conda miniforge
+# RUN export download_url=$(curl -s https://api.github.com/repos/conda-forge/miniforge/releases/latest | grep browser_download_url | grep -P "Mambaforge-\d+((\.|-)\d+)*-Linux-x86_64.sh" | grep -v sha256 | cut -d '"' -f 4) && \
+#     echo "Downloading latest miniforge from $download_url" && \
+#     curl -Lf -o miniforge.sh $download_url && \
+#     # curl -Lf "https://github.com/conda-forge/miniforge/releases/download/${miniforge_version}/${miniforge_installer}" -o miniforge.sh && \
+#     /bin/bash "miniforge.sh" -f -b -p "${CONDA_DIR}" && \
+#     rm "miniforge.sh" && \
+#     conda config --system --set auto_update_conda false && \
+#     conda config --system --set show_channel_urls true
 
 RUN conda install --quiet -y \
-    conda \
+    # conda \
     pip \
-    notebook jupyterlab \
-    jupyterlab-lsp jupyter-lsp-python
+    notebook jupyterlab 
+    # jupyterlab-lsp jupyter-lsp-python
 
 EXPOSE 8888
 ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
