@@ -20,6 +20,7 @@ ENV LANG="en_US.UTF-8" \
 RUN export ND_ENTRYPOINT="/neurodocker/startup.sh" \
     && apt-get update -qq \
     && apt-get install -y -q --no-install-recommends \
+           libopenblas-dev \
            apt-utils \
            bzip2 \
            ca-certificates \
