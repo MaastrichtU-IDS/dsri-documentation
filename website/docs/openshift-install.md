@@ -25,6 +25,14 @@ sudo mv oc kubectl /usr/local/bin/
 
 ### On Mac
 
+Use [`brew`](https://brew.sh):
+
+```bash
+brew install openshift-cli
+```
+
+Or manually download the program and add it to your path:
+
 1. Download https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/macosx/oc.tar.gz
 
 2. Unzip the archive
