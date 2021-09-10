@@ -136,6 +136,9 @@ objects:
           - command:
               - jupyter
               - lab
+              - "--allow-root"
+              - "--ip=0.0.0.0"
+              - "--no-browser"
             image: ${APPLICATION_NAME}:latest
             imagePullPolicy: IfNotPresent
             ## In case the ImageStream does not update properly:
