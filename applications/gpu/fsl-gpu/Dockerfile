@@ -41,7 +41,7 @@ RUN export ND_ENTRYPOINT="/neurodocker/startup.sh" \
     fi \
     && chmod -R 777 /neurodocker && chmod a+s /neurodocker
 
-## TODO: Trying to install GPU driver
+## TODO: Try to install GPU driver?
 # RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \
 #     apt-key add - \ &&
 #     distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \ &&
@@ -112,7 +112,7 @@ RUN echo '{ \
     \n}' > /neurodocker/neurodocker_specs.json
 
 # Add conda to path
-ENV PATH="/opt/fsl-6.0.3/fslpython/condabin:${PATH}" 
+ENV PATH="/opt/fsl-6.0.3/fslpython/condabin:/opt/fsl-6.0.3/fslpython/bin:${PATH}" 
 
 ## Install Conda
 # ENV CONDA_DIR=/opt/conda \
