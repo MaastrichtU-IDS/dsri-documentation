@@ -33,3 +33,17 @@ Login to NGC:
 docker login nvcr.io
 ```
 
+## With Helm
+
+```bash
+helm install jupyterlab-fsl dsri/jupyterlab \
+  --set serviceAccount.name=anyuid \
+  --set openshiftRoute.enabled=true \
+  --set image.repository=nvcr.io/nvidia/tensorflow \
+  --set image.tag=21.05-tf2-py3 \
+  --set image.command="jupyter lab --allow-root --ip=0.0.0.0 --no-browser" \
+  --set resources.requests."nvidia\.com/gpu"=1 \
+  --set resources.limits."nvidia\.com/gpu"=1 \
+  --set password=changeme
+```
+

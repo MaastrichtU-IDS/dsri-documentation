@@ -26,3 +26,24 @@ Push it:
 docker push ghcr.io/maastrichtu-ids/jupyterlab:fsl-gpu
 ```
 
+## With Helm
+
+```bash
+helm install jupyterlab-fsl dsri/jupyterlab \
+  --set serviceAccount.name=anyuid \
+  --set openshiftRoute.enabled=true \
+  --set image.repository=ghcr.io/maastrichtu-ids/jupyterlab \
+  --set image.tag=fsl-gpu \
+  --set resources.requests."nvidia\.com/gpu"=1 \
+  --set resources.limits."nvidia\.com/gpu"=1 \
+  --set password=changeme
+```
+
+Or use the values file:
+
+```bash
+helm install jupyterlab-fsl dsri/jupyterlab \
+  -f fsl-deployment-values.yaml \
+  --set password=changeme
+```
+
