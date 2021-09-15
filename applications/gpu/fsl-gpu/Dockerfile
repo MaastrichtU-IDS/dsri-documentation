@@ -7,7 +7,7 @@ ARG CUDA_VERSION=9.1-devel-ubuntu16.04
 # Default build is Ubuntu: ARG CUDA_VERSION=10.2-devel
 
 FROM nvcr.io/nvidia/cuda:${CUDA_VERSION}
-# FROM nvcr.io/nvidia/tensorflow:21.05-tf2-py3
+# FROM nvcr.io/nvidia/tensorflow:21.08-tf2-py3
 
 USER root
 WORKDIR /root

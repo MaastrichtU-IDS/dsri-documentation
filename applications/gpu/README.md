@@ -35,15 +35,62 @@ docker login nvcr.io
 
 ## With Helm
 
+Tensorflow:
+
 ```bash
-helm install jupyterlab-fsl dsri/jupyterlab \
+helm install jupyterlab-gpu dsri/jupyterlab \
   --set serviceAccount.name=anyuid \
   --set openshiftRoute.enabled=true \
   --set image.repository=nvcr.io/nvidia/tensorflow \
-  --set image.tag=21.05-tf2-py3 \
-  --set image.command="jupyter lab --allow-root --ip=0.0.0.0 --no-browser" \
+  --set image.tag=21.08-tf2-py3 \
+  --set image.command="{jupyter,lab,--allow-root,--ip=0.0.0.0,--no-browser}" \
+  --set storage.mountPath=/root \
   --set resources.requests."nvidia\.com/gpu"=1 \
   --set resources.limits."nvidia\.com/gpu"=1 \
   --set password=changeme
+```
+
+PyTorch:
+
+```bash
+helm install jupyterlab-gpu dsri/jupyterlab \
+  --set serviceAccount.name=anyuid \
+  --set openshiftRoute.enabled=true \
+  --set image.repository=nvcr.io/nvidia/pytorch \
+  --set image.tag=21.08-py3 \
+  --set image.command="jupyter lab --allow-root --ip=0.0.0.0 --no-browser" \
+  --set storage.mountPath=/root \
+  --set resources.requests."nvidia\.com/gpu"=1 \
+  --set resources.limits."nvidia\.com/gpu"=1 \
+  --set password=changeme
+```
+
+FSL with CUDA 9.1 (cf. `Dockerfile` in the `fsl-gpu` folder):
+
+```bash
+helm install jupyterlab-gpu dsri/jupyterlab \
+  --set serviceAccount.name=anyuid \
+  --set openshiftRoute.enabled=true \
+  --set image.repository=ghcr.io/maastrichtu-ids/jupyterlab \
+  --set image.tag=fsl-gpu \
+  --set storage.mountPath=/root \
+  --set resources.requests."nvidia\.com/gpu"=1 \
+  --set resources.limits."nvidia\.com/gpu"=1 \
+  --set password=changeme
+```
+
+Debug tensorflow:
+
+```bash
+helm install --dry-run --debug ./charts/jupyterlab \
+  --set serviceAccount.name=anyuid \
+  --set openshiftRoute.enabled=true \
+  --set image.repository=nvcr.io/nvidia/tensorflow \
+  --set image.tag=21.08-tf2-py3 \
+  --set image.command="{jupyter,lab,--allow-root,--ip=0.0.0.0,--no-browser}" \
+  --set storage.mountPath=/root \
+  --set resources.requests."nvidia\.com/gpu"=1 \
+  --set resources.limits."nvidia\.com/gpu"=1 \
+  --set password=changeme --generate-name
 ```
 
