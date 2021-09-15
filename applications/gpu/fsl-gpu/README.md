@@ -34,7 +34,7 @@ docker push ghcr.io/maastrichtu-ids/jupyterlab:fsl-gpu
 
 ## Deploy with Helm
 
-See https://github.com/MaastrichtU-IDS/dsri-helm-charts to install the Helm repository, then deploy in your current project on the DSRI (`oc project your-project`):
+See https://github.com/MaastrichtU-IDS/dsri-helm-charts to install the Helm charts, then deploy in your current project on the DSRI (`oc project your-project`):
 
 ```bash
 helm install jupyterlab-fsl dsri/jupyterlab \
