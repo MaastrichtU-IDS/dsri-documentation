@@ -10,5 +10,7 @@
 #
 
 singleuser:
+  serviceAccountName: anyuid
   storage:
     capacity: 2Gi
+  
