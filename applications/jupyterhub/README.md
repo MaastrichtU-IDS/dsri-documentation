@@ -4,12 +4,24 @@ Video (2017): https://www.youtube.com/watch?v=buOl6WGa8x4
 
 Latest Helm chart for JupyterHub: https://zero-to-jupyterhub.readthedocs.io/en/latest/jupyterhub/installation.html
 
+## Fix permissions
+
+Fix permissions issues in the project where JupyterHub will be deployed. Make the `default`, `hub` and `user-scheduler` service accounts in this project to accept `anyuid`:
+
+```bash
+oc adm policy add-scc-to-user anyuid -z default -n workspace-vemonet
+oc adm policy add-scc-to-user anyuid -z hub -n workspace-vemonet
+oc adm policy add-scc-to-user anyuid -z user-scheduler -n workspace-vemonet
+```
+
 ## Install the Helm chart
 
 ```bash
 helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 helm repo update
 ```
+
+## Deploy JupyterHub Helm chart
 
 Start JupyterHub in the `workspace-vemonet` project:
 
@@ -20,12 +32,6 @@ helm upgrade --cleanup-on-fail \
   --namespace=workspace-vemonet \
   --values config.yaml
 ```
-
-> It seems like the templates of the Helm chart published are not valid:
->
-> ```bash
-> Error: parse error at (jupyterhub/templates/hub/_helpers-passwords.tpl:35): function "dig" not defined
-> ```
 
 Delete it:
 
@@ -40,13 +46,6 @@ cf. https://github.com/jupyterhub/helm-chart/issues/26
 Grant the `default` service account in the project `edit` access:
 
 ```bash
-oc policy add-role-to-user edit -z default -n github
+oc policy add-role-to-user edit -z default -n workspace-vemonet
 ```
 
-Make the `default` service account in this project (e.g. `github` for the jupyterhub with github login) to accept `anyuid`:
-
-```bash
-oc adm policy add-scc-to-user anyuid -z default -n github
-```
-
- 

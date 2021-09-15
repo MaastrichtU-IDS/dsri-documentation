@@ -1,3 +1,4 @@
+# https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/main/jupyterhub/values.yaml
 # This file can update the JupyterHub Helm chart's default configuration values.
 #
 # For reference see the configuration reference and default values, but make
@@ -13,4 +14,8 @@ singleuser:
   serviceAccountName: anyuid
   storage:
     capacity: 2Gi
-  
+prePuller:
+  hook:
+    enabled: false
+  continuous:
+    enabled: false
