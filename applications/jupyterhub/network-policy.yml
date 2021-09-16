@@ -1,0 +1,13 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+# https://discourse.jupyter.org/t/kubernetes-api-request-to-the-proxy-failed-with-status-code-599-retrying/8018/9
+# https://docs.openshift.com/container-platform/4.6/networking/network_policy/about-network-policy.html
+metadata:
+  name: allow-same-namespace
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
+  # policyTypes:
+  # - Ingress

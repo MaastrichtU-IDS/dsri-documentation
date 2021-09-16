@@ -14,6 +14,14 @@ oc adm policy add-scc-to-user anyuid -z hub -n workspace-vemonet
 oc adm policy add-scc-to-user anyuid -z user-scheduler -n workspace-vemonet
 ```
 
+## Fix Network Policy
+
+The network policy can be defined directly in the values.yaml of the helm chart. But of course, it won't work because people writing Kubernetes app are still trying to figure out how basic templating works. So here's a fix:
+
+```bash
+oc apply -f network-policy.yml
+```
+
 ## Install the Helm chart
 
 ```bash
@@ -31,6 +39,12 @@ helm upgrade --cleanup-on-fail \
   --version=1.1.3 \
   --namespace=workspace-vemonet \
   --values config.yaml
+```
+
+Forward the service on your http://localhost:8081
+
+```bash
+oc port-forward svc/proxy-public 8081:80
 ```
 
 Delete it:

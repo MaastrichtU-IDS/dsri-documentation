@@ -540,7 +540,7 @@ ingress:
   enabled: false
   annotations: {}
   hosts: []
-  pathSuffix:
+  pathSuffix: "hub"
   pathType: Prefix
   tls: []
 

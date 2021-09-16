@@ -8,7 +8,8 @@
 # Chart config reference:   https://zero-to-jupyterhub.readthedocs.io/en/stable/resources/reference.html
 # Chart default values:     https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/HEAD/jupyterhub/values.yaml
 # Available chart versions: https://jupyterhub.github.io/helm-chart/
-#
+
+# https://github.com/opendatahub-io/jupyterhub-odh/blob/master/.jupyter/jupyterhub_config.py
 
 singleuser:
   serviceAccountName: anyuid
@@ -19,3 +20,106 @@ prePuller:
     enabled: false
   continuous:
     enabled: false
+
+imagePullSecret:
+  create: true
+  automaticReferenceInjection: true
+  registry: docker.io
+  username: vemonet
+  password: superlescrampes34
+  email: vincent.emonet@gmail.com
+
+hub:
+  config:
+    # GitHubOAuthenticator:
+    #   client_id: your-client-id
+    #   client_secret: your-client-secret
+    #   oauth_callback_url: https://hub-workspace-vemonet.apps.dsri2.unimaas.nl/hub/oauth_callback
+    OpenShiftOAuthenticator:
+      # https://oauthenticator.readthedocs.io/en/latest/api/gen/oauthenticator.openshift.html
+      oauth_callback_url: https://hub-workspace-vemonet.apps.dsri2.unimaas.nl/hub/oauth_callback
+      # auto_login: true
+    JupyterHub:
+      authenticator_class: openshift
+      # authenticator_class: github
+      # allowed_organizations:
+      #   - MaastrichtU-IDS
+      # scope:
+      #   - read:user
+      # admin_access: true
+      # authenticator_class: dummy
+
+  service:
+    type: ClusterIP
+    ports:
+      nodePort:
+    extraPorts: []
+    loadBalancerIP:
+  baseUrl: /
+  fsGid: 1000
+  concurrentSpawnLimit: 64
+  consecutiveFailureLimit: 5
+  activeServerLimit:
+  deploymentStrategy:
+    type: Recreate
+  db:
+    type: sqlite-pvc
+    pvc:
+      accessModes:
+        - ReadWriteOnce
+      storage: 1Gi
+      subPath:
+      storageClassName:
+    url:
+    password:
+  command: []
+  image:
+    name: jupyterhub/k8s-hub
+    tag: "1.1.3"
+    # tag: "set-by-chartpress"
+    pullPolicy:
+
+    # pullSecrets: []
+    pullSecrets:
+    - name: dockerhub-login
+
+  resources: {}
+  containerSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    allowPrivilegeEscalation: false
+  lifecycle: {}
+  services: {}
+  pdb:
+    enabled: false
+    maxUnavailable:
+    minAvailable: 1
+  networkPolicy:
+    enabled: true
+    # podSelector: {}
+    ingress:
+      - from:
+        - podSelector: {}
+    ## egress for JupyterHub already includes Kubernetes internal DNS and
+    ## access to the proxy, but can be restricted further, but ensure to allow
+    ## access to the Kubernetes API server that couldn't be pinned ahead of
+    ## time.
+    ##
+    ## ref: https://stackoverflow.com/a/59016417/2220152
+    egress:
+      - to:
+          - ipBlock:
+              cidr: 0.0.0.0/0
+    interNamespaceAccessLabels: ignore
+    allowedIngressPorts: []
+  allowNamedServers: false
+
+
+ingress:
+  enabled: true
+  hosts:
+    - hub-workspace-vemonet.apps.dsri2.unimaas.nl
+      # paths: ["/"]
+  tls: []
+  # pathSuffix:
+  # pathType: Prefix
