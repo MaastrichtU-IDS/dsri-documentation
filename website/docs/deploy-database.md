@@ -147,7 +147,7 @@ Use the service name as hostname to connect from another pod in the same project
 
 ### Ontotext GraphDB triplestore
 
-Use the official DockerHub image if you have an enterprise license. Or [build](/dsri-documentation/guide-dockerfile-to-openshift) GraphDB free edition image from [graphdb-docker on GitHub](https://github.com/Ontotext-AD/graphdb-docker).
+Use the official DockerHub image if you have an enterprise license. Or [build](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-dockerfile-to-openshift) GraphDB free edition image from [graphdb-docker on GitHub](https://github.com/Ontotext-AD/graphdb-docker).
 
 After copying the `.zip` file in the `graphdb-docker/free-edition` folder, go the `graphdb-docker` folder in your terminal:
 
