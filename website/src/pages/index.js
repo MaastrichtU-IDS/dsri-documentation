@@ -22,7 +22,7 @@ const features = [
     imageUrl: 'img/undraw_deliveries.svg',
     description: (
       <>
-        Most programs can be installed and run in containers easily. 
+        Most programs can be installed and run in containers easily.
         Customize an existing Docker image or create a new one to deploy exactly what you need
       </>
     ),
@@ -33,14 +33,14 @@ const features = [
     // imageUrl: 'img/undraw_collaborators.svg',
     description: (
       <>
-        Share common development environments with other researchers at Maastricht University. 
+        Share common development environments with other researchers at Maastricht University.
         And help improve those environments for you, and the rest of UM community!
       </>
     ),
   },
 ];
 
-function Feature({imageUrl, title, description}) {
+function Feature({ imageUrl, title, description }) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
     <div className={clsx('col col--4', styles.feature)}>
@@ -57,7 +57,7 @@ function Feature({imageUrl, title, description}) {
 
 function Home() {
   const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
+  const { siteConfig = {} } = context;
   return (
     <Layout
       title={`${siteConfig.title}`}
@@ -74,7 +74,17 @@ function Home() {
                 styles.getStarted,
               )}
               to={useBaseUrl('docs/')}>
-              Get Started
+              Get Informed
+            </Link>&nbsp;&nbsp;&nbsp;&nbsp;
+            <Link
+              className={clsx(
+                'button button--outline button--secondary button--lg',
+                styles.getStarted,
+              )}
+              // to={useBaseUrl('docs/')}>
+              href="https://forms.gle/QiXzWCnTMWDiS55u7"
+              >
+              Get Access
             </Link>
           </div>
         </div>
@@ -92,17 +102,17 @@ function Home() {
           </section>
         )}
         {/* Video img/video_dsri_introduction.webm */}
-        <div className="container" style={{textAlign: 'center'}}>
+        <div className="container" style={{ textAlign: 'center' }}>
           <h1>
             How do you deploy an application on the DSRI?
           </h1>
           {/* <video width="100%" height="100%" controls> */}
-            {/* <source src="img/video_dsri_introduction.mkv" type="video/webm"/> */}
-            {/* <source src="img/video_dsri_introduction.webm" type="video/webm"/> */}
-            <iframe width="560" height="315" 
-            src="https://www.youtube.com/embed/Y0BjotH1LiE" 
+          {/* <source src="img/video_dsri_introduction.mkv" type="video/webm"/> */}
+          {/* <source src="img/video_dsri_introduction.webm" type="video/webm"/> */}
+          <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/Y0BjotH1LiE"
             title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-            </iframe>
+          </iframe>
           {/* </video> */}
         </div>
       </main>

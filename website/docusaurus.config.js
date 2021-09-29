@@ -119,6 +119,11 @@ module.exports={
           "position": "left"
         },
         {
+          "href": "/acknowledgement",
+          "label": "Acknowledgement",
+          "position": "left"
+        },
+        {
           "href": "https://github.com/MaastrichtU-IDS/dsri-documentation",
           // "label": "GitHub",
           "position": "right",
