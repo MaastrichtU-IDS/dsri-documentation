@@ -30,6 +30,16 @@ Once Matlab start you can access it through 2 routes (URL), which can be accesse
 
 See the [official Matlab image documentation](https://hub.docker.com/r/mathworks/matlab) for more details about this image.
 
+## Use Matlab in Jupyter
+
+You can also use [mathworks/jupyter-matlab-proxy](https://github.com/mathworks/jupyter-matlab-proxy). You can easily install it in a JupyterLab image with `pip`:
+
+```bash
+pip install jupyter-matlab-proxy
+```
+
+Follow the instructions on the [mathworks/jupyter-matlab-proxy repository](https://github.com/mathworks/jupyter-matlab-proxy) to access it.
+
 ## Deploy Matlab on GPU
 
 We use the Matlab template in the DSRI catalog to deploy a pre-built **Nvidia Matlab Deep Learning Container** on CPU or GPU nodes. See the [official documentation from MathWorks](https://nl.mathworks.com/help/cloudcenter/ug/matlab-deep-learning-container-on-dgx.html) for more details about this image.
