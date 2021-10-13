@@ -118,3 +118,7 @@ spec:
 Always stop all Matlab pods when you are not using them, the UM license server have a limited number of licenses available.
 
 :::
+
+## Get Matlab support
+
+You can request official support from Matlab at this address after login and connecting your account to the UM license: After logging in on this site https://nl.mathworks.com/academia/tah-portal/maastricht-university-31574866.html#get
