@@ -1,14 +1,41 @@
 version: "3"
 
 services:
-  docusaurus:
+
+  server:
     restart: unless-stopped
-    build: .
-    # ports:
-    #   - 3000:3000
+    build: server
+    ports:
+      - 4000:4000
     environment:
       - VIRTUAL_HOST=dsri.semanticscience.org
       - LETSENCRYPT_HOST=dsri.semanticscience.org
-      - VIRTUAL_PORT=3000
+      - VIRTUAL_PORT=4000
     # volumes:
     #   - ./v4-website:/app/website
+
+  # mongodb:
+  #   image: mongo
+  #   restart: always
+  #   volumes:
+  #     - mongodb-data:/data/db
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: oursecretkey
+  #     MONGO_INITDB_DATABASE: dsri_users
+
+  # docusaurus:
+  #   restart: unless-stopped
+  #   build: .
+  #   # ports:
+  #   #   - 3000:3000
+  #   environment:
+  #     - VIRTUAL_HOST=dsri.semanticscience.org
+  #     - LETSENCRYPT_HOST=dsri.semanticscience.org
+  #     - VIRTUAL_PORT=3000
+  #   # volumes:
+  #   #   - ./v4-website:/app/website
+
+
+# volumes:
+#   mongodb-data:
