@@ -1,3 +1,6 @@
+
+Deprecated: use Open Data Hub operator to deploy JupyterHub
+
 Steps for deployment on OpenShift in 2017: https://github.com/jupyterhub/helm-chart/issues/26
 
 Video (2017): https://www.youtube.com/watch?v=buOl6WGa8x4
