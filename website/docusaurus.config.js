@@ -114,13 +114,13 @@ module.exports={
           "position": "left"
         },
         {
-          "href": "/contributing",
-          "label": "Contribute",
+          "to": "/acknowledgement",
+          "label": "Acknowledgement",
           "position": "left"
         },
         {
-          "href": "/acknowledgement",
-          "label": "Acknowledgement",
+          "href": "/contributing",
+          "label": "Contribute",
           "position": "left"
         },
         {

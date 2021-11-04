@@ -19,7 +19,7 @@ You will need to provide the following informations:
 
 ## Users fill a form
 
-Send this quick form to the future users of the DSRI: https://docs.google.com/forms/d/e/1FAIpQLSdndn0naNmj2ACpLE5j1S3Ngb1PCXK_Gl7oB-hI_mN4Z_NBQw/viewform
+Send this quick  [form 📬](https://forms.gle/RorkVaNvZsBKerD58) to the future users of the DSRI.
 
 After they fill the form, and once we activated the DSRI account, each user will receive an email with more details .
 
