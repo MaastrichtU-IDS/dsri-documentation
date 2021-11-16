@@ -9,6 +9,10 @@ Always stop all Matlab pods when you are not using them, the UM license server h
 
 :::
 
+Note that we are not expert in Matlab (we don't use proprietary software to do open science), so feel free to contact Mathworks support directly if you are having any issues with their official Docker image.
+
+You can request official support from Matlab at this address after login and connecting your account to the UM license: After logging in on this site https://nl.mathworks.com/academia/tah-portal/maastricht-university-31574866.html#get
+
 ## Use the official Matlab image
 
 Start Matlab with a desktop UI accessible directly using your web browser at a URL automatically generated. 
@@ -118,7 +122,3 @@ spec:
 Always stop all Matlab pods when you are not using them, the UM license server have a limited number of licenses available.
 
 :::
-
-## Get Matlab support
-
-You can request official support from Matlab at this address after login and connecting your account to the UM license: After logging in on this site https://nl.mathworks.com/academia/tah-portal/maastricht-university-31574866.html#get
