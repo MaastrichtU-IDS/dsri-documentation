@@ -53,6 +53,25 @@ All you need is to follow the usual process to run tensorboard: https://www.tens
 2. Then start Tensorboard in the terminal with `tensorboard --logdir logs` (change the directory depending on where the logs of your runs are stored), it should tell you that tensorboard as been started on port 6006
 3. Open the Tensorboard view from the JupyterLab welcome page
 
+### Increase the number of GPUs in your workspace
+
+If you already have a application running using 1 GPU, and you have been granted a 2nd GPU to speed up your experiment you can easily upgrade the number of GPU used by your application:
+
+From the **Topology** view click on your application:
+
+1. Stop the application, by decreasing the number of pod to 0 (in the **Details** tab)
+2. Click on **Options** > **Edit Deployment** > in the YAML of the deployment search for `limits` and change the number of GPU assigned to your deployment to 2:
+
+```yaml
+          resources:
+            limits:
+              nvidia.com/gpu: '2'
+            requests:
+              nvidia.com/gpu: '2'
+```
+
+3. Restart the pod for your application (the same way you stopped it)
+
 ## VSCode on GPU
 
 2 templates are available to deploy VisualStudio Code on GPU:
