@@ -5,6 +5,7 @@ labels:
   template: gpu-vscode
 metadata:
   name: gpu-vscode
+  # DEPRECATED, VSCode now included in JupyterLab
   annotations:
     openshift.io/display-name: VisualStudio Code on GPU
     description: |-

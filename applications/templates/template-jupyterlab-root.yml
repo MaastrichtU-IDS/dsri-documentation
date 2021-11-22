@@ -16,6 +16,7 @@ metadata:
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
       
       🐳 You can use any image based on the official Jupyter docker stack (use /home/jovyan/work as working directory):
+      - ghcr.io/maastrichtu-ids/jupyterlab (with VSCode, Java and SPARQL kernels)
       - jupyter/minimal-notebook
       - jupyter/scipy-notebook
       - jupyter/datascience-notebook (with Julia kernel)
@@ -23,13 +24,12 @@ metadata:
       - jupyter/r-notebook
       - jupyter/pyspark-notebook
       - jupyter/all-spark-notebook
-      - ghcr.io/maastrichtu-ids/jupyterlab (with Java and SPARQL kernels)
       - elyra/elyra (extension for Kuberflow pipelines)
-      For more details, go to https://github.com/jupyter/docker-stacks
       
-      You can also build your own! Checkout https://github.com/MaastrichtU-IDS/jupyterlab for an example of custom image
+      Checkout https://github.com/MaastrichtU-IDS/jupyterlab to see how our custom image is built, and how to extend it
+      For more details on the jupyter docker stack, go to https://github.com/jupyter/docker-stacks
 
-      📥 You can provide the URL to a git repository which will be cloned in your workspace at the start of JupyterLab. 
+      📥 With our ghcr.io/maastrichtu-ids/jupyterlab image you can provide the URL to a git repository which will be cloned in your workspace at the start of JupyterLab. 
       If this repo contains files with list of packages in the root folder, they will be installed at start:
       - requirements.txt for pip packages
       - packages.txt for apt packages
@@ -163,11 +163,11 @@ objects:
           image: "${APPLICATION_NAME}:latest"
           imagePullPolicy: IfNotPresent
           workingDir: /home/jovyan/work
-          command:
-          - "start-notebook.sh"
-          - "--no-browser"
-          - "--ip=0.0.0.0"
-          - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"
+          # command:
+          # - "start-notebook.sh"
+          # - "--no-browser"
+          # - "--ip=0.0.0.0"
+          # - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"
           ports:
           # - containerPort: ${{PORT}}
           - containerPort: 8888
@@ -193,10 +193,10 @@ objects:
           - name: data
             mountPath: /home/jovyan/work
             # mountPath: "${WORKDIR}"
-          - name: configs
-            mountPath: "/etc/jupyter/openshift"
           - name: dshm
             mountPath: /dev/shm
+          # - name: configs
+          #   mountPath: "/etc/jupyter/openshift"
           readinessProbe: 
             tcpSocket:
               port: 8888
@@ -223,12 +223,12 @@ objects:
         - name: data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
-        - name: configs
-          configMap:
-            name: "${APPLICATION_NAME}-cfg"
         - name: dshm
           emptyDir:
             medium: Memory
+        # - name: configs
+        #   configMap:
+        #     name: "${APPLICATION_NAME}-cfg"
 
 - kind: Service
   apiVersion: v1
@@ -266,50 +266,47 @@ objects:
       insecureEdgeTerminationPolicy: Redirect
 
 # Service for Spark UI if needed
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}-spark-ui"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: jupyterlab-root
-  spec:
-    ports:
-    - name: 4040-tcp
-      protocol: TCP
-      port: 4040
-      targetPort: 4040
-    selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
-    type: ClusterIP
+# - kind: Service
+#   apiVersion: v1
+#   metadata:
+#     name: "${APPLICATION_NAME}-spark-ui"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#       template: jupyterlab-root
+#   spec:
+#     ports:
+#     - name: 4040-tcp
+#       protocol: TCP
+#       port: 4040
+#       targetPort: 4040
+#     selector:
+#       app: "${APPLICATION_NAME}"
+#       deploymentconfig: "${APPLICATION_NAME}"
+#     type: ClusterIP
 
 
-- kind: ConfigMap
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}-cfg"
-    labels:
-      app: "${APPLICATION_NAME}"
-  data:
-    # Clone git repo, then install requirements.txt and packages.txt
-    jupyter_notebook_config.py: |
-      import os
-      git_url = os.environ.get('GIT_URL')
-      home_dir = os.environ.get('HOME')
-      os.chdir(home_dir)
-      if git_url:
-        repo_id = git_url.rsplit('/', 1)[-1].replace('.git', '')
-        os.system('git clone --quiet --recursive ' + git_url)
-        os.chdir(repo_id)
-        if os.path.exists('packages.txt'):
-          os.system('sudo apt-get update')
-          os.system('cat packages.txt | xargs sudo apt-get install -y')
-        if os.path.exists('requirements.txt'):
-          os.system('pip install -r requirements.txt')
-        if os.path.exists('extensions.txt'):
-          os.system('cat extensions.txt | xargs -I {} jupyter {} install --user')
-        os.chdir(home_dir)
+# - kind: ConfigMap
+#   apiVersion: v1
+#   metadata:
+#     name: "${APPLICATION_NAME}-cfg"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   data:
+#     # Clone git repo, then install requirements.txt and packages.txt
+#     jupyter_notebook_config.py: |
+#       import os
+#       git_url = os.environ.get('GIT_URL')
+#       if git_url:
+#         repo_id = git_url.rsplit('/', 1)[-1].replace('.git', '')
+#         os.system('git clone --quiet --recursive ' + git_url)
+#         os.chdir(repo_id)
+#         if os.path.exists('packages.txt'):
+#           os.system('sudo apt-get update')
+#           os.system('cat packages.txt | xargs sudo apt-get install -y')
+#         if os.path.exists('requirements.txt'):
+#           os.system('pip install -r requirements.txt')
+#         if os.path.exists('extensions.txt'):
+#           os.system('cat extensions.txt | xargs -I {} jupyter {} install --user')
 
 
 # - kind: ConfigMap

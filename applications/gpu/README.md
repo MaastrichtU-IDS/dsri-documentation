@@ -6,7 +6,6 @@
 
 ```bash
 oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/gpu/template-gpu-jupyterlab.yml
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/gpu/template-gpu-vscode.yml
 ```
 
 To update for dev, from `dsri-documentation` in `applications` folder:
@@ -44,7 +43,7 @@ helm install jupyterlab-gpu dsri/jupyterlab \
   --set image.repository=nvcr.io/nvidia/tensorflow \
   --set image.tag=21.08-tf2-py3 \
   --set image.command="{jupyter,lab,--allow-root,--ip=0.0.0.0,--no-browser}" \
-  --set storage.mountPath=/root \
+  --set storage.mountPath=/workspace \
   --set resources.requests."nvidia\.com/gpu"=1 \
   --set resources.limits."nvidia\.com/gpu"=1 \
   --set password=changeme
@@ -59,7 +58,7 @@ helm install jupyterlab-gpu dsri/jupyterlab \
   --set image.repository=nvcr.io/nvidia/pytorch \
   --set image.tag=21.08-py3 \
   --set image.command="jupyter lab --allow-root --ip=0.0.0.0 --no-browser" \
-  --set storage.mountPath=/root \
+  --set storage.mountPath=/workspace \
   --set resources.requests."nvidia\.com/gpu"=1 \
   --set resources.limits."nvidia\.com/gpu"=1 \
   --set password=changeme
@@ -73,7 +72,7 @@ helm install jupyterlab-gpu dsri/jupyterlab \
   --set openshiftRoute.enabled=true \
   --set image.repository=ghcr.io/maastrichtu-ids/jupyterlab \
   --set image.tag=fsl-gpu \
-  --set storage.mountPath=/root \
+  --set storage.mountPath=/workspace \
   --set resources.requests."nvidia\.com/gpu"=1 \
   --set resources.limits."nvidia\.com/gpu"=1 \
   --set password=changeme
@@ -88,7 +87,7 @@ helm install --dry-run --debug ./charts/jupyterlab \
   --set image.repository=nvcr.io/nvidia/tensorflow \
   --set image.tag=21.08-tf2-py3 \
   --set image.command="{jupyter,lab,--allow-root,--ip=0.0.0.0,--no-browser}" \
-  --set storage.mountPath=/root \
+  --set storage.mountPath=/workspace \
   --set resources.requests."nvidia\.com/gpu"=1 \
   --set resources.limits."nvidia\.com/gpu"=1 \
   --set password=changeme --generate-name
