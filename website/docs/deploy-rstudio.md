@@ -72,7 +72,9 @@ We recommend to use SSH instead of HTTPS connection when possible, checkout [her
 
 :::
 
-## Run jobs in RStudio 
+## Run R jobs
 
-Checkout this package to run chunks of R code as jobs directly through RStudio: https://github.com/lindeloev/job
+You can visit this folder that gives all resources and instructions to explain how to run a standalone R job on the DSRI: https://github.com/MaastrichtU-IDS/dsri-demo/tree/main/r-job
+
+If you want to run jobs directly from RStudio, checkout this package to run chunks of R code as jobs directly through RStudio: https://github.com/lindeloev/job
 

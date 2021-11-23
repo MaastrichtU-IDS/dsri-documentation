@@ -55,6 +55,26 @@ All you need is to follow the usual process to run tensorboard: https://www.tens
 2. Then start Tensorboard in the terminal with `tensorboard --logdir logs` (change the directory depending on where the logs of your runs are stored), it should tell you that tensorboard as been started on port 6006
 3. Open the Tensorboard view from the JupyterLab welcome page
 
+## Prepare your GPU workspace
+
+Experimental
+
+Start a GPU application from the template with `0` GPU set.
+
+Access the workspace like you would normally, add your code and data.
+
+Once the GPU quotas has been granted to your project, you can update your deployment to use the GPUs using this command (our deployment name is `jupyterlab-gpu` in this example, change it to yours)
+
+```bash
+oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
+```
+
+Later you can remove the GPU from your app without stopping it:
+
+```bash
+oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 0}, "limits": {"nvidia.com/gpu": 0}}}]'
+```
+
 ### Increase the number of GPUs in your workspace
 
 If you already have a application running using 1 GPU, and you have been granted a 2nd GPU to speed up your experiment you can easily upgrade the number of GPU used by your application:
