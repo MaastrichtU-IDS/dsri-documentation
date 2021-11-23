@@ -35,6 +35,9 @@ metadata:
       - packages.txt for apt packages
       You can use this URL to clone a repository with some examples to use the DSRI: 
       https://github.com/MaastrichtU-IDS/dsri-demo
+
+      🗑️ Use this command with your application name to delete completely your application and its persistent volumes:
+      oc delete all,pvc,secret,configmaps,serviceaccount,rolebinding --selector app=$APPLICATION_NAME
     iconClass: icon-python
     tags: python,jupyter,notebook
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -54,6 +57,17 @@ parameters:
   displayName: URL of a git repository to clone in the workspace (optional)
   required: false
   description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents. Only works for images based on the official images
+- name: GIT_NAME
+  displayName: Git name
+  required: true
+  value: default
+  description: Email used to automatically define git config --global user.name
+- name: GIT_EMAIL
+  displayName: Git email
+  required: true
+  value: default@maastrichtuniversity.nl
+  description: Email used to automatically define git config --global user.email
+  
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
@@ -64,6 +78,7 @@ parameters:
   description: Size of the storage allocated to the notebook persistent storage.
   value: 5Gi
   required: true
+
 # - name: WORKDIR
 #   displayName: Working directory
 #   description: The working directory in your container (will be stored persistently). This depends on the image, refer to the description on the right, or the image docs.
@@ -189,6 +204,10 @@ objects:
             value: "yes"
           - name: GIT_URL
             value: "${GIT_URL}"
+          - name: GIT_NAME
+            value: "${GIT_NAME}"
+          - name: GIT_EMAIL
+            value: "${GIT_EMAIL}"
           volumeMounts:
           - name: data
             mountPath: /home/jovyan/work
