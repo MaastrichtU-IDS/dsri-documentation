@@ -162,7 +162,39 @@ oc new-app my-docker-image --name app-name-on-openshift
 
 ---
 
+## Deploy from a Git repository
+
+Go to **+Add** > **From Git**: https://console-openshift-console.apps.dsri2.unimaas.nl/import
+
+Follow the instructions given by the web UI: provide the URL to your git repository, the port on which the web interface will be deployed, you can also create a secret for git login if the repository is private.
+
+Once the container has started you will need to make a small change to enable it running with any user ID (due to OpenShift security policies).
+
+You can do it with the command line (just change `your-app-name` by your application name)
+
+```bash
+oc patch deployment/your-app-name --patch '{"spec":{"template": {"spec":{"serviceAccountName": "anyuid"}}}}'
+```
+
+Or through the web UI: click on your deployment, then **Actions** > **Edit Deployment**. And edit the YAML of your deployment to add `serviceAccountName: anyuid` under `template.spec`:
+
+```yaml
+    template:
+      spec:
+        serviceAccountName: anyuid
+        containers:
+        - [...]
+```
+
+---
+
 ## Deploy using GitHub Actions workflows
+
+:::warning Experimental
+
+Experimental: this deployment workflow is still experimental, let us know on Slack if you are interested in using it.
+
+:::
 
 You can also build and deploy your application using a GitHub Actions workflow.
 

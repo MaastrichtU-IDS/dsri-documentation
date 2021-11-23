@@ -14,6 +14,8 @@ If you want to run on GPU, **contact the [DSRI support team](mailto:dsri-support
 
 We are using images provided by Nvidia, and optimized for GPU. We currently deployed Tensorflow and PyTorch with JupyterLab and VSCode, but any image available in the Nvidia catalog should be easy to deploy: https://ngc.nvidia.com/catalog/containers
 
+Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu) for more details on how we build the optimized docker images for the DSRI GPUs. Feel free to extend the `gpu.dockerfile` to your needs.
+
 ## JupyterLab on GPU
 
 Once your project has been granted access to GPUs, you can deploy applications on GPU from the catalog:
@@ -34,7 +36,7 @@ Now that your template is created and its accessible from the **Topology** page 
 
 You can now access the JupyterLab UI, install your dependencies and run your experiments.
 
-Use the **`persistent` folder** in the JupyterLab workspace to store your code and data persistently, you can also take a look into the examples provided by Nvidia.
+Use the **`/workspace` folder**, which is the JupyterLab workspace, to store your code and data persistently, you can also take a look into the examples provided by Nvidia.
 
 Use the following command to see your current GPU usage:
 
@@ -72,45 +74,6 @@ From the **Topology** view click on your application:
 
 3. Restart the pod for your application (the same way you stopped it)
 
-## VSCode on GPU
-
-2 templates are available to deploy VisualStudio Code on GPU:
-
-* Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
-* **Filter** the catalog for "**GPU**"
-* Choose one of the available templates: **VisualStudio Code on GPU**
-
-For those pods VSCode cannot be accessed directly on a DSRI URL, you will need to forward the port to your localhost:
-
-1. [Login to the DSRI](/docs/openshift-install) using `oc login`
-2. Get the pod ID
-
-```bash
-oc get pods
-```
-
-3. Forward VSCode to http://localhost:8080
-
-```bash
-oc port-forward <pod_id> 8080:8080
-```
-
-4. Access VisualStudio Code on http://localhost:8080
-
-Use the **`/root` folder** to store your code and data persistently.
-
-Use the following command to see your current GPU usage:
-
-```bash
-nvidia-smi
-```
-
-:::caution Use Chrome
-
-We recommend to **use Google Chrome** web browser as pasting in the terminal (`ctrl + shift + v`) won't work on Firefox
-
-:::
-
 ## Install GPU driver in any image
 
 See the latest official [Nvidia docs](https://nvidia.github.io/nvidia-container-runtime) to install the `nvidia-container-runtime` (all packages and drivers required to access the GPU from your application)
@@ -140,6 +103,12 @@ You will then need to edit the deployment to add the GPU NodeSelector, the `serv
 oc edit fsl-gpu
 ```
 
-
-
 See also: official [Nvidia docs for CUDA]( https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#debian-installation)
+
+## Reserve GPU for your experiments
+
+Still experimental, you can check the availability of the 8 GPUs of the DSRI through the Maastricht University Outlook Calendar:
+
+1. Go to the your UM Outlook Calendar (through the desktop or web application)
+2. Create a new Calendar group named "DSRI GPUs"
+3. Add the 8 `EQUIP-PHS1-DSRIGPU` numbered from 1 to 8, e.g. `EQUIP-PHS1-DSRIGPU1-1P` to this Calendar Group. This way you will be able to quickly see when a GPU is free or reserved
