@@ -22,7 +22,7 @@ The DSRI will automatically create a persistent volume to store data you will pu
 
 With this template you can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
 
-* `ghcr.io/maastrichtu-ids/jupyterlab`: for data science and knowledge graphs, with Java and SPARQL kernels, and autocomplete for Python
+* `ghcr.io/maastrichtu-ids/jupyterlab:latest`: custom image for data science on the DSRI, with additional kernels (Java, SPARQL), conda integration, VisualStudio Code, OpenRefine, and autocomplete for Python
 * `jupyter/scipy-notebook`: some packages for science are preinstalled 
 * `jupyter/datascience-notebook`: with Julia kernel
 * `jupyter/tensorflow-notebook`: with tensorflow package pre-installed
@@ -30,8 +30,21 @@ With this template you can use any image based on the official Jupyter docker st
 * `jupyter/pyspark-notebook`: if you want to connect to a Spark cluster
 * `jupyter/all-spark-notebook`: if you want to run Spark locally in the notebook
 
-You can also build your own image, feel free to use this repository as example to extend a JupyterLab image: https://github.com/MaastrichtU-IDS/jupyterlab
+You can also build your own image, we recommend to use this repository as example to extend a JupyterLab image: https://github.com/MaastrichtU-IDS/jupyterlab
 
+## Manage dependencies with Conda
+
+With the `ghcr.io/maastrichtu-ids/jupyterlab:latest` image, you can easily start notebooks from the JupyterLab Launcher page using installed conda environments, at the condition `nb_conda_kernels` and `ipykernel` are installed in those environments.
+
+* You can pass a Git repository URL which contains an `environment.yml` file in the root folder when starting JupyterLab, the conda environment will automatically be installed at the start of your container, and available in the JupyterLab Launcher page. You can use this repository as example: https://github.com/MaastrichtU-IDS/dsri-demo
+
+* Or you can install it directly in a running JupyterLab (we use `mamba` which is like `conda` but faster):
+
+  ```bash
+  mamba env create -f environment.yml
+  ```
+
+  You'll need to wait for 1 or 2 minutes before the new conda environment becomes available on the JupyterLab Launcher page.
 
 ## Use git in JupyterLab
 
