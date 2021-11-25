@@ -14,29 +14,27 @@ If you want to run on GPU, **contact the [DSRI support team](mailto:dsri-support
 
 We are using images provided by Nvidia, and optimized for GPU. We currently deployed Tensorflow and PyTorch with JupyterLab and VSCode, but any image available in the Nvidia catalog should be easy to deploy: https://ngc.nvidia.com/catalog/containers
 
-Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu) for more details on how we build the optimized docker images for the DSRI GPUs. Feel free to extend the `gpu.dockerfile` to your needs.
+Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu) for more details on how we build the optimized docker images for the DSRI GPUs. Feel free to [extend the images](https://github.com/MaastrichtU-IDS/jupyterlab#extend-an-image) to your needs.
 
-## JupyterLab on GPU
+## Start a workspace on GPU
+
+Start a workspace based on Ubuntu, with all drivers and dependencies for accessing already installed. You will be able to access it using the JupyterLab web UI and VisualStudio Code in the browser.
 
 Once your project has been granted access to GPUs, you can deploy applications on GPU from the catalog:
 
-* Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
-* **Filter** the catalog for  "**GPU**"
-* Choose one of the available templates: **JupyterLab on GPU**.
+1. Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
 
-The following parameters can be provided:
+2. Filter the catalog for  "GPU"
 
-1. Provide a unique **Application name**
-2. Provide a **Notebook token** (password to access the notebook)
-3. The **number of GPUs** used by the application.
-4. **Storage name**: the storage Persistent Volume Claim (PVC)
-5. **Storage subpath**: path to the Notebook folder in the Persistent Volume Claim storage
+3. Choose one of the available templates: **JupyterLab on GPU**.
+
+4. **Follow the instructions** to create the template in the DSRI web UI, all informations about the images you can use are provided there.
 
 Now that your template is created and its accessible from the **Topology** page of OpenShift web UI.
 
-You can now access the JupyterLab UI, install your dependencies and run your experiments.
+You can now access the JupyterLab web UI, install your dependencies and run your experiments.
 
-Use the **`/workspace` folder**, which is the JupyterLab workspace, to store your code and data persistently, you can also take a look into the examples provided by Nvidia.
+Use the **`/workspace` folder**, which is the JupyterLab workspace, to store your code and data persistently.
 
 Use the following command to see your current GPU usage:
 
@@ -46,34 +44,15 @@ nvidia-smi
 
 ### TensorBoard logs visualization
 
-You can easily use [**TensorBoard 📈**](https://www.tensorflow.org/tensorboard) to explore your machine learning runs. It is already pre-installed and ready-to-use in ouyr JupyterLab for GPU templates.
+When using Tensorflow, you can use [**TensorBoard 📈**](https://www.tensorflow.org/tensorboard) to explore your machine learning runs. It should be already pre-installed in our JupyterLab for GPU templates.
 
-All you need is to follow the usual process to run tensorboard: https://www.tensorflow.org/tensorboard/get_started
+Follow the usual process to run tensorboard: https://www.tensorflow.org/tensorboard/get_started
 
 1. Add the tensorboard callback to your `model.fit()` function
 
 2. Then start Tensorboard in the terminal with `tensorboard --logdir logs` (change the directory depending on where the logs of your runs are stored), it should tell you that tensorboard as been started on port 6006
 3. Open the Tensorboard view from the JupyterLab welcome page
 
-## Prepare your GPU workspace
-
-Experimental
-
-Start a GPU application from the template with `0` GPU set.
-
-Access the workspace like you would normally, add your code and data.
-
-Once the GPU quotas has been granted to your project, you can update your deployment to use the GPUs using this command (our deployment name is `jupyterlab-gpu` in this example, change it to yours)
-
-```bash
-oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
-```
-
-Later you can remove the GPU from your app without stopping it:
-
-```bash
-oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 0}, "limits": {"nvidia.com/gpu": 0}}}]'
-```
 
 ### Increase the number of GPUs in your workspace
 
@@ -92,9 +71,15 @@ From the **Topology** view click on your application:
               nvidia.com/gpu: '2'
 ```
 
+You can also do it using the command line, make sure to stop the pod first, and replace `jupyterlab-gpu` by your app name in this command:
+
+```bash
+oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 2}, "limits": {"nvidia.com/gpu": 2}}}]'
+```
+
 3. Restart the pod for your application (the same way you stopped it)
 
-## Install GPU driver in any image
+## Install GPU drivers in any image
 
 See the latest official [Nvidia docs](https://nvidia.github.io/nvidia-container-runtime) to install the `nvidia-container-runtime` (all packages and drivers required to access the GPU from your application)
 
@@ -109,25 +94,56 @@ RUN apt-get update \ &&
     apt-get install -y nvidia-container-runtime
 ```
 
-Then, build the FSL on GPU in your DSRI project using `oc` from the folder where your put the `Dockerfile`:
+Then, build your image in your DSRI project using `oc` from the folder where your put the `Dockerfile` (replace `custom-app-gpu` by your app name):
 
 ```bash
-oc new-build --name fsl-gpu --binary
-oc start-build fsl-gpu --from-dir=. --follow --wait
-oc new-app fsl-gpu
+oc new-build --name custom-app-gpu --binary
+oc start-build custom-app-gpu --from-dir=. --follow --wait
+oc new-app custom-app-gpu
 ```
 
 You will then need to edit the deployment to add the GPU NodeSelector, the `serviceAccountName: anyuid` and add a persistent storage
 
 ```bash
-oc edit fsl-gpu
+oc edit custom-app-gpu
 ```
 
 See also: official [Nvidia docs for CUDA]( https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#debian-installation)
 
+## Prepare your GPU workspace
+
+:::warning Experimental
+
+Experimental: this workflow is still experimental, let us know on Slack #helpdesk if you are interested in using it and helping us improve it.
+
+:::
+
+Start a GPU application from the template with `0` GPU set.
+
+Access the workspace like you would normally, add your code and data.
+
+Once the GPU quotas has been granted to your project, you can update your deployment to use the GPUs using this command (our deployment name is `jupyterlab-gpu` in this example, change it to yours)
+
+```bash
+oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
+```
+
+Later you can remove the GPU from your app without stopping it:
+
+```bash
+oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 0}, "limits": {"nvidia.com/gpu": 0}}}]'
+```
+
+
 ## Reserve GPU for your experiments
 
-Still experimental, you can check the availability of the 8 GPUs of the DSRI through the Maastricht University Outlook Calendar:
+:::warning Experimental
+
+Still experimental.
+
+:::
+
+You can check the availability of the 8 GPUs of the DSRI through the Maastricht University Outlook Calendar:
 
 1. Go to the your UM Outlook Calendar (through the desktop or web application)
 2. Create a new Calendar group named "DSRI GPUs"
