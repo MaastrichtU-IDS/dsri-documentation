@@ -18,25 +18,22 @@ Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupy
 
 ## Start a workspace on GPU
 
-Start a workspace based on Ubuntu, with all drivers and dependencies for accessing already installed. You will be able to access it using the JupyterLab web UI and VisualStudio Code in the browser.
+Start a workspace in your DSRI project based on Ubuntu, with all drivers and dependencies for accessing the GPU already installed. You will be able to access it using the JupyterLab web UI and VisualStudio Code in the browser.
 
 Once your project has been granted access to GPUs, you can deploy applications on GPU from the catalog:
 
 1. Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
-
 2. Filter the catalog for  "GPU"
-
 3. Choose one of the available templates: **JupyterLab on GPU**.
-
 4. **Follow the instructions** to create the template in the DSRI web UI, all informations about the images you can use are provided there.
 
-Now that your template is created and its accessible from the **Topology** page of OpenShift web UI.
+You can find more details on the images we use and how to extend them in this repository: https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu
 
-You can now access the JupyterLab web UI, install your dependencies and run your experiments.
+Once your template is created, wait a few seconds before it becomes accessible from the **Topology** page of OpenShift web UI, you can access the JupyterLab web UI, install your dependencies and run your experiments.
 
 Use the **`/workspace` folder**, which is the JupyterLab workspace, to store your code and data persistently.
 
-Use the following command to see your current GPU usage:
+You can use the following command in the terminal to see your current GPU usage:
 
 ```bash
 nvidia-smi
