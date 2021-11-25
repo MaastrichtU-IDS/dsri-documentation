@@ -47,7 +47,7 @@ app.use(helmet({
 
 
 // Serve searchkit-react at /
-app.use(express.static(path.join(__dirname, ".", "public")));
+app.use(express.static(path.join(__dirname__, ".", "public")));
 
 
 app.get('/', (req, res) => {

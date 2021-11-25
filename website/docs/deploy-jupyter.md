@@ -46,6 +46,23 @@ With the `ghcr.io/maastrichtu-ids/jupyterlab:latest` image, you can easily start
 
   You'll need to wait for 1 or 2 minutes before the new conda environment becomes available on the JupyterLab Launcher page.
 
+You can easily install an environment with a different version of Python if you need it. Here is an example of an `environment.yml` file to create an environment with Python 3.9, install the minimal dependencies required to easily starts notebooks in this environment with `conda`, and install a `pip` package:
+
+```yaml
+name: custom-env
+channels:
+  - defaults
+  - conda-forge
+  - anaconda
+dependencies:
+  - python=3.9
+  - ipykernel 
+  - nb_conda_kernels
+  - pip
+  - pip:
+    - matplotlib
+```
+
 ## Use git in JupyterLab
 
 You can always use `git` from the terminal.

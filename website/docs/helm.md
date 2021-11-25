@@ -27,13 +27,15 @@ tar -C /usr/local -xzf go1.14.4.linux-amd64.tar.gz
 
 # Add Go to path in .profile
 echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.profile
+# Or in .zshrc if you use ZSH
+echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.zshrc
 ```
 
 > Restart your laptop for the changes to take effects or execute `source ~/.profile`
 
 ### Install Helm
 
-[Install Helm 3](https://helm.sh/docs/intro/install/) in your computer terminal.
+You can also use the [official documentation to install Helm](https://helm.sh/docs/intro/install/) on your machine.
 
 #### Install on Linux
 
