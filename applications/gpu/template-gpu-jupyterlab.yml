@@ -8,7 +8,7 @@ metadata:
   annotations:
     openshift.io/display-name: JupyterLab on GPU
     description: |-
-      Start JupyterLab to run CUDA, Tensorflow or PyTorch using GPUs with the root user.
+      Start JupyterLab to run CUDA, Tensorflow, or PyTorch using GPUs with the root user.
 
       📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
     
@@ -65,6 +65,20 @@ parameters:
   description: 8 in total in the cluster. And your quota is 1 by default
   value: '1'
   required: true
+- name: GIT_URL
+  displayName: URL of a git repository to clone in the workspace (optional)
+  required: false
+  description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents. Only works for images based on the official images
+- name: GIT_NAME
+  displayName: Git name
+  required: true
+  value: default
+  description: Email used to automatically define git config --global user.name
+- name: GIT_EMAIL
+  displayName: Git email
+  required: true
+  value: default@maastrichtuniversity.nl
+  description: Email used to automatically define git config --global user.email
 
 # - name: IMAGE_PULL_POLICY
 #   displayName: Image pull policy
@@ -170,20 +184,29 @@ objects:
               # - containerPort: 6064
               #   protocol: TCP
             volumeMounts:
-              - name: data
-                mountPath: /workspace/persistent
-              #   subPath: workspace
-              # - name: data
-              #   mountPath: /root
-              #   subPath: home
               - name: dshm
                 mountPath: /dev/shm
+              - name: data
+                mountPath: /workspace/persistent
+              # - name: scratch
+              #   mountPath: /workspace/scratch
+              #   subPath: workspace
             env:
               - name: JUPYTER_TOKEN
                 valueFrom:
                   secretKeyRef:
                     key: application-password
                     name: "${APPLICATION_NAME}"
+              - name: GIT_URL
+                value: "${GIT_URL}"
+              - name: GIT_NAME
+                value: "${GIT_NAME}"
+              - name: GIT_EMAIL
+                value: "${GIT_EMAIL}"
+              - name: WORKSPACE
+                value: "/workspace"
+              - name: PERSISTENT_WORKSPACE
+                value: "/workspace/persistent"
             # command:
             #   - jupyter
             #   - lab
@@ -192,12 +215,15 @@ objects:
             #   - "--port=8888"
             #   - "--no-browser"
         volumes:
+          - name: dshm
+            emptyDir:
+              medium: Memory
           - name: data
             persistentVolumeClaim:
               claimName: ${APPLICATION_NAME}
-          - name: dshm
-            emptyDir:
-              medium: Memory                   
+          # - name: scratch
+          #   persistentVolumeClaim:
+          #     claimName: gpu-scratch-storage
     selector:
       app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}

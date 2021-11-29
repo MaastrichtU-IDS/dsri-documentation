@@ -2,10 +2,10 @@
 
 1. Go to the project with `oc project my-project`
 
-2. Apply Tensorflow and PyTorch templates:
+2. Update template on general project:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/gpu/template-gpu-jupyterlab.yml
+oc apply -f template-gpu-jupyterlab.yml
 ```
 
 To update for dev, from `dsri-documentation` in `applications` folder:

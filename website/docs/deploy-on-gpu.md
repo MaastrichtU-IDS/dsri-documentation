@@ -154,6 +154,7 @@ To reserve a GPU directly in the Calendar:
 
 * Check for a GPU available in the period when you will need to use it
 * Create an event for the period you expect you will need the GPU:
+  - [ ] Put your the GPU number, and your DSRI project ID where we will add the GPU in the title, e.g. `GPU 3 for your-project-id`
   - [ ] Set the Duration to "**Full day**"
   - [ ] Ideally **reserve a week** (or more) from **Monday to Monday**
   - [ ] Don't hold the GPU for too long, other people needs it at UM! You can reserve it again later
