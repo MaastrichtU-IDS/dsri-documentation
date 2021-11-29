@@ -31,7 +31,11 @@ You can find more details on the images we use and how to extend them in this re
 
 Once your template is created, wait a few seconds before it becomes accessible from the **Topology** page of OpenShift web UI, you can access the JupyterLab web UI, install your dependencies and run your experiments.
 
-Use the **`/workspace` folder**, which is the JupyterLab workspace, to store your code and data persistently.
+:::info Storage
+
+Use the **`/workspace/persistent` folder**, which is the JupyterLab workspace, to store your code and data persistently. Note that loading data from the persistent storage will be slowly that what you might expected, this is due to the nature of the distributed storage. So try to optimize this part and avoid reloading multiple time your data, and let us know if it is too much of a problem, we have some solution to improve this
+
+:::
 
 You can use the following command in the terminal to see your current GPU usage:
 
@@ -145,3 +149,18 @@ You can check the availability of the 8 GPUs of the DSRI through the Maastricht 
 1. Go to the your UM Outlook Calendar (through the desktop or web application)
 2. Create a new Calendar group named "DSRI GPUs"
 3. Add the 8 `EQUIP-PHS1-DSRIGPU` numbered from 1 to 8, e.g. `EQUIP-PHS1-DSRIGPU1-1P` to this Calendar Group. This way you will be able to quickly see when a GPU is free or reserved
+
+To reserve a GPU directly in the Calendar:
+
+* Check for a GPU available in the period when you will need to use it
+* Create an event for the period you expect you will need the GPU:
+  - [ ] Set the Duration to "**Full day**"
+  - [ ] Ideally **reserve a week** (or more) from **Monday to Monday**
+  - [ ] Don't hold the GPU for too long, other people needs it at UM! You can reserve it again later
+  - [ ] Add the following users as **Attendees**: 
+    * `vincent.emonet@maastrichtuniversity.nl` 
+    * the `EQUIP-PHS1-DSRIGPU` email address of the GPU you want to reserve
+* You should receive an email telling you if the reservation has been successful
+  * This does not mean your reservation is completely validated, we will let you know through Slack or email if the reservation needs to be changed.
+
+It is not mandatory to create the reservation in the Calendar, feel free to contact us on Slack or via email to make the reservation directly with us.

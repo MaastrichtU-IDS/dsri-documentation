@@ -12,7 +12,7 @@ metadata:
 
       📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
     
-      📂 Use the `/workspace` folder (workspace of the JupyterLab UI) to store your data in the persistent storage
+      📂 Use the `/workspace/persistent` folder (workspace of the JupyterLab UI) to store your data in the persistent storage
 
       🐳 You can directly use the following Docker images to work on GPU:
       - CUDA build, based on https://ngc.nvidia.com/catalog/containers/nvidia:cuda
@@ -57,7 +57,7 @@ parameters:
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
-  description: Size of the storage allocated to the notebook persistent storage in `/workspace`.
+  description: Size of the storage allocated to the notebook persistent storage in `/workspace/persistent`.
   value: 20Gi
   required: true
 - name: GPU_LIMIT
@@ -171,7 +171,7 @@ objects:
               #   protocol: TCP
             volumeMounts:
               - name: data
-                mountPath: /workspace
+                mountPath: /workspace/persistent
               #   subPath: workspace
               # - name: data
               #   mountPath: /root
