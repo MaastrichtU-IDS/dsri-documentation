@@ -3,11 +3,13 @@ id: jupyterhub-spark
 title: JupyterHub with Spark cluster
 ---
 
-JupyterHub is ideal to enable multiple users easily start predefined workspaces in the same project. The Apache Spark cluster can be used from the workspaces to perform distributed processing.
+JupyterHub is ideal to enable multiple users easily start predefined workspaces in the same project. The complimentary Apache Spark cluster can be used from the workspaces to perform distributed processing.
 
 ## 🧊 Install kfctl
 
-You will need to install `kfctl`, the tool to deploy Kubeflow applications, download the [latest version for your OS](https://github.com/kubeflow/kfctl/releases). You can then install it by downloading the binary and putting it in your path, for example on Linux:
+You will need to install `kfctl` on your machine, a tool to deploy Kubeflow applications, download the [latest version for your OS 📥️](https://github.com/kubeflow/kfctl/releases) 
+
+You can then install it by downloading the binary and putting it in your path, for example on Linux:
 
 ```bash
 wget https://github.com/kubeflow/kfctl/releases/download/v1.2.0/kfctl_v1.2.0-0-gbc038f9_linux.tar.gz
@@ -15,7 +17,7 @@ tar -xzf kfctl_v1.2.0-0-gbc038f9_linux.tar.gz
 sudo mv kfctl /usr/local/bin/
 ```
 
-Clone the repository with the DSRI custom images for the OpenDataHub platform, and go to the `kfdef` folder:
+Clone the repository with the DSRI custom images and deployments for the OpenDataHub platform, and go to the `kfdef` folder:
 
 ```bash
 git clone https://github.com/MaastrichtU-IDS/odh-manifests
@@ -32,13 +34,13 @@ All scripts need to be run from the `kfdef` folder 📂
 
 You can deploy JupyterHub with 2 different authentications system, use the file corresponding to your choice:
 
-* For default UM DSRI authentication use `kfctl_openshift_dsri.yaml`
+* For the default DSRI authentication use `kfctl_openshift_dsri.yaml`
 
 * For GitHub authentication use `kfctl_openshift_github.yaml`
 
-  * Create a new GitHub OAuth app: https://github.com/settings/developers
+  * You need to create a new GitHub OAuth app: https://github.com/settings/developers
 
-  * Provide the GitHub client ID and secret through environment variable before running the start script:
+  * And provide the GitHub client ID and secret through environment variable before running the start script:
 
     ```bash
     export GITHUB_CLIENT_ID=YOUR_CLIENT_ID
