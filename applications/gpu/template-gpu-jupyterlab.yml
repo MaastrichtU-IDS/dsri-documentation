@@ -114,22 +114,22 @@ objects:
   stringData:
     application-password: "${JUPYTER_TOKEN}"
 
-- kind: "ImageStream"
-  apiVersion: image.openshift.io/v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-  spec:
-    tags:
-    - name: latest
-      from:
-        kind: DockerImage
-        name: ${IMAGE_NAME}
-      importPolicy:
-        scheduled: false
-    lookupPolicy:
-      local: true
+# - kind: "ImageStream"
+#   apiVersion: image.openshift.io/v1
+#   metadata:
+#     name: ${APPLICATION_NAME}
+#     labels:
+#       app: ${APPLICATION_NAME}
+#   spec:
+#     tags:
+#     - name: latest
+#       from:
+#         kind: DockerImage
+#         name: ${IMAGE_NAME}
+#       importPolicy:
+#         scheduled: false
+#     lookupPolicy:
+#       local: true
 
 - kind: "PersistentVolumeClaim"
   apiVersion: "v1"
@@ -163,10 +163,10 @@ objects:
         #   nvidia.com/gpu: 'true'
         containers:
           - name: gpu-jupyterlab
-            image: ${APPLICATION_NAME}:latest
+            # image: ${APPLICATION_NAME}:latest
             # imagePullPolicy: IfNotPresent
             ## In case the ImageStream does not update properly:
-            # image: ${IMAGE_NAME}
+            image: ${IMAGE_NAME}
             imagePullPolicy: Always
             # nvcr.io/nvidia/tensorflow:21.08-tf2-py3
             resources:
