@@ -15,19 +15,22 @@ title: Access the DSRI
 You need to be connected to the UM network to access the DSRI.
 
 * Use the **Maastricht University VPN** at **[vpn.maastrichtuniversity.nl](https://vpn.maastrichtuniversity.nl/)**
+
 * Connect to **UMnet** or **eduroam** WiFi at Maastricht University
-* For **Linux**, use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
+
+* For **Linux** and Windows Subsystem Linux, use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
 
   ```bash
   sudo apt install openconnect
   sudo openconnect -u YOUR.USER --authgroup 01-Employees vpn.maastrichtuniversity.nl
   ```
 
-  > Provide your UM password when prompted.
-
 * For **students**:
-  * You can request VPN access at this email: [servicedesk-icts@maastrichtuniversity.nl](mailto:servicedesk-icts@maastrichtuniversity.nl) (cf. [ICTS contact page](https://www.maastrichtuniversity.nl/support/ict-facilities))
-  * Or use the Athena Student Desktop at [athenadesktop.maastrichtuniversity.nl](https://athenadesktop.maastrichtuniversity.nl)
+  * Ask one of your teachers to request VPN access for you. They will need to send an email to the IT helpdesk of your department with the following informations:
+    * Email of the student who will get VPN
+    * For which course (provide the course ID) or project does the student need the VPN?
+    * Until which date the student will need the VPN?
+  * Or you can try to use the Athena Student Desktop at [athenadesktop.maastrichtuniversity.nl](https://athenadesktop.maastrichtuniversity.nl), but it's probably not going to work
 
 ## Access the web UI
 
