@@ -7,7 +7,7 @@ JupyterHub is ideal to enable multiple users easily start predefined workspaces 
 
 ## 🧊 Install kfctl
 
-You will need to install `kfctl` on your machine, a tool to deploy Kubeflow applications, download the [latest version for your OS 📥️](https://github.com/kubeflow/kfctl/releases) 
+You will need to have the usual `oc` tool installed, and to install `kfctl` on your machine, a tool to deploy Kubeflow applications, download the [latest version for your OS 📥️](https://github.com/kubeflow/kfctl/releases) 
 
 You can then install it by downloading the binary and putting it in your path, for example on Linux:
 
@@ -57,30 +57,122 @@ First you will need to change the `namespace:` in the file you want to deploy, t
 
 ⚡️ A Spark cluster with 3 workers is automatically created with the service name `spark-cluster`, you can use the URL of the master node to access it from your workspace: `spark://spark-cluster:7077`
 
-## 🗑️ Delete the deployment
+## ✨ Use the Spark cluster
 
-Delete the running JupyterHub application and Spark cluster, including persistent volumes:
+:::caution Matching Spark versions
 
-```bash
-./delete_odh.sh kfctl_openshift_dsri.yaml
+Make sure all the Spark versions are matching, the current default version is `3.0.1`
+
+:::
+
+You can test the Spark cluster connection with PySpark:
+
+```python
+from pyspark.sql import SparkSession, SQLContext
+import os
+import socket
+# Create a Spark session
+spark_cluster_url = "spark://spark-cluster:7077"
+spark = SparkSession.builder.master(spark_cluster_url).getOrCreate()
+sc = spark.sparkContext
+
+# Test your Spark connection
+spark.range(5, numPartitions=5).rdd.map(lambda x: socket.gethostname()).distinct().collect()
+# Or try:
+#x = ['spark', 'rdd', 'example', 'sample', 'example']
+x = [1, 2, 3, 4, 5]
+y = sc.parallelize(x)
+y.collect()
+# Or try:
+data = [1, 2, 3, 4, 5]
+distData = sc.parallelize(data)
+distData.reduce(lambda a, b: a + b)
 ```
 
-## ✨ Start a new Spark cluster
+### Match the version
 
-You can create a new Spark cluster with the installed Spark Operator:
+Make sure all the Spark versions are matching, the current default version is `3.0.1`:
+
+* Go to the Spark UI to verify the version of the Spark cluster
+* Run `spark-shell --version` to verify the version of the Spark binary installed in the workspace
+* Run `pip list | grep pyspark` to verify the version of the PySpark library
+
+Check the [JupyterLab workspace `Dockerfile`](https://github.com/MaastrichtU-IDS/jupyterlab/blob/main/Dockerfile#L14) to change the version of Spark installed in the workspace, and see how you can download and install a new version of the Spark binary.
+
+If you need to change the Python, Java or PySpark version in the workspace you can create a `environment.yml` file, for example for `2.4.5`:
+
+```yaml
+name: spark
+channels:
+  - defaults
+  - conda-forge
+  - anaconda
+dependencies:
+  - python=3.7
+  - openjdk=8
+  - ipykernel 
+  - nb_conda_kernels
+  - pip
+  - pip:
+    - pyspark==2.4.5
+```
+
+Create the environment with `conda`:
+
+```bash
+mamba env create -f environment.yml
+```
+
+### Spark UI
+
+You can also create a route to access the Spark UI and monitor the activity on the Spark cluster:
+
+```bash
+oc expose svc/spark-cluster-ui
+```
+
+Get the Spark UI URL:
+
+```bash
+oc get route --selector radanalytics.io/service=ui --no-headers -o=custom-columns=HOST:.spec.host
+```
+
+### New Spark cluster
+
+You can create a new Spark cluster, for example here using Spark `3.0.1` with the installed Spark Operator:
 
 ```bash
 cat <<EOF | oc apply -f -
 apiVersion: radanalytics.io/v1
 kind: SparkCluster
 metadata:
-  name: new-spark-cluster
+  name: spark-cluster-301
 spec:
+  customImage: quay.io/radanalyticsio/openshift-spark:3.0.1-2
   worker:
-    instances: '3'
+    instances: '4'
+    memory: "2Gi"
+    cpu: 2
   master:
     instances: '1'
+    memory: "2Gi"
+    cpu: 2
+  env:
+  - name: SPARK_WORKER_CORES
+    value: 2
 EOF
+```
+
+You can browse the list of available [image versions here](https://quay.io/repository/radanalyticsio/openshift-spark?tag=latest&tab=tags)
+
+See the Radanalytics [Spark operator example configuration](https://github.com/radanalyticsio/spark-operator/blob/master/examples/cluster-with-config.yaml) for more details on the Spark cluster configuration. 
+
+## 🗑️ Delete the deployment
+
+Delete the running JupyterHub application and Spark cluster, including persistent volumes:
+
+```bash
+./delete_odh.sh kfctl_openshift_dsri.yaml
 ```
 
 <!--

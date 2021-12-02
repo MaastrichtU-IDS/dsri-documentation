@@ -4,7 +4,7 @@ title: Jupyter Notebooks
 ---
 
 
-## Start JupyterLab
+## 🪐 Start JupyterLab
 
 Start a JupyterLab container based on the [official Jupyter docker stacks](https://github.com/jupyter/docker-stacks) (debian), with `sudo` privileges to install anything you need (e.g. pip or apt packages)
 
@@ -32,7 +32,7 @@ With this template you can use any image based on the official Jupyter docker st
 
 You can also build your own image, we recommend to use this repository as example to extend a JupyterLab image: https://github.com/MaastrichtU-IDS/jupyterlab
 
-## Manage dependencies with Conda
+## 📦️ Manage dependencies with Conda
 
 With the `ghcr.io/maastrichtu-ids/jupyterlab:latest` image, you can easily start notebooks from the JupyterLab Launcher page using installed conda environments, at the condition `nb_conda_kernels` and `ipykernel` are installed in those environments.
 
@@ -63,7 +63,7 @@ dependencies:
     - matplotlib
 ```
 
-## Use git in JupyterLab
+## 🐙 Use git in JupyterLab
 
 You can always use `git` from the terminal.
 
