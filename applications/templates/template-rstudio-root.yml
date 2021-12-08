@@ -142,8 +142,8 @@ objects:
           ports:
           - containerPort: 8787
             protocol: TCP
-          # - containerPort: 3838
-          #   protocol: TCP
+          - containerPort: 3838
+            protocol: TCP
           # resources:
           #   limits:
           #     cpu: '64'
@@ -203,36 +203,36 @@ objects:
       insecureEdgeTerminationPolicy: Redirect
 
 ## Shiny server route
-# - kind: Service
-#   apiVersion: v1
-#   metadata:
-#     name: "${APPLICATION_NAME}-shiny"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   spec:
-#     ports:
-#     - name: 3838-tcp
-#       protocol: TCP
-#       port: 3838
-#       targetPort: 3838
-#     selector:
-#       app: "${APPLICATION_NAME}"
-#       deploymentconfig: "${APPLICATION_NAME}"
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-shiny"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 3838-tcp
+      protocol: TCP
+      port: 3838
+      targetPort: 3838
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
 
-# - kind: Route
-#   apiVersion: route.openshift.io/v1
-#   metadata:
-#     name: "${APPLICATION_NAME}-shiny"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   spec:
-#     host: ''
-#     to:
-#       kind: Service
-#       name: "${APPLICATION_NAME}-shiny"
-#       weight: 100
-#     port:
-#       targetPort: 3838-tcp
-#     tls:
-#       termination: edge
-#       insecureEdgeTerminationPolicy: Redirect
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-shiny"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-shiny"
+      weight: 100
+    port:
+      targetPort: 3838-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect

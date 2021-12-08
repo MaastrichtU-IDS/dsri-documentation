@@ -158,6 +158,11 @@ objects:
           app: ${APPLICATION_NAME}
           deploymentconfig: ${APPLICATION_NAME}
       spec:
+        # Automatically created by OpenShift, it is deleted when pod stopped
+        tolerations:
+          - effect: NoSchedule
+            key: "nvidia.com/gpu"
+            operator: Exists
         serviceAccountName: anyuid
         # nodeSelector:
         #   nvidia.com/gpu: 'true'
