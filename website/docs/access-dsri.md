@@ -26,7 +26,7 @@ You need to be connected to the UM network to access the DSRI.
   ```
 
 * For **students**:
-  * You can try to use the Athena Student Desktop at [athenadesktop.maastrichtuniversity.nl](https://athenadesktop.maastrichtuniversity.nl), to access the VPN through a virtual desktop
+  * You can try to use the Athena Student Desktop at [athenadesktop.maastrichtuniversity.nl](https://athenadesktop.maastrichtuniversity.nl), to access the VPN through a virtual desktop (please let us know if it is not working)
   * Ask one of your teachers to request VPN access for you. They will need to send an email to the IT helpdesk of your department with the following informations:
     * Email of the student who will get VPN
     * For which course (provide the course ID) or project does the student need the VPN?
