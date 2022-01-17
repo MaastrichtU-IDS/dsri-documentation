@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+rdflib>=6.0
+requests
+sqlmodel
+mysqlclient
