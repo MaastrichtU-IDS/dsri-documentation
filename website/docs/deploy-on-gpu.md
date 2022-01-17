@@ -144,6 +144,10 @@ Still experimental.
 
 :::
 
+You can check the availability and reserve a GPU slot in our [GPU calendar](/gpu-scheduling).
+
+<!-- 
+
 You can check the availability of the 8 GPUs of the DSRI through the Maastricht University Outlook Calendar:
 
 1. Go to the your UM Outlook Calendar (through the desktop or web application)
@@ -165,3 +169,5 @@ To reserve a GPU directly in the Calendar:
   * This does not mean your reservation is completely validated, we will let you know through Slack or email if the reservation needs to be changed.
 
 It is not mandatory to create the reservation in the Calendar, feel free to contact us on Slack or via email to make the reservation directly with us.
+
+-->

@@ -88,6 +88,12 @@ module.exports={
         language: ["en"],
       },
     ],
+    [
+      "docusaurus2-dotenv",
+      {
+        systemvars: true,
+      },
+    ],
   ],
   "themeConfig": {
     "hideableSidebar": true,

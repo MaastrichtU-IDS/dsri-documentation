@@ -59,9 +59,7 @@ function Home() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
   return (
-    <Layout
-      title={`${siteConfig.title}`}
-      description="Data Science Research Infrastructure at Maastricht University">
+    <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University"> 
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
@@ -81,9 +79,8 @@ function Home() {
                 'button button--outline button--secondary button--lg',
                 styles.getStarted,
               )}
-              // to={useBaseUrl('docs/')}>
-              href="https://forms.gle/QiXzWCnTMWDiS55u7"
-              >
+              // to={useBaseUrl('register/')}>
+              href="https://forms.gle/QiXzWCnTMWDiS55u7">
               Get Access
             </Link>
           </div>
