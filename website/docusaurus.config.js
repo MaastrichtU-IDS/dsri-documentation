@@ -129,7 +129,7 @@ module.exports={
           "position": "left"
         },
         {
-          "href": "/contributing",
+          "to": "/contributing",
           "label": "Contribute",
           "position": "left"
         },

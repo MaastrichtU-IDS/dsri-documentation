@@ -50,10 +50,10 @@ def register_user(createUser: UserModel = Body(...)) -> dict:
             session.add(db_user)
             session.commit()
         except IntegrityError:
-            return JSONResponse({'message': 'User with the email {createUser.email} already exists'})
+            return JSONResponse({'errorMessage': 'User with the email {createUser.email} already exists'})
         except Exception as e:
             print(e)
-            return JSONResponse({'message': 'Error creating the user in the database'})
+            return JSONResponse({'errorMessage': 'Error creating the user in the database'})
 
     return JSONResponse({'message': f'User {createUser.email} successfully added'})
 

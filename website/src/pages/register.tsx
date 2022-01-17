@@ -91,8 +91,6 @@ function Registration() {
       }
     }
 
-    // number_of_collaborators?
-
     if (!state.errorMessages[event.target.id]) {
       let formObj = state.formObj
       formObj[event.target.id] = event.target.value
@@ -153,8 +151,8 @@ function Registration() {
         .then((res: any) => {
           console.log('New user registered', state.formObj)
           console.log(res)
-          if (res.data.message && res.data.message.startsWith('Error:')) {
-            updateState({openError: true, errorMessage: res.data.message})
+          if (res.data.errorMessage) {
+            updateState({openError: true, errorMessage: res.data.errorMessage})
           } else {
             updateState({openSuccess: true})
             setTimeout(function(){
@@ -505,7 +503,7 @@ function Registration() {
             */}
             <button type="submit" style={{margin: '30px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
-              )}>Register to access the DSRI</button> 
+              )}>Submit</button> 
           </form>
 
           <Snackbar

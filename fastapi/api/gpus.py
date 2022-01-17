@@ -101,13 +101,11 @@ def create_gpu_schedule(schedule: CreateGpuSchedule = Body(...)) -> dict:
     schedule.ending_date += timedelta(days=1)
     delta = schedule.ending_date - schedule.starting_date
     if delta.days + 1 > MAX_BOOK_DAYS:
-        return JSONResponse({'message': f'Error: you can book a GPU for a maximum of {str(MAX_BOOK_DAYS)} days'})
+        return JSONResponse({'errorMessage': f'You can book a GPU for a maximum of {str(MAX_BOOK_DAYS)} days'})
 
     for i in range(delta.days + 1):
         day_time = schedule.starting_date + timedelta(days=i)
         day = day_time.date()
-        # print('booked_days!!!!!')
-        # print(booked_days)
 
         if str(day) in booked_days.keys():
             if booked_days[str(day)]['fullyBooked']:
@@ -121,34 +119,19 @@ def create_gpu_schedule(schedule: CreateGpuSchedule = Body(...)) -> dict:
                         booked_gpus.append(booked_gpu)
 
     if len(days_already_booked) > 0:
-        # raise 'Error: some of the dates provided are already fully booked: ' + str(', '.join(already_booked))
-        return JSONResponse({'message': 'Error: some of the dates provided are already fully booked: ' + str(', '.join(days_already_booked))})
+        return JSONResponse({'errorMessage': 'Some of the dates provided are already fully booked: ' + str(', '.join(days_already_booked))})
 
-    print('booked_gpus')
-    print(booked_gpus)
     while True:
         if str(gpu_id) in booked_gpus:
             gpu_id += 1
         else:
             break;
-    print('gpu_id')
-    print(gpu_id)
     create_schedule = GpuSchedule.from_orm(schedule)
     create_schedule.gpu_id = gpu_id
-    print('create_schedule!!')
-    print(create_schedule)
-        # return JSONResponse({'message': 'Error: some of the dates provided are already fully booked: ' + str(', '.join(already_booked))})
-
-    # try:
-    #     create_schedule = GpuSchedule.from_orm(schedule)
-    # except Exception as e:
-    #     print(e)
-    #     # print(e.message)
-    #     # return JSONResponse({'message': 'Error: some of the dates provided are already fully booked: ' + str(', '.join(already_booked))})
-    #     return JSONResponse({'message': 'Error: date range already booked'})
+    # print('create_schedule!!')
+    # print(create_schedule)
 
     with Session(engine) as session:
-        # db_user = User.from_orm(createUser)
         try:
             session.add(create_schedule)
             session.commit()
@@ -156,5 +139,5 @@ def create_gpu_schedule(schedule: CreateGpuSchedule = Body(...)) -> dict:
             return JSONResponse({'message': 'GPU request successfully submitted, you will receieve an email with more details soon.'})
         except Exception as e:
             print(e)
-            return JSONResponse({'message': 'Error creating the schedule entry in the calendar'})
+            return JSONResponse({'errorMessage': 'Error creating the schedule entry in the calendar'})
 

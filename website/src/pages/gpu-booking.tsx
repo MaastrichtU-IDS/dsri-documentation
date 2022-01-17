@@ -126,8 +126,8 @@ function GpuScheduling() {
         }
       )
         .then((res: any) => {
-          if (res.data.message && res.data.message.startsWith('Error:')) {
-            updateState({openError: true, errorMessage: res.data.message})
+          if (res.data.errorMessage) {
+            updateState({openError: true, errorMessage: res.data.errorMessage})
           } else {
             updateState({openSuccess: true});
             // Refresh booked days
