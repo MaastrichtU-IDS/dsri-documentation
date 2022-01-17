@@ -14,7 +14,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRangePicker } from 'react-date-range';
 
 declare var process : { env: { API_URL: string } }
-const apiUrl: string = (process.env['API_URL'] as string) || 'http://localhost:8000';
+const apiUrl: string = (process.env.API_URL as string) || 'http://localhost:8000';
 // const apiUrl = process.env.API_URL || 'https://api.dsri.semanticscience.org'
 
 // Date range (is there disable?): https://www.npmjs.com/package/react-date-range
@@ -129,7 +129,7 @@ function GpuScheduling() {
           if (res.data.message && res.data.message.startsWith('Error:')) {
             updateState({openError: true, errorMessage: res.data.message})
           } else {
-            updateState({openSuccess: true})
+            updateState({openSuccess: true});
             // Refresh booked days
             getBookedDays()
           }
@@ -337,23 +337,29 @@ function GpuScheduling() {
 
           <Snackbar
             open={state.openSuccess}
-            autoHideDuration={12000}
-            onClose={() => {
+            autoHideDuration={10000}
+            onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
+              if (reason === 'clickaway') {
+                return;
+              }
               updateState({ openSuccess: false});
             }}
             style={{textAlign: 'center'}}
           >
-            <>
-              <Alert key='successAlert' onClose={() => { updateState({ openSuccess: false})}} severity="success" sx={{ width: '100%' }}>
+            <Alert key='successAlert' onClose={() => { updateState({ openSuccess: false})}} severity="success" sx={{ width: '100%' }}>
+              <>
                 GPU requested successfully, soon you will receive an email with more informations to access and use the GPU on the DSRI.
-              </Alert>
-            </>
+              </>
+            </Alert>
           </Snackbar>
 
           <Snackbar
             open={state.openError}
-            autoHideDuration={12000}
-            onClose={() => {
+            autoHideDuration={10000}
+            onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
+              if (reason === 'clickaway') {
+                return;
+              }
               updateState({ openError: false});
             }}
           >

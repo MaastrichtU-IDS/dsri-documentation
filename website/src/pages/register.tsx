@@ -13,7 +13,7 @@ import axios from 'axios';
 // Calendar: https://www.npmjs.com/package/react-availability-calendar
 
 declare var process : { env: { API_URL: string } }
-const apiUrl: string = (process.env['API_URL'] as string) || 'http://localhost:8000';
+const apiUrl: string = (process.env.API_URL as string) || 'http://localhost:8000';
 // const apiUrl = process.env['API_URL'] || 'http://localhost:8000'
 
 function Registration() {
