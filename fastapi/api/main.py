@@ -6,6 +6,9 @@ from pydantic import BaseModel, Field
 
 from api import users, gpus
 
+import time
+# Waiting for MySQL to start
+time.sleep(5)
 
 api_router = APIRouter()
 api_router.include_router(users.router, prefix="/user", tags=["Users"])

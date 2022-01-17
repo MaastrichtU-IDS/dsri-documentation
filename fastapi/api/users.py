@@ -9,7 +9,7 @@ import os
 import requests
 
 from sqlmodel import Field, Session, SQLModel, create_engine, select
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from sqlalchemy.exc import IntegrityError 
 
 router = APIRouter()
@@ -26,6 +26,9 @@ class UserModel(SQLModel, table=False):
     git_repo: Optional[str]
     project_id: Optional[str]
     hear_about_us: Optional[str]
+    number_of_collaborators: Optional[int]
+    # use_dsri_date: Optional[date]
+    use_dsri_date: Optional[datetime]
 
 class User(UserModel, table=True):
     comment: str = ''

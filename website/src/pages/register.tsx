@@ -8,6 +8,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 import { FormHelperText, Snackbar, Alert, Checkbox, FormControlLabel, Grid, MenuItem, InputLabel, TextField, FormControl, FormGroup } from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+
 import axios from 'axios';
 
 // Calendar: https://www.npmjs.com/package/react-availability-calendar
@@ -22,7 +26,11 @@ function Registration() {
   const history = useHistory();
 
   const errorMessages: any = {}
-  const formObj: any = {'gdpr': false}
+  const formObj: any = {
+    'gdpr': false,
+    'use_dsri_date': new Date()
+    // 'use_dsri_date': new Date().toISOString().split('T')[0]
+  }
   const [state, setState] = React.useState({
     errorMessages: errorMessages,
     formObj: formObj,
@@ -83,6 +91,8 @@ function Registration() {
       }
     }
 
+    // number_of_collaborators?
+
     if (!state.errorMessages[event.target.id]) {
       let formObj = state.formObj
       formObj[event.target.id] = event.target.value
@@ -105,6 +115,12 @@ function Registration() {
     let formObj = state.formObj
     formObj['gdpr'] = !formObj['gdpr']
     // event.target.value as boolean
+    updateState({formObj: formObj})
+  }
+  const handleDateChange = (newValue: Date | null) => {
+    let formObj = state.formObj
+    formObj['use_dsri_date'] = newValue
+    // formObj['use_dsri_date'] = newValue.toISOString().split('T')[0]
     updateState({formObj: formObj})
   }
 
@@ -208,7 +224,7 @@ function Registration() {
           </h1>
 
           <p style={{marginBottom: '30px'}}>
-            We need a few informations about you and your project before granting you access to the DSRI.
+            We need a few informations about you and your project before granting you access to the Data Science Research Infrastructure at Maastricht University.
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -382,7 +398,7 @@ function Registration() {
 
               <Grid item xs={5} style={{textAlign: 'right'}}>
                 <p>
-                  Provide a link to your code repository (e.g. GitHub, GitLab):
+                  Provide a link to your code repository if possible (e.g. GitHub, GitLab):
                 </p>
               </Grid>
               <Grid item xs={7} style={{textAlign: 'left'}}>
@@ -397,6 +413,58 @@ function Registration() {
                   size='small'
                 />
               </Grid>
+
+              <Grid item xs={5} style={{textAlign: 'right'}}>
+                <p>
+                  Expected number of collaborators, if you organise a workshop with multiple users:
+                </p>
+              </Grid>
+              <Grid item xs={7} style={{textAlign: 'left'}}>
+                <TextField
+                  id='number_of_collaborators'
+                  type='number'
+                  label='Number of collaborators'
+                  placeholder='Number of collaborators'
+                  // value={''}
+                  variant="outlined"
+                  onChange={handleTextFieldChange}
+                  size='small'
+                />
+              </Grid>
+
+              <Grid item xs={5} style={{textAlign: 'right'}}>
+                <p>
+                  Until when do you expect to use the DSRI?
+                </p>
+              </Grid>
+              <Grid item xs={7} style={{textAlign: 'left'}}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DesktopDatePicker
+                    // label="Date desktop"
+                    // id='use_dsri_date'
+                    inputFormat="yyyy-MM-dd"
+                    value={state.formObj['use_dsri_date']}
+                    onChange={handleDateChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+                {/* <TextField
+                  id='use_dsri_date'
+                  type='date'
+                  // inputFormat="MM/dd/yyyy"
+                  // label='Date'
+                  // placeholder='Date'
+                  // value={''}
+                  // defaultValue={new Date().toString()}
+                  variant="outlined"
+                  onChange={handleTextFieldChange}
+                  size='small'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                /> */}
+              </Grid>
+
 
               <Grid item xs={5} style={{textAlign: 'right'}}>
                 <p>
@@ -416,10 +484,19 @@ function Registration() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={0} sm={2}></Grid>
+              <Grid item xs={12} sm={8}>
+                <p>
+                  The DSRI infrastructure is accessible for UM researchers and students. 
+                  Although DSRI has all relevant security and privacy measures in place to ensure a stable system, 
+                  we want to emphasize it is the responsibility of the user which data he or she is using to perform their work on DSRI. 
+                  <br/>GDPR compliance is the responsibility of the researcher. 
+                  In case there are any questions, you can visit this website (<a href="https://library.maastrichtuniversity.nl/research-support/rdm/guide/#personal-data-privacy-security" target="_blank" rel="noopener noreferrer">https://library.maastrichtuniversity.nl/research-support/rdm/guide/#personal-data-privacy-security</a>) 
+                  or contact your faculty information manager.
+                </p>
                 <FormControlLabel control={
                     <Checkbox checked={state.formObj['gdpr']} onChange={handleChangeGdpr} id='gdpr' />
-                  } label="I accept the terms of the GDPR" />
+                  } label="I understand my responsibilities towards GDPR compliance." />
               </Grid>
             </Grid>
 
@@ -428,7 +505,7 @@ function Registration() {
             */}
             <button type="submit" style={{margin: '30px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
-              )}>Register to the DSRI</button> 
+              )}>Register to access the DSRI</button> 
           </form>
 
           <Snackbar

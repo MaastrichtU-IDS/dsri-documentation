@@ -247,14 +247,14 @@ function GpuScheduling() {
       <main>
         <FormControl fullWidth style={{textAlign: 'center', margin: '30px 0px'}}>
           <h1>
-            Schedule time with a GPU
+            Book a GPU
           </h1>
 
           <p style={{marginTop: '10px'}}>
             You can book a GPU for a maximum of 2 weeks.
           </p>
           <p style={{marginBottom: '20px'}}>
-            Once you requested a GPU slot you will receive an email with more informations, and the GPU will be enabled in your DSRI project for the period requested.
+            Once you requested a GPU slot, you will receive an email with more informations, and the GPU will be enabled in your DSRI project for the period requested.
           </p>
 
           <form onSubmit={handleSubmit}>
