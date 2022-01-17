@@ -11,7 +11,7 @@ import axios from 'axios';
 import { addDays, format } from 'date-fns';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-import { DateRangePicker } from 'react-date-range';
+import { DateRange } from 'react-date-range';
 
 declare var process : { env: { API_URL: string } }
 const apiUrl: string = (process.env.API_URL as string) || 'http://localhost:8000';
@@ -309,23 +309,27 @@ function GpuScheduling() {
               </Grid>
 
               <Grid item xs={12} style={{textAlign: 'center', margin: '20px 0px'}}>
-                  <DateRangePicker
-                    // ranges={[selectionRange]}
-                    // onChange={handleSelect}
-                    ranges={[state.selection1]}
-                    // onChange={(item: any) => setState({ ...state, ...item })}
-                    onChange={(item: any) => updateState({ ...state, ...item })}
-                    dayContentRenderer={customDayContent}
-                    minDate={addDays(new Date(), 1)}
-                    showSelectionPreview={true}
-                    moveRangeOnFirstSelection={false}
-                    months={2}
-                    weekStartsOn={1}
-                    staticRanges={[]}
-                    inputRanges={[]}
-                    // showMonthAndYearPickers={false}
-                    // disabledDates={this.props.disabledDates.map((d) => new Date(d))}
-                  />
+                <DateRange
+                  // ranges={[selectionRange]}
+                  // onChange={handleSelect}
+                  editableDateInputs={true}
+                  ranges={[state.selection1]}
+                  // onChange={(item: any) => setState({ ...state, ...item })}
+                  onChange={(item: any) => updateState({ ...state, ...item })}
+                  dayContentRenderer={customDayContent}
+                  minDate={addDays(new Date(), 1)}
+                  showSelectionPreview={true}
+                  moveRangeOnFirstSelection={false}
+                  months={3}
+                  weekStartsOn={1}
+                  // staticRanges={[]}
+                  // inputRanges={[]}
+                  direction="horizontal"
+                  preventSnapRefocus={true}
+                  // calendarFocus="backwards"
+                  // showMonthAndYearPickers={false}
+                  // disabledDates={this.props.disabledDates.map((d) => new Date(d))}
+                />
               </Grid>
 
             </Grid>
