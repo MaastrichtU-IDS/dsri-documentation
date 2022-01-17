@@ -71,7 +71,11 @@ Set environment `VIRTUAL_HOST` and `VIRTUAL_PORT` in `docker-compose.yml`.
 docker-compose up -d
 ```
 
-> Access at http://dsri.137.120.31.101.nip.io/dsri-documentation/
+To import a CSV of users in the database: remove the header, set `created_at` as a `VARCHAR(255)`,, import the CSV file via phpMyAdmin, then set back `created_at` as date
+
+```sql
+UPDATE user SET created_at = STR_TO_DATE(created_at, '%d-%m-%Y %H:%i:%s')
+```
 
 ## Markdown tips
 

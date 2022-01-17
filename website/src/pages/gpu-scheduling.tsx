@@ -135,23 +135,24 @@ function GpuScheduling() {
           }
         })
         .catch(function (error) {
-          if (error.response) {
-            // Request made and server responded
-            // {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
-            if (error.response.data["detail"]) {
-              updateState({ errorMessage: 'Error: ' + JSON.stringify(error.response.data["detail"])})
-            } else {
-              updateState({ errorMessage: JSON.stringify(error.response.data) })
-            }
-          } else if (error.request) {
-            // The request was made but no response was received
-            console.log('request err');
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
-            updateState({ errorMessage: error.message })
-          }
+          console.log(error)
+          // if (error.response) {
+          //   // Request made and server responded
+          //   // {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
+          //   if (error.response.data["detail"]) {
+          //     updateState({ errorMessage: 'Error: ' + JSON.stringify(error.response.data["detail"])})
+          //   } else {
+          //     updateState({ errorMessage: JSON.stringify(error.response.data) })
+          //   }
+          // } else if (error.request) {
+          //   // The request was made but no response was received
+          //   console.log('request err');
+          //   console.log(error.request);
+          // } else {
+          //   // Something happened in setting up the request that triggered an Error
+          //   console.log('Error', error.message);
+          //   updateState({ errorMessage: error.message })
+          // }
         })
     }
   }
@@ -169,23 +170,24 @@ function GpuScheduling() {
         // console.log(res.data)
       })
       .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // Official Error response structure: {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
-          if (error.response.data["detail"]) {
-            updateState({ errorMessage: 'Error: ' + JSON.stringify(error.response.data["detail"])})
-          } else {
-            updateState({ errorMessage: JSON.stringify(error.response.data) })
-          }
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log('request err');
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-          updateState({ errorMessage: error.message })
-        }
+        console.log(error);
+        // if (error.response) {
+        //   // Request made and server responded
+        //   // Official Error response structure: {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
+        //   if (error.response.data["detail"]) {
+        //     updateState({ errorMessage: 'Error: ' + JSON.stringify(error.response.data["detail"])})
+        //   } else {
+        //     updateState({ errorMessage: JSON.stringify(error.response.data) })
+        //   }
+        // } else if (error.request) {
+        //   // The request was made but no response was received
+        //   console.log('request err');
+        //   console.log(error.request);
+        // } else {
+        //   // Something happened in setting up the request that triggered an Error
+        //   console.log('Error', error.message);
+        //   updateState({ errorMessage: error.message })
+        // }
       })
   }
 

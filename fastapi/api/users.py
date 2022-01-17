@@ -35,7 +35,6 @@ class User(UserModel, table=True):
 engine = create_engine(os.getenv('SQL_URL'))
 SQLModel.metadata.create_all(engine)
 
-
 @router.post("/register", name="Register a user to the DSRI",
     description="Register a user to the DSRI database. Email needs to end with `@maastrichtuniversity.nl`",
     response_model=dict,
