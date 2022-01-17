@@ -38,7 +38,8 @@ services:
     #   - 3306:3306
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    # image: phpmyadmin/phpmyadmin
+    image: phpmyadmin/phpmyadmin:5.1
     depends_on:
       - mysql
     environment:
