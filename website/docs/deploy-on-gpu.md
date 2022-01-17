@@ -144,7 +144,7 @@ Still experimental.
 
 :::
 
-You can check the availability and reserve a GPU slot in our [GPU calendar](/gpu-scheduling).
+You can check the availability and reserve a GPU slot in our [GPU booking calendar](/gpu-booking).
 
 <!-- 
 

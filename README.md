@@ -71,10 +71,11 @@ Set environment `VIRTUAL_HOST` and `VIRTUAL_PORT` in `docker-compose.yml`.
 docker-compose up -d
 ```
 
-To import a CSV of users in the database: remove the header, set `created_at` as a `VARCHAR(255)`,, import the CSV file via phpMyAdmin, then set back `created_at` as date
+To import a CSV of users in the database: remove the header, set `created_at` as a `VARCHAR(255)`, import the CSV file via phpMyAdmin, then set back `created_at` as `DATETIME`
 
 ```sql
 UPDATE user SET created_at = STR_TO_DATE(created_at, '%d-%m-%Y %H:%i:%s')
+UPDATE user SET use_dsri_date = STR_TO_DATE(use_dsri_date, '%d-%m-%Y')
 ```
 
 ## Markdown tips
