@@ -6,8 +6,6 @@ services:
     environment:
       - VIRTUAL_HOST=api.dsri.semanticscience.org
       - LETSENCRYPT_HOST=api.dsri.semanticscience.org
-      # - VIRTUAL_HOST=api.dsri.137.120.31.101.nip.io
-      # - LETSENCRYPT_HOST=api.dsri.137.120.31.101.nip.io
       - VIRTUAL_PORT=80
 
   mysql:
@@ -19,7 +17,4 @@ services:
       - PMA_ABSOLUTE_URI=https://admin.dsri.semanticscience.org
       - VIRTUAL_HOST=admin.dsri.semanticscience.org
       - LETSENCRYPT_HOST=admin.dsri.semanticscience.org
-      # - PMA_ABSOLUTE_URI=https://admin.dsri.137.120.31.101.nip.io
-      # - VIRTUAL_HOST=admin.dsri.137.120.31.101.nip.io
-      # - LETSENCRYPT_HOST=admin.dsri.137.120.31.101.nip.io
       - VIRTUAL_PORT=80

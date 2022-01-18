@@ -127,9 +127,9 @@ function GpuScheduling() {
       )
         .then((res: any) => {
           if (res.data.errorMessage) {
-            updateState({openError: true, errorMessage: res.data.errorMessage})
+            updateState({openError: true, openSuccess: false, errorMessage: res.data.errorMessage})
           } else {
-            updateState({openSuccess: true});
+            updateState({openSuccess: true, openError: false});
             // Refresh booked days
             getBookedDays()
           }
@@ -192,9 +192,9 @@ function GpuScheduling() {
   }
 
   const isBooked = (day: any) => {
-    if (day < new Date()) {
-      return true
-    }
+    // if (day < new Date()) {
+    //   return true
+    // }
     let twoDigitMonth = (day.getMonth() + 1).toString();
     // Need to add +1 to month to fix issue with getting the next month (not sure why)
     if (twoDigitMonth.length == 1)
@@ -215,9 +215,9 @@ function GpuScheduling() {
   function customDayContent(day: any) {
     let extraDot = null;
     const dayIsBooked = isBooked(day)
-    if (!dayIsBooked) {
+    if (dayIsBooked) {
       extraDot = (
-        <div style={{height: "5px", width: "5px", borderRadius: "100%", background: "green",
+        <div style={{height: "5px", width: "5px", borderRadius: "100%", background: "orange",
             position: "absolute", top: 2, right: 2}}></div> 
       )
     // Green dot for available date, or Red dot for booked date? 
@@ -228,17 +228,21 @@ function GpuScheduling() {
       // ) }
     }
     return (
-      <div>
-        {dayIsBooked && 
-          <span style={{color: '#b0bec5', pointerEvents: 'none'}}>{format(day, "d")}</span>
-        } 
-        {!dayIsBooked &&  
-          <>
-            {extraDot}
-            <span>{format(day, "d")}</span>
-          </>
-        }
-      </div>
+      <>
+      {dayIsBooked && 
+        <div style={{cursor: 'not-allowed'}}>
+          {extraDot}
+          <span style={{color: '#b0bec5', pointerEvents: 'none', cursor: 'not-allowed'}}>
+            {format(day, "d")}
+          </span>
+        </div>
+      }
+      {!dayIsBooked &&  
+        <div>
+          <span>{format(day, "d")}</span>
+        </div>
+      }
+      </>
     )
   }
 
@@ -253,7 +257,7 @@ function GpuScheduling() {
           <p style={{marginTop: '10px'}}>
             You can book a GPU for a maximum of 2 weeks.
           </p>
-          <p style={{marginBottom: '20px'}}>
+          <p style={{marginBottom: '40px'}}>
             Once you requested a GPU slot, you will receive an email with more informations, and the GPU will be enabled in your DSRI project for the period requested.
           </p>
 
@@ -320,7 +324,7 @@ function GpuScheduling() {
                   minDate={addDays(new Date(), 1)}
                   showSelectionPreview={true}
                   moveRangeOnFirstSelection={false}
-                  months={3}
+                  months={2}
                   weekStartsOn={1}
                   // staticRanges={[]}
                   // inputRanges={[]}
@@ -336,7 +340,7 @@ function GpuScheduling() {
 
             <button type="submit" style={{margin: '30px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
-              )}>Request GPU for the selected period</button> 
+              )}>Request a GPU for the selected period</button> 
           </form>
 
           <Snackbar

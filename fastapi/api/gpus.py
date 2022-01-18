@@ -7,15 +7,14 @@ import requests
 from fastapi import APIRouter, Body, FastAPI, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Field, Session, SQLModel, create_engine, select
+
 
 NUMBER_OF_GPUS = 8
 MAX_BOOK_DAYS = 14
 
-
-router = APIRouter()
 
 class CreateGpuSchedule(SQLModel, table=False):
     user_email: str = Field(primary_key=True)
@@ -26,42 +25,36 @@ class CreateGpuSchedule(SQLModel, table=False):
 class GpuSchedule(CreateGpuSchedule, table=True):
     gpu_id: Optional[int] = Field(primary_key=True)
 
-
-
-
 engine = create_engine(os.getenv('SQL_URL'))
 SQLModel.metadata.create_all(engine)
+router = APIRouter()
 
 
-@router.get("/reservations", name="Get the Reservations of the DSRI GPUs",
-    description="Reservations of the DSRI GPUs",
-    response_model=dict,
+@router.get("/reservations", name="Get the list of Reservations for the DSRI GPUs",
+    description="List of reservations for the DSRI GPUs",
+    response_model=List[dict],
 )            
-def get_gpu_reservations() -> dict:
+def get_gpu_reservations() -> List[dict]:
     with Session(engine) as session:
         statement = select(GpuSchedule)
         results = session.exec(statement).all()
-        schedule = []
+        reservations = []
         for resa in results:
             resa = jsonable_encoder(resa)
+            # Dont return user email and project ID for privacy 
             del resa['user_email']
             del resa['project_id']
-            schedule.append(resa)
-    return JSONResponse(schedule)
+            reservations.append(resa)
+    return JSONResponse(reservations)
 
 
+# Get a dict with all days with GPUs booked 
 def get_booked_days() -> dict:
     with Session(engine) as session:
         statement = select(GpuSchedule)
-        results = session.exec(statement).all()
+        reservations = session.exec(statement).all()
         booked_days = {}
-        for resa in results:
-            # resa = jsonable_encoder(resa)
-            # del resa['user_email']
-            print(resa)
-            print(resa.starting_date)
-            print(resa.ending_date)
-
+        for resa in reservations:
             delta = resa.ending_date - resa.starting_date   # returns timedelta
             for i in range(delta.days + 1):
                 day_time = resa.starting_date + timedelta(days=i)
@@ -77,8 +70,9 @@ def get_booked_days() -> dict:
                     booked_days[str(day)]['fullyBooked'] = True
     return booked_days
 
-@router.get("/booked-days", name="Get Days where DSRI GPUs are booked",
-    description="Day where DSRI GPUs are fully booked and no reservation can be added",
+
+@router.get("/booked-days", name="Get days when DSRI GPUs are booked",
+    description="Dict of days, with which GPUs are booked for each day, and if the day is fully booked",
     response_model=dict,
 )            
 def get_gpu_booked_days() -> dict:
@@ -112,10 +106,7 @@ def create_gpu_schedule(schedule: CreateGpuSchedule = Body(...)) -> dict:
                 days_already_booked.append(str(day))
             else:
                 for booked_gpu in booked_days[str(day)].keys():
-                    # print('booked_gpu')
-                    # print(booked_gpu)
                     if not booked_gpu == 'fullyBooked' and not booked_gpu in booked_gpus:
-                        # booked_gpus.push(booked_gpu)
                         booked_gpus.append(booked_gpu)
 
     if len(days_already_booked) > 0:
@@ -126,16 +117,14 @@ def create_gpu_schedule(schedule: CreateGpuSchedule = Body(...)) -> dict:
             gpu_id += 1
         else:
             break;
+    # 
     create_schedule = GpuSchedule.from_orm(schedule)
     create_schedule.gpu_id = gpu_id
-    # print('create_schedule!!')
-    # print(create_schedule)
 
     with Session(engine) as session:
         try:
             session.add(create_schedule)
             session.commit()
-            # print(create_schedule)
             return JSONResponse({'message': 'GPU request successfully submitted, you will receieve an email with more details soon.'})
         except Exception as e:
             print(e)

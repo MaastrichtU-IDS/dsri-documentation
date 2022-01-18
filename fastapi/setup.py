@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='RD-FAIRmetric-F4',
+    name='dsri-documentation-api',
     version='0.1.0',
-    url='https://github.com/LUMC-BioSemantics/RD-FAIRmetric-F4.git',
+    url='https://github.com/MaastrichtU-IDS/dsri-documentation.git',
     author='Vincent Emonet',
     author_email='vincent.emonet@gmail.com',
-    description='RD-FAIRmetric-F4',
+    description='DSRI documentation API',
     packages=find_packages(),
     install_requires=open("requirements.txt", "r").readlines(),
 )

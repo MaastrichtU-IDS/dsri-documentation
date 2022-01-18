@@ -14,7 +14,6 @@ api_router = APIRouter()
 api_router.include_router(users.router, prefix="/user", tags=["Users"])
 api_router.include_router(gpus.router, prefix="/gpu", tags=["GPUs"])
 
-
 app = FastAPI(
     title='Manage DSRI users and GPU scheduling',
     description="""API to register DSRI users, manage GPU scheduling, and get statistics

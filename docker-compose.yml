@@ -3,24 +3,6 @@ version: "3"
 services:
   # Frontend deployed on GitHub Pages by a GitHub Action 
 
-  # server:
-  #   restart: unless-stopped
-  #   build: server
-  #   environment:
-  #     - SQL_URL=mysql:3306
-  #     - PASSWORD=${PASSWORD-password}
-
-  fastapi:
-    build: ./fastapi
-    restart: unless-stopped
-    depends_on:
-      - mysql
-      - phpmyadmin
-    environment:
-      - SQL_URL=mysql://dsri-user:${PASSWORD-password}@mysql:3306/dsri-db
-      # - PASSWORD=${PASSWORD-password}
-
-
   mysql:
     restart: unless-stopped
     image: mariadb:10.3
@@ -32,10 +14,8 @@ services:
       MARIADB_PASSWORD: ${PASSWORD-password}
       MARIADB_ROOT_PASSWORD: ${PASSWORD-password}
     volumes:
-      # - ./server/schemas:/docker-entrypoint-initdb.d
       - ./data:/var/lib/mysql
-    # ports:
-    #   - 3306:3306
+      # - ./server/schemas:/docker-entrypoint-initdb.d
 
   phpmyadmin:
     # image: phpmyadmin/phpmyadmin
@@ -47,3 +27,34 @@ services:
       - MYSQL_ROOT_PASSWORD=${PASSWORD-password}
       - MYSQL_PASSWORD=${PASSWORD-password}
       - PMA_HOST=mysql:3306
+
+  fastapi:
+    build: ./fastapi
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - phpmyadmin
+    environment:
+      - SQL_URL=mysql://dsri-user:${PASSWORD-password}@mysql:3306/dsri-db
+
+  cronjob:
+    # Same image as the API
+    build: ./fastapi
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - phpmyadmin
+    environment:
+      - SQL_URL=mysql://dsri-user:${PASSWORD-password}@mysql:3306/dsri-db
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
+      - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
+      - SMTP_USER=${SMTP_USER-Vincent.Emonet}
+      - SMTP_PASSWORD=${SMTP_PASSWORD-password}
+    command: /app/scripts/start_cron.sh
+
+  # server:
+  #   restart: unless-stopped
+  #   build: server
+  #   environment:
+  #     - SQL_URL=mysql:3306
+  #     - PASSWORD=${PASSWORD-password}

@@ -15,7 +15,16 @@ services:
       - 8000:80
     volumes:
       - ./fastapi/api:/app/api
+      - ./fastapi/scripts:/app/scripts
+      - ./fastapi/scripts/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
+    # command: cron -f && uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
     command: uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
+
+  cronjob:
+    volumes:
+      - ./fastapi/api:/app/api
+      - ./fastapi/scripts:/app/scripts
+      - ./fastapi/scripts/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
 
   mysql:
     volumes:

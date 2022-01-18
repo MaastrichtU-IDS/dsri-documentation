@@ -2,17 +2,12 @@ from fastapi import FastAPI, APIRouter, Request, Response, Body
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List, Optional
-from pydantic import BaseModel, Field
-
+from pydantic import BaseModel
 import os
-# import datetime
-import requests
 
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from datetime import datetime, timedelta, date
 from sqlalchemy.exc import IntegrityError 
-
-router = APIRouter()
 
 
 class UserModel(SQLModel, table=False):
@@ -37,9 +32,11 @@ class User(UserModel, table=True):
 
 engine = create_engine(os.getenv('SQL_URL'))
 SQLModel.metadata.create_all(engine)
+router = APIRouter()
 
-@router.post("/register", name="Register a user to the DSRI",
-    description="Register a user to the DSRI database. Email needs to end with `@maastrichtuniversity.nl`",
+
+@router.post("/register", name="Register a user to access the DSRI",
+    description="Register a user in the DSRI database to request access to the DSRI. Email needs to end with `@maastrichtuniversity.nl`",
     response_model=dict,
 )            
 def register_user(createUser: UserModel = Body(...)) -> dict:
@@ -59,7 +56,7 @@ def register_user(createUser: UserModel = Body(...)) -> dict:
 
 
 @router.get("/stats", name="Stats about the DSRI users and projects",
-    description="Stats about the DSRI users and projects",
+    description="Some stats about the DSRI users and projects",
     response_model=dict,
 )            
 def get_stats() -> dict:

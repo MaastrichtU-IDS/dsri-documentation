@@ -55,20 +55,28 @@ git pull
 
 ## Run with Docker
 
+Run the database on http://localhost:8080, API on http://localhost:8000, and CRON job:
+
 ```bash
 docker-compose up
 ```
 
-> Access at http://localhost:3000/dsri-documentation/
-
 ## Deploy on server
 
-Using jwilder's [nginx-proxy](https://github.com/jwilder/nginx-proxy) and [nip.io](https://nip.io/).
+Define the `.env` file to change the default configuration (admin password, Slack config):
 
-Set environment `VIRTUAL_HOST` and `VIRTUAL_PORT` in `docker-compose.yml`.
+```
+PASSWORD=password
+SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
+SLACK_CHANNEL=UQL6BCQJH
+SMTP_USER=user@example.com
+SMTP_PASSWORD=password
+```
+
+Start the docker-compose in production using jwilder's [nginx-proxy](https://github.com/jwilder/nginx-proxy) and [nip.io](https://nip.io/).
 
 ```bash
-docker-compose up -d
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
 To import a CSV of users in the database: remove the header, set `created_at` as a `VARCHAR(255)`, import the CSV file via phpMyAdmin, then set back `created_at` as `DATETIME`

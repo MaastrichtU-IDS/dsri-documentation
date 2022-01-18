@@ -1,16 +1,8 @@
-# RD-FAIRmetric-F4
-
-RD-FAIRmetric-F4
+# DSRI documentation API
 
 
 ## Deploy the API
 
-Clone the repository:
-
-```bash
-git clone https://github.com/LUMC-BioSemantics/RD-FAIRmetric-F4
-cd RD-FAIRmetric-F4
-```
 
 ### For development
 
