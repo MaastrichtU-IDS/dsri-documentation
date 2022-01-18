@@ -9,6 +9,8 @@ from sqlmodel import Field, Session, SQLModel, create_engine, select
 from datetime import datetime, timedelta, date
 from sqlalchemy.exc import IntegrityError 
 
+from scripts.notification import post_msg_to_slack
+
 
 class UserModel(SQLModel, table=False):
     email: str = Field(default='@maastrichtuniversity.nl', primary_key=True)
@@ -52,6 +54,7 @@ def register_user(createUser: UserModel = Body(...)) -> dict:
             print(e)
             return JSONResponse({'errorMessage': 'Error creating the user in the database'})
 
+    print(post_msg_to_slack(f'👤➕ New user: {createUser.email}'))
     return JSONResponse({'message': f'User {createUser.email} successfully added'})
 
 

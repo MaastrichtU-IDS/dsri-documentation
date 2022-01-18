@@ -79,6 +79,8 @@ def post_msg_to_slack(text):
         # 'icon_emoji': ':date:',
         # 'username': 'DSRI GPU booker',
     }
+    print(data)
+    print(str(os.getenv('SLACK_BOT_TOKEN')))
     return requests.post(
         'https://slack.com/api/chat.postMessage', 
         json.dumps(data), 
@@ -102,13 +104,13 @@ with Session(engine) as session:
         if datetime.fromisoformat(resa['starting_date']).date() == datetime.today().date():
             html_msg = f'✅ <b>GPU {resa["gpu_id"]}</b> in project <b>{resa["project_id"]}</b> for {resa["user_email"]}'
             start_msgs.append(html_msg)
-            text_msg = f'🚀 Starting: *GPU {resa["gpu_id"]}* in project *{resa["project_id"]}* for {resa["user_email"]}'
+            text_msg = f'💽 🚀 Starting: *GPU {resa["gpu_id"]}* in project *{resa["project_id"]}* for {resa["user_email"]} on the {datetime.today().date()}'
             print(post_msg_to_slack(text_msg))
             
         if datetime.fromisoformat(resa['ending_date']).date() == datetime.today().date():
             html_msg = f'❌ <b>GPU {resa["gpu_id"]}</b> booking in project <b>{resa["project_id"]}</b> for {resa["user_email"]}'
             end_msgs.append(html_msg)
-            text_msg = f'🛬 Ending: *GPU {resa["gpu_id"]}* booking in project *{resa["project_id"]}* for {resa["user_email"]}'
+            text_msg = f'💽 🛬 Ending: *GPU {resa["gpu_id"]}* booking in project *{resa["project_id"]}* for {resa["user_email"]} on the {datetime.today().date()}'
             print(post_msg_to_slack(text_msg))
 
     send_msg = ''
