@@ -16,13 +16,13 @@ NUMBER_OF_GPUS = 8
 MAX_BOOK_DAYS = 14
 
 
-class CreateGpuSchedule(SQLModel, table=False):
+class CreateGpuBooking(SQLModel, table=False):
     user_email: str = Field(primary_key=True)
     starting_date: datetime = Field(primary_key=True)
     ending_date: datetime = Field(primary_key=True)
     project_id: str = Field(primary_key=False)
 
-class GpuSchedule(CreateGpuSchedule, table=True):
+class GpuBooking(CreateGpuBooking, table=True):
     gpu_id: Optional[int] = Field(primary_key=True)
 
 engine = create_engine(os.getenv('SQL_URL'))
@@ -36,7 +36,7 @@ router = APIRouter()
 )            
 def get_gpu_reservations() -> List[dict]:
     with Session(engine) as session:
-        statement = select(GpuSchedule)
+        statement = select(GpuBooking)
         results = session.exec(statement).all()
         reservations = []
         for resa in results:
@@ -51,7 +51,7 @@ def get_gpu_reservations() -> List[dict]:
 # Get a dict with all days with GPUs booked 
 def get_booked_days() -> dict:
     with Session(engine) as session:
-        statement = select(GpuSchedule)
+        statement = select(GpuBooking)
         reservations = session.exec(statement).all()
         booked_days = {}
         for resa in reservations:
@@ -84,7 +84,7 @@ def get_gpu_booked_days() -> dict:
     description="Request a DSRI GPU for a period, this will check if any GPU are available for the requested period",
     response_model=dict,
 )            
-def create_gpu_schedule(schedule: CreateGpuSchedule = Body(...)) -> dict:
+def create_gpu_schedule(schedule: CreateGpuBooking = Body(...)) -> dict:
     # Generate GPU ID depending on availability
     booked_days = get_booked_days()
     booked_gpus = []
@@ -117,13 +117,13 @@ def create_gpu_schedule(schedule: CreateGpuSchedule = Body(...)) -> dict:
             gpu_id += 1
         else:
             break;
-    # 
-    create_schedule = GpuSchedule.from_orm(schedule)
-    create_schedule.gpu_id = gpu_id
+
+    create_booking = GpuBooking.from_orm(schedule)
+    create_booking.gpu_id = gpu_id
 
     with Session(engine) as session:
         try:
-            session.add(create_schedule)
+            session.add(create_booking)
             session.commit()
             return JSONResponse({'message': 'GPU request successfully submitted, you will receieve an email with more details soon.'})
         except Exception as e:

@@ -9,7 +9,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from api.gpus import GpuSchedule
+from api.gpus import GpuBooking
 
 print(f'🔎 Checking GPU reservations to send booking notifications')
 
@@ -93,7 +93,7 @@ def post_msg_to_slack(text):
 # Query the SQL DB to get the GPU reservations
 # And send msgs if reservations starts/ends today
 with Session(engine) as session:
-    statement = select(GpuSchedule)
+    statement = select(GpuBooking)
     results = session.exec(statement).all()
     schedule = []
     start_msgs = []
