@@ -80,11 +80,11 @@ parameters:
   value: default@maastrichtuniversity.nl
   description: Email used to automatically define git config --global user.email
 
-# - name: IMAGE_PULL_POLICY
-#   displayName: Image pull policy
-#   description: Use Always to make sure the new image is pulled when you update it
-#   value: 'IfNotPresent'
-#   required: true
+- name: IMAGE_PULL_POLICY
+  displayName: Image pull policy
+  description: Use Always to make sure the new image is pulled when you update it
+  value: 'IfNotPresent'
+  required: true
 # - name: WORKDIR
 #   displayName: Workspace path
 #   description: Path to the workspace in the container (stored in persistent storage). By default Nvidia images uses /workspace
@@ -159,10 +159,10 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
       spec:
         # Automatically created by OpenShift, it is deleted when pod stopped
-        # tolerations:
-        #   - effect: NoSchedule
-        #     key: "nvidia.com/gpu"
-        #     operator: Exists
+        tolerations:
+          - effect: NoSchedule
+            key: "nvidia.com/gpu"
+            operator: Exists
         serviceAccountName: anyuid
         # nodeSelector:
         #   nvidia.com/gpu: 'true'
@@ -172,7 +172,7 @@ objects:
             # imagePullPolicy: IfNotPresent
             ## In case the ImageStream does not update properly:
             image: ${IMAGE_NAME}
-            imagePullPolicy: Always
+            imagePullPolicy: ${IMAGE_PULL_POLICY}
             # nvcr.io/nvidia/tensorflow:21.08-tf2-py3
             resources:
               requests:
