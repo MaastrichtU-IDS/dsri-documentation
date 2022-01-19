@@ -24,7 +24,7 @@ function GpuScheduling() {
   const { siteConfig = {} } = context;
 
   const errorMessages: any = {}
-  // const formObj: any = {'email': null, 'project_id': null}
+  const formObj: any = {'email': '', 'project_id': ''}
   const [state, setState] = React.useState({
     errorMessages: errorMessages,
     formObj: {'email': null, 'project_id': null},
