@@ -6,11 +6,13 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
-import { FormHelperText, Snackbar, Alert, Checkbox, FormControlLabel, Grid, MenuItem, InputLabel, TextField, FormControl, FormGroup } from "@mui/material";
+import { Typography, Paper, Box, Snackbar, Card, Alert, Checkbox, FormControlLabel, Grid, MenuItem, InputLabel, TextField, FormControl, FormGroup } from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+// import SuccessIcon from '@mui/icons-material/CheckCircleOutline';
+
 
 import axios from 'axios';
 
@@ -34,9 +36,9 @@ function Registration() {
   const [state, setState] = React.useState({
     errorMessages: errorMessages,
     formObj: formObj,
-    errorMessage: {},
-    openSuccess: false,
-    openError: false,
+    errorMessage: '',
+    openSuccess: 'none',
+    openError: 'none',
   });
   const stateRef = React.useRef(state);
   // Avoid conflict when async calls
@@ -128,13 +130,19 @@ function Registration() {
     // Trigger JSON-LD file download
     event.preventDefault();
     let error = false;
+    updateState({
+      openError: 'none',
+      openSuccess: 'none',
+      errorMessage: ''
+    })
     // var element = document.createElement('a');
     // curl -X POST -d '{"email":"vincent@wwfr.fr", "username":"vincent"}' -H "Content-Type: application/json" http://localhost:4000/register
 
     if (!('gdpr' in state.formObj) || !state.formObj['gdpr']) {
       error = true;
       updateState({
-        openError: true, 
+        openError: 'inline',
+        openSuccess: 'none',
         errorMessage: 'You need to accept the GDPR terms.'
       })
     }
@@ -152,12 +160,15 @@ function Registration() {
           console.log('New user registered', state.formObj)
           console.log(res)
           if (res.data.errorMessage) {
-            updateState({openError: true, errorMessage: res.data.errorMessage})
+            updateState({
+              openError: 'inline', 
+              openSuccess: 'none',
+              errorMessage: res.data.errorMessage})
           } else {
-            updateState({openSuccess: true})
-            setTimeout(function(){
-              history.push("/dsri-documentation/docs/");
-            }, 6000);
+            updateState({openSuccess: 'inline', openError: 'none'})
+            // setTimeout(function(){
+            //   history.push("/dsri-documentation/docs/");
+            // }, 6000);
           }
         })
         .catch(function (error) {
@@ -215,7 +226,7 @@ function Registration() {
 
   return (
     <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University">
-      <main>
+      <main style={{textAlign: 'center'}}>
         <FormGroup style={{textAlign: 'center', width: '100%'}}>
           <h1 style={{ textAlign: 'center', margin: '30px 0px' }}>
             Register to access the DSRI
@@ -498,42 +509,24 @@ function Registration() {
               </Grid>
             </Grid>
 
-            {/* 
-              TODO: Number of users expected? If hosting a workshop
-            */}
+            <Box style={{ marginTop: '20px'}}>
+              <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
+                  ✔️&nbsp;&nbsp;User registered successfully, soon you will receive an email with more informations to access and use the DSRI.
+              </Paper>
+            </Box>
+
+            <Box style={{ marginTop: '20px'}}>
+              <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px'}} sx={{ display: state.openError }}>
+                ⚠️&nbsp;&nbsp;{state.errorMessage}
+              </Paper>
+            </Box>
+
             <button type="submit" style={{margin: '30px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
               )}>Submit</button> 
+
           </form>
 
-          <Snackbar
-            open={state.openSuccess}
-            autoHideDuration={12000}
-            onClose={() => {
-              updateState({ openSuccess: false});
-            }}
-            style={{textAlign: 'center'}}
-          >
-            <Alert onClose={() => { updateState({ openSuccess: false})}} severity="success" sx={{ width: '100%' }}>
-              <>
-                User registered successfully, soon you will receive an email with more informations to access and use the DSRI.
-              </>
-            </Alert>
-          </Snackbar>
-
-          <Snackbar
-            open={state.openError}
-            autoHideDuration={12000}
-            onClose={() => {
-              updateState({ openError: false});
-            }}
-          >
-            <Alert onClose={() => { updateState({ openError: false})}} severity="error" sx={{ width: '100%' }}>
-              <>
-                {state.errorMessage}
-              </>
-            </Alert>
-          </Snackbar>
         </FormGroup>
 
       </main>

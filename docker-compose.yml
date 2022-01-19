@@ -16,6 +16,7 @@ services:
     volumes:
       - ./data:/var/lib/mysql
       # - ./server/schemas:/docker-entrypoint-initdb.d
+    command: --max-allowed-packet=16M
 
   phpmyadmin:
     # image: phpmyadmin/phpmyadmin

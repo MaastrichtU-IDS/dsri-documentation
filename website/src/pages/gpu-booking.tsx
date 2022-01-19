@@ -4,7 +4,7 @@ import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 // import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
-import { Snackbar, Alert, Grid, TextField, FormControl } from "@mui/material";
+import { Stack, Alert, Grid, TextField, FormControl, Box, Card, Paper } from "@mui/material";
 import axios from 'axios';
 
 
@@ -28,9 +28,9 @@ function GpuScheduling() {
   const [state, setState] = React.useState({
     errorMessages: errorMessages,
     formObj: formObj,
-    errorMessage: {},
-    openSuccess: false,
-    openError: false,
+    errorMessage: '',
+    openSuccess: 'none',
+    openError: 'none',
     reservations: {},
     bookedDays: {},
     selection1: {
@@ -106,6 +106,11 @@ function GpuScheduling() {
   const handleSubmit  = (event: React.FormEvent) => {
     event.preventDefault();
     let error = false;
+    updateState({
+      openError: 'none',
+      openSuccess: 'none',
+      errorMessage: ''
+    })
     // curl -X POST -d '{"email":"vincent@wwfr.fr", "username":"vincent"}' -H "Content-Type: application/json" http://localhost:8000/user/register
 
     const data = {
@@ -127,9 +132,16 @@ function GpuScheduling() {
       )
         .then((res: any) => {
           if (res.data.errorMessage) {
-            updateState({openError: true, openSuccess: false, errorMessage: res.data.errorMessage})
+            updateState({
+              openError: 'inline', 
+              openSuccess: 'none', 
+              errorMessage: res.data.errorMessage
+            })
           } else {
-            updateState({openSuccess: true, openError: false});
+            updateState({
+              openSuccess: 'inline', 
+              openError: 'none'
+            });
             // Refresh booked days
             getBookedDays()
           }
@@ -248,8 +260,8 @@ function GpuScheduling() {
 
   return (
     <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University">
-      <main>
-        <FormControl fullWidth style={{textAlign: 'center', margin: '30px 0px'}}>
+      {/* <main> */}
+        <FormControl fullWidth style={{textAlign: 'center', marginTop: '30px'}}>
           <h1>
             Book a GPU
           </h1>
@@ -335,51 +347,27 @@ function GpuScheduling() {
                   // disabledDates={this.props.disabledDates.map((d) => new Date(d))}
                 />
               </Grid>
-
             </Grid>
+
+
+            <Box style={{ textAlign: 'center', marginTop: '10px'}}>
+              <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px'}} sx={{ display: state.openError }}>
+                ⚠️&nbsp;&nbsp;{state.errorMessage}
+              </Paper>
+
+              <Card elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
+                  ✔️&nbsp;&nbsp;GPU requested successfully, soon you will receive an email with more informations to access and use the GPU on the DSRI.
+              </Card>
+            </Box>
 
             <button type="submit" style={{margin: '30px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
               )}>Request a GPU for the selected period</button> 
           </form>
 
-          <Snackbar
-            open={state.openSuccess}
-            autoHideDuration={10000}
-            onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
-              if (reason === 'clickaway') {
-                return;
-              }
-              updateState({ openSuccess: false});
-            }}
-            style={{textAlign: 'center'}}
-          >
-            <Alert key='successAlert' onClose={() => { updateState({ openSuccess: false})}} severity="success" sx={{ width: '100%' }}>
-              <>
-                GPU requested successfully, soon you will receive an email with more informations to access and use the GPU on the DSRI.
-              </>
-            </Alert>
-          </Snackbar>
-
-          <Snackbar
-            open={state.openError}
-            autoHideDuration={10000}
-            onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
-              if (reason === 'clickaway') {
-                return;
-              }
-              updateState({ openError: false});
-            }}
-          >
-            <Alert key='successAlert' onClose={() => { updateState({ openError: false})}} severity="error" sx={{ width: '100%' }}>
-              <>
-                {state.errorMessage}
-              </>
-            </Alert>
-          </Snackbar>
         </FormControl>
 
-      </main>
+      {/* </main> */}
     </Layout>
   );
 }
