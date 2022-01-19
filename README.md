@@ -86,6 +86,40 @@ UPDATE user SET created_at = STR_TO_DATE(created_at, '%d-%m-%Y %H:%i:%s');
 UPDATE user SET use_dsri_date = STR_TO_DATE(use_dsri_date, '%d-%m-%Y');
 ```
 
+### Backup
+
+Mariabackup will run as the `mysql` user in the container, so the permissions on `/backup` will need to ensure that it can be written to by this user:
+
+```bash
+docker-compose exec mysql chown mysql: /backup
+```
+
+To perform the backup:
+
+```bash
+docker-compose exec --user mysql mysql mariabackup --backup --target-dir=/backup --user=root --password=$PASSWORD
+```
+
+If you wish to take a copy of the `/backup` you can do so without stopping the container or getting an inconsistent backup.
+
+```bash
+docker-compose exec --user mysql mysql tar --create --xz --file - /backup > backup.tar.xz
+```
+
+**Restore the backup**: At some point before doing the restore, the backup needs to be prepared. Here `/my/own/backupdir` contains a previous backup. Perform the prepare like this:
+
+```bash
+docker run --user mysql --rm -v $(pwd)/backup:/backup mariadb:latest mariabackup --prepare --target-dir=/backup
+```
+
+Now that the image is prepared, start the container with both the data and the backup volumes and restore the backup:
+
+```bash
+docker run --user mysql --rm -v $(pwd)/backup:/var/lib/mysql -v /my/own/backupdir:/backup mariadb:latest mariabackup --copy-back --target-dir=/backup
+```
+
+You can now use it normally with `docker-compose`
+
 ## Markdown tips
 
 ```

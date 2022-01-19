@@ -7,8 +7,8 @@ import os
 import time
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from datetime import datetime, timedelta, date
-from sqlalchemy.exc import IntegrityError 
-from MySQLdb import OperationalError
+from sqlalchemy.exc import IntegrityError, OperationalError
+# from MySQLdb import OperationalError
 
 from api.notifications import post_msg_to_slack
 
@@ -52,11 +52,16 @@ def register_user(createUser: UserModel = Body(...)) -> dict:
         except IntegrityError:
             return JSONResponse({'errorMessage': f'User with the email {createUser.email} already exists'})
         except OperationalError as e:
-            # Sometime we get "MySQL server has gone away" and we just need to rerun the query
-            print(e)
-            print('Got "MySQL server has gone away" error, retrying to add the user.')
-            time.sleep(1)
-            return register_user(createUser)
+            if e[0] == 2006:
+                # Sometime we get "MySQL server has gone away" and we just need to rerun the query
+                print(e)
+                print('Got "MySQL server has gone away" error, retrying to add the user.')
+                time.sleep(1)
+                return register_user(createUser)
+            else:
+                print('Operational error')
+                print(e)
+                return JSONResponse({'errorMessage': 'Error creating the user in the database, try again!'})
         except Exception as e:
             print(e)
             return JSONResponse({'errorMessage': 'Error creating the user in the database, try again!'})

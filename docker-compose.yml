@@ -15,6 +15,8 @@ services:
       MARIADB_ROOT_PASSWORD: ${PASSWORD-password}
     volumes:
       - ./data:/var/lib/mysql
+      # - ./backup:/backup
+      # docker-compose exec mysql chown mysql: /backup
       # - ./server/schemas:/docker-entrypoint-initdb.d
     command: --max-allowed-packet=16M
 
