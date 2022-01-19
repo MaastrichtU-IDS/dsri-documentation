@@ -4,9 +4,11 @@ from fastapi.encoders import jsonable_encoder
 from typing import List, Optional
 from pydantic import BaseModel
 import os
+import time
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from datetime import datetime, timedelta, date
 from sqlalchemy.exc import IntegrityError 
+from MySQLdb import OperationalError
 
 from api.notifications import post_msg_to_slack
 
@@ -49,6 +51,10 @@ def register_user(createUser: UserModel = Body(...)) -> dict:
             session.commit()
         except IntegrityError:
             return JSONResponse({'errorMessage': f'User with the email {createUser.email} already exists'})
+        except OperationalError as e:
+            # Sometime we get "MySQL server has gone away" and we just need to rerun the query
+            time.sleep(1)
+            return register_user(createUser)
         except Exception as e:
             print(e)
             return JSONResponse({'errorMessage': 'Error creating the user in the database, try again!'})
