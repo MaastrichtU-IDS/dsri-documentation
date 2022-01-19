@@ -157,10 +157,17 @@ function GpuScheduling() {
             loading: false,
           });
           if (error.response) {
+            // Error: [{"loc":["body","user_email"],"msg":"field required","type":"value_error.missing"},{"loc":["body","project_id"],"msg":"field required","type":"value_error.missing"}]
             // Request made and server responded
             // {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
             if (error.response.data["detail"]) {
-              updateState({ errorMessage: 'Error: ' + JSON.stringify(error.response.data["detail"])})
+              const errorMsg = JSON.stringify(error.response.data["detail"]).replace(/"/g, '').replace(/{/g, '').replace(/}/g, '')
+                .replace(/\[/g, '').replace(/\]/g, '').replace(/loc/g, '').replace(/body/g, '').replace(/msg/g, ': ').replace(/type/g, '')
+                .replace(/value_error.missing/g, ' and ')
+              // const errorMsg = JSON.stringify(error.response.data["detail"]).replaceAll('"','').replaceAll('{','').replaceAll('}','')
+              //   .replaceAll('[','').replaceAll(']','').replaceAll('loc','').replaceAll('body','').replaceAll('msg',': ').replaceAll('type','')
+              //   .replaceAll('value_error.missing',' and ')
+              updateState({ errorMessage: 'Error: ' + errorMsg})
             } else {
               updateState({ errorMessage: JSON.stringify(error.response.data) })
             }
