@@ -24,10 +24,10 @@ function GpuScheduling() {
   const { siteConfig = {} } = context;
 
   const errorMessages: any = {}
-  const formObj: any = {'gdpr': false}
+  // const formObj: any = {'email': null, 'project_id': null}
   const [state, setState] = React.useState({
     errorMessages: errorMessages,
-    formObj: formObj,
+    formObj: {'email': null, 'project_id': null},
     errorMessage: '',
     openSuccess: 'none',
     openError: 'none',
@@ -162,8 +162,8 @@ function GpuScheduling() {
             // {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
             if (error.response.data["detail"]) {
               const errorMsg = JSON.stringify(error.response.data["detail"]).replace(/"/g, '').replace(/{/g, '').replace(/}/g, '')
-                .replace(/\[/g, '').replace(/\]/g, '').replace(/loc/g, '').replace(/body/g, '').replace(/msg/g, ': ').replace(/type/g, '')
-                .replace(/value_error.missing/g, ' and ')
+                .replace(/\[/g, '').replace(/\]/g, '').replace(/:/g, '').replace(/,/g, '')
+                .replace(/loc/g, '').replace(/body/g, '').replace(/msg/g, ': ').replace(/type/g, '').replace(/value_error.missing/g, ' - ')
               // const errorMsg = JSON.stringify(error.response.data["detail"]).replaceAll('"','').replaceAll('{','').replaceAll('}','')
               //   .replaceAll('[','').replaceAll(']','').replaceAll('loc','').replaceAll('body','').replaceAll('msg',': ').replaceAll('type','')
               //   .replaceAll('value_error.missing',' and ')
