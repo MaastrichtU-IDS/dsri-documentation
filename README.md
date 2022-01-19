@@ -82,8 +82,8 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 To import a CSV of users in the database: remove the header, set `created_at` as a `VARCHAR(255)`, import the CSV file via phpMyAdmin, then set back `created_at` as `DATETIME`
 
 ```sql
-UPDATE user SET created_at = STR_TO_DATE(created_at, '%d-%m-%Y %H:%i:%s')
-UPDATE user SET use_dsri_date = STR_TO_DATE(use_dsri_date, '%d-%m-%Y')
+UPDATE user SET created_at = STR_TO_DATE(created_at, '%d-%m-%Y %H:%i:%s');
+UPDATE user SET use_dsri_date = STR_TO_DATE(use_dsri_date, '%d-%m-%Y');
 ```
 
 ## Markdown tips

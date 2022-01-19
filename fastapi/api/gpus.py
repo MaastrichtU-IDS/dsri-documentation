@@ -1,8 +1,6 @@
 import os
 from datetime import datetime, timedelta
 from typing import List, Optional
-
-# import datetime
 import requests
 from fastapi import APIRouter, Body, FastAPI, Request, Response
 from fastapi.encoders import jsonable_encoder
@@ -10,6 +8,8 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Field, Session, SQLModel, create_engine, select
+
+from api.notifications import post_msg_to_slack
 
 
 NUMBER_OF_GPUS = 8
@@ -113,10 +113,13 @@ def create_gpu_schedule(schedule: CreateGpuBooking = Body(...)) -> dict:
         return JSONResponse({'errorMessage': 'Some of the dates provided are already fully booked: ' + str(', '.join(days_already_booked))})
 
     while True:
+        # Get a GPU ID that is available for the period requested
         if str(gpu_id) in booked_gpus:
             gpu_id += 1
         else:
             break;
+    if gpu_id > NUMBER_OF_GPUS:
+        return JSONResponse({'errorMessage': 'No GPU is available for the date provided.'})
 
     create_booking = GpuBooking.from_orm(schedule)
     create_booking.gpu_id = gpu_id
@@ -125,8 +128,9 @@ def create_gpu_schedule(schedule: CreateGpuBooking = Body(...)) -> dict:
         try:
             session.add(create_booking)
             session.commit()
-            return JSONResponse({'message': 'GPU request successfully submitted, you will receieve an email with more details soon.'})
+            print(post_msg_to_slack(f'📅➕ New booking: GPU {create_booking.gpu_id} for {create_booking.user_email} from {create_booking.starting_date} to {create_booking.ending_date}'))
+            return JSONResponse({'message': 'GPU booking successfully submitted, you will receive an email with more details soon.'})
         except Exception as e:
             print(e)
-            return JSONResponse({'errorMessage': 'Error creating the schedule entry in the calendar'})
+            return JSONResponse({'errorMessage': 'Error creating the GPU booking.'})
 

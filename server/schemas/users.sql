@@ -27,10 +27,11 @@ CREATE TABLE users(
 -- );
 
 DROP TABLE IF EXISTS gpu_schedule;
-CREATE TABLE gpu_schedule(
+CREATE TABLE gpubooking(
    user_email VARCHAR(255),
    gpu_id VARCHAR(255),
    starting_date VARCHAR(255),
    ending_date VARCHAR(255),
+   project_id VARCHAR(255),
    PRIMARY KEY (user_email, gpu_id, starting_date, ending_date)
 );

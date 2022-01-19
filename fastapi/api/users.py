@@ -4,12 +4,11 @@ from fastapi.encoders import jsonable_encoder
 from typing import List, Optional
 from pydantic import BaseModel
 import os
-
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from datetime import datetime, timedelta, date
 from sqlalchemy.exc import IntegrityError 
 
-from scripts.notification import post_msg_to_slack
+from api.notifications import post_msg_to_slack
 
 
 class UserModel(SQLModel, table=False):
