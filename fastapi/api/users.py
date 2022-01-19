@@ -53,6 +53,8 @@ def register_user(createUser: UserModel = Body(...)) -> dict:
             return JSONResponse({'errorMessage': f'User with the email {createUser.email} already exists'})
         except OperationalError as e:
             # Sometime we get "MySQL server has gone away" and we just need to rerun the query
+            print(e)
+            print('Got "MySQL server has gone away" error, retrying to add the user.')
             time.sleep(1)
             return register_user(createUser)
         except Exception as e:

@@ -4,7 +4,7 @@ import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 // import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
-import { Stack, Alert, Grid, TextField, FormControl, Box, Card, Paper } from "@mui/material";
+import { CircularProgress, Alert, Grid, TextField, FormControl, Box, Card, Paper } from "@mui/material";
 import axios from 'axios';
 
 
@@ -31,6 +31,7 @@ function GpuScheduling() {
     errorMessage: '',
     openSuccess: 'none',
     openError: 'none',
+    loading: false,
     reservations: {},
     bookedDays: {},
     selection1: {
@@ -107,6 +108,7 @@ function GpuScheduling() {
     event.preventDefault();
     let error = false;
     updateState({
+      loading: true,
       openError: 'none',
       openSuccess: 'none',
       errorMessage: ''
@@ -135,36 +137,42 @@ function GpuScheduling() {
             updateState({
               openError: 'inline', 
               openSuccess: 'none', 
-              errorMessage: res.data.errorMessage
+              errorMessage: res.data.errorMessage,
+              loading: false,
             })
           } else {
             updateState({
               openSuccess: 'inline', 
-              openError: 'none'
+              openError: 'none',
+              loading: false,
             });
-            // Refresh booked days
-            getBookedDays()
           }
+          // Refresh booked days
+          getBookedDays()
         })
         .catch(function (error) {
-          console.log(error)
-          // if (error.response) {
-          //   // Request made and server responded
-          //   // {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
-          //   if (error.response.data["detail"]) {
-          //     updateState({ errorMessage: 'Error: ' + JSON.stringify(error.response.data["detail"])})
-          //   } else {
-          //     updateState({ errorMessage: JSON.stringify(error.response.data) })
-          //   }
-          // } else if (error.request) {
-          //   // The request was made but no response was received
-          //   console.log('request err');
-          //   console.log(error.request);
-          // } else {
-          //   // Something happened in setting up the request that triggered an Error
-          //   console.log('Error', error.message);
-          //   updateState({ errorMessage: error.message })
-          // }
+          updateState({
+            openSuccess: 'none', 
+            openError: 'inline',
+            loading: false,
+          });
+          if (error.response) {
+            // Request made and server responded
+            // {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
+            if (error.response.data["detail"]) {
+              updateState({ errorMessage: 'Error: ' + JSON.stringify(error.response.data["detail"])})
+            } else {
+              updateState({ errorMessage: JSON.stringify(error.response.data) })
+            }
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log('request err');
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            updateState({ errorMessage: error.message })
+          }
         })
     }
   }
@@ -349,15 +357,16 @@ function GpuScheduling() {
               </Grid>
             </Grid>
 
-
             <Box style={{ textAlign: 'center', marginTop: '10px'}}>
+              {state.loading && 
+                <CircularProgress style={{marginTop: '20px'}} />
+              }
               <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px'}} sx={{ display: state.openError }}>
                 ⚠️&nbsp;&nbsp;{state.errorMessage}
               </Paper>
-
-              <Card elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
+              <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
                   ✔️&nbsp;&nbsp;GPU requested successfully, soon you will receive an email with more informations to access and use the GPU on the DSRI.
-              </Card>
+              </Paper>
             </Box>
 
             <button type="submit" style={{margin: '30px 0px'}} className={clsx(

@@ -6,7 +6,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
-import { Typography, Paper, Box, Snackbar, Card, Alert, Checkbox, FormControlLabel, Grid, MenuItem, InputLabel, TextField, FormControl, FormGroup } from "@mui/material";
+import { Typography, CircularProgress, Paper, Box, Snackbar, Card, Alert, Checkbox, FormControlLabel, Grid, MenuItem, InputLabel, TextField, FormControl, FormGroup } from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -39,6 +39,7 @@ function Registration() {
     errorMessage: '',
     openSuccess: 'none',
     openError: 'none',
+    loading: false,
   });
   const stateRef = React.useRef(state);
   // Avoid conflict when async calls
@@ -131,6 +132,7 @@ function Registration() {
     event.preventDefault();
     let error = false;
     updateState({
+      loading: true,
       openError: 'none',
       openSuccess: 'none',
       errorMessage: ''
@@ -141,6 +143,7 @@ function Registration() {
     if (!('gdpr' in state.formObj) || !state.formObj['gdpr']) {
       error = true;
       updateState({
+        loading: false,
         openError: 'inline',
         openSuccess: 'none',
         errorMessage: 'You need to accept the GDPR terms.'
@@ -161,17 +164,19 @@ function Registration() {
           console.log(res)
           if (res.data.errorMessage) {
             updateState({
+              loading: false,
               openError: 'inline', 
               openSuccess: 'none',
               errorMessage: res.data.errorMessage})
           } else {
-            updateState({openSuccess: 'inline', openError: 'none'})
+            updateState({openSuccess: 'inline', openError: 'none', loading: false})
             // setTimeout(function(){
             //   history.push("/dsri-documentation/docs/");
             // }, 6000);
           }
         })
         .catch(function (error) {
+          updateState({openSuccess: 'none', openError: 'inline', loading: false})
           if (error.response) {
             // Request made and server responded
             // {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
@@ -510,12 +515,12 @@ function Registration() {
             </Grid>
 
             <Box style={{ marginTop: '20px'}}>
+              {state.loading && 
+                <CircularProgress style={{marginTop: '20px'}} />
+              }
               <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
                   ✔️&nbsp;&nbsp;User registered successfully, soon you will receive an email with more informations to access and use the DSRI.
               </Paper>
-            </Box>
-
-            <Box style={{ marginTop: '20px'}}>
               <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px'}} sx={{ display: state.openError }}>
                 ⚠️&nbsp;&nbsp;{state.errorMessage}
               </Paper>
