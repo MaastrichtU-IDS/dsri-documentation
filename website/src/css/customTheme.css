@@ -44,3 +44,7 @@ html[data-theme='dark'] .header-github-link:before {
 .rdrMonth {
   width: 100% !important;
 }
+.rdrMonthName {
+  text-align: center !important;
+  color: #1c1e21 !important;
+}
