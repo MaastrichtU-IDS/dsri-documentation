@@ -27,14 +27,15 @@ class UserModel(SQLModel, table=False):
     number_of_collaborators: Optional[int]
     # use_dsri_date: Optional[date]
     use_dsri_date: Optional[datetime]
+    gdpr_avg_number: Optional[str]
 
 class User(UserModel, table=True):
     comment: str = ''
     access_enabled: bool = False
     created_at: datetime = datetime.now()
 
-engine = create_engine(os.getenv('SQL_URL'))
-# engine = create_engine(os.getenv('SQL_URL'), pool_pre_ping=True, pool_recycle=3600)
+# engine = create_engine(os.getenv('SQL_URL'))
+engine = create_engine(os.getenv('SQL_URL'), pool_pre_ping=True, pool_recycle=3600)
 SQLModel.metadata.create_all(engine)
 router = APIRouter()
 
@@ -53,16 +54,17 @@ def register_user(createUser: UserModel = Body(...)) -> dict:
         except IntegrityError:
             return JSONResponse({'errorMessage': f'User with the email {createUser.email} already exists'})
         except OperationalError as e:
-            if e[0] == 2006:
-                # Sometime we get "MySQL server has gone away" and we just need to rerun the query
-                print(e)
-                print('Got "MySQL server has gone away" error, retrying to add the user.')
-                time.sleep(1)
-                return register_user(createUser)
-            else:
-                print('Operational error')
-                print(e)
-                return JSONResponse({'errorMessage': 'Error creating the user in the database, try again!'})
+            # if e[0] == 2006:
+            # Sometime we get "MySQL server has gone away" and we just need to rerun the query
+            print(e)
+            print('Got "MySQL server has gone away" error, retrying to add the user.')
+            # engine = create_engine(os.getenv('SQL_URL'))
+            time.sleep(1)
+            return register_user(createUser)
+            # else:
+            #     print('Operational error')
+            #     print(e)
+            #     return JSONResponse({'errorMessage': 'Error creating the user in the database, try again!'})
         except Exception as e:
             print(e)
             return JSONResponse({'errorMessage': 'Error creating the user in the database, try again!'})

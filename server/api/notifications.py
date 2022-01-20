@@ -19,14 +19,17 @@ def post_msg_to_slack(text):
     }
     print(data)
     print(str(os.getenv('SLACK_BOT_TOKEN')))
-    return requests.post(
-        'https://slack.com/api/chat.postMessage', 
-        json.dumps(data), 
-        headers={
-            'Authorization': 'Bearer ' + str(os.getenv('SLACK_BOT_TOKEN')),
-            'Content-type': 'application/json; charset=utf-8'
-        }
-    ).json()
+    try:
+        return requests.post(
+            'https://slack.com/api/chat.postMessage', 
+            json.dumps(data), 
+            headers={
+                'Authorization': 'Bearer ' + str(os.getenv('SLACK_BOT_TOKEN')),
+                'Content-type': 'application/json; charset=utf-8'
+            }
+        ).json()
+    except Exception as e:
+        return e
 
 
 ## Send an email with UM smtp server (require VPN connection)

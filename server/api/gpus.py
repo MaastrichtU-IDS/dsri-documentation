@@ -129,7 +129,7 @@ def create_gpu_schedule(schedule: CreateGpuBooking = Body(...)) -> dict:
         try:
             session.add(create_booking)
             session.commit()
-            print(post_msg_to_slack(f'📅➕ New booking: GPU {create_booking.gpu_id} for {create_booking.user_email} from {create_booking.starting_date} to {create_booking.ending_date}'))
+            # print(post_msg_to_slack(f'📅➕ New booking: GPU {create_booking.gpu_id} for {create_booking.user_email} from {create_booking.starting_date} to {create_booking.ending_date}'))
             return JSONResponse({'message': 'GPU booking successfully submitted, you will receive an email with more details soon.'})
         except Exception as e:
             print(e)

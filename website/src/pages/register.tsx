@@ -6,7 +6,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
-import { Typography, CircularProgress, Paper, Box, Snackbar, Card, Alert, Checkbox, FormControlLabel, Grid, MenuItem, InputLabel, TextField, FormControl, FormGroup } from "@mui/material";
+import { Autocomplete, Typography, CircularProgress, Paper, Box, Snackbar, Card, Alert, Checkbox, FormControlLabel, Grid, MenuItem, InputLabel, TextField, FormControl, FormGroup } from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -102,9 +102,10 @@ function Registration() {
     }
   }
 
-  const handleDropdown = (event: SelectChangeEvent) => {
+  const handleAffiliationAutocomplete = (event, newInputValue: any) => {
     let formObj = state.formObj
-    formObj['affiliation'] = event.target.value as string
+    console.log(newInputValue);
+    formObj['affiliation'] = newInputValue.id as string
     updateState({formObj: formObj})
   }
   const handleDropdownTypes = (event: SelectChangeEvent) => {
@@ -176,7 +177,13 @@ function Registration() {
           }
         })
         .catch(function (error) {
-          updateState({openSuccess: 'none', openError: 'inline', loading: false})
+          updateState({
+            openSuccess: 'none', 
+            openError: 'inline', 
+            loading: false,
+            errorMessage: 'Error when adding the user to the database, please retry.'
+          })
+          console.log(error)
           if (error.response) {
             // Request made and server responded
             // {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
@@ -321,8 +328,7 @@ function Registration() {
                 </p>
               </Grid>
               <Grid item xs={7} style={{textAlign: 'left'}}>
-                {/* <InputLabel id="select-affiliation-label">Your affiliation</InputLabel> */}
-                <Select
+                {/* <Select
                   // labelId="select-affiliation-label"
                   id="affiliation"
                   // value={state.formObj['affiliation']}
@@ -337,8 +343,27 @@ function Registration() {
                   { departmentsList.map((dept: any, key: number) => (
                     <MenuItem key={key} value={dept.id}>{dept.label} ({dept.id})</MenuItem>
                   ))}
-                </Select>
+                </Select> */}
                 {/* <FormHelperText style={{textAlign: 'center'}}>To which department are you affiliated to?</FormHelperText> */}
+
+                <Autocomplete
+                  freeSolo
+                  id="affiliation"
+                  options={departmentsList}
+                  onChange={handleAffiliationAutocomplete}
+                  getOptionLabel={option => option.label + ' (' + option.id + ')'}
+                  // required={true}
+                  // defaultValue={[top100Films[13]]}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      size='small'
+                      label="Affiliation *"
+                      placeholder="Affiliation *"
+                    />
+                  )}
+                />
               </Grid>
 
               <Grid item xs={5} style={{textAlign: 'right'}}>
@@ -512,6 +537,26 @@ function Registration() {
                     <Checkbox checked={state.formObj['gdpr']} onChange={handleChangeGdpr} id='gdpr' />
                   } label="I understand my responsibilities towards GDPR compliance." />
               </Grid>
+
+              <Grid item xs={5} style={{textAlign: 'right'}}>
+                <p>
+                  If your project uses sensible data, provide the AVG number for GDPR compliance:
+                </p>
+              </Grid>
+              <Grid item xs={7} style={{textAlign: 'left'}}>
+                <TextField
+                  id='gdpr_avg_number'
+                  multiline
+                  label='AVG number'
+                  placeholder='AVG number'
+                  // value={''}
+                  variant="outlined"
+                  onChange={handleTextFieldChange}
+                  size='small'
+                />
+              </Grid>
+
+
             </Grid>
 
             <Box style={{ marginTop: '20px'}}>

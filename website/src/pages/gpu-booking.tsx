@@ -241,16 +241,22 @@ function GpuScheduling() {
   }
 
   const gpuCount = (gpuCount: number) => {
-    let color = '#388e3c'
+    let color = '#2e7d32' // Green
     if (gpuCount > 3) color = '#e65100' // Orange
-    if (gpuCount > 6) color = '#b71c1c' // Red
+    if (gpuCount > 5) color = '#b71c1c' // Red
     return (
-      <div style={{height: "2px", width: "2px", color: color,
-          position: "absolute", top: 2, right: 2, opacity: 0.6}}>{gpuCount}</div>
+      <div style={{height: "5px", width: "5px", color: color, fontWeight: '400',
+          position: "absolute", top: 2, right: 1, opacity: 0.9}}>{gpuCount}</div>
       // Show a colored dot:
       // <div style={{height: "5px", width: "5px", borderRadius: "100%", background: color,
       //     position: "absolute", top: 2, right: 2}}></div>
     )
+  }
+  const getGpuColor = (gpuCount: any) => {
+    let color = 'success' // Green
+    if (gpuCount > 3) color = 'warning' // Orange
+    if (gpuCount > 5) color = 'error' // Red
+    return color
   }
   
   function customDayContent(day: any) {
@@ -267,20 +273,21 @@ function GpuScheduling() {
       }
       {!dayIsBooked && booking['gpus'].length > 0 &&
         <Tooltip title={'GPUs booked: ' + booking['gpus'].join(', ')}>
-          <div>
+          {/* <div>
             {gpuCount(booking['gpus'].length)}
             <span>{format(day, "d")}</span>
-          </div>
+          </div> */}
+          <Badge badgeContent={booking['gpus'].length} color={getGpuColor(booking['gpus'].length)}
+              style={{right: -3,top: 0,padding: '0 4px'}}>
+            <div>
+              <span style={{fontWeight: '300'}}>{format(day, "d")}</span>
+            </div>
+          </Badge>
         </Tooltip>
-        // <Badge badgeContent={booking['gpus'].length} color="success" style={{right: -3,top: 13,border: `2px solid #b0bec5`,padding: '0 4px'}}>
-        //   <div>
-        //     <span>{format(day, "d")}</span>
-        //   </div>
-        // </Badge>
       }
       {!dayIsBooked && booking['gpus'].length == 0 &&
         <div>
-          <span>{format(day, "d")}</span>
+          <span style={{fontWeight: '300'}}>{format(day, "d")}</span>
         </div>
       }
       </>
@@ -296,10 +303,10 @@ function GpuScheduling() {
           </h1>
 
           <p style={{marginTop: '10px'}}>
-            The DSRI has 8 GPUs. You can book a GPU for a maximum of 2 weeks.
+            Once you booked a GPU, you will receive an email with more informations, and the GPU will be enabled in your DSRI project for the period requested. You can book a GPU for a maximum of 2 weeks.
           </p>
           <p style={{marginBottom: '40px'}}>
-            Once you requested a GPU slot, you will receive an email with more informations, and the GPU will be enabled in your DSRI project for the period requested.
+            The DSRI has 8 GPUs, the number in the badge on a date indicate the number of GPUs already booked this day, and greyed out days are already fully booked.
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -353,7 +360,8 @@ function GpuScheduling() {
                 />
               </Grid>
 
-              <Grid item xs={12} style={{textAlign: 'center', margin: '20px 0px'}}>
+              <Grid item xs={1} style={{textAlign: 'center', margin: '20px 0px'}}></Grid>
+              <Grid item xs={10} style={{textAlign: 'center', margin: '20px 0px'}}>
                 <DateRange
                   // ranges={[selectionRange]}
                   // onChange={handleSelect}
@@ -367,12 +375,15 @@ function GpuScheduling() {
                   moveRangeOnFirstSelection={false}
                   months={2}
                   weekStartsOn={1}
-                  // staticRanges={[]}
-                  // inputRanges={[]}
                   direction="horizontal"
                   preventSnapRefocus={true}
+                  // fixedHeight
+                  // style={{width: '100%', display: 'flex', flex: '1', border: 'none'}}
+                  // style={{height: '100%'}}
                   // calendarFocus="backwards"
                   // showMonthAndYearPickers={false}
+                  // staticRanges={[]}
+                  // inputRanges={[]}
                   // disabledDates={this.props.disabledDates.map((d) => new Date(d))}
                 />
               </Grid>
