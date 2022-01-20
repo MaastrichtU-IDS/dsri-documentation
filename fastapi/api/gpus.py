@@ -110,7 +110,7 @@ def create_gpu_schedule(schedule: CreateGpuBooking = Body(...)) -> dict:
                         booked_gpus.append(booked_gpu)
 
     if len(days_already_booked) > 0:
-        return JSONResponse({'errorMessage': 'Some of the dates provided are already fully booked: ' + str(', '.join(days_already_booked))})
+        return JSONResponse({'errorMessage': 'Some of the dates requested are already fully booked: ' + str(', '.join(days_already_booked))})
 
     while True:
         # Get a GPU ID that is available for the period requested

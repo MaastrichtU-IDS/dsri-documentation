@@ -2,32 +2,29 @@ import React from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-// import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
-import { CircularProgress, Alert, Grid, TextField, FormControl, Box, Card, Paper } from "@mui/material";
 import axios from 'axios';
-
+import { Badge, Tooltip, CircularProgress, Alert, Grid, TextField, FormControl, Box, Card, Paper } from "@mui/material";
 
 import { addDays, format } from 'date-fns';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRange } from 'react-date-range';
 
+// Resolve environment variables:
 declare var process : { env: { API_URL: string } }
 const apiUrl: string = (process.env.API_URL as string) || 'http://localhost:8000';
-// const apiUrl = process.env.API_URL || 'https://api.dsri.semanticscience.org'
 
-// Date range (is there disable?): https://www.npmjs.com/package/react-date-range
+// Date range: https://www.npmjs.com/package/react-date-range
 
 function GpuScheduling() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
 
   const errorMessages: any = {}
-  const formObj: any = {'email': '', 'project_id': ''}
   const [state, setState] = React.useState({
     errorMessages: errorMessages,
-    formObj: {'email': null, 'project_id': null},
+    formObj: { email: '', project_id: ''},
     errorMessage: '',
     openSuccess: 'none',
     openError: 'none',
@@ -39,11 +36,6 @@ function GpuScheduling() {
       endDate: addDays(new Date(), 7),
       key: 'selection1'
     },
-    // selection2: {
-    //   startDate: addDays(new Date(), -6),
-    //   endDate: new Date(),
-    //   key: 'selection2'
-    // },
   });
   const stateRef = React.useRef(state);
   // Avoid conflict when async calls
@@ -230,41 +222,63 @@ function GpuScheduling() {
     if (twoDigitDate.length == 1)
         twoDigitDate = "0" + twoDigitDate;
     const dayDate = day.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
+    const bookings = {fullyBooked: false}
+    const gpuBooked = []
     if (Object.keys(state.bookedDays).indexOf(dayDate) > -1) {
+      if (Object.keys(state.bookedDays[dayDate]).length > 1) {
+        Object.keys(state.bookedDays[dayDate]).map((booking:any, key: number) => {
+          if (booking != 'fullyBooked') {
+            gpuBooked.push(booking)
+          }
+        })
+      }
       if (state.bookedDays[dayDate]['fullyBooked'] == true) {
-        // console.log('fullyBooked DAY DATE!', dayDate)
-        return true
+        bookings['fullyBooked'] = true
       }
     }
-    return false
+    bookings['gpus'] = gpuBooked
+    return bookings
+  }
+
+  const gpuCount = (gpuCount: number) => {
+    let color = '#388e3c'
+    if (gpuCount > 3) color = '#e65100' // Orange
+    if (gpuCount > 6) color = '#b71c1c' // Red
+    return (
+      <div style={{height: "2px", width: "2px", color: color,
+          position: "absolute", top: 2, right: 2, opacity: 0.6}}>{gpuCount}</div>
+      // Show a colored dot:
+      // <div style={{height: "5px", width: "5px", borderRadius: "100%", background: color,
+      //     position: "absolute", top: 2, right: 2}}></div>
+    )
   }
   
   function customDayContent(day: any) {
-    let extraDot = null;
-    const dayIsBooked = isBooked(day)
-    if (dayIsBooked) {
-      extraDot = (
-        <div style={{height: "5px", width: "5px", borderRadius: "100%", background: "orange",
-            position: "absolute", top: 2, right: 2}}></div> 
-      )
-    // Green dot for available date, or Red dot for booked date? 
-    // } else {
-    // extraDot = (
-      //   <div style={{height: "5px", width: "5px", borderRadius: "100%", background: "red",
-      //       position: "absolute", top: 2, right: 2}} />
-      // ) }
-    }
+    const booking = isBooked(day)
+    const dayIsBooked = booking['fullyBooked']
     return (
       <>
       {dayIsBooked && 
         <div style={{cursor: 'not-allowed'}}>
-          {extraDot}
           <span style={{color: '#b0bec5', pointerEvents: 'none', cursor: 'not-allowed'}}>
             {format(day, "d")}
           </span>
         </div>
       }
-      {!dayIsBooked &&  
+      {!dayIsBooked && booking['gpus'].length > 0 &&
+        <Tooltip title={'GPUs booked: ' + booking['gpus'].join(', ')}>
+          <div>
+            {gpuCount(booking['gpus'].length)}
+            <span>{format(day, "d")}</span>
+          </div>
+        </Tooltip>
+        // <Badge badgeContent={booking['gpus'].length} color="success" style={{right: -3,top: 13,border: `2px solid #b0bec5`,padding: '0 4px'}}>
+        //   <div>
+        //     <span>{format(day, "d")}</span>
+        //   </div>
+        // </Badge>
+      }
+      {!dayIsBooked && booking['gpus'].length == 0 &&
         <div>
           <span>{format(day, "d")}</span>
         </div>
@@ -282,7 +296,7 @@ function GpuScheduling() {
           </h1>
 
           <p style={{marginTop: '10px'}}>
-            You can book a GPU for a maximum of 2 weeks.
+            The DSRI has 8 GPUs. You can book a GPU for a maximum of 2 weeks.
           </p>
           <p style={{marginBottom: '40px'}}>
             Once you requested a GPU slot, you will receive an email with more informations, and the GPU will be enabled in your DSRI project for the period requested.
