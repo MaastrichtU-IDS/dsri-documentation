@@ -24,6 +24,7 @@ class CreateGpuBooking(SQLModel, table=False):
 
 class GpuBooking(CreateGpuBooking, table=True):
     gpu_id: Optional[int] = Field(primary_key=True)
+    created_at: datetime = datetime.now()
 
 engine = create_engine(os.getenv('SQL_URL'))
 SQLModel.metadata.create_all(engine)

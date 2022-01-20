@@ -34,6 +34,7 @@ class User(UserModel, table=True):
     created_at: datetime = datetime.now()
 
 engine = create_engine(os.getenv('SQL_URL'))
+# engine = create_engine(os.getenv('SQL_URL'), pool_pre_ping=True, pool_recycle=3600)
 SQLModel.metadata.create_all(engine)
 router = APIRouter()
 

@@ -47,3 +47,6 @@ From the [Institute of Data Science](https://maastrichtuniversity.nl/ids) (IDS) 
 - **Rob Schlooz** - Project Manager at [IDS](https://maastrichtuniversity.nl/ids)
 - **Michel Dumontier** - Project Investigator at [IDS](https://maastrichtuniversity.nl/ids)
 
+## Delete your data 🧹
+
+You can request us to delete the data we have on you. Contact **[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl)** to request the deletion of your data.
