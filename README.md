@@ -38,27 +38,31 @@ yarn start
 
 ## Deploy to GitHub pages
 
+The documentation website at [maastrichtu-ids.github.io/dsri-documentation](https://maastrichtu-ids.github.io/dsri-documentation/) is automatically updated by a [GitHub Action](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/actions) at each push to the `master` branch of this repository.
+
 Make sure the `/website/build` directory has been generated before deploying.
 
 ```shell
 ./publish-github-page.sh
 ```
 
-Script details:
-
-```shell
-cd website/
-yarn install
-GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true yarn deploy
-git pull
-```
-
 ## Run with Docker
 
-Run the database on http://localhost:8080, API on http://localhost:8000, and CRON job:
+Run the stack with docker-compose:
+
+* Database accessible through phpMyAdmin on http://localhost:8080
+* API on http://localhost:8000, automatically reloaded on change to the code
+* A CRON job to notify (via email or Slack) about GPU booking everyday
 
 ```bash
 docker-compose up
+```
+
+Then, in another terminal, run the website:
+
+```bash
+cd website
+yarn start
 ```
 
 ## Deploy on server
@@ -79,7 +83,7 @@ Start the docker-compose in production using jwilder's [nginx-proxy](https://git
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
-To import a CSV of users in the database: remove the header, set `created_at` as a `VARCHAR(255)`, import the CSV file via phpMyAdmin, then set back `created_at` as `DATETIME`
+To import a CSV of users in the database: remove the header, set `created_at` and `use_dsri_date`as a `VARCHAR(255)`, import the CSV file via phpMyAdmin, then set back `created_at` and `use_dsri_date` as `DATETIME`
 
 ```sql
 UPDATE user SET created_at = STR_TO_DATE(created_at, '%d-%m-%Y %H:%i:%s');
