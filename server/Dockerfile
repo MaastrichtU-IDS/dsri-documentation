@@ -14,7 +14,7 @@ COPY . /app
 RUN python setup.py install
 
 # Copy cron file to the cron.d directory
-COPY scripts/gpu-notification-cron /etc/cron.d/gpu-notification-cron
+COPY cron/gpu-notification-cron /etc/cron.d/gpu-notification-cron
 RUN chmod 0644 /etc/cron.d/gpu-notification-cron  && \
     crontab /etc/cron.d/gpu-notification-cron && \
     touch /var/log/cron.log

@@ -2,7 +2,7 @@ version: "3"
 
 services:
 
-  fastapi:
+  api:
     environment:
       - VIRTUAL_HOST=api.dsri.semanticscience.org
       - LETSENCRYPT_HOST=api.dsri.semanticscience.org

@@ -1,7 +1,0 @@
-SHELL=/bin/bash
-BASH_ENV=/container.env
-
-30 9 * * * /usr/local/bin/python /app/scripts/check_gpu_bookings.py >> /var/log/cron.log 2>&1
-# Everyday at 09:30
-
-# * * * * * /usr/local/bin/python /app/scripts/check_gpu_bookings.py >> /var/log/cron.log 2>&1
