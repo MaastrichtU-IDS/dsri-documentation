@@ -24,7 +24,7 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 - Add new `docs` pages links to the sidebar: [website/sidebars.json](https://github.com/MaastrichtU-IDS/d2s-docs/blob/master/website/sidebars.json).
 - Main parameters of the website can be found in [website/docusaurus.config.js](https://github.com/MaastrichtU-IDS/d2s-docs/blob/master/website/docusaurus.config.js).
 - Static content (any resource to download, images, css, js) can be provided in [website/static](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/static)
-- Pages other than `docs` are in [website/src/pages](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/src/pages) (e.g. `help.md` or `index.js`)
+- Pages other than `docs` are in [website/src/pages](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/src/pages) (e.g. `help.md` or `index.tsx`)
 
 ## Run for development
 
@@ -83,6 +83,8 @@ Start the docker-compose in production using jwilder's [nginx-proxy](https://git
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
+### Database setup
+
 To import a CSV of users in the database: remove the header, set `created_at` and `use_dsri_date`as a `VARCHAR(255)`, import the CSV file via phpMyAdmin, then set back `created_at` and `use_dsri_date` as `DATETIME`
 
 ```sql
@@ -90,72 +92,67 @@ UPDATE user SET created_at = STR_TO_DATE(created_at, '%d-%m-%Y %H:%i:%s');
 UPDATE user SET use_dsri_date = STR_TO_DATE(use_dsri_date, '%d-%m-%Y');
 ```
 
+Create new database users:
+
+```sql
+DROP USER IF EXISTS 'username'@'%';
+CREATE USER 'username'@'%' IDENTIFIED BY 'password';
+GRANT USAGE ON *.* TO 'username'@'%' IDENTIFIED BY 'password';
+GRANT SELECT ON `dsri-db`.* TO 'username'@'%';
+FLUSH PRIVILEGES;
+```
+
+Change the password of your database user:
+
+```sql
+SET PASSWORD FOR 'username'@'%' = PASSWORD('newpassword');
+```
+
 ### Backup
 
-Mariabackup will run as the `mysql` user in the container, so the permissions on `/backup` will need to ensure that it can be written to by this user:
+Use our script to generate the backup zip with a timestamp in the `./backup` folder, to execute when the database is already running:
 
 ```bash
-docker-compose exec mysql chown mysql: /backup
+docker-compose exec mysql /app/backup_database.sh
 ```
 
-To perform the backup:
+**Restore the backup**: run this script from the host of the docker container, and provide the path to the backup archive to restore
 
 ```bash
-docker-compose exec --user mysql mysql mariabackup --backup --target-dir=/backup --user=root --password=$PASSWORD
+./restore_backup.sh backup/backup-2022-01-20.tar.xz
 ```
 
-If you wish to take a copy of the `/backup` you can do so without stopping the container or getting an inconsistent backup.
-
-```bash
-docker-compose exec --user mysql mysql tar --create --xz --file - /backup > backup.tar.xz
-```
-
-**Restore the backup**: At some point before doing the restore, the backup needs to be prepared. Here `/my/own/backupdir` contains a previous backup. Perform the prepare like this:
-
-```bash
-docker run --user mysql --rm -v $(pwd)/backup:/backup mariadb:latest mariabackup --prepare --target-dir=/backup
-```
-
-Now that the image is prepared, start the container with both the data and the backup volumes and restore the backup:
-
-```bash
-docker run --user mysql --rm -v $(pwd)/backup:/var/lib/mysql -v /my/own/backupdir:/backup mariadb:latest mariabackup --copy-back --target-dir=/backup
-```
-
-You can now use it normally with `docker-compose`
+Once the process is done, you can start the stack normally with `docker-compose up`
 
 ## Markdown tips
 
-```
+```markdown
 :::note
-The content and title *can* include markdown.
+Grey box
 :::
-
 :::tip You can specify an optional title
-Heads up! Here's a pro-tip.
+Green box
 :::
-
 :::info
-Useful information.
+Blue box
 :::
-
 :::caution
-Warning! You better pay attention!
+Orange bpx
 :::
-
 :::danger
-Danger danger, mayday!
+Red box
 :::
 ```
 
 Embed a Google docs presentation (size does not change dynamically). You can check the ["documentation" by gitlab](https://about.gitlab.com/handbook/markdown-guide/#google-slides) but it does not work (how can they expect to get a responsive website by providing hardcoded pixel size?):
 
-```bash
+```html
 <figure class="video_container">
   <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRAfZdOfGt761tIAj2e35OYrOL4uIKWiAQB15MXvsqso3XJ5Mr3-W4dOa9KjDTZpi1LE_D2CU1F5Thy/embed?start=false&loop=false&delayms=15000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 </figure>
 
 # With CSS:
+<script>
 .video-container{
   position: absolute;
   top: 0%;
@@ -164,11 +161,10 @@ Embed a Google docs presentation (size does not change dynamically). You can che
   width: 100%;
   /* overflow: hidden; */
 }
+</script>
 ```
 
-## Video
-
-Convert mkv to webm:
+Convert a mkv video to webm (better for direct embedding):
 
 ```bash
 ffmpeg -i video_dsri_introduction.mkv -c:v libvpx -crf 10 -c:a libvorbis video_dsri_introduction.webm

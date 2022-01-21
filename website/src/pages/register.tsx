@@ -225,7 +225,7 @@ function Registration() {
     {id: 'TECHLAB', label: 'Law and Tech Lab'},
     {id: 'TGX', label: 'Department of Toxicogenomics'},
     {id: 'UM', label: 'Maastricht University'},
-    {id: 'Other', label: 'Other'},
+    // {id: 'Other', label: 'Other'},
   ]
   const projectTypeList = [
     "Machine Learning on CPU (python, jupyter, matlab)", 
@@ -327,7 +327,7 @@ function Registration() {
                   Your affiliation:
                 </p>
               </Grid>
-              <Grid item xs={7} style={{textAlign: 'left'}}>
+              <Grid item xs={7} sm={6} md={4} style={{textAlign: 'left'}}>
                 {/* <Select
                   // labelId="select-affiliation-label"
                   id="affiliation"
