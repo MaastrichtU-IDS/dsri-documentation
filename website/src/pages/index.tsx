@@ -380,15 +380,15 @@ function Home() {
                 The DSRI is used by <b>{state.stats['users']}</b> researchers and students in <b>{state.numberOfDepts}</b> departments at Maastricht University
               </p>
             </Grid>
-            <Grid item xs={1} sm={4}></Grid>
-            <Grid item xs={10} sm={4} style={{ textAlign: 'right' }}>
+            <Grid item xs={1} sm={3}></Grid>
+            <Grid item xs={10} sm={6} style={{ textAlign: 'right' }}>
               <Line data={state.timelineChart['data']} 
                 options={state.timelineChart['options']}
               />
             </Grid>
-            <Grid item xs={1} sm={4}></Grid>
+            <Grid item xs={1} sm={3}></Grid>
             <Grid item xs={1}></Grid>
-            <Grid item xs={11} sm={3} style={{ textAlign: 'right' }}>
+            <Grid item xs={11} sm={3} style={{ textAlign: 'center' }}>
               <Typography variant='h6'>
                 Users per department
               </Typography>

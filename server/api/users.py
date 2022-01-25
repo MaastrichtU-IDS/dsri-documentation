@@ -79,7 +79,7 @@ def register_user(createUser: UserModel = Body(...)) -> dict:
 )            
 def get_stats() -> dict:
     with Session(engine) as session:
-        statement = select(User)
+        statement = select(User).order_by(User.created_at)
         users = session.exec(statement)
         user_count = 0
         affiliation_stats = {}
