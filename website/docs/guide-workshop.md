@@ -17,7 +17,7 @@ At FSE, you will need to send an email to [lo-fse@maastrichtuniversity.nl](mailt
 
 ## Fill a form
 
-Fill this  [form 📬](https://forms.gle/RorkVaNvZsBKerD58) to give us more details on your project (you don't need to do it if you have already filled it in the past).
+Fill this  [form 📬](/register) to give us more details on your project (you don't need to do it if you have already filled it in the past).
 
 ## Prepare you workshop
 

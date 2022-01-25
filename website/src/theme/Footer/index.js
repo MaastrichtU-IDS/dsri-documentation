@@ -49,7 +49,7 @@ function Footer() {
   if (!footer) {
     return null;
   }
-  const feedback_url = "https://docs.google.com/forms/d/e/1FAIpQLSeaIE_eM0h9frMtSJaW-15-A7enSdNLPej9AoqaqjRwXlRawA/viewform?usp=pp_url&entry.1130493462=" + location.pathname + "&embedded=true"
+  // const feedback_url = "https://docs.google.com/forms/d/e/1FAIpQLSeaIE_eM0h9frMtSJaW-15-A7enSdNLPej9AoqaqjRwXlRawA/viewform?usp=pp_url&entry.1130493462=" + location.pathname + "&embedded=true"
 
   return (
     <footer

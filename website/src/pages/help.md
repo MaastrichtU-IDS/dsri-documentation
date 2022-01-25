@@ -12,7 +12,7 @@ If you need help or have questions about the Data Science Research Infrastructur
 
 To access the Data Science Research Infrastructure (DSRI) you need to be working or studying at Maastricht University, and have a `maastrichtuniversity.nl` email account. 
 
-Before enabling your UM account to access the DSRI, we would like to know a bit more about your Data Science project! Please fill this [form](https://forms.gle/RorkVaNvZsBKerD58) to provide us some information on what you plan to do with the DSRI. 
+Before enabling your UM account to access the DSRI, we would like to know a bit more about your Data Science project! Please fill this [form](/register) to provide us some information on what you plan to do with the DSRI. 
 
 Once this will be done, we will enable your account as soon as possible, and you will be able to login using your UM username and password.
 

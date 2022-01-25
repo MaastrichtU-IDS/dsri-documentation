@@ -16,6 +16,10 @@ We are using images provided by Nvidia, and optimized for GPU. We currently depl
 
 Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu) for more details on how we build the optimized docker images for the DSRI GPUs. Feel free to [extend the images](https://github.com/MaastrichtU-IDS/jupyterlab#extend-an-image) to your needs.
 
+## Reserve GPU for your experiments
+
+You can check the availability of our GPUs, and reserve GPU slots in our [GPU booking calendar](/gpu-booking).
+
 ## Start a workspace on GPU
 
 Start a workspace in your DSRI project based on Ubuntu, with all drivers and dependencies for accessing the GPU already installed. You will be able to access it using the JupyterLab web UI and VisualStudio Code in the browser.
@@ -134,17 +138,6 @@ Later you can remove the GPU from your app without stopping it:
 ```bash
 oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 0}, "limits": {"nvidia.com/gpu": 0}}}]'
 ```
-
-
-## Reserve GPU for your experiments
-
-:::warning Experimental
-
-Still experimental.
-
-:::
-
-You can check the availability and reserve a GPU slot in our [GPU booking calendar](/gpu-booking).
 
 <!-- 
 

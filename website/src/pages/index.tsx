@@ -335,8 +335,8 @@ function Home() {
                 'button button--outline button--secondary button--lg',
                 styles.getStarted,
               )}
-              // to={useBaseUrl('register/')}>
-              href="https://forms.gle/QiXzWCnTMWDiS55u7">
+              to={useBaseUrl('register/')}>
+              {/* href="https://forms.gle/QiXzWCnTMWDiS55u7"> */}
               Get Access
             </Link>
           </div>
