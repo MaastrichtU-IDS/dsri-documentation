@@ -98,7 +98,7 @@ def get_stats() -> dict:
 
             creation_date = user.created_at.strftime("%Y-%m-%d")
             if not creation_date in users_timeline.keys():
-                users_timeline[creation_date] = 1
+                users_timeline[creation_date] = user_count
             else:
                 users_timeline[creation_date] = users_timeline[creation_date] + 1
             
