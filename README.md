@@ -65,6 +65,12 @@ cd website
 yarn start
 ```
 
+You can also directly run the website on another API easily:
+
+```bash
+API_URL=https://api.dsri.semanticscience.org yarn start
+```
+
 ## Deploy on server
 
 Define the `.env` file to change the default configuration (admin password, Slack config):

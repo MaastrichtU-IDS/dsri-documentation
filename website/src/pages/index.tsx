@@ -7,7 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import axios from 'axios';
 import styles from './styles.module.css';
 
-import { Grid, TextField, FormControl, Box, Card, Paper } from "@mui/material";
+import { Grid, TextField, FormControl, Box, Card, Paper, Typography } from "@mui/material";
 import { Pie, Doughnut, Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import 'chartjs-plugin-labels';
@@ -78,7 +78,8 @@ function Home() {
   const [state, setState] = React.useState({
     stats: {},
     usersDeptPie: {},
-    projectTypesPie: {}
+    projectTypesPie: {},
+    numberOfDepts: 0
   });
   const stateRef = React.useRef(state);
   // Avoid conflict when async calls
@@ -97,20 +98,27 @@ function Home() {
 
   const buildCharts  = (stats: any) => {
     const deptUsersArray = []
+    const deptLabelArray = []
     Object.keys(stats).map((dept: string) => {
-      deptUsersArray.push(stats[dept]['users'])
+      if (stats[dept]['users'] > 3) {
+        deptUsersArray.push(stats[dept]['users'])
+        deptLabelArray.push(dept)
+      }
+    })
+    updateState({
+      numberOfDepts: deptLabelArray.length
     })
     const config = {
-      type: 'doughnut',
+      type: 'pie',
       data: {
         datasets: [{
           data: deptUsersArray,
           backgroundColor: pieColors,
           label: 'Users per department',
           // labels: deptUsersArray
-          labels: Object.keys(stats)
+          labels: deptLabelArray
         }],
-        labels: Object.keys(stats)
+        labels: deptLabelArray
       },
       options: {
         responsive: true,
@@ -145,11 +153,13 @@ function Home() {
           datalabels: {
             legend: false,
             color: 'black',
+            // offset: -20,
             // https://github.com/chartjs/chartjs-plugin-datalabels/blob/master/docs/guide/positioning.md
             labels: {
               title: {
                 anchor: 'end',
-                // offset: '-10',
+                offset: -55,
+                align: 'end',
                 formatter: function(value: any, context: any) {
                   return context.dataset['labels'][context['dataIndex']];
                 }
@@ -164,7 +174,11 @@ function Home() {
             // formatter: function(value: any, context: any) {
             //   // return value + ' from ' + context.dataset['labels'][context['dataIndex']];
             //   // return context.dataset['labels'][context['dataIndex']];
-            //   return value;
+            //   if(value < 1 ){
+            //     return value;
+            //   }else{
+            //     return "";
+            //   }
             // }
             // formatter: function(value: any, context: any) {
             //   if (context.datasetIndex == 0) {
@@ -181,11 +195,25 @@ function Home() {
     return config;
   }
 
+  const projectTypeMap = {
+    "Machine Learning on CPU (python, jupyter, matlab)": "ML on CPU",
+    "Machine Learning on GPU (python, jupyter, matlab)": "ML on GPU",
+    "Bioinformatics pipeline (python, conda, sequencing pipeline, workflows)": "Bioinfo",
+    "Data hosting (SQL, knowledge graph, key-value stores, data lakes)": "Database",
+    "Data processing (python, java, workflows, services orchestration)": "Data processing",
+    "Continuous Delivery / Integration (website deployment, jenkins, argo cd)": "Websites",
+    "Bayesian Econometric models": "Econometric models",
+  }
 
   const buildBarChart  = (projects: any) => {
     const projectsUsersArray = []
-    Object.keys(projects).map((dept: string) => {
-      projectsUsersArray.push(projects[dept]['users'])
+    const projectsLabelArray = []
+    Object.keys(projects).map((projectType: string) => {
+      if (projectType && projects[projectType]['users'] > 3) {
+        projectsUsersArray.push(projects[projectType]['users'])
+        // projectsLabelArray.push(projectType)
+        projectsLabelArray.push(projectTypeMap[projectType])
+      }
     })
     const config = {
       type: 'bar',
@@ -195,7 +223,7 @@ function Home() {
           // backgroundColor: pieColors,
           label: 'Users per project type',
           // labels: deptUsersArray
-          labels: Object.keys(projects),
+          labels: projectsLabelArray,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(255, 159, 64, 0.2)',
@@ -216,7 +244,7 @@ function Home() {
           ],
           borderWidth: 1
         }],
-        labels: Object.keys(projects)
+        labels: projectsLabelArray
       },
       options: {
         scales: {
@@ -272,11 +300,6 @@ function Home() {
         //         }
         //       }
         //     },
-        //     // formatter: function(value: any, context: any) {
-        //     //   // return value + ' from ' + context.dataset['labels'][context['dataIndex']];
-        //     //   // return context.dataset['labels'][context['dataIndex']];
-        //     //   return value;
-        //     // }
         //     // formatter: function(value: any, context: any) {
         //     //   if (context.datasetIndex == 0) {
         //     //     context.font = "bold 20em Montserrat";
@@ -355,14 +378,18 @@ function Home() {
           </section>
         )}
         { state.usersDeptPie['data'] &&
-          <Grid container spacing={2} style={{ textAlign: 'center' }}>
+          <Grid container alignItems="center" justifyContent="center"
+              spacing={2} style={{ textAlign: 'center', marginBottom: '60px' }}>
             <Grid item xs={12}>
               <p>
-                The DSRI is used by <b>{state.stats['users']}</b> researchers and students in <b>{Object.keys(state.stats['departments']).length}</b> departments at Maastricht University
+                The DSRI is used by <b>{state.stats['users']}</b> researchers and students in <b>{state.numberOfDepts}</b> departments at Maastricht University
               </p>
             </Grid>
-            {/* <Grid item xs={2}></Grid>
-            <Grid item xs={4} style={{ textAlign: 'right' }}>
+            <Grid item xs={1}></Grid>
+            <Grid item xs={3} style={{ textAlign: 'right' }}>
+              <Typography variant='h6'>
+                Number of users per department
+              </Typography>
               <Pie data={state.usersDeptPie['data']} 
                 options={state.usersDeptPie['options']}
                 // style={{margin: '30px'}}
@@ -387,7 +414,10 @@ function Home() {
                 ]}
               />
             </Grid>
-            <Grid item xs={4} style={{ textAlign: 'left' }}>
+            <Grid item xs={5} style={{ textAlign: 'center' }}>
+              <Typography variant='h6'>
+                Number of users per project types
+              </Typography>
               <Bar data={state.projectTypesPie['data']} 
                 options={state.projectTypesPie['options']}
                 // style={{maxWidth: '800px'}}
@@ -395,7 +425,7 @@ function Home() {
                   ChartDataLabels,
                 ]}
               />
-            </Grid> */}
+            </Grid>
 
           </Grid>
         }

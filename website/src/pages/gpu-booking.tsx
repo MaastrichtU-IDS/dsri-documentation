@@ -17,7 +17,7 @@ const apiUrl: string = (process.env.API_URL as string) || 'http://localhost:8000
 
 // Date range: https://www.npmjs.com/package/react-date-range
 
-function GpuScheduling() {
+function GpuBooking() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
 
@@ -36,6 +36,7 @@ function GpuScheduling() {
       endDate: addDays(new Date(), 7),
       key: 'selection1'
     },
+    windowSize: 1000
   });
   const stateRef = React.useRef(state);
   // Avoid conflict when async calls
@@ -47,6 +48,7 @@ function GpuScheduling() {
   // To remove warning?: componentDidMount(() => {
   React.useEffect(() => {
     getBookedDays()
+    updateState({windowSize: window.innerWidth})
   }, [])
 
   const checkError = (field: string) => {
@@ -360,10 +362,10 @@ function GpuScheduling() {
                 />
               </Grid>
 
-              {  window.innerWidth > 760 &&
+              {  state.windowSize > 760 &&
                 <Grid item xs={1} style={{textAlign: 'center', margin: '20px 0px'}}></Grid>
               }
-              <Grid item xs={window.innerWidth <= 760 ? 12 : 10} 
+              <Grid item xs={state.windowSize <= 760 ? 12 : 10} 
                   style={{textAlign: 'center', margin: '20px 0px'}}>
                 <DateRange
                   // ranges={[selectionRange]}
@@ -378,7 +380,7 @@ function GpuScheduling() {
                   moveRangeOnFirstSelection={false}
                   months={2}
                   weekStartsOn={1}
-                  direction={window.innerWidth <= 760 ? 'vertical' : 'horizontal'}
+                  direction={state.windowSize <= 760 ? 'vertical' : 'horizontal'}
                   preventSnapRefocus={true}
                   // fixedHeight
                   // style={{width: '100%', display: 'flex', flex: '1', border: 'none'}}
@@ -416,5 +418,5 @@ function GpuScheduling() {
   );
 }
 
-export default GpuScheduling;
+export default GpuBooking;
 

@@ -1,16 +1,10 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 import React from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import {useThemeConfig} from '@docusaurus/theme-common';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useLocation } from 'react-router-dom'
-import styles from './styles.module.css';
+// import styles from './styles.module.css';
 
 function FooterLink({to, href, label, prependBaseUrlToHref, ...props}) {
   const toUrl = useBaseUrl(to);
@@ -115,7 +109,7 @@ function Footer() {
             </iframe>  */}
 
             <div>
-              <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank" rel="noopener noreferrer">
+              <a href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank" rel="noopener noreferrer">
                 <img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/> 
               </a>
             </div>

@@ -222,8 +222,9 @@ function Registration() {
     {id: 'PHARTOX', label: 'Department of Pharmacology & Toxicology'},
     // {id: 'PN', label: '???'},
     {id: 'SBE', label: 'School of Business and Economics'},
-    {id: 'TECHLAB', label: 'Law and Tech Lab'},
+    {id: 'TECH LAB', label: 'Law and Tech Lab'},
     {id: 'TGX', label: 'Department of Toxicogenomics'},
+    {id: 'PSYCHO', label: 'Faculty of Psychology and Neuroscience'},
     {id: 'UM', label: 'Maastricht University'},
     // {id: 'Other', label: 'Other'},
   ]
