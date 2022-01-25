@@ -84,6 +84,7 @@ def get_stats() -> dict:
         user_count = 0
         affiliation_stats = {}
         project_stats = {}
+        users_timeline = {}
         for user in users:
             user_count += 1
 
@@ -94,10 +95,14 @@ def get_stats() -> dict:
             if not user.project_type in project_stats.keys():
                 project_stats[user.project_type] = {'users': 0}
             project_stats[user.project_type]['users'] += 1
+
+            creation_date = user.created_at.strftime("%Y-%m-%d")
+            users_timeline[creation_date] = user_count
             
     return JSONResponse({
         'users': user_count, 
         'departments': affiliation_stats,
-        'projects': project_stats
+        'projects': project_stats,
+        'users_timeline': users_timeline
     })
     # Check fairificator > Evaluation.tsv for doughnut

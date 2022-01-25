@@ -8,7 +8,7 @@ import axios from 'axios';
 import styles from './styles.module.css';
 
 import { Grid, TextField, FormControl, Box, Card, Paper, Typography } from "@mui/material";
-import { Pie, Doughnut, Bar } from 'react-chartjs-2';
+import { Pie, Doughnut, Bar, Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import 'chartjs-plugin-labels';
 
@@ -79,6 +79,7 @@ function Home() {
     stats: {},
     usersDeptPie: {},
     projectTypesPie: {},
+    timelineChart: {},
     numberOfDepts: 0
   });
   const stateRef = React.useRef(state);
@@ -275,6 +276,40 @@ function Home() {
   }
 
 
+  const buildTimelineChart  = (timeline: any) => {
+    const daysArray = []
+    const usersArray = []
+    Object.keys(timeline).map((day: string) => {
+      daysArray.push(day)
+      // projectsLabelArray.push(projectType)
+      usersArray.push(timeline[day])
+    })
+    const config = {
+      type: 'line',
+      data: {
+        datasets: [{
+          data: usersArray,
+          label: 'Number of Users',
+          // labels: deptUsersArray
+          // labels: projectsDescArray,
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgb(54, 162, 235)',
+          borderWidth: 1
+        }],
+        labels: daysArray
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+    return config;
+  }
+
+
   React.useEffect(() => {
     axios.get(apiUrl + '/user/stats', 
       {
@@ -287,7 +322,8 @@ function Home() {
         updateState({
           stats: res.data,
           usersDeptPie: buildCharts(res.data['departments']),
-          projectTypesPie: buildBarChart(res.data['projects'])
+          projectTypesPie: buildBarChart(res.data['projects']),
+          timelineChart: buildTimelineChart(res.data['users_timeline'])
         })
       })
       .catch(function (error) {
@@ -344,8 +380,15 @@ function Home() {
                 The DSRI is used by <b>{state.stats['users']}</b> researchers and students in <b>{state.numberOfDepts}</b> departments at Maastricht University
               </p>
             </Grid>
+            <Grid item xs={1} sm={4}></Grid>
+            <Grid item xs={10} sm={4} style={{ textAlign: 'right' }}>
+              <Line data={state.timelineChart['data']} 
+                options={state.timelineChart['options']}
+              />
+            </Grid>
+            <Grid item xs={1} sm={4}></Grid>
             <Grid item xs={1}></Grid>
-            <Grid item xs={3} style={{ textAlign: 'right' }}>
+            <Grid item xs={11} sm={3} style={{ textAlign: 'right' }}>
               <Typography variant='h6'>
                 Users per department
               </Typography>
@@ -357,7 +400,7 @@ function Home() {
                 ]}
               />
             </Grid>
-            <Grid item xs={5} style={{ textAlign: 'center' }}>
+            <Grid item xs={12} sm={5} style={{ textAlign: 'center' }}>
               <Typography variant='h6'>
                 Users per project types
               </Typography>
