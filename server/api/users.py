@@ -82,6 +82,22 @@ def get_stats() -> dict:
         statement = select(User)
         users = session.exec(statement)
         user_count = 0
+        affiliation_stats = {}
+        project_stats = {}
         for user in users:
             user_count += 1
-    return JSONResponse({'number_of_users': user_count})
+
+            if not user.affiliation in affiliation_stats.keys():
+                affiliation_stats[user.affiliation] = {'users': 0}
+            affiliation_stats[user.affiliation]['users'] += 1
+
+            if not user.project_type in project_stats.keys():
+                project_stats[user.project_type] = {'users': 0}
+            project_stats[user.project_type]['users'] += 1
+            
+    return JSONResponse({
+        'users': user_count, 
+        'departments': affiliation_stats,
+        'projects': project_stats
+    })
+    # Check fairificator > Evaluation.tsv for doughnut

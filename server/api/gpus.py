@@ -13,7 +13,7 @@ from api.notifications import post_msg_to_slack
 
 
 NUMBER_OF_GPUS = 8
-MAX_BOOK_DAYS = 14
+MAX_BOOK_DAYS = 30
 
 
 class CreateGpuBooking(SQLModel, table=False):

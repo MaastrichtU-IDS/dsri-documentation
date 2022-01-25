@@ -303,10 +303,10 @@ function GpuScheduling() {
           </h1>
 
           <p style={{marginTop: '10px'}}>
-            Once you booked a GPU, you will receive an email with more informations, and the GPU will be enabled in your DSRI project for the period requested. You can book a GPU for a maximum of 2 weeks.
+            Once you booked a GPU, you will receive an email with more informations, and the GPU will be enabled in your DSRI project for the period requested. You can book a GPU for a maximum of 4 weeks.
           </p>
           <p style={{marginBottom: '40px'}}>
-            The DSRI has 8 GPUs, the number in the badge on a date indicate the number of GPUs already booked this day, and greyed out days are already fully booked.
+            The DSRI has 8 GPUs, the number in the badge on a date indicates the number of GPUs already booked this day, and greyed out days are already fully booked.
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -360,8 +360,11 @@ function GpuScheduling() {
                 />
               </Grid>
 
-              <Grid item xs={1} style={{textAlign: 'center', margin: '20px 0px'}}></Grid>
-              <Grid item xs={10} style={{textAlign: 'center', margin: '20px 0px'}}>
+              {  window.innerWidth > 760 &&
+                <Grid item xs={1} style={{textAlign: 'center', margin: '20px 0px'}}></Grid>
+              }
+              <Grid item xs={window.innerWidth <= 760 ? 12 : 10} 
+                  style={{textAlign: 'center', margin: '20px 0px'}}>
                 <DateRange
                   // ranges={[selectionRange]}
                   // onChange={handleSelect}
@@ -375,7 +378,7 @@ function GpuScheduling() {
                   moveRangeOnFirstSelection={false}
                   months={2}
                   weekStartsOn={1}
-                  direction="horizontal"
+                  direction={window.innerWidth <= 760 ? 'vertical' : 'horizontal'}
                   preventSnapRefocus={true}
                   // fixedHeight
                   // style={{width: '100%', display: 'flex', flex: '1', border: 'none'}}

@@ -6,17 +6,20 @@ metadata:
   annotations:
     openshift.io/display-name: Ubuntu with desktop interface
     description: |-
-      Start a Ubuntu Linux (Debian-based) workspace accessible via a desktop interface
+      Start a Ubuntu Linux workspace with a regular desktop interface accessible in the browser
 
       You can use this template to deploy various desktop environments:
-      - Ubuntu (cf. https://github.com/fcwu/docker-ubuntu-vnc-desktop):
-      dorowu/ubuntu-desktop-lxde-vnc:latest
+      - Ubuntu 20.04 with LXDE desktop (cf. https://github.com/vemonet/docker-ubuntu-vnc-desktop):
+      ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest
       - NeuroDesk (cf. https://github.com/NeuroDesk/vnm)
       docker.pkg.github.com/neurodesk/neurodesk/vnm2:20210113
 
-      Visit https://github.com/fcwu/docker-ubuntu-vnc-desktop for more details on the image
+      Visit https://github.com/vemonet/docker-ubuntu-vnc-desktop for more details on the image
+      Please create issues if you are experiencing problem with the workspace.
 
-      📂 Use the `/root` folder (home of your user) to store your data in the existing persistent storage
+      👤 You will be the `root` user inside the container.
+
+      📂 Use the `/root` folder (home of your user) and its subfolders to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
     iconClass: icon-ubuntu
     tags: ubuntu,ui,vnc,root,persistent
@@ -55,7 +58,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
   description: The docker image used to start the container (e.g. Ubuntu or NeuroDesk)
-  value: dorowu/ubuntu-desktop-lxde-vnc:latest
+  value: ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest
   required: true
 
 objects:
