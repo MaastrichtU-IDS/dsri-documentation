@@ -113,10 +113,22 @@ function Home() {
       data: {
         datasets: [{
           data: deptUsersArray,
-          backgroundColor: pieColors,
           label: 'Users per department',
-          // labels: deptUsersArray
-          labels: deptLabelArray
+          labels: deptLabelArray,
+          backgroundColor: pieColors,
+          // backgroundColor: [
+          //   'rgba(255, 99, 132, 0.2)', 'rgba(255, 159, 64, 0.2)',
+          //   'rgba(255, 205, 86, 0.2)', 'rgba(75, 192, 192, 0.2)',
+          //   'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)',
+          //   'rgba(201, 203, 207, 0.2)'
+          // ],
+          // borderColor: [
+          //   'rgb(255, 99, 132)', 'rgb(255, 159, 64)',
+          //   'rgb(255, 205, 86)', 'rgb(75, 192, 192)',
+          //   'rgb(54, 162, 235)', rgb(153, 102, 255)',
+          //   'rgb(201, 203, 207)'
+          // ],
+          // borderWidth: 1
         }],
         labels: deptLabelArray
       },
@@ -124,42 +136,33 @@ function Home() {
         responsive: true,
         // maintainAspectRatio: false,
         animation: { animateScale: true, animateRotate: true },
-        tooltips: {
-          // callbacks: {
-          //   label: function(item, data) {
-          //       console.log(data.datasets[item.datasetIndex])
-          //       return data.datasets[item.datasetIndex].label+ ": "+ data.labels[item.index]+ ": "+ data.datasets[item.datasetIndex].data[item.index];
-          //   }
-          // }
-          callbacks: {
-            label: function(tooltipItem: any, data: any) {
-              var dataset = data.datasets[tooltipItem.datasetIndex];
-              var index = tooltipItem.index;
-              return dataset.labels[index];
-            }
-          }
-        },
         plugins: {
           legend: { display: false },
-          // labels: [
-          //   {
-          //     render: 'label',
-          //     position: 'outside'
-          //   },
-          //   {
-          //     render: 'value'
-          //   }
-          // ],
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem: any) {
+                // var dataset = data.datasets[tooltipItem.datasetIndex];
+                const index = tooltipItem.dataIndex;
+                console.log(tooltipItem)
+                const label = departmentsList.filter(dept => {
+                  return dept.id === deptLabelArray[index];
+                })
+                console.log(label);
+                return ' ' + label[0]['label']
+                // return dataset.labels[index];
+                // return 'toto'
+              }
+            }
+          },
           datalabels: {
             legend: false,
             color: 'black',
-            // offset: -20,
             // https://github.com/chartjs/chartjs-plugin-datalabels/blob/master/docs/guide/positioning.md
             labels: {
               title: {
                 anchor: 'end',
-                offset: -55,
                 align: 'end',
+                offset: -55,
                 formatter: function(value: any, context: any) {
                   return context.dataset['labels'][context['dataIndex']];
                 }
@@ -171,23 +174,6 @@ function Home() {
                 }
               }
             },
-            // formatter: function(value: any, context: any) {
-            //   // return value + ' from ' + context.dataset['labels'][context['dataIndex']];
-            //   // return context.dataset['labels'][context['dataIndex']];
-            //   if(value < 1 ){
-            //     return value;
-            //   }else{
-            //     return "";
-            //   }
-            // }
-            // formatter: function(value: any, context: any) {
-            //   if (context.datasetIndex == 0) {
-            //     context.font = "bold 20em Montserrat";
-            //     return context.dataset.labels[context.dataIndex];
-            //   } else {
-            //     return context.dataset.labels[context.dataIndex];
-            //   }
-            // }
           }
         }
       }
@@ -195,10 +181,33 @@ function Home() {
     return config;
   }
 
+  const departmentsList = [
+    {id: 'BIGCAT', label: 'Department of Bioinformatics'},
+    {id: 'DKE', label: 'Department of Knowledge Engineering'},
+    {id: 'FHML', label: 'Faculty of Health, Medicine and Life Sciences'},
+    {id: 'FSE', label: 'Faculty of Science and Engineering'},
+    {id: 'GWFP', label: 'Gravitational Waves and Fundamental Physics'},
+    {id: 'HSR', label: 'Health Services Research'},
+    {id: 'ICTS', label: 'ICT Services'},
+    {id: 'IDS', label: 'Institute of Data Science'},
+    {id: 'MAASTRO', label: 'Maastro Clinic'},
+    {id: 'MACSBIO', label: 'Maastricht Centre for Systems Biology'},
+    {id: 'MSCM', label: 'Department of Marketing and Supply Chain Management'},
+    {id: 'MSP', label: 'Maastricht Science Programme'},
+    {id: 'NUTRIM', label: 'School of Nutrition and Translational Research in Metabolism'},
+    {id: 'PHARTOX', label: 'Department of Pharmacology & Toxicology'},
+    {id: 'SBE', label: 'School of Business and Economics'},
+    {id: 'TECH LAB', label: 'Law and Tech Lab'},
+    {id: 'TGX', label: 'Department of Toxicogenomics'},
+    {id: 'PSYCHO', label: 'Faculty of Psychology and Neuroscience'},
+    {id: 'UM', label: 'Maastricht University'},
+    // {id: 'PN', label: '???'},
+    // {id: 'Other', label: 'Other'},
+  ]
   const projectTypeMap = {
     "Machine Learning on CPU (python, jupyter, matlab)": "ML on CPU",
     "Machine Learning on GPU (python, jupyter, matlab)": "ML on GPU",
-    "Bioinformatics pipeline (python, conda, sequencing pipeline, workflows)": "Bioinfo",
+    "Bioinformatics pipeline (python, conda, sequencing pipeline, workflows)": "Bioinformatics",
     "Data hosting (SQL, knowledge graph, key-value stores, data lakes)": "Database",
     "Data processing (python, java, workflows, services orchestration)": "Data processing",
     "Continuous Delivery / Integration (website deployment, jenkins, argo cd)": "Websites",
@@ -208,11 +217,13 @@ function Home() {
   const buildBarChart  = (projects: any) => {
     const projectsUsersArray = []
     const projectsLabelArray = []
+    const projectsDescArray = []
     Object.keys(projects).map((projectType: string) => {
       if (projectType && projects[projectType]['users'] > 3) {
         projectsUsersArray.push(projects[projectType]['users'])
         // projectsLabelArray.push(projectType)
         projectsLabelArray.push(projectTypeMap[projectType])
+        projectsDescArray.push(projectType)
       }
     })
     const config = {
@@ -220,26 +231,19 @@ function Home() {
       data: {
         datasets: [{
           data: projectsUsersArray,
-          // backgroundColor: pieColors,
-          label: 'Users per project type',
+          label: ' Users',
           // labels: deptUsersArray
-          labels: projectsLabelArray,
+          // labels: projectsDescArray,
           backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 205, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 99, 132, 0.2)', 'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)', 'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)',
             'rgba(201, 203, 207, 0.2)'
           ],
           borderColor: [
-            'rgb(255, 99, 132)',
-            'rgb(255, 159, 64)',
-            'rgb(255, 205, 86)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
+            'rgb(255, 99, 132)', 'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)', 'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)', 'rgb(153, 102, 255)',
             'rgb(201, 203, 207)'
           ],
           borderWidth: 1
@@ -251,69 +255,25 @@ function Home() {
           y: {
             beginAtZero: true
           }
-        }
+        },
         // responsive: true,
         // // maintainAspectRatio: false,
         // animation: { animateScale: true, animateRotate: true },
-        // tooltips: {
-        //   // callbacks: {
-        //   //   label: function(item, data) {
-        //   //       console.log(data.datasets[item.datasetIndex])
-        //   //       return data.datasets[item.datasetIndex].label+ ": "+ data.labels[item.index]+ ": "+ data.datasets[item.datasetIndex].data[item.index];
-        //   //   }
-        //   // }
-        //   callbacks: {
-        //     label: function(tooltipItem: any, data: any) {
-        //       var dataset = data.datasets[tooltipItem.datasetIndex];
-        //       var index = tooltipItem.index;
-        //       return dataset.labels[index];
-        //     }
-        //   }
-        // },
-        // plugins: {
-        //   legend: { display: false },
-        //   // labels: [
-        //   //   {
-        //   //     render: 'label',
-        //   //     position: 'outside'
-        //   //   },
-        //   //   {
-        //   //     render: 'value'
-        //   //   }
-        //   // ],
-        //   datalabels: {
-        //     legend: false,
-        //     color: 'black',
-        //     // https://github.com/chartjs/chartjs-plugin-datalabels/blob/master/docs/guide/positioning.md
-        //     labels: {
-        //       title: {
-        //         anchor: 'end',
-        //         // offset: '-10',
-        //         formatter: function(value: any, context: any) {
-        //           return context.dataset['labels'][context['dataIndex']];
-        //         }
-        //       },
-        //       value: {
-        //         anchor: 'center',
-        //         formatter: function(value: any, context: any) {
-        //           return value;
-        //         }
-        //       }
-        //     },
-        //     // formatter: function(value: any, context: any) {
-        //     //   if (context.datasetIndex == 0) {
-        //     //     context.font = "bold 20em Montserrat";
-        //     //     return context.dataset.labels[context.dataIndex];
-        //     //   } else {
-        //     //     return context.dataset.labels[context.dataIndex];
-        //     //   }
-        //     // }
-        //   }
-        // }
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: function(tooltipItem: any) {
+                return projectsDescArray[tooltipItem[0].dataIndex];
+              }
+            }
+          },
+        }
       }
     };
     return config;
   }
+
 
   React.useEffect(() => {
     axios.get(apiUrl + '/user/stats', 
@@ -334,7 +294,6 @@ function Home() {
         console.log(error);
       })
   }, [])
-
 
 
   return (
@@ -388,39 +347,22 @@ function Home() {
             <Grid item xs={1}></Grid>
             <Grid item xs={3} style={{ textAlign: 'right' }}>
               <Typography variant='h6'>
-                Number of users per department
+                Users per department
               </Typography>
               <Pie data={state.usersDeptPie['data']} 
                 options={state.usersDeptPie['options']}
                 // style={{margin: '30px'}}
                 plugins={[
                   ChartDataLabels,
-                  // {
-                  //   beforeDraw: function(chart: any) {
-                  //     var width = chart.chart.width,
-                  //         height = chart.chart.height,
-                  //         ctx = chart.chart.ctx;
-                  //     ctx.restore();
-                  //     var fontSize = (height / 114).toFixed(2);
-                  //     ctx.font = fontSize + "em sans-serif";
-                  //     ctx.textBaseline = "middle";
-                  //     var text = Math.round(Objects.keys(state.stats['departments'])),
-                  //         textX = Math.round((width - ctx.measureText(text).width) / 2),
-                  //         textY = height / 2;
-                  //     ctx.fillText(text, textX, textY);
-                  //     ctx.save();
-                  //   }
-                  // }
                 ]}
               />
             </Grid>
             <Grid item xs={5} style={{ textAlign: 'center' }}>
               <Typography variant='h6'>
-                Number of users per project types
+                Users per project types
               </Typography>
               <Bar data={state.projectTypesPie['data']} 
                 options={state.projectTypesPie['options']}
-                // style={{maxWidth: '800px'}}
                 plugins={[
                   ChartDataLabels,
                 ]}
@@ -449,8 +391,3 @@ function Home() {
 }
 
 export default Home;
-
-
-
-
-
