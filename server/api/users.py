@@ -97,7 +97,10 @@ def get_stats() -> dict:
             project_stats[user.project_type]['users'] += 1
 
             creation_date = user.created_at.strftime("%Y-%m-%d")
-            users_timeline[creation_date] = user_count
+            if not creation_date in users_timeline.keys():
+                users_timeline[creation_date] = 1
+            else:
+                users_timeline[creation_date] = users_timeline[creation_date] + 1
             
     return JSONResponse({
         'users': user_count, 
