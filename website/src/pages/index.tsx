@@ -275,7 +275,6 @@ function Home() {
     return config;
   }
 
-
   const buildTimelineChart  = (timeline: any) => {
     const daysArray = []
     const usersArray = []
@@ -289,16 +288,22 @@ function Home() {
       data: {
         datasets: [{
           data: usersArray,
-          label: 'Number of Users',
+          label: ' Number of Users',
           // labels: deptUsersArray
           // labels: projectsDescArray,
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
           borderColor: 'rgb(54, 162, 235)',
-          borderWidth: 1
+          borderWidth: 4
         }],
         labels: daysArray
       },
       options: {
+        elements: {
+          point:{
+            radius: 0,
+            hitRadius: 8
+          }
+        },
         scales: {
           y: {
             beginAtZero: true
