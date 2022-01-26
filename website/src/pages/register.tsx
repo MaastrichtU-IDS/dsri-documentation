@@ -529,7 +529,7 @@ function Registration() {
                 <p>
                   The DSRI infrastructure is accessible for UM researchers and students. 
                   Although DSRI has all relevant security and privacy measures in place to ensure a stable system, 
-                  we want to emphasize it is the responsibility of the user which data he or she is using to perform their work on DSRI. 
+                  we want to emphasize it is the responsibility of the user which data they are using to perform their work on DSRI. 
                   <br/>GDPR compliance is the responsibility of the researcher. 
                   In case there are any questions, you can visit this website (<a href="https://library.maastrichtuniversity.nl/research-support/rdm/guide/#personal-data-privacy-security" target="_blank" rel="noopener noreferrer">https://library.maastrichtuniversity.nl/research-support/rdm/guide/#personal-data-privacy-security</a>) 
                   or contact your faculty information manager.

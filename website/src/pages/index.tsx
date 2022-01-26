@@ -293,7 +293,7 @@ function Home() {
           // labels: projectsDescArray,
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
           borderColor: 'rgb(54, 162, 235)',
-          borderWidth: 4
+          borderWidth: 3
         }],
         labels: daysArray
       },

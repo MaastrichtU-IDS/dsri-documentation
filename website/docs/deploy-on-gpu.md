@@ -4,21 +4,17 @@ title: GPU applications
 ---
 
 
-:::warning Request GPU access
+:::warning Book a GPU
 
-**By default you do not have the permission to run pods on GPU** 
+**By default you do not have the permission to run applications on GPU**, they need to be booked.
 
-If you want to run on GPU, **contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)**, they will create the templates you need to start applications on GPU.
+You can check the availability of our GPUs, and reserve GPU slots in our [GPU booking calendar 📅](/gpu-booking)
 
 :::
 
 We are using images provided by Nvidia, and optimized for GPU. We currently deployed Tensorflow and PyTorch with JupyterLab and VSCode, but any image available in the Nvidia catalog should be easy to deploy: https://ngc.nvidia.com/catalog/containers
 
 Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu) for more details on how we build the optimized docker images for the DSRI GPUs. Feel free to [extend the images](https://github.com/MaastrichtU-IDS/jupyterlab#extend-an-image) to your needs.
-
-## Reserve GPU for your experiments
-
-You can check the availability of our GPUs, and reserve GPU slots in our [GPU booking calendar](/gpu-booking).
 
 ## Start a workspace on GPU
 
