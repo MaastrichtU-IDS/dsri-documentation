@@ -116,6 +116,16 @@ SET PASSWORD FOR 'username'@'%' = PASSWORD('newpassword');
 
 ### Backup
 
+#### Export as CSV
+
+1. Go to phpMyAdmin > click on the `dsri-db` database > go to the **Export** tab
+2. Change the **Export method** to **Custom**
+3. Change the **Format** to **CSV** or **CSV for MS Excel**
+4. Check **Export tables as separate files**
+4. Click **Go**
+
+#### Complete database backup
+
 Use our script to generate the backup zip with a timestamp in the `./backup` folder, to execute when the database is already running:
 
 ```bash

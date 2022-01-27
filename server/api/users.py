@@ -8,6 +8,7 @@ import time
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from datetime import datetime, timedelta, date
 from sqlalchemy.exc import IntegrityError, OperationalError
+# from sqlalchemy import VARCHAR
 # from MySQLdb import OperationalError
 
 from api.notifications import post_msg_to_slack

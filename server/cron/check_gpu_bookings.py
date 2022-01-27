@@ -12,6 +12,7 @@ from email.mime.text import MIMEText
 from api.gpus import GpuBooking
 from api.notifications import post_msg_to_slack, send_email
 
+# docker-compose exec cronjob watch cat /var/log/cron.log
 
 print(f'🔎 Checking GPU reservations to send booking notifications')
 

@@ -11,6 +11,11 @@ services:
   mysql:
     volumes:
       - ./data:/var/lib/mysql
+      - ./backup:/backup
+
+  cronjob:
+    volumes:
+      - ./backup:/backup
 
   phpmyadmin:
     environment:
