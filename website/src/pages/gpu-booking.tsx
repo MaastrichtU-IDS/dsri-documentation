@@ -242,19 +242,19 @@ function GpuBooking() {
     return bookings
   }
 
-  const gpuCount = (gpuCount: number) => {
-    let color = '#2e7d32' // Green
-    if (gpuCount > 3) color = '#e65100' // Orange
-    if (gpuCount > 5) color = '#b71c1c' // Red
-    return (
-      <div style={{height: "5px", width: "5px", color: color, fontWeight: '400',
-          position: "absolute", top: 2, right: 1, opacity: 0.9}}>{gpuCount}</div>
-      // Show a colored dot:
-      // <div style={{height: "5px", width: "5px", borderRadius: "100%", background: color,
-      //     position: "absolute", top: 2, right: 2}}></div>
-    )
-  }
-  const getGpuColor = (gpuCount: any) => {
+  // const gpuCount = (gpuCount: number) => {
+  //   let color = '#2e7d32' // Green
+  //   if (gpuCount > 3) color = '#e65100' // Orange
+  //   if (gpuCount > 5) color = '#b71c1c' // Red
+  //   return (
+  //     <div style={{height: "5px", width: "5px", color: color, fontWeight: '400',
+  //         position: "absolute", top: 2, right: 1, opacity: 0.9}}>{gpuCount}</div>
+  //     // Show a colored dot:
+  //     // <div style={{height: "5px", width: "5px", borderRadius: "100%", background: color,
+  //     //     position: "absolute", top: 2, right: 2}}></div>
+  //   )
+  // }
+  const getGpuColor: any = (gpuCount: any) => {
     let color = 'success' // Green
     if (gpuCount > 3) color = 'warning' // Orange
     if (gpuCount > 5) color = 'error' // Red
@@ -375,7 +375,7 @@ function GpuBooking() {
                   // onChange={(item: any) => setState({ ...state, ...item })}
                   onChange={(item: any) => updateState({ ...state, ...item })}
                   dayContentRenderer={customDayContent}
-                  minDate={addDays(new Date(), 1)}
+                  minDate={new Date()}
                   showSelectionPreview={true}
                   moveRangeOnFirstSelection={false}
                   months={2}
