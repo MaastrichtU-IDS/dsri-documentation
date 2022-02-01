@@ -32,7 +32,7 @@ function GpuBooking() {
     reservations: {},
     bookedDays: {},
     selection1: {
-      startDate: addDays(new Date(), 1),
+      startDate: new Date(),
       endDate: addDays(new Date(), 7),
       key: 'selection1'
     },
