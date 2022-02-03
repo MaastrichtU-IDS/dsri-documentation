@@ -32,8 +32,8 @@ function GpuBooking() {
     reservations: {},
     bookedDays: {},
     selection1: {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
+      startDate: null,
+      endDate: null,
       key: 'selection1'
     },
     windowSize: 1000
@@ -48,7 +48,15 @@ function GpuBooking() {
   // To remove warning?: componentDidMount(() => {
   React.useEffect(() => {
     getBookedDays()
-    updateState({windowSize: window.innerWidth})
+    const selection1 = {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 7),
+      key: 'selection1'
+    }
+    updateState({
+      selection1: selection1,
+      windowSize: window.innerWidth
+    })
   }, [])
 
   const checkError = (field: string) => {
