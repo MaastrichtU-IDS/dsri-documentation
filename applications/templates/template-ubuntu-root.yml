@@ -115,6 +115,9 @@ objects:
         - name: data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
+        - name: dshm
+          emptyDir:
+            medium: Memory
         containers:
         - name: ubuntu-container
           image: ${APPLICATION_NAME}:latest
@@ -134,6 +137,8 @@ objects:
           - name: data
             # mountPath: "/data"
             mountPath: "/root"
+          - name: dshm
+            mountPath: /dev/shm
         automountServiceAccountToken: false
 
 - kind: Service

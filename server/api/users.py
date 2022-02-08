@@ -14,6 +14,8 @@ from sqlalchemy.exc import IntegrityError, OperationalError
 from api.notifications import post_msg_to_slack
 
 
+# Login with LDAP: https://gist.github.com/femmerling/5097365
+
 class UserModel(SQLModel, table=False):
     email: str = Field(default='@maastrichtuniversity.nl', primary_key=True)
     username: str
