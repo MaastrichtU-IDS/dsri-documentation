@@ -19,9 +19,12 @@ services:
       - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
       - ./backup:/backup
 
-  mysql:
-    volumes:
-      - ./data:/var/lib/mysql
+  # mysql:
+  #   volumes:
+  #     - ./data:/var/lib/mysql
+  #     - ./backup:/backup
+  #     - ./server/cron/backup_database.sh:/app/backup_database.sh
+  #     - ./server/cron/backup_database.sh:/app/restore_backup.sh
     # ports:
     #   - 3306:3306
 

@@ -1,28 +1,31 @@
 import os
 from datetime import datetime, timedelta
 from typing import List, Optional
-import requests
 from fastapi import APIRouter, Body, FastAPI, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-from sqlalchemy.exc import IntegrityError
+from pydantic import validator
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
-from api.notifications import post_msg_to_slack
+# from api.notifications import post_msg_to_slack
 
 
 NUMBER_OF_GPUS = 8
 MAX_BOOK_DAYS = 30
 
 
-class CreateGpuBooking(SQLModel, table=False):
+class CreateBooking(SQLModel, table=False):
     user_email: str = Field(primary_key=True)
     starting_date: datetime = Field(primary_key=True)
     ending_date: datetime = Field(primary_key=True)
     project_id: str = Field(primary_key=False)
 
-class GpuBooking(CreateGpuBooking, table=True):
+    @validator("user_email", "starting_date", "ending_date", "project_id")
+    def reject_empty_strings(cls, v):
+        assert str(v) is not ''
+        return v
+
+class BookingTable(CreateBooking, table=True):
     gpu_id: Optional[int] = Field(primary_key=True)
     created_at: datetime = datetime.now()
 
@@ -37,7 +40,7 @@ router = APIRouter()
 )            
 def get_gpu_reservations() -> List[dict]:
     with Session(engine) as session:
-        statement = select(GpuBooking)
+        statement = select(BookingTable)
         results = session.exec(statement).all()
         reservations = []
         for resa in results:
@@ -52,7 +55,7 @@ def get_gpu_reservations() -> List[dict]:
 # Get a dict with all days with GPUs booked 
 def get_booked_days() -> dict:
     with Session(engine) as session:
-        statement = select(GpuBooking)
+        statement = select(BookingTable)
         reservations = session.exec(statement).all()
         booked_days = {}
         for resa in reservations:
@@ -85,7 +88,7 @@ def get_gpu_booked_days() -> dict:
     description="Request a DSRI GPU for a period, this will check if any GPU are available for the requested period",
     response_model=dict,
 )            
-def create_gpu_schedule(schedule: CreateGpuBooking = Body(...)) -> dict:
+def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     # Generate GPU ID depending on availability
     booked_days = get_booked_days()
     booked_gpus = []
@@ -122,7 +125,7 @@ def create_gpu_schedule(schedule: CreateGpuBooking = Body(...)) -> dict:
     if gpu_id > NUMBER_OF_GPUS:
         return JSONResponse({'errorMessage': 'No GPU available for the dates provided.'})
 
-    create_booking = GpuBooking.from_orm(schedule)
+    create_booking = BookingTable.from_orm(schedule)
     create_booking.gpu_id = gpu_id
 
     with Session(engine) as session:

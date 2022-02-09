@@ -13,11 +13,11 @@ services:
       MARIADB_USER: dsri-user
       MARIADB_PASSWORD: ${PASSWORD-password}
       MARIADB_ROOT_PASSWORD: ${PASSWORD-password}
-    volumes:
-      - ./data:/var/lib/mysql
-      - ./backup:/backup
-      - ./server/cron/backup_database.sh:/app/backup_database.sh
-      - ./server/cron/backup_database.sh:/app/restore_backup.sh
+    # volumes:
+    #   - ./data:/var/lib/mysql
+    #   - ./backup:/backup
+    #   - ./server/cron/backup_database.sh:/app/backup_database.sh
+    #   - ./server/cron/backup_database.sh:/app/restore_backup.sh
       # docker-compose exec mysql chown mysql: /backup
       # - ./server/schemas:/docker-entrypoint-initdb.d
     command: --max-allowed-packet=16M

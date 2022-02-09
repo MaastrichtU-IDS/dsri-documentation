@@ -9,7 +9,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from api.gpus import GpuBooking
+from api.gpus import BookingTable
 from api.notifications import post_msg_to_slack, send_email
 
 # docker-compose exec cronjob watch cat /var/log/cron.log
@@ -24,7 +24,7 @@ SQLModel.metadata.create_all(engine)
 # Query the SQL DB to get the GPU reservations
 # And send msgs if reservations starts/ends today
 with Session(engine) as session:
-    statement = select(GpuBooking)
+    statement = select(BookingTable)
     results = session.exec(statement).all()
     schedule = []
     start_msgs = []

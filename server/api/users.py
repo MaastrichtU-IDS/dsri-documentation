@@ -2,12 +2,13 @@ from fastapi import FastAPI, APIRouter, Request, Response, Body
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List, Optional
-from pydantic import BaseModel
 import os
 import time
+import re
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from datetime import datetime, timedelta, date
 from sqlalchemy.exc import IntegrityError, OperationalError
+from pydantic import validator
 # from sqlalchemy import VARCHAR
 # from MySQLdb import OperationalError
 
@@ -16,7 +17,7 @@ from api.notifications import post_msg_to_slack
 
 # Login with LDAP: https://gist.github.com/femmerling/5097365
 
-class UserModel(SQLModel, table=False):
+class CreateUser(SQLModel, table=False):
     email: str = Field(default='@maastrichtuniversity.nl', primary_key=True)
     username: str
     employee_id: str
@@ -32,7 +33,20 @@ class UserModel(SQLModel, table=False):
     use_dsri_date: Optional[datetime]
     gdpr_avg_number: Optional[str]
 
-class User(UserModel, table=True):
+    @validator("email", "username", "employee_id", "affiliation", "project_type", "project_description", "gdpr")
+    def reject_empty_strings(cls, v):
+        assert v is not ''
+        return v
+
+    @validator("email")
+    def validate_email(cls, v):
+        pattern = re.compile("^[a-zA-Z0-9\.-_]+@(?:student.)?maastrichtuniversity.nl$")
+        assert pattern.match(v)
+        return v
+
+    # class config: validate_assignment = True
+
+class UserTable(CreateUser, table=True):
     comment: str = ''
     access_enabled: bool = False
     created_at: datetime = datetime.now()
@@ -47,9 +61,10 @@ router = APIRouter()
     description="Register a user in the DSRI database to request access to the DSRI. Email needs to end with `@maastrichtuniversity.nl`",
     response_model=dict,
 )            
-def register_user(createUser: UserModel = Body(...)) -> dict:
+def register_user(createUser: CreateUser = Body(...)) -> dict:
     with Session(engine) as session:
-        db_user = User.from_orm(createUser)
+        db_user = UserTable.from_orm(createUser)
+        # db_user = User.validate(createUser)
         print(db_user)
         try:
             session.add(db_user)
@@ -82,7 +97,7 @@ def register_user(createUser: UserModel = Body(...)) -> dict:
 )            
 def get_stats() -> dict:
     with Session(engine) as session:
-        statement = select(User).order_by(User.created_at)
+        statement = select(UserTable).order_by(UserTable.created_at)
         users = session.exec(statement)
         user_count = 0
         affiliation_stats = {}
