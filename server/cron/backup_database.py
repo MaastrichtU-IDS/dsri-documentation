@@ -4,7 +4,7 @@ from datetime import datetime
 import csv
 import pathlib
 
-from api.gpus import BookingTable
+from api.gpus import GpuBooking
 from api.users import User
 
 
@@ -24,9 +24,9 @@ with Session(engine) as session:
     # Dump GPU bookings
     outfile = open(f'{folder_path}/dsri-db_{date}_gpu-booking.csv', 'w')
     writer = csv.writer(outfile)
-    statement = select(BookingTable)
+    statement = select(GpuBooking)
     results = session.exec(statement).all()
-    [writer.writerow([getattr(curr, column.name) for column in BookingTable.__mapper__.columns]) for curr in results]
+    [writer.writerow([getattr(curr, column.name) for column in GpuBooking.__mapper__.columns]) for curr in results]
     outfile.close()
 
     # Dump Users

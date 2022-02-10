@@ -46,7 +46,7 @@ class CreateUser(SQLModel, table=False):
 
     # class config: validate_assignment = True
 
-class UserTable(CreateUser, table=True):
+class User(CreateUser, table=True):
     comment: str = ''
     access_enabled: bool = False
     created_at: datetime = datetime.now()
@@ -63,7 +63,7 @@ router = APIRouter()
 )            
 def register_user(createUser: CreateUser = Body(...)) -> dict:
     with Session(engine) as session:
-        db_user = UserTable.from_orm(createUser)
+        db_user = User.from_orm(createUser)
         # db_user = User.validate(createUser)
         print(db_user)
         try:
@@ -97,7 +97,7 @@ def register_user(createUser: CreateUser = Body(...)) -> dict:
 )            
 def get_stats() -> dict:
     with Session(engine) as session:
-        statement = select(UserTable).order_by(UserTable.created_at)
+        statement = select(User).order_by(User.created_at)
         users = session.exec(statement)
         user_count = 0
         affiliation_stats = {}

@@ -25,7 +25,7 @@ class CreateBooking(SQLModel, table=False):
         assert str(v) is not ''
         return v
 
-class BookingTable(CreateBooking, table=True):
+class GpuBooking(CreateBooking, table=True):
     gpu_id: Optional[int] = Field(primary_key=True)
     created_at: datetime = datetime.now()
 
@@ -40,7 +40,7 @@ router = APIRouter()
 )            
 def get_gpu_reservations() -> List[dict]:
     with Session(engine) as session:
-        statement = select(BookingTable)
+        statement = select(GpuBooking)
         results = session.exec(statement).all()
         reservations = []
         for resa in results:
@@ -55,7 +55,7 @@ def get_gpu_reservations() -> List[dict]:
 # Get a dict with all days with GPUs booked 
 def get_booked_days() -> dict:
     with Session(engine) as session:
-        statement = select(BookingTable)
+        statement = select(GpuBooking)
         reservations = session.exec(statement).all()
         booked_days = {}
         for resa in reservations:
@@ -125,7 +125,7 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     if gpu_id > NUMBER_OF_GPUS:
         return JSONResponse({'errorMessage': 'No GPU available for the dates provided.'})
 
-    create_booking = BookingTable.from_orm(schedule)
+    create_booking = GpuBooking.from_orm(schedule)
     create_booking.gpu_id = gpu_id
 
     with Session(engine) as session:
