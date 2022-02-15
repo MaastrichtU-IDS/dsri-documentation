@@ -55,7 +55,7 @@ module.exports={
       null,
       null
     ],
-    "gaGtag": true
+    "gaGtag": false
   },
   "onBrokenLinks": "log",
   "onBrokenMarkdownLinks": "log",
@@ -150,8 +150,8 @@ module.exports={
         "href": "https://maastrichtuniversity.nl/"
       }
     },
-    "gtag": {
-      "trackingID": "UA-172146359-1"
-    }
+    // "gtag": {
+    //   "trackingID": "UA-172146359-1"
+    // }
   }
 }
