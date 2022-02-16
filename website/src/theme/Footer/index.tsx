@@ -122,9 +122,13 @@ function Footer() {
             />
 
             <div style={{marginBottom: '10px', color: 'grey'}}>
+              We don't use any tracker, enjoy the freedom and peace of mind 🕊️
+            </div>
+
+            {/* <div style={{marginBottom: '10px', color: 'grey'}}>
               We track page views and users demographics using Google Analytics to improve our users experience. <a href="https://policies.google.com/technologies/partner-sites">See how Google uses collected informations</a>.<br/>
               You can prevent Google Analytics tracking by enabling <a href="https://blog.mozilla.org/blog/2019/06/04/firefox-now-available-with-enhanced-tracking-protection-by-default/">Firefox Tracking Protection</a>, installing <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=fr">uBlock Origin add-on</a>, or using the official <a href='https://tools.google.com/dlpage/gaoptout/'>Google Analytics Opt-out add-on</a>.
-            </div>
+            </div> */}
           </div>
         )}
       </div>
