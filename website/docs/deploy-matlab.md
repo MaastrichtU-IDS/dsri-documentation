@@ -3,11 +3,6 @@ id: deploy-matlab
 title: Matlab
 ---
 
-:::warning Stop unused Matlab
-
-Always stop all Matlab pods when you are not using them, the UM license server have a limited number of licenses available.
-
-:::
 
 Note that we are not expert in Matlab (we don't use proprietary software to do open science), so feel free to contact Mathworks support directly if you are having any issues with their official Docker image.
 
@@ -116,9 +111,3 @@ spec:
     runAsUser: 0
 ```
 -->
-
-:::warning Stop unused Matlab
-
-Always stop all Matlab pods when you are not using them, the UM license server have a limited number of licenses available.
-
-:::
