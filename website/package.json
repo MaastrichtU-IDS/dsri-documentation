@@ -1,6 +1,7 @@
 {
   "author": "Vincent Emonet",
   "license": "CC-BY-4.0",
+  "homepage": "https://dsri.maastrichtuniversity.nl",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
