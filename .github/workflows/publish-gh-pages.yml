@@ -33,3 +33,13 @@ jobs:
         yarn install
         yarn deploy
       # GIT_USER=MaastrichtU-IDS CURRENT_BRANCH=master USE_SSH=true yarn run publish-gh-pages
+
+    - name: Fix custom GitHub Pages URL
+      uses: octokit/request-action@v2.x
+      with:
+        route: PUT /repos/MaastrichtU-IDS/d2s-docs/pages
+        cname: "dsri.maastrichtuniversity.nl"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
+        ## Default token does not have required access: secrets.GITHUB_TOKEN
