@@ -7,7 +7,7 @@ module.exports={
   "baseUrl": "/",
   "organizationName": "MaastrichtU-IDS",
   "projectName": "dsri-documentation",
-  trailingSlash: false,
+  // trailingSlash: false,
   "scripts": [
     "https://buttons.github.io/buttons.js",
     "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js",
