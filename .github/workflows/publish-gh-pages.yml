@@ -37,7 +37,7 @@ jobs:
     - name: Fix custom GitHub Pages URL
       uses: octokit/request-action@v2.x
       with:
-        route: PUT /repos/MaastrichtU-IDS/d2s-docs/pages
+        route: PUT /repos/MaastrichtU-IDS/dsri-documentation/pages
         cname: "dsri.maastrichtuniversity.nl"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
