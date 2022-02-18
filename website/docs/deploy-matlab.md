@@ -3,11 +3,7 @@ id: deploy-matlab
 title: Matlab
 ---
 
-Note that we are not expert in Matlab: we don't use proprietary software to do open science! And Matlab is so poorly written for a paid software that is outrageous to pay for locking your science behind their license (remember that anyone who wants to reproduce your results will need to pay for matlab, and your whole analysis will be worthless if Mathworks goes bankrupt).  
-
-It's the same story as for researchers who have accepted to pay outrageous fees to publishers for years, while doing the reviewing themselves for free (how ridiculous is that?). Today everyone realized that is an effective ponzi scheme, and is moving to Open Access publishing. It is the same for scientific computing platforms like matlab. Do you want to push Science towards an open future? Or keep it locked behind licenses? That's your choice and your responsibility. 
-
-Feel free to contact Mathworks support directly if you are having any issues with their official Docker image. Because since it's closed source we cannot fix it ourselves.
+Note that we are not expert in Matlab: feel free to contact Mathworks support directly if you are having any issues with their official Docker image. Because since it's closed source we cannot fix it ourselves.
 
 You can request official support from Matlab at this address after login and connecting your account to the UM license: https://nl.mathworks.com/academia/tah-portal/maastricht-university-31574866.html#get
 
