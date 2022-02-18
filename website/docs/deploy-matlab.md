@@ -3,31 +3,25 @@ id: deploy-matlab
 title: Matlab
 ---
 
+Note that we are not expert in Matlab: we don't use proprietary software to do open science! And Matlab is so poorly written for a paid software that is outrageous to pay for locking your science behind their license (remember that anyone who wants to reproduce your results will need to pay for matlab, and your whole analysis will be worthless if Mathworks goes bankrupt).  
 
-Note that we are not expert in Matlab (we don't use proprietary software to do open science), so feel free to contact Mathworks support directly if you are having any issues with their official Docker image.
+Feel free to contact Mathworks support directly if you are having any issues with their official Docker image. Because since it's closed source we cannot fix it ourselves.
 
-You can request official support from Matlab at this address after login and connecting your account to the UM license: After logging in on this site https://nl.mathworks.com/academia/tah-portal/maastricht-university-31574866.html#get
+You can request official support from Matlab at this address after login and connecting your account to the UM license: https://nl.mathworks.com/academia/tah-portal/maastricht-university-31574866.html#get
 
 ## Use the official Matlab image
 
 Start Matlab with a desktop UI accessible directly using your web browser at a URL automatically generated. 
 
-Go to the **Catalog**, make sure **Templates** are displayed (box checked), and search for **Matlab** 
+Go to the **Catalog**, make sure **Templates** are displayed (box checked), and search for **Matlab**, and provide the right parameters:
 
-:::caution Request access to Matlab
-
-To be able to access the Matlab template you will need to [ask the DSRI admins](/dsri-documentation/help) to enable it in your project.
-
-:::
-
-You will need to provide the password you will use to access the Matlab UI when filling the template.
+* You will need to provide the password you will use to access the Matlab UI when filling the template.
+* You can also change the Matlab image version, see the latest version released in the [official Matlab Docker image documentation](https://hub.docker.com/r/mathworks/matlab)
 
 Once Matlab start you can access it through 2 routes (URL), which can be accessed when clicking on the Matlab node in the **Topology**:
 
-* The main `matlab` route to access Matlab desktop UI directly in your web browser
-* The `matlab-vnc` route to access Matlab using your favorite VNC client (you will need to use the full URL to your Matlab VNC route)
-
-See the [official Matlab image documentation](https://hub.docker.com/r/mathworks/matlab) for more details about this image.
+* The main `matlab` route to access Matlab desktop UI directly in your web browser. It is recommended to use this route.
+* The `matlab-vnc` route can be used to access Matlab using a VNC client (you will need to use the full URL to your Matlab VNC route). Only use it if you know what you're doing.
 
 ## Use Matlab in Jupyter
 
