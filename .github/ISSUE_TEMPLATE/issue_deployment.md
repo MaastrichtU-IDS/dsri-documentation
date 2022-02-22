@@ -3,7 +3,7 @@ name: Report an issue deploying an application 💥
 about: If you meet issues trying to deploy your application on the DSRI, you can request it here
 title: 'Issue deploying APPLICATION_NAME'
 labels: deployment, bug
-assignees: vemonet,Binosha
+assignees: vemonet
 ---
 
 #### Describe the problem

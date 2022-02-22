@@ -3,7 +3,7 @@ name: Propose a new milestone to the DSRI public roadmap 📆
 about: If you want to propose a milestone to be added to the DSRI roadmap
 title: 'Roadmap: PROPOSITION'
 labels: roadmap
-assignees: vemonet,Binosha
+assignees: vemonet
 ---
 
 

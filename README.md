@@ -91,6 +91,8 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 ### Database setup
 
+#### Import CSV
+
 To import a CSV of users in the database: remove the header, set `created_at` and `use_dsri_date`as a `VARCHAR(255)`, import the CSV file via phpMyAdmin, then set back `created_at` and `use_dsri_date` as `DATETIME`
 
 ```sql
@@ -98,7 +100,11 @@ UPDATE user SET created_at = STR_TO_DATE(created_at, '%d-%m-%Y %H:%i:%s');
 UPDATE user SET use_dsri_date = STR_TO_DATE(use_dsri_date, '%d-%m-%Y');
 ```
 
-Create new database users:
+#### Create new database users
+
+Login with the `root` user, and click on the **SQL** tab
+
+Replace `username` by the username, and `password` by the password (thanks captain obvious):
 
 ```sql
 DROP USER IF EXISTS 'username'@'%';
@@ -108,7 +114,9 @@ GRANT SELECT ON `dsri-db`.* TO 'username'@'%';
 FLUSH PRIVILEGES;
 ```
 
-Change the password of your database user:
+### Change your user password
+
+To change the password of your database user, click on the **SQL** tab, and execute:
 
 ```sql
 SET PASSWORD FOR 'username'@'%' = PASSWORD('newpassword');

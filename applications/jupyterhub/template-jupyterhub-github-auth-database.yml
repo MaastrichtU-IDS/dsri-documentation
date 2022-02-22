@@ -99,7 +99,7 @@ parameters:
 #   description: GitHub users who can use the JupyterHub. Use quotes and separate with a comma
 #   required: true
 #   value: |
-#         "vemonet", "Binosha", "micheldumontier", "rcelebi", "kodymoodley", "sabaturgay", "seunAdeks", "sunchang0124", "thendriks"
+#         "vemonet", "micheldumontier", "rcelebi", "kodymoodley", "sabaturgay", "seunAdeks", "sunchang0124", "thendriks"
 objects:
 - kind: ServiceAccount
   apiVersion: v1

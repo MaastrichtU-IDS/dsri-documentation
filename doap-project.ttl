@@ -21,11 +21,6 @@
   ] ;
   doap:maintainer [
     a foaf:Person ;
-    foaf:name "Binosha Weerarathna Arachchi Patabendige" ;
-    foaf:mbox <mailto:b.weerarathna@maastrichtuniversity.nl>
-  ] ;
-  doap:maintainer [
-    a foaf:Person ;
     foaf:name "Vincent Emonet" ;
     foaf:mbox <mailto:vincent.emonet@maastrichtuniversity.nl>
   ] .

@@ -3,7 +3,7 @@ name: Report unclear or missing documentation 📖
 about: If you need help with unclear, missing or misleading informations in the DSRI documentation
 title: 'Issue with docs: DOCUMENTATION_PAGE'
 labels: documentation
-assignees: vemonet,Binosha
+assignees: vemonet
 ---
 
 <!-- If you need help with unclear informations or think you have found a bug, please help us with your issue by entering the following information (otherwise you can delete this text): -->
