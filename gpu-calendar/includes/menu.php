@@ -16,11 +16,11 @@
           </li>
           <li class="nav-item">
           <?php
-              if(basename($_SERVER['PHP_SELF'])=="agenda.php"){
-                  echo '<a class="nav-link active" aria-current="page" href="agenda.php">';
+              if(basename($_SERVER['PHP_SELF'])=="index.php"){
+                  echo '<a class="nav-link active" aria-current="page" href="index.php">';
               }
               else{
-                echo '<a class="nav-link" aria-current="page" href="agenda.php">';
+                echo '<a class="nav-link" aria-current="page" href="index.php">';
               }
               ?>
               <span data-feather="calendar"></span>

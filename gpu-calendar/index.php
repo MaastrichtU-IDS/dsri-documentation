@@ -153,10 +153,10 @@ $(document).mouseup(function () {
         $thisweek = strtotime( 'monday this week' );
         ?>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="agenda.php"><?php echo date( 'Y-m-d',$thisweek) . " to ". date( 'Y-m-d',$thisweek + 86400*7)?></a></li>
-          <li><a class="dropdown-item" href="agenda.php?week=<?php echo ($thisweek + 604800) ?>"><?php echo date( 'Y-m-d',$thisweek + 436800) . " to ". date( 'Y-m-d',$thisweek + 604800 + 86400*6)?></a></li>
-          <li><a class="dropdown-item" href="agenda.php?week=<?php echo ($thisweek + 1209600) ?>"><?php echo date( 'Y-m-d',$thisweek + 1209600) . " to ". date( 'Y-m-d',$thisweek + 1209600 + 86400*6)?></a></li>
-          <li><a class="dropdown-item" href="agenda.php?week=<?php echo ($thisweek + 1814400) ?>"><?php echo date( 'Y-m-d',$thisweek + 1814400) . " to ". date( 'Y-m-d',$thisweek + 1814400 + 86400*6)?></a></li>
+          <li><a class="dropdown-item" href="index.php"><?php echo date( 'Y-m-d',$thisweek) . " to ". date( 'Y-m-d',$thisweek + 86400*7)?></a></li>
+          <li><a class="dropdown-item" href="index.php?week=<?php echo ($thisweek + 604800) ?>"><?php echo date( 'Y-m-d',$thisweek + 436800) . " to ". date( 'Y-m-d',$thisweek + 604800 + 86400*6)?></a></li>
+          <li><a class="dropdown-item" href="index.php?week=<?php echo ($thisweek + 1209600) ?>"><?php echo date( 'Y-m-d',$thisweek + 1209600) . " to ". date( 'Y-m-d',$thisweek + 1209600 + 86400*6)?></a></li>
+          <li><a class="dropdown-item" href="index.php?week=<?php echo ($thisweek + 1814400) ?>"><?php echo date( 'Y-m-d',$thisweek + 1814400) . " to ". date( 'Y-m-d',$thisweek + 1814400 + 86400*6)?></a></li>
         </ul>
       </div>
       <br />
