@@ -19,6 +19,12 @@ services:
       - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
       - ./backup:/backup
 
+
+  gpu-calendar:
+    ports:
+      - 8001:80
+
+
   # mysql:
   #   volumes:
   #     - ./data:/var/lib/mysql

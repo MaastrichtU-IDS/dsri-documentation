@@ -46,6 +46,17 @@ services:
       - SMTP_USER=${SMTP_USER-Vincent.Emonet}
       - SMTP_PASSWORD=${SMTP_PASSWORD-password}
 
+
+  gpu-calendar:
+    build: ./gpu-calendar
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - phpmyadmin
+    environment:
+      - DB_PASSWORD=${PASSWORD-password}
+
+
   cronjob:
     # Same image as the API
     build: ./server
