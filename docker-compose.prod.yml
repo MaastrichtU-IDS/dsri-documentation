@@ -11,8 +11,10 @@ services:
 
   gpu-calendar:
     environment:
-      - VIRTUAL_HOST=calendar.dsri.semanticscience.org
-      - LETSENCRYPT_HOST=calendar.dsri.semanticscience.org
+      - VIRTUAL_HOST=dsri-calendar.137.120.31.101.nip.io
+      - LETSENCRYPT_HOST=dsri-calendar.137.120.31.101.nip.io
+      # - VIRTUAL_HOST=calendar.dsri.semanticscience.org
+      # - LETSENCRYPT_HOST=calendar.dsri.semanticscience.org
       - VIRTUAL_PORT=80
 
 
