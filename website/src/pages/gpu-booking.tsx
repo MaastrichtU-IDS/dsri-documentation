@@ -410,7 +410,7 @@ function GpuBooking() {
                 ⚠️&nbsp;&nbsp;{state.errorMessage}
               </Paper>
               <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
-                  ✔️&nbsp;&nbsp;GPU requested successfully, soon you will receive an email with more informations to access and use the GPU on the DSRI.
+                    ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email, or Slack message, with more informations to use the GPU on the DSRI the day your booking starts.
               </Paper>
             </Box>
 
