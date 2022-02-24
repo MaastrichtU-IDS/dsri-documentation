@@ -44,7 +44,7 @@ argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examp
 
 :::caution Logged in
 
-You will need to have the `oc` client installed and be logged in with `oc login`, see the [install documentation page](/dsri-documentation/docs/openshift-install).
+You will need to have the `oc` client installed and be logged in with `oc login`, see the [install documentation page](/docs/openshift-install).
 
 :::
 
@@ -94,7 +94,7 @@ git clone --recursive https://github.com/MaastrichtU-IDS/d2s-project-template.gi
 cd d2s-project-template
 ```
 
-[Authenticate to the OpenShift cluster](/dsri-documentation/docs/openshift-install) using `oc login` .
+[Authenticate to the OpenShift cluster](/docs/openshift-install) using `oc login` .
 
 ### Workflow to convert XML files to RDF
 

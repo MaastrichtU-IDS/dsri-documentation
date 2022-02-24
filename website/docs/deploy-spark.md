@@ -5,7 +5,7 @@ title: Spark cluster
 
 :::warning Request access to the Spark Operator
 
-To be able to deploy Spark you will need to [ask the DSRI admins](/dsri-documentation/help) to enable the Spark Operator in your project. It will be done quickly, once enabled you will be able to start a Spark cluster in a few clicks.
+To be able to deploy Spark you will need to [ask the DSRI admins](/help) to enable the Spark Operator in your project. It will be done quickly, once enabled you will be able to start a Spark cluster in a few clicks.
 
 :::
 

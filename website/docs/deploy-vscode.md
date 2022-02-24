@@ -58,4 +58,4 @@ We recommend to use SSH instead of HTTPS connection when possible, checkout [her
 
 ## VSCode for GPU
 
-See the [Deploy on GPU](/dsri-documentation/docs/deploy-on-gpu) page to deploy a VisualStudio Code server on GPU.
+See the [Deploy on GPU](/docs/deploy-on-gpu) page to deploy a VisualStudio Code server on GPU.

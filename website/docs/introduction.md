@@ -41,7 +41,7 @@ Here is a non-exhaustive list of some of the services that can easily be deploye
 
 :::note Workflows
 
-For user already familiar with those concepts [workflow orchestration tools](/dsri-documentation/docs/workflows-introduction) can be installed, such as [Argo workflows](/dsri-documentation/docs/workflows-argo), [Nextflow](/dsri-documentation/docs/workflows-nextflow) or [CWL Calrissian](/dsri-documentation/docs/workflows-cwl).
+For user already familiar with those concepts [workflow orchestration tools](/docs/workflows-introduction) can be installed, such as [Argo workflows](/docs/workflows-argo), [Nextflow](/docs/workflows-nextflow) or [CWL Calrissian](/docs/workflows-cwl).
 
 :::
 

@@ -230,7 +230,7 @@ argo submit --watch https://raw.githubusercontent.com/argoproj/argo/master/examp
 
 ### Install the client
 
-See the [Argo workflows documentation](/dsri-documentation/docs/workflows-argo).
+See the [Argo workflows documentation](/docs/workflows-argo).
 
 ### Expose the UI
 

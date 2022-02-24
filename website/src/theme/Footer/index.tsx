@@ -110,7 +110,7 @@ function Footer() {
 
             <div>
               <a href="https://creativecommons.org/licenses/by/4.0/" title="Creative Commons Attribution 4.0 International license" target="_blank" rel="noopener noreferrer">
-                <img src="/dsri-documentation/img/cc-by.svg" alt="cc by license"/> 
+                <img src="/img/cc-by.svg" alt="cc by license"/> 
               </a>
             </div>
 

@@ -37,7 +37,7 @@ We use the Matlab template in the DSRI catalog to deploy a pre-built **Nvidia Ma
 
 :::caution Request access to Matlab
 
-To be able to access the Matlab on GPU template you will need to [ask the DSRI admins](/dsri-documentation/help) to enable it in your project.
+To be able to access the Matlab on GPU template you will need to [ask the DSRI admins](/help) to enable it in your project.
 
 :::
 

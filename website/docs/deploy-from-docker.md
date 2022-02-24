@@ -130,6 +130,6 @@ You can link DockerHub to your source code repository and ask it to build the Do
 
 :::tip Deploy from a local Dockerfile
 
-You can also deploy a service on the DSRI directly from a local `Dockerfile`, to avoid using DockerHub. See [this page to deploy a service from a local Dockerfile](/dsri-documentation/docs/guide-dockerfile-to-openshift) for more instructions
+You can also deploy a service on the DSRI directly from a local `Dockerfile`, to avoid using DockerHub. See [this page to deploy a service from a local Dockerfile](/docs/guide-dockerfile-to-openshift) for more instructions
 
 :::

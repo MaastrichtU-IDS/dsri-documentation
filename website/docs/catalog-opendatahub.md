@@ -7,7 +7,7 @@ title: OpenDataHub
 
 :::warning Work in progress
 
-Deploying an [OpenDataHub](https://opendatahub.io) cluster is a **work in progress** on the DSRI, **[contact us](/dsri-documentation/help)** if you are interested in trying it out.
+Deploying an [OpenDataHub](https://opendatahub.io) cluster is a **work in progress** on the DSRI, **[contact us](/help)** if you are interested in trying it out.
 
 :::
 

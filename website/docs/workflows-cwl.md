@@ -9,7 +9,7 @@ We use the [CWL Calrissian](https://github.com/Duke-GCB/calrissian) implementati
 
 ## Clone the repository
 
-1. Git clone in `/calrissian` on a [persistent volume](/dsri-documentation/docs/openshift-storage) on the cluster from a terminal. 
+1. Git clone in `/calrissian` on a [persistent volume](/docs/openshift-storage) on the cluster from a terminal. 
 
 ```shell
 cd /data/calrissian

@@ -67,7 +67,7 @@ mysql -h example-mysql -p
 
 Checkout the [dsri-demo repository](https://github.com/MaastrichtU-IDS/dsri-demo) for a quick demo for accessing and using a MySQL database from a Jupyter notebook on the DSRI.
 
-> Alternatively, MySQL databases can be started using Helm, see the [Helm documentation page](/dsri-documentation/docs/helm#install-a-helm-chart) for more details.
+> Alternatively, MySQL databases can be started using Helm, see the [Helm documentation page](/docs/helm#install-a-helm-chart) for more details.
 
 <!-- MariaDB not working
 

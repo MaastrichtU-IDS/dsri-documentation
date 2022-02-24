@@ -9,7 +9,7 @@ Different storages can be used when running services on the DSRI:
 
 ⚡ **Dynamic storage**:  automatically create a persistent storage when starting an application. Can also be created in the OpenShift web UI, using the `dynamic-maprfs` Storage Class.
 
-🗄️ **Persistent storage**:  a persistent storage can be created by the DSRI team for a persistent storage of the data. [Contact the DSRI team](/dsri-documentation/help) to request a persistent storage. 
+🗄️ **Persistent storage**:  a persistent storage can be created by the DSRI team for a persistent storage of the data. [Contact the DSRI team](/help) to request a persistent storage. 
 
 :::caution Storage per project
 

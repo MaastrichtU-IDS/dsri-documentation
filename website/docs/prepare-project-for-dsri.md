@@ -37,7 +37,7 @@ If you prefer your local environment for development, and only run big tasks on 
 
 ## Get your data ready
 
-If your project is using a large amount of data that cannot be pushed to a git repository, you will need to use a persistent storage to store your data on the DSRI. See the [Storage on the DSRI](/dsri-documentation/docs/openshift-storage) documentation for more details about creating a persistent storage.
+If your project is using a large amount of data that cannot be pushed to a git repository, you will need to use a persistent storage to store your data on the DSRI. See the [Storage on the DSRI](/docs/openshift-storage) documentation for more details about creating a persistent storage.
 
 Here are the options to upload your data to the DSRI storage:
 
@@ -45,7 +45,7 @@ Here are the options to upload your data to the DSRI storage:
 
 If the data is stored on a local machine, such as your computer:
 * Drag and drop files from your computer to the VisualStudio Code or JupyterLab web UI, if applicable.
-* Otherwise, use the `oc cp` command to copy data to your application pod. See the [Load data](/dsri-documentation/docs/openshift-load-data) documentation page for more informations.
+* Otherwise, use the `oc cp` command to copy data to your application pod. See the [Load data](/docs/openshift-load-data) documentation page for more informations.
 
 :::caution Upload to persistent storage
 
@@ -55,7 +55,7 @@ Make sure you **upload the data to a folder mounted on a persistent storage** in
 
 ### Data is on a server
 
-Same as for your laptop, you will need to install and use the `oc cp` command to copy data to your application pod. See the [Load data](/dsri-documentation/docs/openshift-load-data) documentation page for more informations.
+Same as for your laptop, you will need to install and use the `oc cp` command to copy data to your application pod. See the [Load data](/docs/openshift-load-data) documentation page for more informations.
 
 <!--
 

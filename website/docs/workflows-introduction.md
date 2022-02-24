@@ -101,6 +101,6 @@ See the [Workflow example](https://github.com/kubegene/kubegene/blob/master/exam
 
 :::info Contact us
 
-Feel free to [contact us](/dsri-documentation/help) if you have any questions about running workflows on DSRI or to request the support of a new technology.
+Feel free to [contact us](/help) if you have any questions about running workflows on DSRI or to request the support of a new technology.
 
 :::
