@@ -23,7 +23,7 @@ We prepared generic Docker images for data science workspaces with your favorite
 2. Select your project, or create one with a meaningful short name representing your project, e.g. `workspace-yourname`
 3. Go to the **+Add** page, and select to add **From Catalog**
 
-<img src="/dsri-documentation/img/screenshot_access_catalog.png" alt="Access catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_access_catalog.png" alt="Access catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 4. Search for templates corresponding to the application you want to deploy among the one described below (make sure the filter for templates is properly checked). 
 
@@ -51,7 +51,7 @@ Once you chose your favorite way to run your experiments, you can click on the a
 
 Then click on **Instantiate Template**, and fill the parameters, such as the password to access the web UI. Note that the application name needs to be unique in the project. Finally click on the **Create** button.
 
-<img src="/dsri-documentation/img/screenshot_template_configuration.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_template_configuration.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 You should see your application in your project dashboard, it can take a few seconds to a few minutes to pull the docker image and start the application. 
 
@@ -118,7 +118,7 @@ Please think of stopping applications you are not using to avoid consuming unnec
 
 On the **Topology** page click on the down arrow ⬇️ next to the number of pods deployed.
 
-<img src="/dsri-documentation/img/screenshot_scaledown_pod.png" alt="Scale down pod" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_scaledown_pod.png" alt="Scale down pod" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 You can then restart the pod by clicking the up arrow ⬆️
 

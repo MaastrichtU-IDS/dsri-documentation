@@ -31,7 +31,7 @@ If you prefer your local environment for development, and only run big tasks on 
 
 ## Define your deployment strategy
 
-<img src="/dsri-documentation/img/dsri-deploy-flowchart.png" alt="DSRI deployment flowchart" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/dsri-deploy-flowchart.png" alt="DSRI deployment flowchart" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 -->
 

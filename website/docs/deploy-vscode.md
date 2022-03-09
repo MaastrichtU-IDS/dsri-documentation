@@ -11,7 +11,7 @@ You can deploy it using the **VisualStudio Code server** solution in the [Catalo
 
 Provide a few parameters, and instantiate the template. The DSRI will automatically create a persistent volume to store data you will put in the `/home/coder/project` folder. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
-<img src="/dsri-documentation/img/screenshot-deploy-vscode.png" alt="Deploy VSCode" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot-deploy-vscode.png" alt="Deploy VSCode" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::caution Use Chrome
 

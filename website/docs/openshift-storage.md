@@ -45,11 +45,11 @@ A storage (aka. Persistent Volume Claim) is only accessible in the project where
 
 8. Click **Create**
 
-<img src="/dsri-documentation/img/screenshot_pvc_storage.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_pvc_storage.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 
-<img src="/dsri-documentation/img/screenshot_pvc_storage_create.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_pvc_storage_create.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::info 
 
@@ -81,9 +81,9 @@ On the **Topology** page select your application,
 
 5. Save
 
-<img src="/dsri-documentation/img/screenshot_existing_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_existing_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-<img src="/dsri-documentation/img/screenshot_add_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_add_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::info
 

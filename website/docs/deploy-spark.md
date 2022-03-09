@@ -15,7 +15,7 @@ Once the DSRI admins have enabled the Spark Operator your project, you should fo
 
 ### Deploy the cluster from the catalog
 
-<img src="/dsri-documentation/img/screenshot-spark-operator1.png" alt="Apache Spark in the Catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot-spark-operator1.png" alt="Apache Spark in the Catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 Click on the **Spark Cluster** entry to deploy a Spark cluster.
 
@@ -23,7 +23,7 @@ You will be presented a form where you can provide the number of Spark workers i
 
 Additionally you can provide a label which can be helpful later to manage or delete the cluster, use the name of your application and the label `app`, e.g.: `app=my-spark-cluster`
 
-<img src="/dsri-documentation/img/screenshot-spark-operator2.png" alt="Deploy a Apache Spark cluster" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot-spark-operator2.png" alt="Deploy a Apache Spark cluster" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::tip Change 
 

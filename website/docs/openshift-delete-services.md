@@ -43,5 +43,5 @@ We recommend to use the `oc` CLI to easily delete an application. But in the cas
 2. Delete the **Service**
 3. Delete the **Deployment Config** 
 
-<img src="/dsri-documentation/img/screenshot_delete_application.png" alt="Delete application from the web UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_delete_application.png" alt="Delete application from the web UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
 

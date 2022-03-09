@@ -27,7 +27,7 @@ const features = [
     imageUrl: 'img/okd-panda.svg',
     description: (
       <>
-        <a href="/dsri-documentation/docs/start-workspace">Easily deploy popular Data Science applications</a>&nbsp;
+        <a href="/docs/start-workspace">Easily deploy popular Data Science applications</a>&nbsp;
         on a remote server from the DSRI web interface using existing templates, such as RStudio, JupyterLab or VisualStudio Code.
       </>
     ),

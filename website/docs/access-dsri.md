@@ -49,7 +49,7 @@ You will be able to login at **[https://console-openshift-console.apps.dsri2.uni
 * The **prefix of your UM email address** with the first letter capitalized, e.g. `Firstname.Lastname` or `F.Lastname`
 * Or your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`
 
-<img src="/dsri-documentation/img/screenshot_login_screen.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_login_screen.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::info Command line interface
 
@@ -71,7 +71,7 @@ Only create new projects when it is necessary (for a new project). You can easil
 
 :::
 
-<img src="/dsri-documentation/img/screenshot_go_to_project.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_go_to_project.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::info Access permissions for developers to your project
 
@@ -106,7 +106,7 @@ You can access the **Developer** perspective from the web console as follows:
 
 2. Use the perspective switcher to switch to the **Developer** perspective. The **Topology** view with a list of all the projects in your cluster is displayed.
 
-   <img src="/dsri-documentation/img/screenshot_developer_perspective.png" alt="Developer Perspective" style={{maxWidth: '100%', maxHeight: '100%'}} />
+   <img src="/img/screenshot_developer_perspective.png" alt="Developer Perspective" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 3. Select an existing project from the list or use the **Project** drop-down list to create a new project.
 
@@ -116,4 +116,4 @@ If you have no workloads or applications in the project, the **Topology** view d
 
 :::
 
-<img src="/dsri-documentation/img/screenshot_topology_view.png" alt="Topology View" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_topology_view.png" alt="Topology View" style={{maxWidth: '100%', maxHeight: '100%'}} />

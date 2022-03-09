@@ -172,7 +172,7 @@ function Registration() {
           } else {
             updateState({openSuccess: 'inline', openError: 'none', loading: false})
             // setTimeout(function(){
-            //   history.push("/dsri-documentation/docs/");
+            //   history.push("/docs/");
             // }, 6000);
           }
         })

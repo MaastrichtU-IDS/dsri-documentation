@@ -7,11 +7,11 @@ title: Databases
 
 You can easily create a database from the templates available in the DSRI OpenShift web UI catalog:
 
-<img src="/dsri-documentation/img/screenshot-databases.png" alt="Databases in catalog web UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot-databases.png" alt="Databases in catalog web UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 You can connect to a database from another application in the same project by using the database service name as hostname:
 
-<img src="/dsri-documentation/img/screenshot_database_service.png" alt="Databases in catalog web UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_database_service.png" alt="Databases in catalog web UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 You can also use the `oc` CLI to get the services in your project:
 

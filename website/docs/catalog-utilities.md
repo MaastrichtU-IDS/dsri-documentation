@@ -43,7 +43,7 @@ To quickly access it from the terminal you can use the **Terminal** tab in the p
    bash
    ```
 
-<img src="/dsri-documentation/img/screenshot-deploy-ubuntu.png" alt="Deploy Ubuntu" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot-deploy-ubuntu.png" alt="Deploy Ubuntu" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 ### With a web UI
 
@@ -66,7 +66,7 @@ Deploy a file browser on your persistent volume. This will provide a web UI to u
 
 You can start a container using the **File Browser for existing storage** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
 
-<img src="/dsri-documentation/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 You can only deploy file browser on an existing Persistent Volume Claim, this enables you to add a web UI to access this storage.
 
@@ -83,11 +83,11 @@ You can find the Storage name if you Go to the deployments page > Storage panel.
 
 Find more details about the how to [create persistent storage](https://maastrichtu-ids.github.io/dsri-documentation/docs/openshift-storage/#create-the-persistent-storage)
 
-<img src="/dsri-documentation/img/screenshot_pvc_storage.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_pvc_storage.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 
-<img src="/dsri-documentation/img/screenshot_pvc_storage_create.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_pvc_storage_create.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::info 
 
@@ -99,9 +99,9 @@ The DSRI using the [**Openshift Container Stroage**](https://www.openshift.com/p
 
 Find more details about the how to [Connect the Existing persistent storage](https://maastrichtu-ids.github.io/dsri-documentation/docs/openshift-storage/#connect-the-existing-persistent-storage)
 
-<img src="/dsri-documentation/img/screenshot_existing_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_existing_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-<img src="/dsri-documentation/img/screenshot_add_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_add_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::info
 

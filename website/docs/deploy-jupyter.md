@@ -18,7 +18,7 @@ When instantiating the template you can provide a few parameters, such as:
 
 The DSRI will automatically create a persistent volume to store data you will put in the `/home/jovyan/work` folder (the folder used by the notebook interface). You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
-<img src="/dsri-documentation/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 With this template you can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
 

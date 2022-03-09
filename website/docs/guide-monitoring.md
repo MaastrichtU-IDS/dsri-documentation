@@ -7,7 +7,7 @@ title: Monitor your applications
 
 You can have an overview of the different resources consumed by the applications running in your project by going to the **Monitoring** tab (in the developer view)
 
-<img src="/dsri-documentation/img/screenshot_monitoring.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_monitoring.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 You can also check the CPU and memory usage directly from the terminal inside a specific container
 
@@ -31,7 +31,7 @@ If your application is facing issues when deployed:
 
 1. If the pod is not building, or not deploying properly, take a look at the **Events** tab of the deployment. It shows a log of all events faced by the deployment (assign to node, pull image, build, etc). Additionally, all **Events** in your project can be accessed in **Monitoring**.
 
-<img src="/dsri-documentation/img/screenshot_debug_event.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_debug_event.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::tip Various ways to check the events
 

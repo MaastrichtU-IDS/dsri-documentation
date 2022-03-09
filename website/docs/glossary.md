@@ -11,7 +11,7 @@ Kubernetes services, support, and tools are widely available.
 
 Kubernetes, also known as K8s, is an open-source system for automating deployment, scaling, and management of containerized applications.
 
-<img src="/dsri-documentation/img/glossary_kubernetes.png" alt="Kubernetes Architecture" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/glossary_kubernetes.png" alt="Kubernetes Architecture" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 
@@ -31,7 +31,7 @@ It includes
 * Developer workflows
 * Easy access to services
 
-<img src="/dsri-documentation/img/glossary_openshift.png" alt="Red Hat Openshift" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/glossary_openshift.png" alt="Red Hat Openshift" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 

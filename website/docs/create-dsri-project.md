@@ -25,7 +25,7 @@ You can create a project using the **Developer** perspective, as follows:
 
 5. Use the left navigation panel to navigate to the **Project** view and see the dashboard for your project.
 
-<img src="/dsri-documentation/img/screenshot_create_project.png" alt="Create Project" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_create_project.png" alt="Create Project" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 6. Optional:
@@ -69,7 +69,7 @@ To add users to your project and provide **Admin**, **Edit**, or **View** access
 
 3. Click **Add Access** to add a new row of permissions to the default ones.
 
- <img src="/dsri-documentation/img/screenshot_project_access.png" alt="Project Access" style={{maxWidth: '100%', maxHeight: '100%'}} />
+ <img src="/img/screenshot_project_access.png" alt="Project Access" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 4. Enter the user name, click the **Select a role** drop-down list, and select an appropriate role.
@@ -100,7 +100,7 @@ You can also use:
 
 5. Click **Delete**.
 
-  <img src="/dsri-documentation/img/screenshot_delete_project.png" alt="Delete Project" style={{maxWidth: '100%', maxHeight: '100%'}} />
+  <img src="/img/screenshot_delete_project.png" alt="Delete Project" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 ## Delete a project using the CLI

@@ -56,7 +56,7 @@ Or manually download the program and add it to your path:
    3. Click the button labeled **Environment Variables...** at the bottom. 
    4. Look for the option in the **User variables** section for **Path**.
 
-<img class="screenshot" src="/dsri-documentation/img/OC_Path.png" alt="Set OC Path" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
+<img class="screenshot" src="/img/OC_Path.png" alt="Set OC Path" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
 
 This makes it easy to access the `oc` command line interface by simply opening up the **PowerShell** and typing in the `oc` command, e.g.:
 
@@ -84,7 +84,7 @@ Otherwise try to use the token provided by the Web UI:
 
 2. Click on the **Copy Login Command** button (in the top right of the page).
 
-   <img src="/dsri-documentation/img/screenshot_copy_login.png" alt="Deploy VSCode" style={{maxWidth: '100%', maxHeight: '100%'}} />
+   <img src="/img/screenshot_copy_login.png" alt="Deploy VSCode" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 3. Paste the copied command in your terminal, and execute it to login with `oc` 🔑
 

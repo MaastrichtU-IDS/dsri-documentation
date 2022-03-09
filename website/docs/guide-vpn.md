@@ -22,11 +22,11 @@ You need to be connected to the UM network to access the DSRI.
 
   * The **prefix of your UM email address** with the first letter capitalized, e.g. `Firstname.Lastname` or `F.Lastname`Or your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`
 
-    <img src="/dsri-documentation/img/vpn-login.png" alt="VPN Log in View" style={{maxWidth: '100%', maxHeight: '100%'}} />
+    <img src="/img/vpn-login.png" alt="VPN Log in View" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
     Then You will see below page to download the **AnyConnect Secure Mobility Client**
 
-    <img src="/dsri-documentation/img/VPN-anyconnect.png" alt="Download AnyConnect Secure Mobility Client" style={{maxWidth: '100%', maxHeight: '100%'}} />
+    <img src="/img/VPN-anyconnect.png" alt="Download AnyConnect Secure Mobility Client" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 #### Install the VPN (AnyConnect Secure Mobility Client) on Windows
 
@@ -34,27 +34,27 @@ Double click on the `.exe` file to install the VPN.
 
 You can follow below steps as in pictures.
 
-<img src="/dsri-documentation/img/vpnsetup1.png" alt="Install VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/vpnsetup1.png" alt="Install VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-<img src="/dsri-documentation/img/vpnsetup2.png" alt="Install VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/vpnsetup2.png" alt="Install VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-<img src="/dsri-documentation/img/vpnsetup3.png" alt="Install VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/vpnsetup3.png" alt="Install VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-<img src="/dsri-documentation/img/vpnsetup4.png" alt="Install VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/vpnsetup4.png" alt="Install VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 #### Log in to the VPN (AnyConnect Secure Mobility Client)
 
 Once you finish installing you can run the Cisco AnyConnect Secure Mobility Client. 
 
-<img src="/dsri-documentation/img/vpnsetup7.png" alt="Log in to the VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/vpnsetup7.png" alt="Log in to the VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 Then after you will get the bellow wizard and click connect
 
-<img src="/dsri-documentation/img/vpnsetup5.png" alt="Log in to the VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/vpnsetup5.png" alt="Log in to the VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 Provide your UM username and password. (**employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`)
 
-<img src="/dsri-documentation/img/vpnsetup6.png" alt="Log in to the VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/vpnsetup6.png" alt="Log in to the VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 

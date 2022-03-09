@@ -62,7 +62,7 @@ If you are working at Maastricht University, **see [this page](https://maastrich
 
 Here is a diagram providing a simplified explanation of how the DSRI works, using popular data science applications as examples (JupyterLab, RStudio, VSCode server)
 
-<img src="/dsri-documentation/img/dsri_simplified_overview.png" alt="DSRI in a nutshell " style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/dsri_simplified_overview.png" alt="DSRI in a nutshell " style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 ## The DSRI specifications
 
@@ -86,13 +86,13 @@ Here is a diagram providing a simplified explanation of how the DSRI works, usin
 | ----------------- | ---- | -------- | ----------- |
 | GPU node capacity | 8    | 528 GB   | 40 cores    |
 
-<img src="/dsri-documentation/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure " style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure " style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 ## Learn more about DSRI
 
 See the following presentation about the Data Science Research Infrastructure 
 
-<a href="/dsri-documentation/resource/2021-04-DSRI-Community-Event.pdf" target="_blank" rel="noopener noreferrer">
- <img src="/dsri-documentation/resource/DSRI-community-event.png" style={{maxWidth: '100%', maxHeight: '100%'}} alt="DSRI April 2021 Community Event Presentation" />
+<a href="/resource/2021-04-DSRI-Community-Event.pdf" target="_blank" rel="noopener noreferrer">
+ <img src="/resource/DSRI-community-event.png" style={{maxWidth: '100%', maxHeight: '100%'}} alt="DSRI April 2021 Community Event Presentation" />
 </a>
 

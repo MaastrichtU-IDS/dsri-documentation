@@ -39,7 +39,7 @@ Go to the [Overview page](https://console-openshift-console.apps.dsri2.unimaas.n
   * Eventually change the **Name**, it needs to be unique by project.
   * Click **Deploy**.
 
-<img src="/dsri-documentation/img/screenshot-deploy_image_from_ui.png" alt="Deploy image from UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot-deploy_image_from_ui.png" alt="Deploy image from UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::caution Fix a common problem
 
