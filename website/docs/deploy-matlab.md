@@ -21,6 +21,33 @@ Once Matlab start you can access it through 2 routes (URL), which can be accesse
 * The main `matlab` route to access Matlab desktop UI directly in your web browser. It is recommended to use this route.
 * The `matlab-vnc` route can be used to access Matlab using a VNC client (you will need to use the full URL to your Matlab VNC route). Only use it if you know what you're doing.
 
+## Use a stable Matlab image
+
+The official Matlab image is infamous for showing a black screening after a few hours of use, making it a bit cumbersome to be used trustfully.
+
+We have a solution if you need to have a more stable Matlab image, that will require a bit more manual operations:
+
+* Use the **Ubuntu with GUI** template to setup a Ubuntu pod on the DSRI with the image [`ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest`](https://github.com/vemonet/docker-ubuntu-vnc-desktop)
+* Start firefox and browse to https://nl.mathworks.com
+* Login with your personal Matlab account, create one if you don’t have it
+* Choose **get matlab** and download, the linux matlab version
+* Open a terminal window and run the following commands:
+
+```bash
+sudo apt-get update
+sudo apt-get install unzip
+# Unzip the previous downloaded matlab installation file
+# start the matlab installation with:
+sudo .\install
+```
+
+You will then be prompted the Matlab installation process:
+
+*  Fill in your personal matlab account credentials
+*  ⚠️ Fill in the username as used in the Ubuntu environment, in your case it will most probably be **root**  (Matlab gives a license error if this is not correct, check with `whoami` in the terminal when in doubt)
+*  Select every Matlab modules you want to be installed
+*  Check "symbolic link" and "Improve……"
+
 ## Use Matlab in Jupyter
 
 You can also use [mathworks/jupyter-matlab-proxy](https://github.com/mathworks/jupyter-matlab-proxy). You can easily install it in a JupyterLab image with `pip`:
