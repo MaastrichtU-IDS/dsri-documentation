@@ -29,6 +29,7 @@
     "chartjs-plugin-piechart-outlabels": "^0.1.4",
     "clsx": "^1.1.1",
     "date-fns": "^2.28.0",
+    "docusaurus-plugin-image-zoom": "^0.0.2",
     "docusaurus2-dotenv": "^1.4.0",
     "react": "^16.10.2",
     "react-chartjs-2": "^4.0.1",

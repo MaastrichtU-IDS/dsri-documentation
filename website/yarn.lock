@@ -4423,6 +4423,13 @@ dns-txt@^2.0.2:
   dependencies:
     buffer-indexof "^1.0.0"
 
+docusaurus-plugin-image-zoom@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/docusaurus-plugin-image-zoom/-/docusaurus-plugin-image-zoom-0.0.2.tgz#26397226b8d215c18fb0abe21fd49d0f9f3426fc"
+  integrity sha512-N/SBLbCDxNd/XHoToVpgxrSYcH/PJOTNbTOuJYOwd/QsjlYrH4PSFR4w6uG5ITtXX7FOiikEQ05SUaNndX6wiA==
+  dependencies:
+    medium-zoom "^1.0.6"
+
 docusaurus2-dotenv@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/docusaurus2-dotenv/-/docusaurus2-dotenv-1.4.0.tgz#9ab900e29de9081f9f1f28f7224ff63760385641"
@@ -7015,6 +7022,11 @@ media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
+
+medium-zoom@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/medium-zoom/-/medium-zoom-1.0.6.tgz#9247f21ca9313d8bbe9420aca153a410df08d027"
+  integrity sha512-UdiUWfvz9fZMg1pzf4dcuqA0W079o0mpqbTnOz5ip4VGYX96QjmbM+OgOU/0uOzAytxC0Ny4z+VcYQnhdifimg==
 
 memory-fs@^0.4.1:
   version "0.4.1"

@@ -195,6 +195,29 @@ Convert a mkv video to webm (better for direct embedding):
 ffmpeg -i video_dsri_introduction.mkv -c:v libvpx -crf 10 -c:a libvorbis video_dsri_introduction.webm
 ```
 
+## Mermaid sourcecodes
+
+Request access to UM internal servers
+
+```
+sequenceDiagram
+    Researcher->>+DSRI-team: Request DSRI access to UM system
+    DSRI-team->>+UM-SOC: Request DSRI access to UM system
+    UM-SOC-->>+DSRI-team: Go ahead
+    DSRI-team-->>+System admin:
+
+
+
+    sequenceDiagram
+     Researcher->>+DSRI-team: Request DSRI access to UM system
+    DSRI-team->>+UM-SOC: Request DSRI access to UM system
+    UM-SOC-->>+DSRI-team: Go ahead
+    DSRI-team->>+UM System admin: Request access from DSRI
+    UM System admin-->>+ICTS: Request change in firewall
+    DSRI-team-->>+ICTS: Request change in firewall
+    DSRI-team->>+Researcher: UM system accessible from DSRI
+```
+
 ## Acknowledgments
 
 Documentation website generated using [Docusaurus](https://docusaurus.io/).

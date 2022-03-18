@@ -90,6 +90,7 @@ module.exports={
         language: ["en"],
       },
     ],
+    require.resolve('docusaurus-plugin-image-zoom'),
     [
       "docusaurus2-dotenv",
       {
@@ -150,6 +151,16 @@ module.exports={
       "logo": {
         "src": "img/favicon.ico",
         "href": "https://maastrichtuniversity.nl/"
+      }
+    },
+    zoom: {
+      selector: '.markdown > img',
+      config: {
+        // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
+        background: {
+          light: 'rgb(255, 255, 255)',
+          dark: 'rgb(50, 50, 50)'
+        }
       }
     },
     // "gtag": {

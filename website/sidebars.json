@@ -16,7 +16,7 @@
         ]
       }
     ],
-    "Guides": [ "prepare-project-for-dsri", "guide-vpn", "guide-workshop", "guide-known-issues", "project-management", "login-docker-registry", 
+    "Guides": [ "prepare-project-for-dsri", "guide-vpn", "access-um-servers", "guide-workshop", "guide-known-issues", "project-management", "login-docker-registry", 
       "openshift-commands", "openshift-storage", "guide-publish-image", 
       "openshift-delete-objects", "tools-machine-learning", "glossary",
       {
