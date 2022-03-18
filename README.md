@@ -1,10 +1,10 @@
 [![Build](https://github.com/MaastrichtU-IDS/dsri-documentation/workflows/Publish%20to%20GitHub%20Pages/badge.svg)](https://github.com/MaastrichtU-IDS/dsri-documentation/actions?query=workflow%3A%22Publish+to+GitHub+Pages%22) [![Slack](https://img.shields.io/badge/Chat%20on-Slack-blueviolet)](https://dsri.slack.com)
 
-The documentation website at [maastrichtu-ids.github.io/dsri-documentation](https://maastrichtu-ids.github.io/dsri-documentation/) is automatically updated by a [GitHub Action](/actions) at each push to this `master` branch.
+The documentation website at [dsri.maastrichtuniversity.nl](https://dsri.maastrichtuniversity.nl/) is automatically updated by a [GitHub Action](/actions) at each push to this `master` branch.
 
 ## Contribute
 
-Contributions are welcome! See the [guidelines to contribute 👨‍💻](https://maastrichtu-ids.github.io/dsri-documentation/contributing).
+Contributions are welcome! See the [guidelines to contribute 👨‍💻](https://dsri.maastrichtuniversity.nl/contributing).
 
 ## Edit documentation pages
 
@@ -28,17 +28,43 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 
 ## Run for development
 
-To run in the `/website` directory.
+### Just run the website
+
+To check changes in the documentation, go to the `/website` directory and start the website on http://localhost:19006 using the production API for user stats:
 
 ```shell
 cd website
 yarn install
+API_URL=https://api.dsri.semanticscience.org yarn start
+```
+
+### Run the full stack
+
+Run the stack with docker-compose:
+
+* Database accessible through phpMyAdmin on http://localhost:8080
+* API on http://localhost:8000, automatically reloaded on change to the code
+* The GPU calendar on http://localhost:8001
+* A CRON job to notify (via email or Slack) about GPU booking everyday
+
+```bash
+docker-compose up
+```
+
+> ⚠️ The first time you start the stack you will need to stop and restart the stack once the SQL database has been initialized for the API to properly connect to the database
+
+Then, in another terminal, run the website on http://localhost:3000, it will use the local API to display stats:
+
+```bash
+cd website
 yarn start
 ```
 
-## Deploy to GitHub pages
+## Deploy in production
 
-The documentation website at [maastrichtu-ids.github.io/dsri-documentation](https://maastrichtu-ids.github.io/dsri-documentation/) is automatically updated by a [GitHub Action](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/actions) at each push to the `master` branch of this repository.
+### Deploy the frontend to GitHub pages
+
+The documentation website at [dsri.maastrichtuniversity.nl](https://dsri.maastrichtuniversity.nl/) is automatically updated by a [GitHub Action](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/actions) at each push to the `master` branch of this repository.
 
 Make sure the `/website/build` directory has been generated before deploying.
 
@@ -46,32 +72,7 @@ Make sure the `/website/build` directory has been generated before deploying.
 ./publish-github-page.sh
 ```
 
-## Run with Docker
-
-Run the stack with docker-compose:
-
-* Database accessible through phpMyAdmin on http://localhost:8080
-* API on http://localhost:8000, automatically reloaded on change to the code
-* A CRON job to notify (via email or Slack) about GPU booking everyday
-
-```bash
-docker-compose up
-```
-
-Then, in another terminal, run the website:
-
-```bash
-cd website
-yarn start
-```
-
-You can also directly run the website on another API easily:
-
-```bash
-API_URL=https://api.dsri.semanticscience.org yarn start
-```
-
-## Deploy on server
+### Deploy the backend on a server
 
 Define the `.env` file to change the default configuration (admin password, Slack config):
 

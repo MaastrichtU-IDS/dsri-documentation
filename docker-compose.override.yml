@@ -24,13 +24,12 @@ services:
     ports:
       - 8001:80
 
-
-  # mysql:
-  #   volumes:
-  #     - ./data:/var/lib/mysql
-  #     - ./backup:/backup
-  #     - ./server/cron/backup_database.sh:/app/backup_database.sh
-  #     - ./server/cron/backup_database.sh:/app/restore_backup.sh
+  mysql:
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./backup:/backup
+    #   - ./server/cron/backup_database.sh:/app/backup_database.sh
+    #   - ./server/cron/backup_database.sh:/app/restore_backup.sh
     # ports:
     #   - 3306:3306
 
