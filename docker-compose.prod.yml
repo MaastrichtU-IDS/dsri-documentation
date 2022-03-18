@@ -4,15 +4,15 @@ services:
 
   api:
     environment:
-      - VIRTUAL_HOST=api.dsri.semanticscience.org
-      - LETSENCRYPT_HOST=api.dsri.semanticscience.org
+      - VIRTUAL_HOST=api.dsri.maastrichtuniversity.nl
+      - LETSENCRYPT_HOST=api.dsri.maastrichtuniversity.nl
       - VIRTUAL_PORT=80
 
 
   gpu-calendar:
     environment:
-      - VIRTUAL_HOST=dsri-calendar.137.120.31.101.nip.io
-      - LETSENCRYPT_HOST=dsri-calendar.137.120.31.101.nip.io
+      - VIRTUAL_HOST=calendar.dsri.maastrichtuniversity.nl
+      - LETSENCRYPT_HOST=calendar.dsri.maastrichtuniversity.nl
       # - VIRTUAL_HOST=calendar.dsri.semanticscience.org
       # - LETSENCRYPT_HOST=calendar.dsri.semanticscience.org
       - VIRTUAL_PORT=80
@@ -29,7 +29,7 @@ services:
 
   phpmyadmin:
     environment:
-      - PMA_ABSOLUTE_URI=https://admin.dsri.semanticscience.org
-      - VIRTUAL_HOST=admin.dsri.semanticscience.org
-      - LETSENCRYPT_HOST=admin.dsri.semanticscience.org
+      - PMA_ABSOLUTE_URI=https://admin.dsri.maastrichtuniversity.nl
+      - VIRTUAL_HOST=admin.dsri.maastrichtuniversity.nl
+      - LETSENCRYPT_HOST=admin.dsri.maastrichtuniversity.nl
       - VIRTUAL_PORT=80

@@ -35,7 +35,7 @@ To check changes in the documentation, go to the `/website` directory and start 
 ```shell
 cd website
 yarn install
-API_URL=https://api.dsri.semanticscience.org yarn start
+API_URL=https://api.dsri.maastrichtuniversity.nl yarn start
 ```
 
 ### Run the full stack

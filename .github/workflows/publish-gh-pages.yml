@@ -24,7 +24,7 @@ jobs:
       env:
         USE_SSH: true
         GIT_USER: MaastrichtU-IDS
-        API_URL: https://api.dsri.semanticscience.org
+        API_URL: https://api.dsri.maastrichtuniversity.nl
         # API_URL: https://api.dsri.137.120.31.101.nip.io
       run: |
         git config --global user.email "vincent.emonet@maastrichtuniversity.nl"
