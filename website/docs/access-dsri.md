@@ -14,24 +14,29 @@ title: Access the DSRI
 
 You need to be connected to the UM network to access the DSRI.
 
-<details><summary>If your are a student you will need to get access to the UM VPN first</summary>
-
-<ul>
-<li>You can try to use the Athena Student Desktop at <a href="https://athenadesktop.maastrichtuniversity.nl">athenadesktop.maastrichtuniversity.nl</a>, to access the VPN through a virtual desktop</li>
-<li>Ask one of your teachers to request VPN access for you. You will need to send an email to the IT helpdesk of your department with the following informations: Email of the student who will get VPN,  for which course (provide the course ID) or project does the student need the VPN, until which date the student will need the VPN.</li>
-</ul>
-</details>
-
-
-
-**On MacOS and Windows**: Use the **Maastricht University VPN** at **[vpn.maastrichtuniversity.nl](https://vpn.maastrichtuniversity.nl/)**
-
-**On Linux and Windows Subsystem Linux**: use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
+**🐧 On Linux and Windows Subsystem Linux**: use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
 
 ```bash
 sudo apt install openconnect
 sudo openconnect -u YOUR.USER --authgroup 01-Employees vpn.maastrichtuniversity.nl
 ```
+
+**🍎 On MacOS and Windows**: download and install the **Maastricht University VPN** client available at **[vpn.maastrichtuniversity.nl](https://vpn.maastrichtuniversity.nl/)**
+
+
+<details><summary>⚠️ If your are a <b>student</b> you will need to request access to the UM VPN first</summary>
+
+<ul>
+<li>You can try to use the Athena Student Desktop at <a href="https://athenadesktop.maastrichtuniversity.nl">athenadesktop.maastrichtuniversity.nl</a>, to access the VPN through a virtual desktop</li>
+<li>Or ask one of your teachers to request VPN access for you. You will need to send an email to the IT helpdesk of your department with the following informations: </li>
+<ul>
+<li>Email of the student who will get VPN</li>
+<li> for which course (provide the course ID) or project does the student need the VPN</li>
+<li>until which date the student will need the VPN.</li>
+</ul>
+</ul>
+</details>
+
 
 ## Access the web UI
 
