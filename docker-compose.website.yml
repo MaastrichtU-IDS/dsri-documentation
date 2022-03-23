@@ -8,3 +8,5 @@ services:
       - 3000:3000
     volumes:
       - ./website:/app/website
+    environment:
+      - API_URL=https://api.dsri.maastrichtuniversity.nl

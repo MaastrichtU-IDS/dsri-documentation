@@ -2,7 +2,7 @@ FROM node:14
 
 WORKDIR /app/website
 
-COPY ./website /app/website
+COPY . /app/website
 RUN yarn install
 
 EXPOSE 3000

@@ -38,6 +38,12 @@ yarn install
 API_URL=https://api.dsri.maastrichtuniversity.nl yarn start
 ```
 
+Or use docker-compose:
+
+```bash
+docker-compose -f docker-compose.website.yml up 
+```
+
 ### Run the full stack
 
 Run the stack with docker-compose:
