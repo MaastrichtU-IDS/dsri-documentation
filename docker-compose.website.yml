@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+
+  website:
+    build: website
+    ports:
+      - 3000:3000
+    volumes:
+      - ./website:/app/website
