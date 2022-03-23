@@ -14,7 +14,7 @@ title: Access the DSRI
 
 You need to be connected to the UM network to access the DSRI.
 
-**🐧 On Linux and Windows Subsystem Linux**: use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
+**🐧 On Linux**: use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
 
 ```bash
 sudo apt install openconnect
