@@ -7,6 +7,9 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./website:/app/website
+      - ./website/docs:/app/website/docs
+      - ./website/src:/app/website/src
+      - ./website/static:/app/website/static
+      - ./website/blog:/app/website/blog
     environment:
       - API_URL=https://api.dsri.maastrichtuniversity.nl
