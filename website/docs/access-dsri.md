@@ -7,30 +7,31 @@ title: Access the DSRI
 
 1. You will need to have an account at Maastricht University with an email ending with `@maastrichtuniversity.nl` or `@student.maastrichtuniversity.nl`.
 
-2. Request access to the DSRI for your account Please fill this [form 📬](/register). to provide us some information on what you plan to do with the DSRI.
+2. Request access to the DSRI for your account Please fill this [form 📬](/register) to provide us some information on what you plan to do with the DSRI. Once you fill the form, you will receive an email with detailed instructions on how to log in.
 
 
 ## Connect to the UM network
 
 You need to be connected to the UM network to access the DSRI.
 
-* Use the **Maastricht University VPN** at **[vpn.maastrichtuniversity.nl](https://vpn.maastrichtuniversity.nl/)**
+<details><summary>If your are a student you will need to get access to the UM VPN first</summary>
 
-* Connect to **UMnet** or **eduroam** WiFi at Maastricht University
+<ul>
+<li>You can try to use the Athena Student Desktop at <a href="https://athenadesktop.maastrichtuniversity.nl">athenadesktop.maastrichtuniversity.nl</a>, to access the VPN through a virtual desktop</li>
+<li>Ask one of your teachers to request VPN access for you. You will need to send an email to the IT helpdesk of your department with the following informations: Email of the student who will get VPN,  for which course (provide the course ID) or project does the student need the VPN, until which date the student will need the VPN.</li>
+</ul>
+</details>
 
-* For **Linux** and Windows Subsystem Linux, use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
 
-  ```bash
-  sudo apt install openconnect
-  sudo openconnect -u YOUR.USER --authgroup 01-Employees vpn.maastrichtuniversity.nl
-  ```
 
-* For **students**:
-  * You can try to use the Athena Student Desktop at [athenadesktop.maastrichtuniversity.nl](https://athenadesktop.maastrichtuniversity.nl), to access the VPN through a virtual desktop (please let us know if it is not working)
-  * Ask one of your teachers to request VPN access for you. They will need to send an email to the IT helpdesk of your department with the following informations:
-    * Email of the student who will get VPN
-    * For which course (provide the course ID) or project does the student need the VPN?
-    * Until which date the student will need the VPN?
+**On MacOS and Windows**: Use the **Maastricht University VPN** at **[vpn.maastrichtuniversity.nl](https://vpn.maastrichtuniversity.nl/)**
+
+**On Linux and Windows Subsystem Linux**: use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
+
+```bash
+sudo apt install openconnect
+sudo openconnect -u YOUR.USER --authgroup 01-Employees vpn.maastrichtuniversity.nl
+```
 
 ## Access the web UI
 
