@@ -114,7 +114,7 @@ function Home() {
       data: {
         datasets: [{
           data: deptUsersArray,
-          label: 'Users per department',
+          label: 'Users per affiliation',
           labels: deptLabelArray,
           backgroundColor: pieColors,
           // backgroundColor: [
