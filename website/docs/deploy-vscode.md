@@ -7,7 +7,7 @@ title: VisualStudio Code
 
 Start a VisualStudio Code server with the `coder` user, which has `sudo` privileges.
 
-You can deploy it using the **VisualStudio Code server** solution in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can deploy it using the **VisualStudio Code server** solution in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
 
 Provide a few parameters, and instantiate the template. The DSRI will automatically create a persistent volume to store data you will put in the `/home/coder/project` folder. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 

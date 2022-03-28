@@ -9,7 +9,7 @@ Feel free to propose new services using [pull requests](https://github.com/Maast
 
 Cell image analysis software. See [their website](https://cellprofiler.org/home).
 
-You can start a container using the **CellProfiler** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can start a container using the **CellProfiler** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
 
 This template uses the [official CellProfiler image](https://hub.docker.com/r/cellprofiler/cellprofiler) hosted on DockerHub
 

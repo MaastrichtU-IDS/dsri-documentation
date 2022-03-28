@@ -11,7 +11,7 @@ Feel free to propose new services using [pull requests](https://github.com/Maast
 
 Start Ubuntu with the `root` user which has `sudo` permissions to install anything.
 
-You can start the application using the **Ubuntu** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can start the application using the **Ubuntu** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
 
 This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
 
@@ -49,7 +49,7 @@ To quickly access it from the terminal you can use the **Terminal** tab in the p
 
 Start Ubuntu with a web UI accessible via a URL (using VNC). You will be the `root` user which has `sudo` permissions to install anything.
 
-You can start the application using the **Ubuntu with web UI** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can start the application using the **Ubuntu with web UI** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
 
 This template uses the Docker image defined at https://github.com/fcwu/docker-ubuntu-vnc-desktop
 
@@ -64,7 +64,7 @@ This image might be less stable than the original Ubuntu image. Let us know on S
 
 Deploy a file browser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume in case you need it (JupyterLab, RStudio and VisualStudio Code server already include a file browser)
 
-You can start a container using the **File Browser for existing storage** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog) (make sure the **Templates** checkbox is checked)
+You can start a container using the **File Browser for existing storage** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
 
 <img src="/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style={{maxWidth: '100%', maxHeight: '100%'}} />
 

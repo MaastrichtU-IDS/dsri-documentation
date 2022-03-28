@@ -22,7 +22,7 @@ Start a workspace in your DSRI project based on Ubuntu, with all drivers and dep
 
 Once your project has been granted access to GPUs, you can deploy applications on GPU from the catalog:
 
-1. Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/catalog): **Add to Project** > **Browse Catalog**
+1. Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog): **Add to Project** > **Browse Catalog**
 2. Filter the catalog for  "GPU"
 3. Choose one of the available templates: **JupyterLab on GPU**.
 4. **Follow the instructions** to create the template in the DSRI web UI, all informations about the images you can use are provided there.
