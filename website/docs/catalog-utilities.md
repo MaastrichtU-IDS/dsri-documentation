@@ -47,7 +47,7 @@ To quickly access it from the terminal you can use the **Terminal** tab in the p
 
 ### With a web UI
 
-Start Ubuntu with a web UI accessible via a URL (using VNC). You will be the `root` user which has `sudo` permissions to install anything.
+Start Ubuntu with a web UI accessible via a URL (using VNC). You will be the `root` user which has elevated permissions to install anything via `apt install <package-name>`. Before you install a package run `apt update`. This also solves `E: unable to locate package` and `E: no installation candidate` errors.
 
 You can start the application using the **Ubuntu with web UI** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
 
