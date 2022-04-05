@@ -14,6 +14,6 @@ If you are planning to present or publish your work which was made possible by u
 
 **"This research was made possible, in part, using the Data Science Research Infrastructure (DSRI) hosted at Maastricht University."**
 
-## They used the DSRI for their publications
+# They used the DSRI for their publications
 
 * **PSnpBind: a database of mutated binding site protein-ligand complexes constructed using a multithreaded virtual screening workflow**, *A Ammar, R Cavill, C Evelo, E Willighagen*, [Journal of Cheminformatics](https://link.springer.com/article/10.1186/s13321-021-00573-5), 2022
