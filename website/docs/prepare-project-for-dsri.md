@@ -5,7 +5,7 @@ title: Prepare your project
 
 ## Code in a git repository
 
-Using `git` is mandatory to deploy code on the DSRI. Store your code in a git repository to keep track of changes, and make it easier to share and re-use your code outside of your computer.
+Using `git` is mandatory to deploy your code on the DSRI. Store your code in a git repository to keep track of changes, and make it easier to share and re-use your code outside of your computer.
 
 :::info Platform recommendations
 
@@ -18,6 +18,8 @@ We recommend those platforms depending on your use-case:
 
 > Any other git platform, such as BitBucket or gitlab.com, is fine too.
 
+<!--
+
 ## Develop locally or on the DSRI?
 
 You can develop directly on the DSRI using VisualStudio Code or JupyterLab.
@@ -26,8 +28,6 @@ If you prefer your local environment for development, and only run big tasks on 
 
 * Make sure your code **does not use absolute paths**. For example, `C://Desktop/myproject/data` will not work when running on the DSRI, use a relative path such as `../data`
 * **Use `git`** to synchronize your local development code with the code on the DSRI
-
-<!--
 
 ## Define your deployment strategy
 
@@ -57,10 +57,13 @@ Make sure you **upload the data to a folder mounted on a persistent storage** in
 
 Same as for your laptop, you will need to install and use the `oc cp` command to copy data to your application pod. See the [Load data](/docs/openshift-load-data) documentation page for more informations.
 
-<!--
 
-### Data is in a AWS S3 bucket
+### Request access to internal UM servers
 
-> To be developed
+In certain cases, UM servers are not accessible by default from the DSRI. This is even the case for servers that are normally publicly accessible. To be able to access these UM servers from the DSRI, we need to put in the request to open the connection.
 
--->
+The procedure is described in the diagram below:
+
+<img src="/img/request-access-um-servers.svg" alt="Access procedure UM servers" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+<!-- Check readme for source of the diagram -->

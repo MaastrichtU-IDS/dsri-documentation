@@ -1,7 +1,7 @@
 {
   "docs": {
     "Get started": ["introduction", "access-dsri", "start-workspace",
-      "openshift-install", "openshift-load-data",
+      "openshift-install", "prepare-project-for-dsri", "openshift-load-data",
       "openshift-delete-services", "guide-monitoring"],
     "Deploy applications": [ 
       "guide-dockerfile-to-openshift", "deploy-from-docker", "anatomy-of-an-application", "helm", "operators",
@@ -16,7 +16,7 @@
         ]
       }
     ],
-    "Guides": [ "prepare-project-for-dsri", "guide-vpn", "access-um-servers", "guide-workshop", "guide-known-issues", "project-management", "login-docker-registry", 
+    "Guides": [ "guide-vpn", "guide-workshop", "increase-process-speed", "guide-known-issues", "project-management", "login-docker-registry", 
       "openshift-commands", "openshift-storage", "guide-publish-image", 
       "openshift-delete-objects", "tools-machine-learning", "glossary",
       {
