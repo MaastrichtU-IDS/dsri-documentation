@@ -54,6 +54,7 @@ You will be able to login at **[https://console-openshift-console.apps.dsri2.uni
 
 * The **prefix of your UM email address** with the first letter capitalized, e.g. `Firstname.Lastname` or `F.Lastname`
 * Or your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`
+* If you are a **student**, it will always be your **student ID** at Maastricht University (a.k.a. your I number), e.g. `I6000000`
 
 <img src="/img/screenshot_login_screen.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
