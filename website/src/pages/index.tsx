@@ -27,18 +27,19 @@ const features = [
     imageUrl: 'img/okd-panda.svg',
     description: (
       <>
-        <a href="/docs/start-workspace">Easily deploy popular Data Science applications</a>&nbsp;
-        on a remote server from the DSRI web interface using existing templates, such as RStudio, JupyterLab or VisualStudio Code.
+        <a href="/docs/start-workspace">Easily deploy popular Data Science workspaces</a>,
+        from the DSRI web interface in a few clicks, such as RStudio, JupyterLab or VisualStudio Code.
       </>
     ),
   },
   {
     title: 'Run any program in a container',
-    imageUrl: 'img/undraw_deliveries.svg',
+    imageUrl: 'img/okd-panda-laptop.svg',
+    // imageUrl: 'img/undraw_deliveries.svg',
     description: (
       <>
         Most programs can be installed and run in containers easily.
-        Customize an existing Docker image or create a new one to deploy exactly what you need
+        Customize an existing workspace image, or create a new one from scratch to deploy exactly what you need.
       </>
     ),
   },
@@ -48,8 +49,8 @@ const features = [
     // imageUrl: 'img/undraw_collaborators.svg',
     description: (
       <>
-        Share common development environments with other researchers at Maastricht University.
-        And help improve those environments for you, and the rest of UM community!
+        Share development environments and tips with other researchers at Maastricht University.
+        Help improve those environments for you, and everyone in the community!
       </>
     ),
   },
@@ -61,7 +62,8 @@ function Feature({ imageUrl, title, description }) {
     <div className={clsx('col col--4', styles.feature)}>
       {imgUrl && (
         <div className="text--center">
-          <img className={styles.featureImage} src={imgUrl} alt={title} />
+          <img src={imgUrl} alt={title} style={{height: '200px'}} />
+          {/* <img className={styles.featureImage} src={imgUrl} alt={title} /> */}
         </div>
       )}
       <h3>{title}</h3>
