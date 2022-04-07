@@ -21,11 +21,13 @@ The DSRI is particularly useful if you need to:
 
 The DSRI proposes a number of popular workspace to work with data:
 
-* Multiple flavors of [JupyterLab](https://github.com/jupyter/docker-stacks) (scipy, tensorflow, all-spark, and more)
-* [VisualStudio Code server](https://github.com/cdr/code-server) (also available within the JupyterLab workspaces)
-* RStudio, with a complementary Shiny server
-* Matlab
-* [Ubuntu Desktop](https://github.com/vemonet/docker-ubuntu-vnc-desktop) 
+* Multiple flavors of **JupyterLab** (scipy, tensorflow, all-spark, and more)
+* **VisualStudio Code** server (also available within the JupyterLab workspaces)
+* **RStudio**, with a complementary Shiny server
+* **Matlab**
+* **Ubuntu** Desktop 
+
+You can then install anything you want in your workspace, using `conda`, `pip`, or `apt`.
 
 <!--
 
