@@ -4,13 +4,34 @@ title: Introduction
 slug: /
 ---
 
-The Data Science Research Infrastructure is an [OKD 4.6](https://www.okd.io/) cluster, the open source version of [OpenShift](https://www.openshift.com/), using [RedHat Ceph Storage](https://www.redhat.com/en/technologies/storage/ceph).
+The Data Science Research Infrastructure is a cluster of servers to deploy workspaces and applications for Data Science. 
 
-The DSRI provides a graphical user interface on top of the [Kubernetes](https://kubernetes.io/) containers orchestration to easily deploy and manage workspaces and services. 
+It works by starting workspaces and applications in Docker containers that are automatically deployed to a powerful server on the cluster, using Kubernetes. You can then access your workspace or application through an URL automatically generated.
 
 ## Getting started
 
-### What can be done on the DSRI ✔️
+### ✅ What can be done on the DSRI
+
+The DSRI is particularly useful if you need to:
+
+* Gain access to more computing resources (memory and CPUs), which enables you to load larger amount of data, or use more threads for parallelized tasks
+* Run jobs that takes a long time to complete
+* Deploy any database or service you need, and connect to it from your workspace easily
+* Book and start a workspace that uses one of our GPUs
+
+The DSRI proposes a number of popular workspace to work with data:
+
+* Multiple flavors of [JupyterLab](https://github.com/jupyter/docker-stacks) (scipy, tensorflow, all-spark, and more)
+* [VisualStudio Code server](https://github.com/cdr/code-server) (also available within the JupyterLab workspaces)
+* RStudio, with a complementary Shiny server
+* Matlab
+* [Ubuntu Desktop](https://github.com/vemonet/docker-ubuntu-vnc-desktop) 
+
+<!--
+
+an [OKD 4.6](https://www.okd.io/) cluster, the open source version of [OpenShift](https://www.openshift.com/), using [RedHat Ceph Storage](https://www.redhat.com/en/technologies/storage/ceph).
+
+The DSRI provides a graphical user interface on top of the [Kubernetes](https://kubernetes.io/) containers orchestration to easily deploy and manage workspaces and services. 
 
 The DSRI works best when you work with code, scripts to run, and web applications. Especially if they require an important amount of computing resources. If you work on desktop softwares with graphical user interface, such as Matlab or Spyder, the installation will be much more complex, and usually using your laptop will be more comfortable, stable and reactive than accessing a desktop interface on a remote server through the UM VPN.
 
@@ -28,6 +49,8 @@ Here is a non-exhaustive list of some of the services that can easily be deploye
 * Apache Flink cluster for streaming applications
 * Apache Spark cluster for distributed computing
 * Or any program installed in a Docker image!
+
+-->
 
 :::caution Data storage
 
@@ -47,7 +70,7 @@ For user already familiar with those concepts [workflow orchestration tools](/do
 
 -->
 
-### What cannot be done ❌
+### ❌ What cannot be done
 
 * Since DSRI can only be accessed when on the physical UM network or using the [UM VPN](https://vpn.maastrichtuniversity.nl/), deployed services will not be available on the public Internet 🔒
 * All activities must be legal in basis. You must closely examine and abide by the terms and conditions of any data, software, or web service that you use as part of your work 📜
@@ -68,8 +91,9 @@ Here is a diagram providing a simplified explanation of how the DSRI works, usin
 
 ### Software
 
-* [**OKD 4.6**](https://www.okd.io/) (Open Source version of [RedHat OpenShift](https://www.openshift.com/)) to run services and jobs.
-* [**RedHat Ceph storage**](https://www.redhat.com/fr/technologies/storage/ceph) for distributed storage.
+We use [**OKD 4.6**](https://www.okd.io/), the Origin Community Distribution of Kubernetes that powers [RedHat OpenShift](https://www.openshift.com/), a distribution of the Kubernetes container orchestration tool. Kubernetes takes care of deploying the Docker containers on the cluster of servers, the OKD distribution extends it to improve security, and provide a user-friendly web UI to manage your applications.
+
+We use [**RedHat Ceph storage**](https://www.redhat.com/fr/technologies/storage/ceph) for the distributed storage.
 
 ### Hardware
 
