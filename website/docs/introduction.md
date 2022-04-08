@@ -6,7 +6,7 @@ slug: /
 
 The Data Science Research Infrastructure is a cluster of servers to deploy workspaces and applications for Data Science. 
 
-It works by starting workspaces and applications in Docker containers that are automatically deployed to a powerful server on the cluster, using Kubernetes. You can then access your workspace or application through an URL automatically generated.
+It works by starting workspaces and applications in Docker containers that are automatically deployed to a powerful server on the cluster using Kubernetes, a container orchestration system. You can then access your workspace or application through an URL automatically generated.
 
 ## Getting started
 
@@ -19,7 +19,7 @@ The DSRI is particularly useful if you need to:
 * Deploy any database or service you need, and connect to it from your workspace easily
 * Book and start a workspace that uses one of our GPUs
 
-The DSRI proposes a number of popular workspace to work with data:
+The DSRI proposes a number of popular workspaces to work with data:
 
 * Multiple flavors of **JupyterLab** (scipy, tensorflow, all-spark, and more)
 * **VisualStudio Code** server (also available within the JupyterLab workspaces)
@@ -27,7 +27,7 @@ The DSRI proposes a number of popular workspace to work with data:
 * **Matlab**
 * **Ubuntu** Desktop 
 
-You can then install anything you want in your workspace, using `conda`, `pip`, or `apt`.
+You can then install anything you want in your workspace using `conda`, `pip`, or `apt`.
 
 <!--
 
