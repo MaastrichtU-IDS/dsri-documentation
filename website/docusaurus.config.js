@@ -122,6 +122,11 @@ module.exports={
           "position": "left"
         },
         {
+          "to": "/workshops",
+          "label": "Training & Workshops",
+          "position": "left"
+        },
+        {
           "to": "/help",
           "label": "Help",
           "position": "left"
