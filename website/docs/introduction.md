@@ -74,8 +74,9 @@ For user already familiar with those concepts [workflow orchestration tools](/do
 
 ### ❌ What cannot be done
 
-* Since DSRI can only be accessed when on the physical UM network or using the [UM VPN](https://vpn.maastrichtuniversity.nl/), deployed services will not be available on the public Internet 🔒
+* Since DSRI can only be accessed when using the [UM VPN](https://vpn.maastrichtuniversity.nl/), deployed services will not be available on the public Internet 🔒
 * All activities must be legal in basis. You must closely examine and abide by the terms and conditions of any data, software, or web service that you use as part of your work 📜
+* **You cannot reach any data or servers hosted at Maastricht University from the DSRI**. UM networking completely blocked the access to other UM servers from the DSRI. Even if those servers are publicly available (i.e. without login to the UM VPN), they will not be available from within the DSRI. So you cannot use the DSRI if you are planning to work with data hosted on servers that are on the same network as Maastricht University (e.g. DataHub) ⚠️
 
 :::info Request an account
 
