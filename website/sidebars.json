@@ -16,7 +16,7 @@
         ]
       }
     ],
-    "Guides": [ "guide-vpn", "guide-workshop", "increase-process-speed", "guide-known-issues", "project-management", "login-docker-registry", 
+    "Guides": [ "guide-vpn","access-um-servers", "guide-workshop", "increase-process-speed", "guide-known-issues", "project-management", "login-docker-registry", 
       "openshift-commands", "openshift-storage", "guide-publish-image", 
       "openshift-delete-objects", "tools-machine-learning", "glossary",
       {
