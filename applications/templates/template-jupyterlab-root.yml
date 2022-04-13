@@ -17,6 +17,7 @@ metadata:
       
       🐳 You can use any image based on the official Jupyter docker stack (use /home/jovyan/work as working directory):
       - ghcr.io/maastrichtu-ids/jupyterlab (with VSCode, Java and SPARQL kernels)
+      - ghcr.io/maastrichtu-ids/jupyterlab:knowledge-graph (with VSCode, Java, SPARQL kernels and KG tools)
       - jupyter/minimal-notebook
       - jupyter/scipy-notebook
       - jupyter/datascience-notebook (with Julia kernel)
