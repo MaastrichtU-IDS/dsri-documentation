@@ -1,17 +1,17 @@
 ---
-title: workshops
+title: training
 description: educational activities of the DSRI 
 hide_table_of_contents: true
 ---
 
-# 📚 Training & Workshops
+# 📚 Training
 
-The DSRI offers a range of curated workshops and training courses to UM students, researchers and support staff at every career level.
+The DSRI offers a range of curated training courses to UM students, researchers and support staff at every career level.
 
 
-## Get started with the DSRI workshops
+## Get started with the DSRI training
 
-We organize workshops covering essential data science skills needed to start using the DSRI. These include get access to the DSRI web UI, create a new data science application, reproducible code and good programming practices. We also offer more advanced workshops such as GPU Programming, Parallel Programming and Deep Learning. 
+We organize training to cover essential data science skills needed to start using the DSRI. These include get access to the DSRI web UI, create a new data science application, write reproducible code and learn good programming practices. We also offer more advanced training such as GPU Programming, Parallel Programming and Deep Learning. 
 
 
 ## Our instrutors
@@ -24,12 +24,12 @@ All training [materials](https://maastrichtu-ids.github.io/dsri-workshop-start-a
 
 ---
 
-## Upcoming workshops
+## Upcoming training
 
-**Do you want to prepare a workshop about the DSRI for your department?** Contact us at [dsri-support-l@maastrichtuniversity.nl]([dsri-support-l@maastrichtuniversity.nl]) to start preparing a workshop.
+**Do you want to get started with the DSRI?** Contact us at [dsri-support-l@maastrichtuniversity.nl]([dsri-support-l@maastrichtuniversity.nl]) to start preparing a training for your department.
 
 
-## Past workshops
+## Past training
 
 ### 1. Learning the basics: Quick start with the DSRI at the DKE _(6 April 2022)_
 
