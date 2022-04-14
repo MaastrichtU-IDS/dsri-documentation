@@ -60,7 +60,9 @@ Same as for your laptop, you will need to install and use the `oc cp` command to
 
 ### Request access to internal UM servers
 
-In certain cases, UM servers are not accessible by default from the DSRI. This is even the case for servers that are normally publicly accessible. To be able to access these UM servers from the DSRI, we need to put in the request to open the connection.
+In certain cases, UM servers are not accessible by default from the DSRI. This is even the case for servers that are normally publicly accessible. To be able to access these UM servers from the DSRI, we need to put in the request to open the connection. 
+
+Please let us know either the servername and port you like to access, or the URL (e.g. um-vm0057.unimaas.nl on port 443 or https://gitlab.maastrichtuniversity.nl). You can reach out to us either by mail or by Slack.
 
 The procedure is described in the diagram below:
 
