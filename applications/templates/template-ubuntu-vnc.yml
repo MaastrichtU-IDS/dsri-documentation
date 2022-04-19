@@ -19,7 +19,7 @@ metadata:
 
       👤 You will be the `root` user inside the container.
 
-      📂 Use the `/root` folder (home of your user) and its subfolders to store your data in the existing persistent storage
+      📂 Use the `/root/persistent` folder (in the home of your user) and its subfolders to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
     iconClass: icon-ubuntu
     tags: ubuntu,ui,vnc,root,persistent
@@ -172,7 +172,7 @@ objects:
           #     memory: 4Gi
           volumeMounts:
           - name: data
-            mountPath: "/root"
+            mountPath: "/root/persistent"
             # mountPath: "/root"
           - name: dshm
             mountPath: "/dev/shm"
