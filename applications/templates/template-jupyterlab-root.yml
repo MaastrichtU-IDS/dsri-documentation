@@ -12,10 +12,10 @@ metadata:
 
       📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
 
-      📂 Use the workspace of the JupyterLab UI (/home/jovyan/work folder) to store your data in the persistent storage automatically created
+      📂 Use the persistent folder in the workspace of the JupyterLab UI (/home/jovyan/persistent folder) to store your data in the persistent storage automatically created
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
       
-      🐳 You can use any image based on the official Jupyter docker stack (use /home/jovyan/work as working directory):
+      🐳 You can use any image based on the official Jupyter docker stack:
       - ghcr.io/maastrichtu-ids/jupyterlab (with VSCode, Java and SPARQL kernels)
       - ghcr.io/maastrichtu-ids/jupyterlab:knowledge-graph (with VSCode, Java, SPARQL kernels and KG tools)
       - jupyter/minimal-notebook
@@ -178,7 +178,7 @@ objects:
         - name: jupyter-notebook
           image: "${APPLICATION_NAME}:latest"
           imagePullPolicy: IfNotPresent
-          workingDir: /home/jovyan/work
+          workingDir: /home/jovyan
           # command:
           # - "start-notebook.sh"
           # - "--no-browser"
@@ -211,7 +211,7 @@ objects:
             value: "${GIT_EMAIL}"
           volumeMounts:
           - name: data
-            mountPath: /home/jovyan/work
+            mountPath: /home/jovyan/persistent
             # mountPath: "${WORKDIR}"
           - name: dshm
             mountPath: /dev/shm

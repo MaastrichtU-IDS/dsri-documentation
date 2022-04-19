@@ -146,20 +146,20 @@ cat <<EOF | oc apply -f -
 apiVersion: radanalytics.io/v1
 kind: SparkCluster
 metadata:
-  name: spark-cluster-301
+  name: spark-cluster
 spec:
   customImage: quay.io/radanalyticsio/openshift-spark:3.0.1-2
   worker:
-    instances: '4'
-    memory: "2Gi"
-    cpu: 2
+    instances: '10'
+    memory: "4Gi"
+    cpu: 4
   master:
     instances: '1'
-    memory: "2Gi"
-    cpu: 2
+    memory: "4Gi"
+    cpu: 4
   env:
   - name: SPARK_WORKER_CORES
-    value: 2
+    value: 4
 EOF
 ```
 
