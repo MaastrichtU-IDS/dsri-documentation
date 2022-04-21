@@ -137,11 +137,6 @@ module.exports={
           "position": "left"
         },
         {
-          "to": "/contributing",
-          "label": "Contribute",
-          "position": "left"
-        },
-        {
           "href": "https://github.com/MaastrichtU-IDS/dsri-documentation",
           // "label": "GitHub",
           "position": "right",

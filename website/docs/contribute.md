@@ -1,4 +1,9 @@
-# Contributing
+---
+id: contribute
+title: Contribute
+---
+
+# Contribute
 
 
 Check if there are [issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) related to your contribution, or post a [new issue](https://github.com/MaastrichtU-IDS/dsri-documentation/issues/new) to discuss improvement to the documentation. 

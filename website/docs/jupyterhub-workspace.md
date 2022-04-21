@@ -8,7 +8,7 @@ title: JupyterHub workspace
 You can easily start a data science workspace with JupyterLab, VisualStudio Code and Conda pre-installed on the DSRI with JupyterHub:
 
 1. Connect to the UM VPN
-2. Go to https://jupyterhub-github.apps.dsri2.unimaas.nl
+2. Go to **https://jupyterhub-github.apps.dsri2.unimaas.nl**
 3. Login with your [GitHub](https://github.com) account
 4. Choose the type of workspace, and the resources limitations 
 5. Optionally you can provide additional parameters as environment variables:

@@ -26,7 +26,8 @@
           "workflows-introduction", "workflows-github-actions", "workflows-airflow", "workflows-argo", 
           "workflows-nextflow", "workflows-cwl"
         ]
-      }
+      },
+      "contribute"
     ]
   }
 }
