@@ -178,7 +178,7 @@ objects:
         - name: jupyter-notebook
           image: "${APPLICATION_NAME}:latest"
           imagePullPolicy: IfNotPresent
-          workingDir: /home/jovyan
+          workingDir: /home/jovyan/work
           # command:
           # - "start-notebook.sh"
           # - "--no-browser"
@@ -211,7 +211,7 @@ objects:
             value: "${GIT_EMAIL}"
           volumeMounts:
           - name: data
-            mountPath: /home/jovyan/persistent
+            mountPath: /home/jovyan/work/persistent
             # mountPath: "${WORKDIR}"
           - name: dshm
             mountPath: /dev/shm

@@ -210,7 +210,7 @@ objects:
                 value: "${GIT_EMAIL}"
               - name: WORKSPACE
                 value: "/workspace"
-              - name: PERSISTENT_WORKSPACE
+              - name: PERSISTENT_FOLDER
                 value: "/workspace/persistent"
             # command:
             #   - jupyter
