@@ -62,8 +62,8 @@ parameters:
   required: true
 - name: GPU_LIMIT
   displayName: Number of GPU assigned
-  description: 8 in total in the cluster. And your quota is 1 by default
-  value: '1'
+  description: Use 0 if no GPU has been assigned yet to your project
+  value: '0'
   required: true
 - name: GIT_URL
   displayName: URL of a git repository to clone in the workspace (optional)

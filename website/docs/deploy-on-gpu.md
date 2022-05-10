@@ -16,9 +16,9 @@ We are using images provided by Nvidia, and optimized for GPU. We currently depl
 
 Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu) for more details on how we build the optimized docker images for the DSRI GPUs. Feel free to [extend the images](https://github.com/MaastrichtU-IDS/jupyterlab#extend-an-image) to your needs.
 
-## Start a workspace on GPU
+## Prepare your GPU workspace
 
-Start a workspace in your DSRI project based on Ubuntu, with all drivers and dependencies for accessing the GPU already installed. You will be able to access it using the JupyterLab web UI and VisualStudio Code in the browser.
+Start a workspace in your DSRI project based on Ubuntu, with all drivers and dependencies for accessing the GPUs already installed. You will be able to access it using the JupyterLab web UI and VisualStudio Code in the browser.
 
 Once your project has been granted access to GPUs, you can deploy applications on GPU from the catalog:
 
@@ -27,9 +27,11 @@ Once your project has been granted access to GPUs, you can deploy applications o
 3. Choose one of the available templates: **JupyterLab on GPU**.
 4. **Follow the instructions** to create the template in the DSRI web UI, all informations about the images you can use are provided there.
 
-You can find more details on the images we use and how to extend them in this repository: https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu
+Access the workspace from the route created (the small arrow at the top right of your application bubble in the Topology page).
 
-Once your template is created, wait a few seconds before it becomes accessible from the **Topology** page of OpenShift web UI, you can access the JupyterLab web UI, install your dependencies and run your experiments.
+You can now add your code and data in the persistent folder to be fully prepared when you will get access to the GPUs.
+
+You can find more details on the images we use and how to extend them in this repository: https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu
 
 :::info Storage
 
@@ -37,10 +39,24 @@ Use the **`/workspace/persistent` folder**, which is the JupyterLab workspace, t
 
 :::
 
-You can use the following command in the terminal to see your current GPU usage:
+## Enable GPU in your workspace
+
+Once the GPU quotas has been granted to your project, you will receive a message on Slack, or email when it is done. You can then update your deployment to use the GPUs using this command (our deployment name is `jupyterlab-gpu` in those 2 examples, change it to yours)
+
+```bash
+oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
+```
+
+You can use the following command in the terminal of your container on the DSRI to see your current GPU usage:
 
 ```bash
 nvidia-smi
+```
+
+Later you can remove the GPU from your app (the pod will be restarted automatically):
+
+```bash
+oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 0}, "limits": {"nvidia.com/gpu": 0}}}]'
 ```
 
 ### TensorBoard logs visualization
@@ -110,30 +126,6 @@ oc edit custom-app-gpu
 ```
 
 See also: official [Nvidia docs for CUDA]( https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#debian-installation)
-
-## Prepare your GPU workspace
-
-:::warning Experimental
-
-Experimental: this workflow is still experimental, let us know on Slack #helpdesk if you are interested in using it and helping us improve it.
-
-:::
-
-Start a GPU application from the template with `0` GPU set.
-
-Access the workspace like you would normally, add your code and data.
-
-Once the GPU quotas has been granted to your project, you can update your deployment to use the GPUs using this command (our deployment name is `jupyterlab-gpu` in this example, change it to yours)
-
-```bash
-oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
-```
-
-Later you can remove the GPU from your app without stopping it:
-
-```bash
-oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 0}, "limits": {"nvidia.com/gpu": 0}}}]'
-```
 
 <!-- 
 
