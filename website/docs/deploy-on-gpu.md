@@ -18,14 +18,14 @@ Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupy
 
 ## Prepare your GPU workspace
 
-Start a workspace in your DSRI project based on Ubuntu, with all drivers and dependencies for accessing the GPUs already installed. You will be able to access it using the JupyterLab web UI and VisualStudio Code in the browser.
+Start a workspace in your DSRI project with all drivers and dependencies for accessing the GPUs already installed. The workspace is based on Ubuntu, and you will be able to access it using the JupyterLab web UI and VisualStudio Code in the browser.
 
-Once your project has been granted access to GPUs, you can deploy applications on GPU from the catalog:
+You can deploy your GPU workspace from the catalog:
 
 1. Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog): **Add to Project** > **Browse Catalog**
 2. Filter the catalog for  "GPU"
 3. Choose one of the available templates: **JupyterLab on GPU**.
-4. **Follow the instructions** to create the template in the DSRI web UI, all informations about the images you can use are provided there.
+4. **Follow the instructions** to create the template in the DSRI web UI, all informations about the images you can use are provided there. The most notable is the base image you want to use for your workspace (`cuda`, `tensorflow` or `pytorch`)
 
 Access the workspace from the route created (the small arrow at the top right of your application bubble in the Topology page).
 
@@ -56,7 +56,7 @@ nvidia-smi
 Later you can remove the GPU from your app (the pod will be restarted automatically):
 
 ```bash
-oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 0}, "limits": {"nvidia.com/gpu": 0}}}]'
+oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {}]'
 ```
 
 ### TensorBoard logs visualization
