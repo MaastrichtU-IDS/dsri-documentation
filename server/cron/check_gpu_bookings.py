@@ -1,20 +1,19 @@
-import os
-from datetime import datetime, timedelta
-import requests
 import json
-from fastapi.encoders import jsonable_encoder
-from sqlmodel import Field, Session, SQLModel, create_engine, select
-
+import os
 import smtplib
+from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import requests
 from api.gpus import GpuBooking
 from api.notifications import post_msg_to_slack, send_email
+from fastapi.encoders import jsonable_encoder
+from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 # docker-compose exec cronjob watch cat /var/log/cron.log
 
-print(f'🔎 Checking GPU reservations to send booking notifications')
+print(f'🔎 Checking GPU reservations to send booking notifications on the {datetime.today().date()}')
 
 
 # Connect to the SQL DB

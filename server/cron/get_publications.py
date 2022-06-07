@@ -1,5 +1,8 @@
 import json
+
 from scholarly import scholarly
+
+# Just here as an example, but not really used in practice
 
 # pip install scholarly
 

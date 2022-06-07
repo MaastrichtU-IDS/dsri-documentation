@@ -1,12 +1,11 @@
-from sqlmodel import Session, SQLModel, create_engine, select
-import os
-from datetime import datetime
 import csv
+import os
 import pathlib
+from datetime import datetime
 
 from api.gpus import GpuBooking
 from api.users import User
-
+from sqlmodel import Session, SQLModel, create_engine, select
 
 print(f'💾 Backing up the SQL database (export to CSV)')
 # docker-compose exec cronjob watch cat /var/log/cron.log
