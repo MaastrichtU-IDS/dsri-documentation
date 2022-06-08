@@ -47,28 +47,35 @@ Once the GPU quotas has been granted to your project, you will receive a message
 oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
 ```
 
-You can use the following command in the terminal of your container on the DSRI to see your current GPU usage:
+You can use the following command in the terminal of your container on the DSRI to see the current GPU usage:
 
 ```bash
 nvidia-smi
 ```
 
-Later you can remove the GPU from your app (the pod will be restarted automatically):
+## Disable GPU in your workspace
+
+Later you can remove the GPU from your app, the pod will be restarted automatically on a CPU node:
 
 ```bash
-oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {}]'
+oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {}}]'
 ```
 
 ### TensorBoard logs visualization
 
-When using Tensorflow, you can use [**TensorBoard 📈**](https://www.tensorflow.org/tensorboard) to explore your machine learning runs. It should be already pre-installed in our JupyterLab for GPU templates.
+When using Tensorflow, you can try to use [**TensorBoard 📈**](https://www.tensorflow.org/tensorboard) to explore your machine learning runs. It should be already pre-installed in our JupyterLab for GPU templates.
 
 Follow the usual process to run tensorboard: https://www.tensorflow.org/tensorboard/get_started
 
 1. Add the tensorboard callback to your `model.fit()` function
-
 2. Then start Tensorboard in the terminal with `tensorboard --logdir logs` (change the directory depending on where the logs of your runs are stored), it should tell you that tensorboard as been started on port 6006
-3. Open the Tensorboard view from the JupyterLab welcome page
+3. At this point you should be able to open the Tensorboard view from the JupyterLab welcome page
+
+:::warn 
+
+We do not guarantee
+
+:::
 
 
 ### Increase the number of GPUs in your workspace
@@ -100,7 +107,7 @@ oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/tem
 
 See the latest official [Nvidia docs](https://nvidia.github.io/nvidia-container-runtime) to install the `nvidia-container-runtime` (all packages and drivers required to access the GPU from your application)
 
-Here is an example of commands to add to a debian based `Dockerfile` to install the GPU drivers:
+Here is an example of commands to add to a debian based `Dockerfile` to install the GPU drivers (note that this is not complete, you will need to check the latest instructions and do some research & development to get it to work):
 
 ```dockerfile
 RUN curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \
@@ -126,29 +133,3 @@ oc edit custom-app-gpu
 ```
 
 See also: official [Nvidia docs for CUDA]( https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#debian-installation)
-
-<!-- 
-
-You can check the availability of the 8 GPUs of the DSRI through the Maastricht University Outlook Calendar:
-
-1. Go to the your UM Outlook Calendar (through the desktop or web application)
-2. Create a new Calendar group named "DSRI GPUs"
-3. Add the 8 `EQUIP-PHS1-DSRIGPU` numbered from 1 to 8, e.g. `EQUIP-PHS1-DSRIGPU1-1P` to this Calendar Group. This way you will be able to quickly see when a GPU is free or reserved
-
-To reserve a GPU directly in the Calendar:
-
-* Check for a GPU available in the period when you will need to use it
-* Create an event for the period you expect you will need the GPU:
-  - [ ] Put your the GPU number, and your DSRI project ID where we will add the GPU in the title, e.g. `GPU 3 for your-project-id`
-  - [ ] Set the Duration to "**Full day**"
-  - [ ] Ideally **reserve a week** (or more) from **Monday to Monday**
-  - [ ] Don't hold the GPU for too long, other people needs it at UM! You can reserve it again later
-  - [ ] Add the following users as **Attendees**: 
-    * `vincent.emonet@maastrichtuniversity.nl` 
-    * the `EQUIP-PHS1-DSRIGPU` email address of the GPU you want to reserve
-* You should receive an email telling you if the reservation has been successful
-  * This does not mean your reservation is completely validated, we will let you know through Slack or email if the reservation needs to be changed.
-
-It is not mandatory to create the reservation in the Calendar, feel free to contact us on Slack or via email to make the reservation directly with us.
-
--->

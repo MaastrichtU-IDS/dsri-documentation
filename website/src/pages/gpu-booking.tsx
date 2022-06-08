@@ -414,6 +414,10 @@ function GpuBooking() {
               </Paper>
             </Box>
 
+            <p style={{marginTop: '10px'}}>
+              ⚠️ If you don't see any colored number on the calendar please reload the page, sometimes ReactJS fails to initialize the page
+            </p>
+
             <button type="submit" style={{margin: '30px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
               )}>Request a GPU for the selected period</button> 
