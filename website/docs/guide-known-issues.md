@@ -9,7 +9,7 @@ If your pod is not restarting for a mysterious reason then it might be due to to
 
 It is an error brought to you by RedHat's SELinux, where your pod will fail to restart if you have a too long nested file path on the persistent volume (yes those types of error still exist in 2022!).
 
-This issue should be fixed in the next version of OpenShift. But before we get it: be careful as some applications, such as snakemake, have a tendency to create folders with really long name which can trigger this problem. Try to use the ephemeral storage in this case to work around the issue (and copy only the code, data and results to the persistent folder).
+This issue should be fixed in the next version of OpenShift. But before we get it: be careful as some applications, such as snakemake, have a tendency to create folders with really long name which can trigger this problem. Try to use the ephemeral storage in this case to work around the issue (and copy only the code, data and results to the persistent folder). You can also avoid the issue by restarting your pod on the GPU node.
 
 ## DockerHub pull limitations
 

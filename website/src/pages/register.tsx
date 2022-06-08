@@ -541,7 +541,7 @@ function Registration() {
 
               <Grid item xs={5} style={{textAlign: 'right'}}>
                 <p>
-                  If your project uses sensible data, provide the AVG number for GDPR compliance:
+                  If your project uses sensitive data, provide the AVG number for GDPR compliance:
                 </p>
               </Grid>
               <Grid item xs={7} style={{textAlign: 'left'}}>
