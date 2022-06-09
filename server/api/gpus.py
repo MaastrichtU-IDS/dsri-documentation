@@ -1,6 +1,7 @@
 import os
 from datetime import datetime, timedelta
 from typing import List, Optional
+
 from fastapi import APIRouter, Body, FastAPI, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -22,7 +23,7 @@ class CreateBooking(SQLModel, table=False):
 
     @validator("user_email", "starting_date", "ending_date", "project_id")
     def reject_empty_strings(cls, v):
-        assert str(v) is not ''
+        assert str(v) != ''
         return v
 
 class GpuBooking(CreateBooking, table=True):

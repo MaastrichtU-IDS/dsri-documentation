@@ -16,13 +16,9 @@ Before enabling your UM account to access the DSRI, we would like to know a bit 
 
 Once this will be done, we will enable your account as soon as possible, and you will be able to login using your UM username and password.
 
-## Check the issues 📝
+## Submit a ticket 📝
 
-Browse [existing issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) to resolve your problem, and feel free to create a [new issue](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) to request new features on the DSRI, or improve the documentation.
-
-<a href="https://github.com/MaastrichtU-IDS/dsri-documentation/issues" target="_blank" rel="noopener noreferrer" aria-label="GitHub issues">
-    <img alt="GitHub issues" src="https://img.shields.io/github/issues/MaastrichtU-IDS/dsri-documentation?label=dsri-documentation"/>
-</a>
+If you are having issues and need help from the DSRI team, submit a [ticket in the UM ServiceDesk application](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392).
 
 
 ## Join the DSRI Slack 💬

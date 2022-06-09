@@ -61,6 +61,7 @@ Later you can remove the GPU from your app, the pod will be restarted automatica
 oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {}}]'
 ```
 
+<!--
 ### TensorBoard logs visualization
 
 When using Tensorflow, you can try to use [**TensorBoard 📈**](https://www.tensorflow.org/tensorboard) to explore your machine learning runs. It should be already pre-installed in our JupyterLab for GPU templates.
@@ -70,15 +71,9 @@ Follow the usual process to run tensorboard: https://www.tensorflow.org/tensorbo
 1. Add the tensorboard callback to your `model.fit()` function
 2. Then start Tensorboard in the terminal with `tensorboard --logdir logs` (change the directory depending on where the logs of your runs are stored), it should tell you that tensorboard as been started on port 6006
 3. At this point you should be able to open the Tensorboard view from the JupyterLab welcome page
+-->
 
-:::warn 
-
-We do not guarantee
-
-:::
-
-
-### Increase the number of GPUs in your workspace
+## Increase the number of GPUs in your workspace
 
 If you already have a application running using 1 GPU, and you have been granted a 2nd GPU to speed up your experiment you can easily upgrade the number of GPU used by your application:
 

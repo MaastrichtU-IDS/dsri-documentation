@@ -8,5 +8,5 @@ BASH_ENV=/container.env
 # At 09:00 on Monday and Thursday
 
 
-# * * * * * /usr/local/bin/python /app/cron/check_gpu_bookings.py >> /var/log/cron.log 2>&1
+* * * * * /usr/local/bin/python /app/cron/check_gpu_bookings.py >> /var/log/cron.log 2>&1
 # * * * * * /usr/local/bin/python /app/cron/backup_database.py >> /var/log/cron.log 2>&1
