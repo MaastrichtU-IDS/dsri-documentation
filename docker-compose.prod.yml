@@ -26,9 +26,6 @@ services:
   cronjob:
     volumes:
       - ./backup:/backup
-      - ./server/api:/app/api
-      - ./server/cron:/app/cron
-      - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
 
   phpmyadmin:
     environment:
