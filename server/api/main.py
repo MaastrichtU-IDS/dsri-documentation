@@ -1,12 +1,12 @@
-from fastapi import FastAPI, APIRouter, Request, Response
-from fastapi.responses import JSONResponse, RedirectResponse
-from fastapi.middleware.cors import CORSMiddleware
+import time
 from typing import List, Optional
+
+from api import gpus, users
+from fastapi import APIRouter, FastAPI, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
-from api import users, gpus
-
-import time
 # Waiting for MySQL to start
 time.sleep(7)
 

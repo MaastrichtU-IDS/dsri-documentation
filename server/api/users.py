@@ -1,18 +1,20 @@
-from fastapi import FastAPI, APIRouter, Request, Response, Body
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
-from typing import List, Optional
 import os
-import time
 import re
-from sqlmodel import Field, Session, SQLModel, create_engine, select
-from datetime import datetime, timedelta, date
-from sqlalchemy.exc import IntegrityError, OperationalError
+import time
+from datetime import date, datetime, timedelta
+from typing import List, Optional
+
+from api.notifications import post_msg_to_slack
+from fastapi import APIRouter, Body, FastAPI, Request, Response
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from pydantic import validator
+from sqlalchemy.exc import IntegrityError, OperationalError
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
 # from sqlalchemy import VARCHAR
 # from MySQLdb import OperationalError
 
-from api.notifications import post_msg_to_slack
 
 
 # Login with LDAP: https://gist.github.com/femmerling/5097365
@@ -35,7 +37,7 @@ class CreateUser(SQLModel, table=False):
 
     @validator("email", "username", "employee_id", "affiliation", "project_type", "project_description", "gdpr")
     def reject_empty_strings(cls, v):
-        assert v is not ''
+        assert v != ''
         return v
 
     @validator("email")
