@@ -63,6 +63,12 @@ dependencies:
     - matplotlib
 ```
 
+⚠️ You cannot use `conda activate` in a Docker container, so you will need to either open a notebook using the kernel for your conda env, or use `conda run` to run scripts in the new environment:
+
+```bash
+conda run -n custom-env python --version
+```
+
 ## 🐙 Use git in JupyterLab
 
 You can always use `git` from the terminal.

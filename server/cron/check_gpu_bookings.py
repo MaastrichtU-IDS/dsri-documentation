@@ -1,13 +1,9 @@
-import json
 import os
-import smtplib
 from datetime import datetime, timedelta
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
 import requests
 from api.gpus import GpuBooking
-from api.notifications import post_msg_to_slack, send_email
+from api.notifications import post_msg_to_slack
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
