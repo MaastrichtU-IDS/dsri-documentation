@@ -11,7 +11,6 @@ from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 print(f'🔎 Checking GPU reservations to send booking notifications on the {datetime.today().date()}')
 
-
 # Connect to the SQL DB
 engine = create_engine(os.getenv('SQL_URL'))
 SQLModel.metadata.create_all(engine)

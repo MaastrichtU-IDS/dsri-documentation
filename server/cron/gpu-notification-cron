@@ -1,12 +1,12 @@
 SHELL=/bin/bash
-BASH_ENV=/container.env
+# BASH_ENV=/container.env
 
-00 9 * * * /usr/local/bin/python /app/cron/check_gpu_bookings.py >> /var/log/bookings.log 2>&1
+00 9 * * * source /.env.sh && /usr/local/bin/python /app/cron/check_gpu_bookings.py >> /var/log/bookings.log 2>&1
 # Everyday at 09:30
 
-0 9 * * 1,4 /usr/local/bin/python /app/cron/backup_database.py >> /var/log/backup.log 2>&1
+0 9 * * 1,4 source /.env.sh && /usr/local/bin/python /app/cron/backup_database.py >> /var/log/backup.log 2>&1
 # At 09:00 on Monday and Thursday
 
 
-* * * * * /usr/local/bin/python /app/cron/check_gpu_bookings.py >> /var/log/booking.log 2>&1
+* * * * * source /.env.sh && /usr/local/bin/python /app/cron/check_gpu_bookings.py >> /var/log/cron.log 2>&1
 # * * * * * /usr/local/bin/python /app/cron/backup_database.py >> /var/log/cron.log 2>&1
