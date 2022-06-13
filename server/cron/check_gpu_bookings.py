@@ -33,7 +33,6 @@ with Session(engine) as session:
             text_msg = f'💽 🚀 Booking starts: *GPU {resa["gpu_id"]}* in project *{resa["project_id"]}* for {resa["user_email"]} on the {datetime.today().date()}\n'
             text_msg = text_msg + """```
 oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 1}}}' -n """ + resa['project_id'] + """
-oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/gpu/template-gpu-jupyterlab.yml -n """ + resa['project_id'] + """
 ```"""
             
             print(post_msg_to_slack(text_msg))
