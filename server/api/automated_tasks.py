@@ -36,8 +36,8 @@ def check_gpu_bookings() -> None:
                 start_msgs.append(html_msg)
                 text_msg = f'💽 🚀 Booking starts: *GPU {resa["gpu_id"]}* in project *{resa["project_id"]}* for {resa["user_email"]} on the {datetime.today().date()}\n'
                 text_msg = text_msg + """```
-    oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 1}}}' -n """ + resa['project_id'] + """
-    ```"""
+oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 1}}}' -n """ + resa['project_id'] + """
+```"""
                 
                 print(post_msg_to_slack(text_msg))
                 
@@ -46,8 +46,8 @@ def check_gpu_bookings() -> None:
                 end_msgs.append(html_msg)
                 text_msg = f'💽 🛬 Booking ends: *GPU {resa["gpu_id"]}* in project *{resa["project_id"]}* for {resa["user_email"]} on the {datetime.today().date()}\n'
                 text_msg = text_msg + """```
-    oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 0}}}' -n """ + resa['project_id'] + """
-    ```"""
+oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 0}}}' -n """ + resa['project_id'] + """
+```"""
                 print(post_msg_to_slack(text_msg))
 
         send_msg = ''
