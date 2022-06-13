@@ -4,6 +4,7 @@ services:
 
   api:
     environment:
+      - ./backup:/backup
       - VIRTUAL_HOST=api.dsri.maastrichtuniversity.nl
       - LETSENCRYPT_HOST=api.dsri.maastrichtuniversity.nl
       - VIRTUAL_PORT=80
@@ -23,9 +24,9 @@ services:
       - ./data:/var/lib/mysql
       - ./backup:/backup
 
-  cronjob:
-    volumes:
-      - ./backup:/backup
+  # cronjob:
+  #   volumes:
+  #     - ./backup:/backup
 
   phpmyadmin:
     environment:

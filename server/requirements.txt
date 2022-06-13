@@ -3,3 +3,4 @@ uvicorn[standard]
 sqlmodel
 mysqlclient
 requests
+fastapi_utils

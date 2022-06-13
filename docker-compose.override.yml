@@ -7,17 +7,18 @@ services:
       - 8000:80
     volumes:
       - ./server/api:/app/api
-      - ./server/cron:/app/cron
-      - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
+      # - ./server/cron:/app/cron
+      # - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
+      - ./backup:/backup
     # command: cron -f && uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
     command: uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
 
-  cronjob:
-    volumes:
-      - ./server/api:/app/api
-      - ./server/cron:/app/cron
-      - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
-      - ./backup:/backup
+  # cronjob:
+  #   volumes:
+  #     - ./server/api:/app/api
+  #     - ./server/cron:/app/cron
+  #     - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
+  #     - ./backup:/backup
 
 
   gpu-calendar:

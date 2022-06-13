@@ -2,9 +2,11 @@ import time
 from typing import List, Optional
 
 from api import gpus, users
+from api.automated_tasks import backup_database, check_gpu_bookings
 from fastapi import APIRouter, FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi_utils.tasks import repeat_every
 from pydantic import BaseModel, Field
 
 # Waiting for MySQL to start
@@ -40,6 +42,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.on_event("startup")
+@repeat_every(seconds=60 * 60 * 24)  # 1 day
+def daily_checks() -> None:
+    check_gpu_bookings()
+
+
+@app.on_event("startup")
+@repeat_every(seconds=60 * 60 * 24 * 7)  # 7 days
+def weekly_backup() -> None:
+    backup_database()
 
 
 @app.get("/", include_in_schema=False)

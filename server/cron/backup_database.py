@@ -7,7 +7,9 @@ from api.gpus import GpuBooking
 from api.users import User
 from sqlmodel import Session, SQLModel, create_engine, select
 
-print(f'💾 Backing up the SQL database (export to CSV)')
+# def backup_database() -> None:
+
+print(f'💾 Backing up the SQL database (export to CSV) on the {datetime.today().date()}')
 # docker-compose exec cronjob watch cat /var/log/cron.log
 
 # Connect to the SQL DB

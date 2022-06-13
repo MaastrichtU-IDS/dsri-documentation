@@ -2,8 +2,11 @@ FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
 
 WORKDIR /app/
 
+ENV PYTHONUNBUFFERED='1'
+
 RUN apt-get update && \
-    apt-get install -y cron wget
+    apt-get install -y wget
+# apt-get install -y wget cron
 
 COPY requirements.txt /app/
 
@@ -14,9 +17,9 @@ COPY . /app
 RUN python setup.py install
 
 # Copy cron file to the cron.d directory
-COPY cron/gpu-notification-cron /etc/cron.d/gpu-notification-cron
-RUN chmod 0644 /etc/cron.d/gpu-notification-cron  && \
-    crontab /etc/cron.d/gpu-notification-cron
+# COPY cron/gpu-notification-cron /etc/cron.d/gpu-notification-cron
+# RUN chmod 0644 /etc/cron.d/gpu-notification-cron  && \
+#     crontab /etc/cron.d/gpu-notification-cron
     # touch /var/log/cron.log
 
 # Install kubectl and oc

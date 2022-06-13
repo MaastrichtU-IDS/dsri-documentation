@@ -9,6 +9,8 @@ from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 # docker-compose exec cronjob watch cat /var/log/cron.log
 
+# def check_gpu_bookings() -> None:
+
 print(f'🔎 Checking GPU reservations to send booking notifications on the {datetime.today().date()}')
 
 # Connect to the SQL DB
