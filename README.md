@@ -80,14 +80,13 @@ Make sure the `/website/build` directory has been generated before deploying.
 
 ### Deploy the backend on a server
 
-Define the `.env` file to change the default configuration (admin password, Slack config):
+Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
 
 ```
-PASSWORD=password
+CLUSTER_USER=user
+CLUSTER_PASSWORD=password
 SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
 SLACK_CHANNEL=UQL6BCQJH
-SMTP_USER=user@example.com
-SMTP_PASSWORD=password
 ```
 
 Start the docker-compose in production using jwilder's [nginx-proxy](https://github.com/jwilder/nginx-proxy) and [nip.io](https://nip.io/).

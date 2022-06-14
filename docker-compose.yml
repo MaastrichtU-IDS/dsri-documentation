@@ -43,8 +43,6 @@ services:
       - SQL_URL=mysql://dsri-user:${PASSWORD-password}@mysql:3306/dsri-db
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
       - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
-      - SMTP_USER=${SMTP_USER-Vincent.Emonet}
-      - SMTP_PASSWORD=${SMTP_PASSWORD-password}
       - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
       - CLUSTER_PASSWORD=${CLUSTER_PASSWORD-password}
 
@@ -70,8 +68,6 @@ services:
   #     - SQL_URL=mysql://dsri-user:${PASSWORD-password}@mysql:3306/dsri-db
   #     - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
   #     - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
-  #     - SMTP_USER=${SMTP_USER-Vincent.Emonet}
-  #     - SMTP_PASSWORD=${SMTP_PASSWORD-password}
   #   command: /app/cron/start_cron.sh
 
   # server:

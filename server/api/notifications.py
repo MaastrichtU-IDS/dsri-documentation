@@ -44,8 +44,6 @@ def send_email(msg, to, subject="📀 DSRI GPU bookings"):
     # fromaddr = f"{os.getenv('CLUSTER_USER')}@maastrichtuniversity.nl"
     fromaddr = 'vincent.emonet@maastrichtuniversity.nl'
     # fromaddr = 'DSRI-SUPPORT-L@maastrichtuniversity.nl'
-    # smtp_user = os.getenv('SMTP_USER', 'Vincent.Emonet')
-    # password = os.getenv('SMTP_PASSWORD', 'password')
     
     toaddrs  = [to]
     print(f"📬️ Sending an email from {fromaddr} to {toaddrs}")
