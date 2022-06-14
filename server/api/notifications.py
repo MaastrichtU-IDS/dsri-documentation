@@ -34,30 +34,31 @@ def post_msg_to_slack(text):
 
 ## Send an email with UM smtp server (require VPN connection)
 # https://kb.icts.maastrichtuniversity.nl/display/ISM/E-mail+-+Universal+UM+email+server+names
-def send_email(email_msg):
-    print('📬️ Sending an email')
+def send_email(msg, to):
     fromaddr = 'vincent.emonet@maastrichtuniversity.nl'
     # Service with 100 emails/day free: https://sendgrid.com/
     
     # smtp_user = os.getenv('SMTP_USER', 'Vincent.Emonet')
     # password = os.getenv('SMTP_PASSWORD', 'password')
-    toaddrs  = ['vincent.emonet@maastrichtuniversity.nl']
+    toaddrs  = [to]
+
+    print(f"📬️ Sending an email from {fromaddr} to {toaddrs}")
 
     # Create message container - the correct MIME type is multipart/alternative.
-    msg = MIMEMultipart('alternative')
-    msg['Subject'] = "DSRI GPU bookings"
-    msg['From'] = fromaddr
-    msg['To'] = ', '.join(toaddrs)
+    email = MIMEMultipart('alternative')
+    email['Subject'] = "📀 DSRI GPU bookings"
+    email['From'] = fromaddr
+    email['To'] = ', '.join(toaddrs)
 
     # Create the body of the message (a plain-text and an HTML version).
-    text = email_msg
+    text = msg
     html = f"""\
     <html>
     <head>
         <style></style>
     </head>
     <body>
-        {email_msg}
+        {msg}
     </body>
     </html>
     """

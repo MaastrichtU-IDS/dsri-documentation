@@ -20,11 +20,13 @@ class CreateBooking(SQLModel, table=False):
     starting_date: datetime = Field(primary_key=True)
     ending_date: datetime = Field(primary_key=True)
     project_id: str = Field(primary_key=False)
+    app_id: str = Field(primary_key=False)
 
-    @validator("user_email", "starting_date", "ending_date", "project_id")
+    @validator("user_email", "starting_date", "ending_date", "project_id", "app_id")
     def reject_empty_strings(cls, v):
         assert str(v) != ''
         return v
+
 
 class GpuBooking(CreateBooking, table=True):
     gpu_id: Optional[int] = Field(primary_key=True)

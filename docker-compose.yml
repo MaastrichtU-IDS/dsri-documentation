@@ -45,6 +45,8 @@ services:
       - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
       - SMTP_USER=${SMTP_USER-Vincent.Emonet}
       - SMTP_PASSWORD=${SMTP_PASSWORD-password}
+      - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
+      - CLUSTER_PASSWORD=${CLUSTER_PASSWORD-password}
 
 
   gpu-calendar:

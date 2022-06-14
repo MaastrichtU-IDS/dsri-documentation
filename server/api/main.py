@@ -37,9 +37,10 @@ app = FastAPI(
 app.include_router(api_router)
 
 # @repeat_every(seconds=60 * 60 * 24)  # 1 day
+# Note: internal time in the container is 2 hours earlier than Central European Time
 # Everyday at 09:00
 @app.on_event("startup")
-@repeat_at(cron='0 10 * * *')
+@repeat_at(cron='0 7 * * *')
 def daily_checks() -> None:
     check_gpu_bookings()
 
@@ -47,7 +48,7 @@ def daily_checks() -> None:
 # @repeat_every(seconds=60 * 60 * 24 * 7)  # 7 days
 # At 09:00 on Monday and Thursday
 @app.on_event("startup")
-@repeat_at(cron='0 10 * * 1,4')
+@repeat_at(cron='0 7 * * 1,4')
 def weekly_backup() -> None:
     backup_database()
 

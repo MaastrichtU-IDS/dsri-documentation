@@ -98,6 +98,18 @@ function GpuBooking() {
       }
     }
 
+    if (event.target.id === 'app_id') {
+      // Project ID validation
+      let errorMessages = state.errorMessages
+      if (!event.target.value.match(/^[a-zA-Z0-9-]*$/)) {
+        errorMessages['app_id'] = 'The app ID should only contains alphanumeric characters and -'
+        updateState({ errorMessages: errorMessages})
+      } else {
+        errorMessages['app_id'] = null
+        updateState({ errorMessages: errorMessages, })
+      }
+    }
+
     if (!state.errorMessages[event.target.id]) {
       let formObj = state.formObj
       formObj[event.target.id] = event.target.value
@@ -120,6 +132,7 @@ function GpuBooking() {
     const data = {
       user_email: state.formObj['email'],
       project_id: state.formObj['project_id'],
+      app_id: state.formObj['app_id'],
       starting_date: state.selection1.startDate,
       ending_date: state.selection1.endDate,
     }
@@ -233,7 +246,7 @@ function GpuBooking() {
         twoDigitDate = "0" + twoDigitDate;
     const dayDate = day.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
     const bookings = {fullyBooked: false}
-    const gpuBooked = []
+    const gpuBooked: any = []
     if (Object.keys(state.bookedDays).indexOf(dayDate) > -1) {
       if (Object.keys(state.bookedDays[dayDate]).length > 1) {
         Object.keys(state.bookedDays[dayDate]).map((booking:any, key: number) => {
@@ -367,6 +380,28 @@ function GpuBooking() {
                   required
                   error={checkError('project_id')}
                   helperText={checkErrorMessage('project_id') ? checkErrorMessage('project_id') : "The project ID should only contains alphanumeric characters and -"}
+                />
+              </Grid>
+
+              <Grid item xs={5} style={{textAlign: 'right'}}>
+                <p className={styles.required}>
+                  The ID of the app deployed on the DSRI where we will enable GPU:
+                </p>
+              </Grid>
+              <Grid item xs={7} style={{textAlign: 'left'}}>
+                <TextField
+                  id='app_id'
+                  multiline
+                  label='DSRI app ID'
+                  placeholder='e.g. jupyterlab-gpu'
+                  // value={''}
+                  variant="outlined"
+                  // onChange={handleTextFieldChange}
+                  onChange={handleTextFieldChange}
+                  size='small'
+                  required
+                  error={checkError('app_id')}
+                  helperText={checkErrorMessage('app_id') ? checkErrorMessage('app_id') : "Make sure this value is right as it will be used to automatically enable the GPU in this app. The app ID should only contains alphanumeric characters and -"}
                 />
               </Grid>
 

@@ -4,7 +4,7 @@
   "homepage": "https://dsri.maastrichtuniversity.nl",
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start",
+    "start": "API_URL=http://localhost:8000 docusaurus start",
     "dev": "API_URL=https://api.dsri.maastrichtuniversity.nl docusaurus start",
     "build": "docusaurus build",
     "clear": "docusaurus clear",
