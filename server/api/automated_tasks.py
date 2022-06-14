@@ -14,7 +14,7 @@ from sqlmodel import Session, SQLModel, create_engine, select
 
 # docker-compose exec cronjob watch cat /var/log/cron.log
 def check_gpu_bookings() -> None:
-    print(f'🔎 Checking GPU reservations to send booking notifications on the {datetime.today().date()}')
+    print(f'🔎 Checking GPU reservations to send booking notifications on the {datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
 
     # Connect to the SQL DB
     engine = create_engine(os.getenv('SQL_URL'))
@@ -63,7 +63,7 @@ oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com
 
 
 def backup_database() -> None:
-    print(f'💾 Backing up the SQL database (export to CSV) on the {datetime.today().date()}')
+    print(f'💾 Backing up the SQL database (export to CSV) on the {datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
 
     # Connect to the SQL DB
     engine = create_engine(os.getenv('SQL_URL'))

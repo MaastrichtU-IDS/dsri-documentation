@@ -39,7 +39,7 @@ app.include_router(api_router)
 # @repeat_every(seconds=60 * 60 * 24)  # 1 day
 # Everyday at 09:00
 @app.on_event("startup")
-@repeat_at(cron='00 10 * * *')
+@repeat_at(cron='0 10 * * *')
 def daily_checks() -> None:
     check_gpu_bookings()
 
