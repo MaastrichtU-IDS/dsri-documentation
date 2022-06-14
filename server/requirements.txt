@@ -3,4 +3,5 @@ uvicorn[standard]
 sqlmodel
 mysqlclient
 requests
-fastapi_utils
+# fastapi_utils
+git+https://github.com/jykae/fastapi-utils.git@feature/repeat-at-decorator
