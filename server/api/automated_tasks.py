@@ -23,7 +23,7 @@ def disable_gpu(project_id, app_id) -> str:
     try:
         with oc.project(project_id), oc.timeout(10*60):
             # Print the list of qualified pod names (e.g. ['pod/xyz', 'pod/abc', ...]  in the current project
-            print('Found the following pods in {}: {}'.format(oc.get_project_name(), oc.selector('pods').qnames()))
+            print(f"Found the following pods in {oc.get_project_name()}: {oc.selector('pods').qnames()}")
 
             # Read in the current state of the pod resources and represent them as python objects
             # for pod_obj in oc.selector('pods').objects():    

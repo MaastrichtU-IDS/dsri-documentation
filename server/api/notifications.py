@@ -35,6 +35,7 @@ def post_msg_to_slack(text):
 ## Send an email with UM smtp server (require VPN connection)
 # https://kb.icts.maastrichtuniversity.nl/display/ISM/E-mail+-+Universal+UM+email+server+names
 def send_email(msg, to):
+    # fromaddr = f"{os.getenv('CLUSTER_USER')}@maastrichtuniversity.nl"
     fromaddr = 'vincent.emonet@maastrichtuniversity.nl'
     # Service with 100 emails/day free: https://sendgrid.com/
     
@@ -66,21 +67,29 @@ def send_email(msg, to):
     part1 = MIMEText(text, 'plain')
     part2 = MIMEText(html, 'html')
     # Attach parts into message container.
-    msg.attach(part1)
-    msg.attach(part2)
+    email.attach(part1)
+    email.attach(part2)
 
     try :
-        server = smtplib.SMTP(host='smtp.maastrichtuniversity.nl', port=25)
+        smtp = smtplib.SMTP(host='smtp.maastrichtuniversity.nl', port=25)
+        # identify ourselves to smtp client
+        # smtp.ehlo()
+        # smtp.starttls()
+        # smtp.set_debuglevel(False)
+        # smtp.login(os.getenv('CLUSTER_USER'), os.getenv('CLUSTER_PASSWORD'))
+        
         # server = smtplib.SMTP('smtp.gmail.com', 587)
         # server = smtplib.SMTP()
-        # server.connect(server_smtp, port_smtp)
-        # server.set_debuglevel(True)
-        # server.starttls()
-        # server.ehlo()
-        # server.login(smtp_user, password)
-        # server.sendmail(fromaddr, toaddrs, BODY.encode('utf-8'))
-        server.sendmail(fromaddr, toaddrs, msg.as_string())
-        server.quit()
+        # smtp.connect(server_smtp, port_smtp)
+        # smtp.set_debuglevel(True)
+        # smtp.starttls()
+        # smtp.ehlo()
+        # smtp.login(smtp_user, password)
+        # smtp.sendmail(fromaddr, toaddrs, BODY.encode('utf-8'))
+        smtp.sendmail(fromaddr, toaddrs, email.as_string())
+        smtp.quit()
+        print('✅ Email sent')
     except Exception as e:
+        print('Error sending the email')
         print(e)
 
