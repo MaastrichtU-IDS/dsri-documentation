@@ -32,34 +32,39 @@ def post_msg_to_slack(text):
         return e
 
 
+html_footer = """<br/><br/><br/>Best regards,
+<br/><br/>The DSRI team at Maastricht University"""
+plain_footer = """\nBest regards,
+The DSRI team at Maastricht University"""
+
+
 ## Send an email with UM smtp server (require VPN connection)
 # https://kb.icts.maastrichtuniversity.nl/display/ISM/E-mail+-+Universal+UM+email+server+names
-def send_email(msg, to):
-    fromaddr = f"{os.getenv('CLUSTER_USER')}@maastrichtuniversity.nl"
-    # fromaddr = 'vincent.emonet@maastrichtuniversity.nl'
-    # Service with 100 emails/day free: https://sendgrid.com/
-    
+def send_email(msg, to, subject="📀 DSRI GPU bookings"):
+    # fromaddr = f"{os.getenv('CLUSTER_USER')}@maastrichtuniversity.nl"
+    fromaddr = 'vincent.emonet@maastrichtuniversity.nl'
+    # fromaddr = 'DSRI-SUPPORT-L@maastrichtuniversity.nl'
     # smtp_user = os.getenv('SMTP_USER', 'Vincent.Emonet')
     # password = os.getenv('SMTP_PASSWORD', 'password')
+    
     toaddrs  = [to]
-
     print(f"📬️ Sending an email from {fromaddr} to {toaddrs}")
 
     # Create message container - the correct MIME type is multipart/alternative.
     email = MIMEMultipart('alternative')
-    email['Subject'] = "📀 DSRI GPU bookings"
+    email['Subject'] = subject
     email['From'] = fromaddr
     email['To'] = ', '.join(toaddrs)
 
     # Create the body of the message (a plain-text and an HTML version).
-    text = msg
+    text = msg + plain_footer
     html = f"""\
     <html>
     <head>
         <style></style>
     </head>
     <body>
-        {msg}
+        {msg + html_footer}
     </body>
     </html>
     """
@@ -78,17 +83,9 @@ def send_email(msg, to):
         # smtp.set_debuglevel(False)
         # smtp.login(os.getenv('CLUSTER_USER'), os.getenv('CLUSTER_PASSWORD'))
         
-        # server = smtplib.SMTP('smtp.gmail.com', 587)
-        # server = smtplib.SMTP()
-        # smtp.connect(server_smtp, port_smtp)
-        # smtp.set_debuglevel(True)
-        # smtp.starttls()
-        # smtp.ehlo()
-        # smtp.login(smtp_user, password)
-        # smtp.sendmail(fromaddr, toaddrs, BODY.encode('utf-8'))
         smtp.sendmail(fromaddr, toaddrs, email.as_string())
         smtp.quit()
-        print('✅ Email sent')
+        # print('✅ Email sent')
     except Exception as e:
         print('Error sending the email')
         print(e)
