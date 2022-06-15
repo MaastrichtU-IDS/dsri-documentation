@@ -3,6 +3,18 @@ id: deploy-on-gpu
 title: GPU applications
 ---
 
+There is a limited number of GPUs on the DSRI (8), and a GPU can only be used by one workspace at a time.
+
+⚠️ We currently provide a free access to those GPUs, but with the growing demands for GPUs it might get more restricted. As consideration for others, and to help keep this system open, it is important to make a maximum use of those GPUs when you get access to them. 
+
+Unfortunately job scheduling is currently not mature enough on Kubernetes, you can look into [volcano.sh](https://volcano.sh/en/) if you are interested, but it is still quite experimental.
+
+To use the GPU on the DSRI you will go through this process:
+
+1. Deploy, prepare and debug a workspace for GPU
+2. [Book a GPU](/gpu-booking)
+3. Once the booking is done you will receive an email about your reservation, and more emails when it starts and before it ends
+4. Make the maximum use of this GPU!
 
 :::warning Book a GPU
 
@@ -14,7 +26,9 @@ You can check the availability of our GPUs, and reserve GPU slots in the [GPU bo
 
 ## Prepare your GPU workspace
 
-You will first need to start your workspace without the GPU enabled, you can then prepare your experiments: clone the code, download the data, prepare scripts to install all requirements (the workspace will be restarted when you enable the GPU)
+You will first need to start your workspace without the GPU enabled, you can then prepare your experiments: clone the code, download the data, prepare scripts to install all requirements (the workspace will be restarted when you enable the GPU). 
+
+We recommend you to also try and debug your code on small sample using the CPU before getting the GPU, this way you will be able to directly start long running task when you get the GPU, instead of losing time debugging your code.
 
 In most prepared image to work on the DSRI GPU we are using images provided by Nvidia, with all required drivers and optimizations for GPU pre-installed. You can access the workspace with JupyterLab and VisualStudio Code in your browser, and install dependencies with `apt-get`, `conda` or `pip`
 
