@@ -1,9 +1,9 @@
 ---
 id: jupyterhub-spark
-title: JupyterHub
+title: JupyterHub with Spark
 ---
 
-JupyterHub is ideal to enable multiple users easily start predefined workspaces in the same project. 
+JupyterHub is ideal to enable multiple users easily start predefined workspaces in the same project. The complimentary Apache Spark cluster can be used from the workspaces to perform distributed processing.
 
 
 ## 🧊 Install kfctl
@@ -57,7 +57,6 @@ First you will need to change the `namespace:` in the file you want to deploy, t
 🗄️ Persistent volumes are automatically created for each instance started in JupyterHub to insure persistence of the data even JupyterHub is stopped. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
 
-<!-- The complimentary Apache Spark cluster can be used from the workspaces to perform distributed processing.
 
 ⚡️ A Spark cluster with 3 workers is automatically created with the service name `spark-cluster`, you can use the URL of the master node to access it from your workspace: `spark://spark-cluster:7077`
 
@@ -179,7 +178,7 @@ Delete the running JupyterHub application and Spark cluster, including persisten
 ./delete_odh.sh kfctl_openshift_dsri.yaml
 ```
 
---> 
+
 <!--
 
 :::warning Restricted user
