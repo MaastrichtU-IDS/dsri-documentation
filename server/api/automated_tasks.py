@@ -75,19 +75,17 @@ def check_gpu_bookings() -> None:
                 # schedule.append(resa)
 
                 # Check GPU booking ending tomorrow
-                tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-                if datetime.datetime.fromisoformat(resa['ending_date']).date() == tomorrow:
+                if datetime.datetime.fromisoformat(resa['ending_date']).date() == datetime.date.today():
                     email_msg = f"""⚠️ Your GPU booking in project <b>{resa["project_id"]}</b> will end tomorrow at 9:00am!<br/><br/>
 Make sure you have properly moved all data you want to keep in the persistent folder, as the pod will be restarted automatically.
 """
                     send_email(email_msg, to=resa["user_email"], subject="📀 DSRI GPU booking ending tomorrow")
 
 
-                # Check GPU booking ending
+                # Check GPU booking ending today (1 day after the end date since we stop in the morning)
                 # if datetime.datetime.fromisoformat(resa['ending_date']).date() == datetime.datetime.today().date():
-                if datetime.datetime.fromisoformat(resa['ending_date']).date() == datetime.date.today():
-                    email_msg = f"""⚠️ Your GPU booking in project <b>{resa["project_id"]}</b> just ended, and the access to the GPU in your project has been disabled<br/><br/>
-"""
+                if datetime.datetime.fromisoformat(resa['ending_date']).date() + datetime.timedelta(days=1) == datetime.date.today():
+                    email_msg = f"""⚠️ Your GPU booking in project <b>{resa["project_id"]}</b> just ended, and the access to the GPU in your project has been disabled<br/><br/>"""
                     send_email(email_msg, to=resa["user_email"], subject="📀 DSRI GPU booking ended")
                     # end_msgs.append(email_msg)
                     slack_msg = f'📀 🛬 Booking ends: *GPU {resa["gpu_id"]}* in project *{resa["project_id"]}* for {resa["user_email"]} on the {datetime.date.today()}\n'
@@ -95,7 +93,7 @@ Make sure you have properly moved all data you want to keep in the persistent fo
 oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 0}}}' -n """ + resa['project_id'] + """
 ```"""
                     # slack_msg = disable_gpu(resa["project_id"], resa["app_id"])
-                    # post_msg_to_slack(slack_msg)
+                    post_msg_to_slack(slack_msg)
                     # send_email(slack_msg, to=resa["user_email"])
 
 
@@ -112,7 +110,7 @@ The GPU will be automatically disabled at the end of your booking on the {dateti
 oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 1}}}' -n """ + resa['project_id'] + """
 ```"""
                     # slack_msg = enable_gpu(resa["project_id"], resa["app_id"])
-                    # post_msg_to_slack(slack_msg)
+                    post_msg_to_slack(slack_msg)
                     # print(post_msg_to_slack(slack_msg))
 
             except Exception as err:
