@@ -26,7 +26,7 @@ All training [materials](https://maastrichtu-ids.github.io/dsri-workshop-start-a
 
 ## Upcoming training
 
-**Do you want to get started with the DSRI?** Contact us at [dsri-support-l@maastrichtuniversity.nl]([dsri-support-l@maastrichtuniversity.nl]) to start preparing a training for your department.
+**Do you want to get started with the DSRI?** Contact us at [dsri-support-l@maastrichtuniversity.nl]([mailto:dsri-support-l@maastrichtuniversity.nl]) to start preparing a training for your department.
 
 
 ## Past training

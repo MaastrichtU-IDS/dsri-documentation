@@ -9,7 +9,7 @@ The DSRI is a good platform to run a training or class within Maastricht Univers
 
 If the users are **students** from Maastricht University, **or not** from Maastricht University (without an email @maastrichtuniversity.nl, or @maastro.nl), you will need to contact the ICT support of your department to request the creation of accounts so that your users can connect to the UM VPN.
 
-At FSE, you will need to send an email to [lo-fse@maastrichtuniversity.nl](mailto:lo-fse@maastrichtuniversity.nl) and [DSRI-SUPPORT-L@maastrichtuniversity.nl](DSRI-SUPPORT-L@maastrichtuniversity.nl) with the following informations:
+At FSE, you will need to send an email to [lo-fse@maastrichtuniversity.nl](mailto:lo-fse@maastrichtuniversity.nl) and [DSRI-SUPPORT-L@maastrichtuniversity.nl](mailto:DSRI-SUPPORT-L@maastrichtuniversity.nl) with the following informations:
 
 * Emails of the users
 * Why they need access to the DSRI (provide the ID of the course at Maastricht University if it is for a course)
