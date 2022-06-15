@@ -24,7 +24,8 @@ def disable_gpu(project_id, app_id) -> str:
     try:
         with oc.project(project_id), oc.timeout(10*60):
             print(f"✅ Found the project {oc.get_project_name()}, disabling GPU")
-            # TODO: Check disable GPU
+            # TODO: Stop the GPU pod, and change GPU quota to 0
+            os.system("""oc patch dc/""" + app_id + """ --type=json -p='[{"op": "replace", "path": "/spec/replicas", "value": 0}] -n """ + project_id)
             os.system("""oc patch dc/""" + app_id + """ --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {}}] -n """ + project_id)
             os.system("""oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 0}}}' -n """ + project_id)
 
@@ -44,7 +45,7 @@ def enable_gpu(project_id, app_id) -> str:
     try:
         with oc.project(project_id), oc.timeout(10*60):
             print(f"✅ Found the project {oc.get_project_name()}, enabling GPU")
-            # TODO: Check enable GPU
+            # TODO: Change GPU quota to 1, and enable the GPU in the pod
             os.system("""oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 1}}}' -n """ + project_id)
             os.system("""oc patch dc/""" + app_id + """ --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}] -n """ + project_id)
 

@@ -71,10 +71,10 @@ parameters:
 #   description: Use 0 if no GPU has been assigned yet to your project
 #   value: '0'
 #   required: true
-- name: GIT_URL
-  displayName: URL of a git repository to clone in the workspace (optional)
-  required: false
-  description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents. Only works for images based on the official images
+# - name: GIT_URL
+#   displayName: URL of a git repository to clone in the workspace (optional)
+#   required: false
+#   description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents. Only works for images based on the official images
 - name: GIT_NAME
   displayName: Git name
   required: true
@@ -208,8 +208,8 @@ objects:
                   secretKeyRef:
                     key: application-password
                     name: "${APPLICATION_NAME}"
-              - name: GIT_URL
-                value: "${GIT_URL}"
+              # - name: GIT_URL
+              #   value: "${GIT_URL}"
               - name: GIT_NAME
                 value: "${GIT_NAME}"
               - name: GIT_EMAIL
@@ -291,21 +291,21 @@ objects:
       insecureEdgeTerminationPolicy: Redirect
 
 
-# Route for Tensorboard
-- kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    name: "${APPLICATION_NAME}-tensorboard"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
-      name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 6006-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
+# Route for Tensorboard?
+# - kind: Route
+#   apiVersion: route.openshift.io/v1
+#   metadata:
+#     name: "${APPLICATION_NAME}-tensorboard"
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#   spec:
+#     host: ''
+#     to:
+#       kind: Service
+#       name: "${APPLICATION_NAME}"
+#       weight: 100
+#     port:
+#       targetPort: 6006-tcp
+#     tls:
+#       termination: edge
+#       insecureEdgeTerminationPolicy: Redirect
