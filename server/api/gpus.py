@@ -2,6 +2,7 @@ import os
 from datetime import datetime, timedelta
 from typing import List, Optional
 
+from api.notifications import post_msg_to_slack, send_email
 from fastapi import APIRouter, Body, FastAPI, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -128,14 +129,20 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     if gpu_id > NUMBER_OF_GPUS:
         return JSONResponse({'errorMessage': 'No GPU available for the dates provided.'})
 
-    create_booking = GpuBooking.from_orm(schedule)
-    create_booking.gpu_id = gpu_id
+    booking = GpuBooking.from_orm(schedule)
+    booking.gpu_id = gpu_id
 
     with Session(engine) as session:
         try:
-            session.add(create_booking)
+            session.add(booking)
             session.commit()
-            # print(post_msg_to_slack(f'📅➕ New booking: GPU {create_booking.gpu_id} for {create_booking.user_email} from {create_booking.starting_date} to {create_booking.ending_date}'))
+
+            email_msg = f"""✅ A GPU has been booked from {booking.starting_date.date()} to {booking.ending_date.date()} in project <b>{booking.project_id}</b><br/><br/>
+The GPU will be automatically enabled in your project <b>{booking.project_id}</b> on the <b>{booking.starting_date.date()}</b> at 9:00am, and disabled on the {booking.ending_date.date()} at 9:00am<br/><br/>
+Ideally you should start your workspace before getting the GPU enabled, to prepare your data in the persistent folder, and create a script to install your dependencies. Then you can easily enable the GPU in this workspace once your reservation starts, see the documentation for more details: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#prepare-your-gpu-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a> 
+"""
+            send_email(email_msg, to=booking.user_email, subject="📀 DSRI GPU booking registered")
+            # print(post_msg_to_slack(f'📅➕ New booking: GPU {booking.gpu_id} for {booking.user_email} from {booking.starting_date} to {booking.ending_date}'))
             return JSONResponse({'message': 'GPU booking successfully submitted, you will receive an email with more details soon.'})
         except Exception as e:
             print(e)

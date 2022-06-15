@@ -8,30 +8,36 @@ title: GPU applications
 
 **By default you do not have the permission to run applications on GPU**, they need to be booked.
 
-You can check the availability of our GPUs, and reserve GPU slots in our [GPU booking calendar 📅](/gpu-booking)
+You can check the availability of our GPUs, and reserve GPU slots in the [GPU booking calendar 📅](/gpu-booking)
 
 :::
 
-We are using images provided by Nvidia, and optimized for GPU. We currently deployed Tensorflow and PyTorch with JupyterLab and VSCode, but any image available in the Nvidia catalog should be easy to deploy: https://ngc.nvidia.com/catalog/containers
+In most prepared image to work on the DSRI GPU we are using images provided by Nvidia, with all required drivers and optimizations for GPU pre-installed. You can access the workspace with JupyterLab and VSCode, and install dependencies with `apt-get`, `conda` or `pip`
 
-Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu) for more details on how we build the optimized docker images for the DSRI GPUs. Feel free to [extend the images](https://github.com/MaastrichtU-IDS/jupyterlab#extend-an-image) to your needs.
+We currently mainly use Tensorflow, PyTorch and CUDA, but any image available in the [Nvidia catalog](https://ngc.nvidia.com/catalog/containers) should be easy to deploy. Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu) for more details on how we build the optimized docker images for the DSRI GPUs. Feel free to [extend the images](https://github.com/MaastrichtU-IDS/jupyterlab#extend-an-image) to your needs.
+
+You can also check the section below
 
 ## Prepare your GPU workspace
 
 Start a workspace in your DSRI project with all drivers and dependencies for accessing the GPUs already installed. The workspace is based on Ubuntu, and you will be able to access it using the JupyterLab web UI and VisualStudio Code in the browser.
 
-You can deploy your GPU workspace from the catalog:
+You can easily deploy your GPU workspace from the DSRI catalog:
 
-1. Go to the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog): **Add to Project** > **Browse Catalog**
-2. Filter the catalog for  "GPU"
-3. Choose one of the available templates: **JupyterLab on GPU**.
-4. **Follow the instructions** to create the template in the DSRI web UI, all informations about the images you can use are provided there. The most notable is the base image you want to use for your workspace (`cuda`, `tensorflow` or `pytorch`)
+1. Go to the [DSRI Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog): Click on **Add to Project**, then **Browse Catalog**
+2. Search the catalog for  "GPU", and make sure the Template checkbox is enabled
+3. Choose the template: **JupyterLab on GPU**
+4. Follow the instructions to create the template in the DSRI web UI, all informations about the images you can use are provided there. The most notable is the base image you want to use for your workspace (`cuda`, `tensorflow` or `pytorch`)
 
 Access the workspace from the route created (the small arrow at the top right of your application bubble in the Topology page).
 
 You can now add your code and data in the persistent folder to be fully prepared when you will get access to the GPUs.
 
-You can find more details on the images we use and how to extend them in this repository: https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu
+You can install dependencies with `apt-get`, `conda` or `pip`. We recommend your to use scripts stored in the persistent folder to easily install all your requirements, so you can reinstall them when we enable the GPU, as it restarts the workspace.
+
+For more informations on how to use `conda`/`mamba` to install new dependencies or complete environment (useful if you need to use a different version of python than the one installed by default) checkout [this page](/docs/deploy-jupyter#%EF%B8%8F-manage-dependencies-with-conda). 
+
+You can find more details on the images we use and how to extend them [in this repository](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu).
 
 :::info Storage
 
@@ -100,6 +106,8 @@ oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/tem
 
 ## Install GPU drivers in any image
 
+You can also install the GPU drivers in any image and use this image directly.
+
 See the latest official [Nvidia docs](https://nvidia.github.io/nvidia-container-runtime) to install the `nvidia-container-runtime` (all packages and drivers required to access the GPU from your application)
 
 Here is an example of commands to add to a debian based `Dockerfile` to install the GPU drivers (note that this is not complete, you will need to check the latest instructions and do some research & development to get it to work):
@@ -121,10 +129,12 @@ oc start-build custom-app-gpu --from-dir=. --follow --wait
 oc new-app custom-app-gpu
 ```
 
-You will then need to edit the deployment to add the GPU NodeSelector, the `serviceAccountName: anyuid` and add a persistent storage
+You will then need to edit the deployment to the `serviceAccountName: anyuid` and add a persistent storage
 
 ```bash
 oc edit custom-app-gpu
 ```
+
+Finally for when your reservation start, checkout the section above about how to enable the GPU in workspace 
 
 See also: official [Nvidia docs for CUDA]( https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#debian-installation)

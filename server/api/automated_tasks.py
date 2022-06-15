@@ -95,7 +95,7 @@ Make sure you have properly moved all data you want to keep in the persistent fo
 oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 0}}}' -n """ + resa['project_id'] + """
 ```"""
                     # slack_msg = disable_gpu(resa["project_id"], resa["app_id"])
-                    post_msg_to_slack(slack_msg)
+                    # post_msg_to_slack(slack_msg)
                     # send_email(slack_msg, to=resa["user_email"])
 
 
@@ -112,7 +112,7 @@ The GPU will be automatically disabled at the end of your booking on the {dateti
 oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 1}}}' -n """ + resa['project_id'] + """
 ```"""
                     # slack_msg = enable_gpu(resa["project_id"], resa["app_id"])
-                    post_msg_to_slack(slack_msg)
+                    # post_msg_to_slack(slack_msg)
                     # print(post_msg_to_slack(slack_msg))
 
             except Exception as err:

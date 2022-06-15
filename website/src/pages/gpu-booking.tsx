@@ -411,6 +411,7 @@ function GpuBooking() {
               <Grid item xs={state.windowSize <= 760 ? 12 : 10} 
                   style={{textAlign: 'center', margin: '20px 0px'}}>
                 <DateRange
+                  // https://www.npmjs.com/package/react-date-range
                   // ranges={[selectionRange]}
                   // onChange={handleSelect}
                   editableDateInputs={true}
@@ -445,7 +446,8 @@ function GpuBooking() {
                 ⚠️&nbsp;&nbsp;{state.errorMessage}
               </Paper>
               <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
-                    ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email, or Slack message, with more informations to use the GPU on the DSRI the day your booking starts (if you don't get a message, directly contact Vincent Emonet on Slack).
+                ✔️&nbsp;&nbsp;GPU requested successfully, you will receive emails with more informations to use the GPU on the DSRI once your booking starts.
+                {/* ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email, or Slack message, with more informations to use the GPU on the DSRI the day your booking starts (if you don't get a message, directly contact Vincent Emonet on Slack). */}
               </Paper>
             </Box>
 
