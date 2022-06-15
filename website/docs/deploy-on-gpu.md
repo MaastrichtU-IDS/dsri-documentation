@@ -6,21 +6,19 @@ title: GPU applications
 
 :::warning Book a GPU
 
-**By default you do not have the permission to run applications on GPU**, they need to be booked.
+**By default you do not have the permission to run applications on GPU**, you need to make a reservation.
 
 You can check the availability of our GPUs, and reserve GPU slots in the [GPU booking calendar 📅](/gpu-booking)
 
 :::
 
-In most prepared image to work on the DSRI GPU we are using images provided by Nvidia, with all required drivers and optimizations for GPU pre-installed. You can access the workspace with JupyterLab and VSCode, and install dependencies with `apt-get`, `conda` or `pip`
-
-We currently mainly use Tensorflow, PyTorch and CUDA, but any image available in the [Nvidia catalog](https://ngc.nvidia.com/catalog/containers) should be easy to deploy. Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu) for more details on how we build the optimized docker images for the DSRI GPUs. Feel free to [extend the images](https://github.com/MaastrichtU-IDS/jupyterlab#extend-an-image) to your needs.
-
-You can also check the section below
-
 ## Prepare your GPU workspace
 
-Start a workspace in your DSRI project with all drivers and dependencies for accessing the GPUs already installed. The workspace is based on Ubuntu, and you will be able to access it using the JupyterLab web UI and VisualStudio Code in the browser.
+You will first need to start your workspace without the GPU enabled, you can then prepare your experiments: clone the code, download the data, prepare scripts to install all requirements (the workspace will be restarted when you enable the GPU)
+
+In most prepared image to work on the DSRI GPU we are using images provided by Nvidia, with all required drivers and optimizations for GPU pre-installed. You can access the workspace with JupyterLab and VisualStudio Code in your browser, and install dependencies with `apt-get`, `conda` or `pip`
+
+We currently mainly use Tensorflow, PyTorch and CUDA, but any image available in the [Nvidia catalog](https://ngc.nvidia.com/catalog/containers) should be easy to deploy. Checkout [this documentation](https://github.com/MaastrichtU-IDS/jupyterlab#jupyterlab-on-gpu) for more details on how we build the optimized docker images for the DSRI GPUs. Feel free to [extend the images](https://github.com/MaastrichtU-IDS/jupyterlab#extend-an-image) to install any software you need.
 
 You can easily deploy your GPU workspace from the DSRI catalog:
 
