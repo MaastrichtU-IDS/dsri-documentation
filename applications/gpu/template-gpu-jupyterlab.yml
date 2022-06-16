@@ -173,7 +173,7 @@ objects:
         # nodeSelector:
         #   nvidia.com/gpu: 'true'
         containers:
-          - name: gpu-jupyterlab
+          - name: ${APPLICATION_NAME}
             # image: ${APPLICATION_NAME}:latest
             # imagePullPolicy: IfNotPresent
             ## In case the ImageStream does not update properly:

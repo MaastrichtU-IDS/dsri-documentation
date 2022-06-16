@@ -55,10 +55,12 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
             'apiVersion': oc_api_version,
             'metadata': {'name': app_id},
             'spec': {
+                'replicas': 0,
                 'template': {
                     'spec': {
                         'containers': [
                             {
+                                "name": app_id,
                                 "resources": {}
                             }
                         ]
@@ -141,6 +143,7 @@ def enable_gpu(project_id, app_id, dyn_client):
                         'spec': {
                             'containers': [
                                 {
+                                    "name": app_id,
                                     "resources": {
                                         "requests": {"nvidia.com/gpu": 1}, 
                                         "limits": {"nvidia.com/gpu": 1}
@@ -232,7 +235,7 @@ Make sure you have properly moved all data you want to keep in the persistent fo
                     slack_msg, email_logs = enable_gpu(resa["project_id"], resa["app_id"], dyn_client)
                     slack_msg = f"""🚀🔋 Enabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} and {end_date}):\n""" + slack_msg
                     email_msg = f"""✅ Your GPU booking in project <b>{resa["project_id"]}</b> just started!<br/><br/>
-{email_logs}<br/>
+{email_logs}<br/><br/>
 For more details, checkout the documentation to see how to enable or use the GPU: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#enable-gpu-in-your-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
 The GPU will be automatically disabled at the end of your booking on the {end_date} at 9:00am
 """
