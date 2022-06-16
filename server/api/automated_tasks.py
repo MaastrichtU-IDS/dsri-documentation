@@ -127,8 +127,8 @@ def enable_gpu(project_id, app_id, dyn_client):
             }
         }
         dyn_quota.patch(body=body, namespace=project_id)
-        logs = logs + f'🔋 GPU quota of <b>{project_id}</b> set to <b>1</b>\n'
-        email = email + f'The GPU was successfully enabled in your project <b>{project_id}</b><br/>'
+        logs = logs + f'🔋 GPU quota of *{project_id}* set to *1*\n'
+        email = email + f'The GPU was successfully enabled in your project <b>{project_id}</b><br/><br/>'
 
         try:
             # Patch DeploymentConfig
@@ -153,12 +153,12 @@ def enable_gpu(project_id, app_id, dyn_client):
                 }
             }
             dyn_dc.patch(body=body, namespace=project_id)
-            logs = logs + f'✅ GPU limits of <b>{app_id}</b> in <b>{project_id}</b> set to <b>1</b>'
-            email = email + f'The GPU was successfully enabled for your workspace {app_id} in your project {project_id}<br/>'
+            logs = logs + f'✅ GPU limits of *{app_id}* in *{project_id}* set to *1*'
+            email = email + f'The GPU was successfully enabled for your workspace {app_id} in your project {project_id}<br/><br/>'
 
         except Exception as err:
             # Error when editing DeploymentConfig
-            logs = logs + f'⚠️  Could not change the GPU limits for {app_id} in {project_id}. Error: {str(err)[:21]}'
+            logs = logs + f'⚠️  Could not change the GPU limits for *{app_id}* in *{project_id}*. Error: {str(err)[:21]}'
             email = email + f'The workspace provided {app_id} was not found in the project {project_id}, hence the GPU could not be enabled automatically. You will need to enable it by yourself.'
 
     except Exception as err:
@@ -231,7 +231,7 @@ Make sure you have properly moved all data you want to keep in the persistent fo
                 if start_date == datetime.date.today():
                     slack_msg, email_logs = enable_gpu(resa["project_id"], resa["app_id"], dyn_client)
                     email_msg = f"""✅ Your GPU booking in project <b>{resa["project_id"]}</b> just started!<br/><br/>
-{email_logs}<br/><br/>
+{email_logs}<br/>
 For more details, checkout the documentation to see how to enable or use the GPU: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#enable-gpu-in-your-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
 The GPU will be automatically disabled at the end of your booking on the {end_date} at 9:00am
 """
