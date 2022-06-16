@@ -18,8 +18,7 @@ from sqlmodel import Session, SQLModel, create_engine, select
 # from datetime import datetime, timedelta
 # from scholarly import scholarly
 
-# https://github.com/openshift/openshift-client-python
-# Or https://github.com/openshift/openshift-restclient-python
+# https://github.com/openshift/openshift-restclient-python
 def oc_login():
     cluster_user = os.getenv('CLUSTER_USER')
     cluster_password = os.getenv('CLUSTER_PASSWORD')
@@ -68,10 +67,10 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
             }
         }
         dyn_dc.patch(body=body, namespace=project_id)
-        logs = logs + f'🚀✅ GPU workspace {app_id} in {project_id} stopped and GPU disabled\n'
+        logs = logs + f'✅ GPU workspace {app_id} in {project_id} stopped and GPU disabled\n'
 
     except Exception as err:
-        logs = logs + f'🚀⚠️  Error stopping and disabling GPU for the workspace {app_id} in {project_id}: {str(err)[:21]}\n'
+        logs = logs + f'⚠️  Error stopping and disabling GPU for the workspace {app_id} in {project_id}: {str(err)[:21]}\n'
 
     # Patch ResourceQuota for GPU
     try:
@@ -85,11 +84,11 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
             }
         }
         dyn_quota.patch(body=body, namespace=project_id)
-        logs = logs + f'🚀🧊 GPU quota of {project_id} set to 0'
+        logs = logs + f'🧊 GPU quota of {project_id} set to 0'
         log(logs)
 
     except Exception as err:
-        logs = logs + f'🚀❌ Could not set the GPU quota to 0 in {project_id}. Error: {str(err)[:21]}'
+        logs = logs + f'❌ Could not set the GPU quota to 0 in {project_id}. Error: {str(err)[:21]}'
 
     return logs
 
@@ -127,7 +126,7 @@ def enable_gpu(project_id, app_id, dyn_client):
             }
         }
         dyn_quota.patch(body=body, namespace=project_id)
-        logs = logs + f'🔋 GPU quota of *{project_id}* set to *1*\n'
+        logs = logs + f'✅ GPU quota of *{project_id}* set to *1*\n'
         email = email + f'The GPU was successfully enabled in your project <b>{project_id}</b><br/><br/>'
 
         try:
@@ -223,6 +222,7 @@ Make sure you have properly moved all data you want to keep in the persistent fo
 # oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 0}}}' -n """ + resa['project_id'] + """
 # ```"""
                     slack_msg = disable_gpu(resa["project_id"], resa["app_id"], dyn_client)
+                    slack_msg = f"""🚀🔌 Disabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} and {end_date}):\n""" + slack_msg
                     post_msg_to_slack(slack_msg)
                     # log(slack_msg)
 
@@ -230,6 +230,7 @@ Make sure you have properly moved all data you want to keep in the persistent fo
                 # Check GPU booking starting
                 if start_date == datetime.date.today():
                     slack_msg, email_logs = enable_gpu(resa["project_id"], resa["app_id"], dyn_client)
+                    slack_msg = f"""🚀🔋 Enabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} and {end_date}):\n""" + slack_msg
                     email_msg = f"""✅ Your GPU booking in project <b>{resa["project_id"]}</b> just started!<br/><br/>
 {email_logs}<br/>
 For more details, checkout the documentation to see how to enable or use the GPU: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#enable-gpu-in-your-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
