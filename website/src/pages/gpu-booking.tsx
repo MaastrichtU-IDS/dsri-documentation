@@ -460,6 +460,13 @@ function GpuBooking() {
               )}>Request a GPU for the selected period</button> 
           </form>
 
+          <p style={{marginTop: '8px'}}>
+            🔎 You can see a more detailed view of the GPU schedule <a href="https://calendar.dsri.maastrichtuniversity.nl" target="_blank">here</a>
+          </p>
+          <p>
+            ❌ If you want to cancel your reservation, please send an email to <a href="mailto:DSRI-SUPPORT-L@maastrichtuniversity.nl" target="_blank">DSRI-SUPPORT-L@maastrichtuniversity.nl</a>
+          </p>
+
         </FormControl>
 
       {/* </main> */}
