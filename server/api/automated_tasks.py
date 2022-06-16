@@ -113,7 +113,7 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
 
 
 
-def enable_gpu(project_id, app_id, dyn_client) -> tuple[str, str]:
+def enable_gpu(project_id, app_id, dyn_client):
     logs = ''
     email = ''
     try:
