@@ -32,8 +32,8 @@ def oc_login():
     
     # Retrieve the auth token
     kubeConfig.get_token()
-    print('Auth token: {0}'.format(kubeConfig.api_key))
-    print('Token expires: {0}'.format(kubeConfig.api_key_expires))
+    # print('Auth token: {0}'.format(kubeConfig.api_key))
+    # print('Token expires: {0}'.format(kubeConfig.api_key_expires))
     
     k8s_client = client.ApiClient(kubeConfig)
     dyn_client = DynamicClient(k8s_client)
