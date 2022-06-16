@@ -48,7 +48,7 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
     logs = ''
 
     try:
-        # Patch DeploymentConfig
+        # Turn down the DeploymentConfig to 0 replicas
         dyn_dc = dyn_client.resources.get(api_version=oc_api_version, kind='DeploymentConfig')
         body = {
             'kind': 'DeploymentConfig',
@@ -56,6 +56,22 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
             'metadata': {'name': app_id},
             'spec': {
                 'replicas': 0,
+            }
+        }
+        dyn_dc.patch(body=body, namespace=project_id)
+        logs = logs + f'✅ GPU pod *{app_id}* in *{project_id}* stopped\n'
+
+    except Exception as err:
+        logs = logs + f'⚠️  Error stopping the workspace *{app_id}* in *{project_id}*: {str(err)[:21]}\n'
+
+    try:
+        # Patch DeploymentConfig GPU limits
+        dyn_dc = dyn_client.resources.get(api_version=oc_api_version, kind='DeploymentConfig')
+        body = {
+            'kind': 'DeploymentConfig',
+            'apiVersion': oc_api_version,
+            'metadata': {'name': app_id},
+            'spec': {
                 'template': {
                     'spec': {
                         'containers': [
@@ -69,10 +85,10 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
             }
         }
         dyn_dc.patch(body=body, namespace=project_id)
-        logs = logs + f'✅ GPU workspace {app_id} in {project_id} stopped and GPU disabled\n'
+        logs = logs + f'✅ GPU limits disabled for the pod *{app_id}* in *{project_id}\n'
 
     except Exception as err:
-        logs = logs + f'⚠️  Error stopping and disabling GPU for the workspace {app_id} in {project_id}: {str(err)[:21]}\n'
+        logs = logs + f'⚠️  Error disabling GPU limits for the pod *{app_id}* in *{project_id}*: {str(err)[:21]}\n'
 
     # Patch ResourceQuota for GPU
     try:
@@ -90,7 +106,7 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
         log(logs)
 
     except Exception as err:
-        logs = logs + f'❌ Could not set the GPU quota to 0 in {project_id}. Error: {str(err)[:21]}'
+        logs = logs + f'❌ Could not set the GPU quota to 0 in *{project_id}*. Error: {str(err)[:21]}'
 
     return logs
 
@@ -156,17 +172,17 @@ def enable_gpu(project_id, app_id, dyn_client):
             }
             dyn_dc.patch(body=body, namespace=project_id)
             logs = logs + f'✅ GPU limits of *{app_id}* in *{project_id}* set to *1*'
-            email = email + f'The GPU was successfully enabled for your workspace {app_id} in your project {project_id}<br/><br/>'
+            email = email + f'The GPU was successfully enabled for your workspace <b>{app_id}</b> in your project <b>{project_id}</b>. You can restart the workspace if needed, and start using the GPU.<br/><br/>'
 
         except Exception as err:
             # Error when editing DeploymentConfig
             logs = logs + f'⚠️  Could not change the GPU limits for *{app_id}* in *{project_id}*. Error: {str(err)[:21]}'
-            email = email + f'The workspace provided {app_id} was not found in the project {project_id}, hence the GPU could not be enabled automatically. You will need to enable it by yourself.'
+            email = email + f'The workspace provided <b>{app_id}</b> was not found in the project <b>{project_id}</b>, hence the GPU could not be enabled automatically. You will need to enable it by yourself.'
 
     except Exception as err:
         # Error when editing GPU quota
-        logs = logs + f'❌ Could not set the GPU quota to 1 in {project_id}. Error: {str(err)[:21]}\n'
-        email = email + f'The project provided {project_id} was not found, hence the GPU could not be enabled. Contact the DSRI team on Slack or via DSRI-SUPPORT-L@maastrichtuniversity.nl<br/>'
+        logs = logs + f'❌ Could not set the GPU quota to 1 in *{project_id}*. Error: {str(err)[:21]}\n'
+        email = email + f'The project provided <b>{project_id}</b> was not found, hence the GPU could not be enabled. Contact the DSRI team on Slack or via DSRI-SUPPORT-L@maastrichtuniversity.nl<br/>'
 
     return logs, email
 
@@ -235,7 +251,7 @@ Make sure you have properly moved all data you want to keep in the persistent fo
                     slack_msg, email_logs = enable_gpu(resa["project_id"], resa["app_id"], dyn_client)
                     slack_msg = f"""🚀🔋 Enabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} and {end_date}):\n""" + slack_msg
                     email_msg = f"""✅ Your GPU booking in project <b>{resa["project_id"]}</b> just started!<br/><br/>
-{email_logs}<br/><br/>
+{email_logs}<br/>
 For more details, checkout the documentation to see how to enable or use the GPU: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#enable-gpu-in-your-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
 The GPU will be automatically disabled at the end of your booking on the {end_date} at 9:00am
 """
