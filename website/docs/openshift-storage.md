@@ -35,7 +35,7 @@ A storage (aka. Persistent Volume Claim) is only accessible in the project where
 
    example: ` pvc-filebrowser`
 
-7. Select the **Access Mode** **` RWO`**and **Storage Size**
+7. Select the **Access Mode** **` RWX`**and **Storage Size**
 
    | Access Mode   | CLI abbreviation | Description                                               |
    | :------------ | :--------------- | :-------------------------------------------------------- |
@@ -55,7 +55,7 @@ A storage (aka. Persistent Volume Claim) is only accessible in the project where
 
 The DSRI using the [**Openshift Container Stroage**](https://www.openshift.com/products/container-storage/) (` OCS`)  which is based on [**CEPH**](https://ceph.io/ceph-storage/) offers `ReadWriteOnce` access mode. 
 
-* `ReadWriteOnce` ([**RWO**](https://docs.openshift.com/container-platform/4.6/storage/understanding-persistent-storage.html)) volumes cannot be mounted on multiple nodes. If a node fails, the system does not allow the attached RWO volume to be mounted on a new node because it is already assigned to the failed node. If you encounter a multi-attach error message as a result, force delete the pod on a shut down or crashed node.
+* `ReadWriteOnce` ([**RWO**](https://docs.openshift.com/container-platform/4.6/storage/understanding-persistent-storage.html)) volumes cannot be mounted on multiple nodes. Use the `ReadWriteMany` ([**RWX**](https://docs.openshift.com/container-platform/4.6/storage/understanding-persistent-storage.html)) access mode when possible. If a node fails, the system does not allow the attached RWO volume to be mounted on a new node because it is already assigned to the failed node. If you encounter a multi-attach error message as a result, force delete the pod on a shut down or crashed node. 
 
 :::
 
