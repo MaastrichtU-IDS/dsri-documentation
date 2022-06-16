@@ -8,15 +8,7 @@ hide_table_of_contents: true
 
 If you need help or have questions about the Data Science Research Infrastructure, try one of the mechanisms above:
 
-## Access the DSRI 
-
-To access the Data Science Research Infrastructure (DSRI) you need to be working or studying at Maastricht University, and have a `maastrichtuniversity.nl` email account. 
-
-Before enabling your UM account to access the DSRI, we would like to know a bit more about your Data Science project! Please fill this [form](/register) to provide us some information on what you plan to do with the DSRI. 
-
-Once this will be done, we will enable your account as soon as possible, and you will be able to login using your UM username and password.
-
-## Submit a ticket 📝
+# Submit a ticket 📝
 
 If you are having issues and need help from the DSRI team, submit a [ticket in the UM ServiceDesk application](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392).
 
