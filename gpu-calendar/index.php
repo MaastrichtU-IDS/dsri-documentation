@@ -213,7 +213,13 @@ $(document).mouseup(function () {
               if ($result2->num_rows > 0) {
                 while($row2 = $result2->fetch_assoc()) {
                   //calculate colspan
-                  $colspan = (strtotime($row2['ending_date'])-strtotime($row2['starting_date']))/3600;
+                  if(strtotime($row2['starting_date'])<$weekstart){
+                    $colspan = (strtotime($row2['ending_date'])-$weekstart)/3600;
+                  }
+                  else{
+                    $colspan = (strtotime($row2['ending_date'])-strtotime($row2['starting_date']))/3600;
+                  }
+
                   echo "<td colspan=" . $colspan . " style=\"background-color: #0077ff;\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"begin reservation: " . $row2['starting_date'] . "
 end reservation: " . $row2['ending_date'] . "
 project: " . $row2['project_id'] . "
