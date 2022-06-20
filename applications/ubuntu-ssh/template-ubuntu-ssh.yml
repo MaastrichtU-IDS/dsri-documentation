@@ -1,0 +1,205 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: ubuntu-ssh
+  annotations:
+    openshift.io/display-name: Ubuntu with SSH
+    description: |-
+      Start Ubuntu Linux (Debian-based) with the 'root' user which has sudo permissions to install anything.
+      Some basic packages for development have been installed: gfortran, git, build-essentials, curl, wget, python3
+
+      📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+      🔗 We enabled the port 22 in the Ubuntu container to access it through SSH
+      
+      Image based on official ubuntu image, hosted in the GitHub Container Registry.
+      Visit https://github.com/MaastrichtU-IDS/ubuntu for more details on the image
+      Visit original Ubuntu image at https://hub.docker.com/_/ubuntu
+    iconClass: icon-ubuntu
+    tags: ubuntu,root,persistent
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-utilities#ubuntu
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    # template.openshift.io/bindable: 'false'
+labels:
+  template: ubuntu-ssh
+message: |-
+  A Ubuntu pod has been scheduled for creation in your project, and should be soon available.
+  Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
+
+  You can use `oc get pods` to get the pod ID and connect using your local terminal `oc rsh POD_ID`
+  Or use the terminal tab in the Ubuntu pod view of the OpenShift web UI
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be without spaces (use -), and unique in the project.
+  value: ubuntu
+  required: true
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage used for the notebook (approximate).
+  value: 10Gi
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: Application Docker image
+  description: See https://github.com/MaastrichtU-IDS/ubuntu for more details on the image
+  # value: ghcr.io/linuxserver/openssh-server:latest
+  value: image-registry.openshift-image-registry.svc:5000/testing/ubuntu-ssh:latest
+  # value: ghcr.io/maastrichtu-ids/ubuntu:latest
+  required: true
+- name: PUBLIC_KEY
+  displayName: Public key
+  description: Your SSH public key to login
+  value: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfmCWnm2DXNGvztIERPzen1rGh3ups/zyM29bZHR63cPvm+k9g90pqm762bHVmqmr5IqF5+jJoBLxTc6n27NVn6k0LscMrUK88Mfq6AJaZlzFmFU49XwIXoONkuo5pckjjMHh/H7oYTb6ct/j/CQ5dG+JDiK5YvUZxAsxYtzCrMEdNnCeOgw5c2zlw3BI5NDbfyDN2gHl0kRoY8jvdh6IjJoPTnljbC3C6BRBDr8dOwRirkglaIHAtgpV5ZKqeqsGhdLoffbkRcdgSwiC6WjqQfe4yf+XdWkgvW7CITTuuXkGURBSQPismebZMMElX++3gD+gQDgWvTgTGfYHfuBur gijs@Gijs.local"
+  required: true
+
+objects:
+- apiVersion: "v1"
+  kind: "PersistentVolumeClaim"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: ubuntu-root-dynamic
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      # importPolicy:
+      #   scheduled: true
+    lookupPolicy:
+      local: true
+
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - ubuntu-container
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
+    replicas: 1
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deploymentconfig: "${APPLICATION_NAME}"
+      spec:
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
+        - name: dshm
+          emptyDir:
+            medium: Memory
+        containers:
+        - name: ubuntu-container
+          image: ${APPLICATION_NAME}:latest
+          imagePullPolicy: IfNotPresent
+          # command: [ "tail", "-f", "/dev/null" ]
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 2222
+            protocol: TCP
+          # resources:
+          #   limits:
+          #     cpu: '64'
+          #     memory: 200Gi
+          #   requests:
+          #     cpu: '2'
+          #     memory: 4Gi
+          volumeMounts:
+          - name: data
+            # mountPath: "/data"
+            mountPath: "/root"
+          - name: dshm
+            mountPath: /dev/shm
+          env:
+          # - name: SSH_PUBLIC_KEY
+          #   value: "yes"
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: TZ
+            value: "Europe/Amsterdam"
+          - name: PUBLIC_KEY
+            value: ${PUBLIC_KEY}
+            # value: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfmCWnm2DXNGvztIERPzen1rGh3ups/zyM29bZHR63cPvm+k9g90pqm762bHVmqmr5IqF5+jJoBLxTc6n27NVn6k0LscMrUK88Mfq6AJaZlzFmFU49XwIXoONkuo5pckjjMHh/H7oYTb6ct/j/CQ5dG+JDiK5YvUZxAsxYtzCrMEdNnCeOgw5c2zlw3BI5NDbfyDN2gHl0kRoY8jvdh6IjJoPTnljbC3C6BRBDr8dOwRirkglaIHAtgpV5ZKqeqsGhdLoffbkRcdgSwiC6WjqQfe4yf+XdWkgvW7CITTuuXkGURBSQPismebZMMElX++3gD+gQDgWvTgTGfYHfuBur gijs@Gijs.local"
+          # - name: JUPYTER_TOKEN
+          #   valueFrom:
+          #     secretKeyRef:
+          #       key: application-password
+          #       name: "${APPLICATION_NAME}"
+        automountServiceAccountToken: false
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: 2222-tcp
+      protocol: TCP
+      port: 2222
+      targetPort: 2222
+    selector:
+      app: "${APPLICATION_NAME}"
+      deploymentconfig: "${APPLICATION_NAME}"
+
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 2222-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
