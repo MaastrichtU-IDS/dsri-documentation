@@ -1,6 +1,6 @@
 
-Expose SSH:
+Expose SSH locally:
 
 ```bash
-oc port-forward dc/ubuntu 2222:2222
+oc port-forward <pod_id> 2222:2222
 ```
