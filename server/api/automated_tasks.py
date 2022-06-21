@@ -249,7 +249,7 @@ Make sure you have properly moved all data you want to keep in the persistent fo
                 # Check GPU booking starting
                 if start_date == datetime.date.today():
                     slack_msg, email_logs = enable_gpu(resa["project_id"], resa["app_id"], dyn_client)
-                    slack_msg = f"""🚀🔋 Enabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} and {end_date}):\n""" + slack_msg
+                    slack_msg = f"""🚀🔋 Enabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} to {end_date}):\n""" + slack_msg
                     email_msg = f"""✅ Your GPU booking in project <b>{resa["project_id"]}</b> just started!<br/><br/>
 {email_logs}<br/>
 For more details, checkout the documentation to see how to enable or use the GPU: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#enable-gpu-in-your-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
