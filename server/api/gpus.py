@@ -127,7 +127,7 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
         else:
             break;
     if gpu_id > NUMBER_OF_GPUS:
-        return JSONResponse({'errorMessage': 'No GPU available for the dates provided.'})
+        return JSONResponse({'errorMessage': 'No GPU available for the dates provided. You need to choose a period were a GPU is continually available. Check the detailed view of the GPU schedule.'})
 
     booking = GpuBooking.from_orm(schedule)
     booking.gpu_id = gpu_id
