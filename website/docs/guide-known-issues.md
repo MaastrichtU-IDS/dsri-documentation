@@ -14,7 +14,7 @@ This issue should be fixed in the next version of OpenShift. But before we get i
 If you need to recover files from those persistent volumes the workaround for now is to set a `nodeSelector` label on the `deployment config` of your application. Using this label your pods will be able to start again:
 
 ```
-oc patch dc <name-of-the-deployment-config> -p '{"spec":{"template":{"spec":{"nodeSelector":{"dsri.unimaas.nl/2022workaround":true}}}}}'
+oc patch dc <name-of-the-deployment-config> -p '{"spec":{"template":{"spec":{"nodeSelector":{"dsri.unimaas.nl/2022workaround":"true"}}}}}'
 ```
 
 Finding out the name of the `deployent config` can be done either via the webinterface or by commandline. To show all deployment configs in your project:
