@@ -32,6 +32,14 @@ ubuntu       2          1         1         config,image(ubuntu:latest)
 
 To check your deployment config name via the web ui, go to the `topology` page in the developer view and note the name next to `DC` in blue under your pod.
 
+## Cannot access your data in the persistent folder
+
+Sometimes you cannot access anymore the data you put in the persistent folder of your container. It can be due to a node going down, if the persistent volume your pod is connected to is on this node, then it cannot access it anymore.
+
+You can easily fix this issue by restarting the pod of your application, it will make it properly connect to resources on nodes that are up.
+
+To restart the pod, go in topology, click on your application, go to the details tab, and decrease the pod count to 0, then put it back up to 1.
+
 ## DockerHub pull limitations
 
 :::warning Spot the issue

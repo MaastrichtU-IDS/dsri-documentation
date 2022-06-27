@@ -57,9 +57,9 @@ parameters:
   value: 'ghcr.io/maastrichtu-ids/jupyterlab:tensorflow'
   required: true
 - name: JUPYTER_TOKEN
-  displayName: Notebook token
-  description: The token to access the notebook
-  value: mytoken
+  displayName: Notebook password
+  description: The password, aka. token, to access the notebook
+  # value: mytoken
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
