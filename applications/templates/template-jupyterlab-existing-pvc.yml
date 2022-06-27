@@ -2,13 +2,18 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 labels:
-  template: jupyterlab-root
+  template: jupyterlab-existing-pvc
 metadata:
-  name: jupyterlab-root
+  name: jupyterlab-existing-pvc
   annotations:
-    openshift.io/display-name: JupyterLab
+    openshift.io/display-name: JupyterLab on existing storage
     description: |-
-      Start JupyterLab images based on the official Docker stack, as the `jovyan` user, with sudo privileges to install anything you need. 
+      Start JupyterLab on an existing Persistent Volume Claim (PVC). It is usually the same as the name of the deployment. Find the list of PVC in Search > Resources > Persistent Volume Claim.
+      
+      Images based on the official Docker stack, using the `jovyan` user, with sudo privileges to install anything you need.
+
+      📂 Use the persistent folder in the workspace of the JupyterLab UI (/home/jovyan/persistent folder) to store your data in the persistent storage automatically created
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
 
       🐳 You can use any image based on the official Jupyter docker stack:
       - ghcr.io/maastrichtu-ids/jupyterlab (with VSCode, Java and SPARQL kernels)
@@ -32,9 +37,6 @@ metadata:
       You can use this URL to clone a repository with some examples to use the DSRI: 
       https://github.com/MaastrichtU-IDS/dsri-demo
 
-      📂 Use the persistent folder in the workspace of the JupyterLab UI (usually /home/jovyan/work/persistent folder) to store your data in the persistent storage automatically created
-      You can find the persistent storage in the DSRI web UI, go to Search > Resources > Persistent Volume Claim.
-
       📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
 
       🗑️ Use this command with your application name to delete completely your application and its persistent volumes:
@@ -54,17 +56,17 @@ parameters:
   displayName: JupyterLab UI Password
   description: The password/token to access the JupyterLab web UI
   required: true
+- name: PERSISTENT_VOLUME_CLAIM
+  displayName: Persistent Volume Claim
+  description: The name of the Persistent Volume Claim to mount to this notebook. It is usually the same as the name of the deployment. Find the list in Search > Resources > Persistent Volume Claim.
+  # value: 
+  required: true
 
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
   required: true
   description: Check the description on the right for more details about available images
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage allocated to the notebook persistent storage.
-  value: 5Gi
-  required: true
 
 - name: GIT_URL
   displayName: URL of a git repository to clone in the workspace (optional)
@@ -80,6 +82,12 @@ parameters:
   required: true
   value: default@maastrichtuniversity.nl
   description: Email used to automatically define git config --global user.email
+  
+# - name: STORAGE_SIZE
+#   displayName: Storage size
+#   description: Size of the storage allocated to the notebook persistent storage.
+#   value: 5Gi
+#   required: true
 
 # - name: WORKDIR
 #   displayName: Working directory
@@ -103,7 +111,7 @@ objects:
     name: ${APPLICATION_NAME}
     labels:
       app: ${APPLICATION_NAME}
-      template: jupyterlab-root
+      template: jupyterlab-existing-pvc
   spec:
     tags:
     - name: latest
@@ -115,19 +123,19 @@ objects:
     lookupPolicy:
       local: true
 
-- kind: "PersistentVolumeClaim"
-  apiVersion: "v1"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: jupyterlab-root
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
+# - kind: "PersistentVolumeClaim"
+#   apiVersion: "v1"
+#   metadata:
+#     name: ${APPLICATION_NAME}
+#     labels:
+#       app: "${APPLICATION_NAME}"
+#       template: jupyterlab-existing-pvc
+#   spec:
+#     accessModes:
+#       - "ReadWriteMany"
+#     resources:
+#       requests:
+#         storage: ${STORAGE_SIZE}
 
 - apiVersion: v1
   kind: Secret
@@ -137,7 +145,7 @@ objects:
     name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
-      template: jupyterlab-root
+      template: jupyterlab-existing-pvc
   stringData:
     application-password: "${PASSWORD}"
 
@@ -147,7 +155,7 @@ objects:
     name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
-      template: jupyterlab-root
+      template: jupyterlab-existing-pvc
   spec:
     replicas: 1
     strategy:
@@ -243,7 +251,7 @@ objects:
         volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
+            claimName: "${PERSISTENT_VOLUME_CLAIM}"
         - name: dshm
           emptyDir:
             medium: Memory
@@ -257,7 +265,7 @@ objects:
     name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
-      template: jupyterlab-root
+      template: jupyterlab-existing-pvc
   spec:
     ports:
     - name: 8888-tcp
@@ -293,7 +301,7 @@ objects:
 #     name: "${APPLICATION_NAME}-spark-ui"
 #     labels:
 #       app: "${APPLICATION_NAME}"
-#       template: jupyterlab-root
+#       template: jupyterlab-existing-pvc
 #   spec:
 #     ports:
 #     - name: 4040-tcp
