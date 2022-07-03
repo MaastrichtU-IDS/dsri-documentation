@@ -60,7 +60,7 @@ You will be able to login at **[https://console-openshift-console.apps.dsri2.uni
 
 :::info Command line interface
 
-We recommend you to install the `oc` command line interface to perform additional operations on your applications, such as loading large amount of data using `oc cp`, or deploying an application from a local `Dockerfile`.
+We recommend you to install the `oc` command line interface to perform additional operations on your applications, such as loading large amount of data using `oc cp`, or deploying an application from a local `Dockerfile`. Instructions on installing the client can be found [➡ here](/docs/openshift-install)
 
 :::
 
