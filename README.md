@@ -112,12 +112,20 @@ Login with the `root` user, and click on the **SQL** tab
 
 Replace `username` by the username, and `password` by the password (thanks captain obvious):
 
+Commands to create a read-only user:
+
 ```sql
 DROP USER IF EXISTS 'username'@'%';
 CREATE USER 'username'@'%' IDENTIFIED BY 'password';
 GRANT USAGE ON *.* TO 'username'@'%' IDENTIFIED BY 'password';
 GRANT SELECT ON `dsri-db`.* TO 'username'@'%';
 FLUSH PRIVILEGES;
+```
+
+Or give full access:
+
+```sql
+GRANT ALL PRIVILEGES ON `dsri-db`.* TO 'username'@'%';
 ```
 
 ### Change your user password
@@ -140,19 +148,9 @@ SET PASSWORD FOR 'username'@'%' = PASSWORD('newpassword');
 
 #### Complete database backup
 
-Use our script to generate the backup zip with a timestamp in the `./backup` folder, to execute when the database is already running:
+A CSV backup of the database is generated every week by a CRON job (cf. https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/server/api/main.py#L52) and stored locally on the server where the service is deployed.
 
-```bash
-docker-compose exec mysql /app/backup_database.sh
-```
-
-**Restore the backup**: run this script from the host of the docker container, and provide the path to the backup archive to restore
-
-```bash
-./restore_backup.sh backup/backup-2022-01-20.tar.xz
-```
-
-Once the process is done, you can start the stack normally with `docker-compose up`
+For reliability reason we choose to export as CSV: open, lightweight, hard to corrupt, and contains all informations we need to backup (otherwise we would need to fight with weird backup tools poorly built by lost sysadmins that fails most of the time just to save some useless indexes, which just leads to increased chances of corrupting the data we backup...)
 
 ## Markdown tips
 

@@ -7,6 +7,10 @@ from api.gpus import GpuBooking
 from api.users import User
 from sqlmodel import Session, SQLModel, create_engine, select
 
+
+## NOT USED ANYMORE: everything happens in api/automated_tasks.py now
+
+
 # def backup_database() -> None:
 
 print(f'💾 Backing up the SQL database (export to CSV) on the {datetime.today().date()}')

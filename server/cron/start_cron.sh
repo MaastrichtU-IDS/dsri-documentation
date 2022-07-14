@@ -1,5 +1,7 @@
 #!/bin/bash
 
+## NOT USED ANYMORE: everything happens in api/automated_tasks.py now
+
 # Required to pass env var in the CRON job: https://roboslang.blog/post/2017-12-06-cron-docker/
 printenv | sed 's/^\(.*\)$/export \1/g' > /.env.sh
 chmod +x /.env.sh
