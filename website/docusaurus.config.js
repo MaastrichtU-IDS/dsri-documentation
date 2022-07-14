@@ -132,6 +132,11 @@ module.exports={
           "position": "left"
         },
         {
+          "to": "/gpu-booking",
+          "label": "GPU calendar",
+          "position": "left"
+        },
+        {
           "to": "/acknowledgement",
           "label": "Acknowledgement",
           "position": "left"
