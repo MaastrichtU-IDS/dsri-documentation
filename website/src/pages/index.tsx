@@ -329,7 +329,7 @@ function Home() {
         updateState({
           stats: res.data,
           usersDeptPie: buildCharts(res.data['departments']),
-          projectTypesPie: buildBarChart(res.data['projects']),
+          projectTypesPie: buildBarChart(res.data['project_types']),
           timelineChart: buildTimelineChart(res.data['users_timeline'])
         })
       })
@@ -384,7 +384,7 @@ function Home() {
               spacing={2} style={{ textAlign: 'center', marginBottom: '60px' }}>
             <Grid item xs={12}>
               <p>
-                The DSRI is used by <b>{state.stats['users']}</b> researchers and students in <b>{state.numberOfDepts}</b> departments at Maastricht University
+                The DSRI is used by <b>{state.stats['users']}</b> researchers and students, from <b>{state.numberOfDepts}</b> different affiliations, for <b>{state.stats['projects']}</b> projects at Maastricht University
               </p>
             </Grid>
             <Grid item xs={1} sm={3}></Grid>
@@ -397,7 +397,7 @@ function Home() {
             <Grid item xs={1}></Grid>
             <Grid item xs={11} sm={3} style={{ textAlign: 'center' }}>
               <Typography variant='h6'>
-                Users per department
+                Users per affiliation
               </Typography>
               <Pie data={state.usersDeptPie['data']} 
                 options={state.usersDeptPie['options']}

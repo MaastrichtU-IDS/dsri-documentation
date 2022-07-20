@@ -5,6 +5,7 @@ from datetime import date, datetime, timedelta
 from typing import List, Optional
 
 from api.notifications import post_msg_to_slack
+from api.utils import oc_login
 from fastapi import APIRouter, Body, FastAPI, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -87,7 +88,10 @@ def register_user(createUser: CreateUser = Body(...)) -> dict:
             #     return JSONResponse({'errorMessage': 'Error creating the user in the database, try again!'})
         except Exception as e:
             print(e)
-            return JSONResponse({'errorMessage': 'Error creating the user in the database, try again!'})
+            return JSONResponse({'errorMessage': f'Error creating the user in the database: {e}'})
+
+
+    # TODO: add this email to the dsri-allow-login list automatically
 
     print(post_msg_to_slack(f'👤➕ New user: {createUser.email}'))
     return JSONResponse({'message': f'User {createUser.email} successfully added'})
@@ -121,11 +125,21 @@ def get_stats() -> dict:
                 users_timeline[creation_date] = user_count
             else:
                 users_timeline[creation_date] = users_timeline[creation_date] + 1
-            
+
+    # Get projects count from cluster
+    dyn_client, k8s_client, kubeConfig = oc_login()
+    v1_projects = dyn_client.resources.get(api_version='project.openshift.io/v1', kind='Project')
+    all_projects = v1_projects.get()
+    projects_list = []
+    for project in all_projects.items:
+        if 'openshift' not in project.metadata.name:
+            projects_list.append(project.metadata.name)
+
     return JSONResponse({
         'users': user_count, 
         'departments': affiliation_stats,
-        'projects': project_stats,
+        'projects': len(projects_list),
+        'project_types': project_stats,
         'users_timeline': users_timeline
     })
     # Check fairificator > Evaluation.tsv for doughnut
