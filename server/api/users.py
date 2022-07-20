@@ -88,7 +88,7 @@ def register_user(createUser: CreateUser = Body(...)) -> dict:
             #     return JSONResponse({'errorMessage': 'Error creating the user in the database, try again!'})
         except Exception as e:
             print(e)
-            return JSONResponse({'errorMessage': f'Error creating the user in the database: {e}'})
+            return JSONResponse({'errorMessage': f'Error creating the user in the database, please communicate this error message to the DSRI support team to help resolve it: {e}'})
 
 
     # TODO: add this email to the dsri-allow-login list automatically
