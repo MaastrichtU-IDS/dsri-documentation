@@ -185,7 +185,7 @@ def check_gpu_bookings() -> None:
     log(f'🔎 Checking GPU reservations to send booking notifications on the {datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
 
     # Connect to the SQL DB
-    engine = create_engine(settings.SQL_URL)
+    engine = create_engine(os.getenv('SQL_URL'))
     SQLModel.metadata.create_all(engine)
     
     # Connect to the OpenShift cluster
