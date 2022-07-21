@@ -10,7 +10,7 @@ from api.utils import oc_login
 from fastapi import APIRouter, Body, HTTPException, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from pydantic import validator
+from pydantic import BaseModel, Field, validator
 from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
@@ -147,12 +147,16 @@ def get_stats() -> dict:
 
 
 
-@router.get("/admin", name="Admin info about the DSRI users",
+class AdminPassword(BaseModel):
+    password: str = ''
+
+
+@router.post("/admin", name="Admin info about the DSRI users",
     description="Admin information about the DSRI users",
     response_model=dict,
 )            
-def get_users_admin(password: str) -> dict:
-    if password != settings.PASSWORD:
+def post_users_admin(body: AdminPassword = Body(...)) -> dict:
+    if body.password != settings.PASSWORD:
         raise HTTPException(status_code=403, detail=f"Wrong password")
 
     with Session(engine) as session:
@@ -161,7 +165,11 @@ def get_users_admin(password: str) -> dict:
         db_users_results = session.exec(statement)
         db_users = []
         for user in db_users_results:
-            db_users.append(user)
+            db_users.append({
+                'email': user.email,
+                'username': user.username,
+                'employee_id': user.employee_id,
+            })
 
         # Get users from cluster
         dyn_client, k8s_client, kubeConfig = oc_login()
@@ -180,20 +188,20 @@ def get_users_admin(password: str) -> dict:
             
             # Check database users if there is one matching
             for db_user in db_users:
-                if db_user.email.lower().startswith(cluster_username):
+                if db_user['email'].lower().startswith(cluster_username):
                     found_in_db = True
                     break
-                if db_user.employee_id.lower().startswith(cluster_username):
+                if db_user['employee_id'].lower().startswith(cluster_username):
                     found_in_db = True
                     break
                 
             if not found_in_db:
                 users_not_in_db.append(cluster_user.metadata.name)
 
-            
         return JSONResponse({
             'users_not_in_database': users_not_in_db,
             'cluster_users_count': len(cluster_users.items),
             'database_users_count': len(db_users),
             'cluster_users': cluster_users_list,
+            'database_users': db_users,
         })
