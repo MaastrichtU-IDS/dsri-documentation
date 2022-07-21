@@ -187,7 +187,7 @@ def get_users_admin(password: str) -> dict:
             
         return JSONResponse({
             'users_not_in_db': users_not_in_db,
-            'cluster_count': len(cluster_users),
+            'cluster_count': len(cluster_users.items),
             'database_count': len(db_users),
             'cluster': cluster_users, 
             'database': db_users,
