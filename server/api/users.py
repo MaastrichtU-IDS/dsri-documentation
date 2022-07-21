@@ -156,7 +156,7 @@ class AdminPassword(BaseModel):
     response_model=dict,
 )            
 def post_users_admin(body: AdminPassword = Body(...)) -> dict:
-    if body.password != settings.PASSWORD:
+    if body.password != settings.API_PASSWORD:
         raise HTTPException(status_code=403, detail=f"Wrong password")
 
     with Session(engine) as session:

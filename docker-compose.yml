@@ -45,7 +45,7 @@ services:
       - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
       - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
       - CLUSTER_PASSWORD=${CLUSTER_PASSWORD-password}
-      - PASSWORD=${PASSWORD-password}
+      - API_PASSWORD=${API_PASSWORD-password}
 
 
   gpu-calendar:
