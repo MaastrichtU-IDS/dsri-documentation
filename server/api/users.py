@@ -167,10 +167,14 @@ def get_users_admin(password: str) -> dict:
         dyn_client, k8s_client, kubeConfig = oc_login()
         v1_projects = dyn_client.resources.get(api_version='user.openshift.io/v1', kind='User')
         cluster_users = v1_projects.get()
-
+        
+        cluster_users_list = []
         users_not_in_db = []
-
         for cluster_user in cluster_users.items:
+            cluster_users_list.append({
+                'id': cluster_user.metadata.name,
+                'fullName': cluster_user.fullName
+            })
             cluster_username = cluster_user.metadata.name.lower()
             found_in_db = False
             
@@ -188,9 +192,8 @@ def get_users_admin(password: str) -> dict:
 
             
         return JSONResponse({
-            'users_not_in_db': users_not_in_db,
-            'cluster_count': len(cluster_users.items),
-            'database_count': len(db_users),
-            'cluster': cluster_users.items, 
-            'database': db_users,
+            'users_not_in_database': users_not_in_db,
+            'cluster_users_count': len(cluster_users.items),
+            'database_users_count': len(db_users),
+            'cluster_users': cluster_users_list,
         })
