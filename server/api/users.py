@@ -158,8 +158,10 @@ def get_users_admin(password: str) -> dict:
     with Session(engine) as session:
         # Get database users
         statement = select(User).order_by(User.created_at)
-        db_users = session.exec(statement)
-        # users_db_list = map(lambda user: user.metadata.name, users_db_obj)
+        db_users_results = session.exec(statement)
+        db_users = []
+        for user in db_users_results:
+            db_users.append(user)
 
         # Get users from cluster
         dyn_client, k8s_client, kubeConfig = oc_login()
@@ -189,6 +191,6 @@ def get_users_admin(password: str) -> dict:
             'users_not_in_db': users_not_in_db,
             'cluster_count': len(cluster_users.items),
             'database_count': len(db_users),
-            'cluster': cluster_users, 
+            'cluster': cluster_users.items, 
             'database': db_users,
         })
