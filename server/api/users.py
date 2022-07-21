@@ -163,7 +163,7 @@ def get_users_admin(password: str) -> dict:
 
         # Get users from cluster
         dyn_client, k8s_client, kubeConfig = oc_login()
-        v1_projects = dyn_client.resources.get(api_version='user.openshift.io/v1', kind='Project')
+        v1_projects = dyn_client.resources.get(api_version='user.openshift.io/v1', kind='User')
         cluster_users = v1_projects.get()
         cluster_users_list = map(lambda user: user.metadata.name, cluster_users.items)
 
