@@ -1,6 +1,6 @@
 import datetime
-import os
 
+from api.config import settings
 from kubernetes import client
 from openshift.dynamic import DynamicClient
 from openshift.helper.userpassauth import OCPLoginConfiguration
@@ -13,13 +13,13 @@ def log(msg)-> None:
 
 # https://github.com/openshift/openshift-restclient-python
 def oc_login():
-    cluster_user = os.getenv('CLUSTER_USER')
-    cluster_password = os.getenv('CLUSTER_PASSWORD')
-    cluster_url = 'https://api.dsri2.unimaas.nl:6443'
-    # os.system(f"oc login {cluster_url} --insecure-skip-tls-verify -u {cluster_user} -p {cluster_password}")
-
-    kubeConfig = OCPLoginConfiguration(ocp_username=cluster_user, ocp_password=cluster_password)
-    kubeConfig.host = cluster_url
+    """Login to the OpenShift cluster"""
+    # os.system(f"oc login {settings.CLUSTER_URL} --insecure-skip-tls-verify -u {settings.CLUSTER_USER} -p {settings.CLUSTER_PASSWORD}")
+    kubeConfig = OCPLoginConfiguration(
+        ocp_username=settings.CLUSTER_USER, 
+        ocp_password=settings.CLUSTER_PASSWORD
+    )
+    kubeConfig.host = settings.CLUSTER_URL
     kubeConfig.verify_ssl = False
     # kubeConfig.ssl_ca_cert = '/app/dsri.pem' # use a certificate bundle for the TLS validation
     

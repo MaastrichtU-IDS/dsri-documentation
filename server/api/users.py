@@ -4,9 +4,10 @@ import time
 from datetime import date, datetime, timedelta
 from typing import List, Optional
 
+from api.config import settings
 from api.notifications import post_msg_to_slack
 from api.utils import oc_login
-from fastapi import APIRouter, Body, FastAPI, Request, Response
+from fastapi import APIRouter, Body, HTTPException, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import validator
@@ -55,7 +56,7 @@ class User(CreateUser, table=True):
     created_at: datetime = datetime.now()
 
 # engine = create_engine(os.getenv('SQL_URL'))
-engine = create_engine(os.getenv('SQL_URL'), pool_pre_ping=True, pool_recycle=3600)
+engine = create_engine(settings.SQL_URL, pool_pre_ping=True, pool_recycle=3600)
 SQLModel.metadata.create_all(engine)
 router = APIRouter()
 
@@ -143,3 +144,52 @@ def get_stats() -> dict:
         'users_timeline': users_timeline
     })
     # Check fairificator > Evaluation.tsv for doughnut
+
+
+
+@router.get("/admin", name="Admin info about the DSRI users",
+    description="Admin information about the DSRI users",
+    response_model=dict,
+)            
+def get_users_admin(password: str) -> dict:
+    if password != settings.PASSWORD:
+        raise HTTPException(status_code=403, detail=f"Wrong password")
+
+    with Session(engine) as session:
+        # Get database users
+        statement = select(User).order_by(User.created_at)
+        db_users = session.exec(statement)
+        # users_db_list = map(lambda user: user.metadata.name, users_db_obj)
+
+        # Get users from cluster
+        dyn_client, k8s_client, kubeConfig = oc_login()
+        v1_projects = dyn_client.resources.get(api_version='user.openshift.io/v1', kind='Project')
+        cluster_users = v1_projects.get()
+        cluster_users_list = map(lambda user: user.metadata.name, cluster_users.items)
+
+        users_not_in_db = []
+
+        for cluster_user in cluster_users.items:
+            cluster_username = cluster_user.metadata.name.lower()
+            found_in_db = False
+            
+            # Check database users if there is one matching
+            for db_user in db_users:
+                if db_user.email.lower().startswith(cluster_username):
+                    found_in_db = True
+                    break
+                if db_user.employee_id.lower().startswith(cluster_username):
+                    found_in_db = True
+                    break
+                
+            if not found_in_db:
+                users_not_in_db.append(cluster_user.metadata.name)
+
+            
+        return JSONResponse({
+            'users_not_in_db': users_not_in_db,
+            'cluster': cluster_users_list, 
+            'database': db_users,
+            'cluster_count': len(cluster_users_list),
+            'database_count': len(db_users)
+        })
