@@ -1,10 +1,10 @@
-import os
 import re
 import time
 from datetime import date, datetime, timedelta
 from typing import List, Optional
 
 from api.config import settings
+from api.database import engine
 from api.notifications import post_msg_to_slack
 from api.utils import oc_login
 from fastapi import APIRouter, Body, HTTPException, Request, Response
@@ -12,12 +12,9 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, validator
 from sqlalchemy.exc import IntegrityError, OperationalError
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from sqlmodel import Field, Session, SQLModel, select
 
-# from sqlalchemy import VARCHAR
-# from MySQLdb import OperationalError
-
-
+router = APIRouter()
 
 # Login with LDAP: https://gist.github.com/femmerling/5097365
 
@@ -55,10 +52,6 @@ class User(CreateUser, table=True):
     access_enabled: bool = False
     created_at: datetime = datetime.now()
 
-# engine = create_engine(os.getenv('SQL_URL'))
-engine = create_engine(os.getenv('SQL_URL'), pool_pre_ping=True, pool_recycle=3600)
-SQLModel.metadata.create_all(engine)
-router = APIRouter()
 
 
 @router.post("/register", name="Register a user to access the DSRI",
@@ -96,6 +89,7 @@ def register_user(createUser: CreateUser = Body(...)) -> dict:
 
     print(post_msg_to_slack(f'👤➕ New user: {createUser.email}'))
     return JSONResponse({'message': f'User {createUser.email} successfully added'})
+
 
 
 @router.get("/stats", name="Stats about the DSRI users and projects",

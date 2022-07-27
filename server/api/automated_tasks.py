@@ -2,18 +2,13 @@ import csv
 import datetime
 import os
 import pathlib
-import subprocess
 
-# import openshift as oc
 from api.config import settings
 from api.gpus import GpuBooking
 from api.notifications import post_msg_to_slack, send_email
 from api.users import User
 from api.utils import log, oc_login
 from fastapi.encoders import jsonable_encoder
-from kubernetes import client
-from openshift.dynamic import DynamicClient
-from openshift.helper.userpassauth import OCPLoginConfiguration
 from sqlmodel import Session, SQLModel, create_engine, select
 
 # from datetime import datetime, timedelta

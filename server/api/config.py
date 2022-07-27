@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     CLUSTER_PASSWORD: str = 'password'
     CLUSTER_URL: str = 'https://api.dsri2.unimaas.nl:6443'
 
+    # TODO: SQL_URL not handled through settings, currently still got through os.getenv()
     SQL_URL: str
 
     @validator('SQL_URL', pre=True)

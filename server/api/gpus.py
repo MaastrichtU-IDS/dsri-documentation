@@ -2,18 +2,20 @@ import os
 from datetime import datetime, timedelta
 from typing import List, Optional
 
+from api.database import engine
 from api.notifications import post_msg_to_slack, send_email
 from fastapi import APIRouter, Body, FastAPI, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import validator
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from sqlmodel import Field, Session, SQLModel, select
 
 # from api.notifications import post_msg_to_slack
 
-
 NUMBER_OF_GPUS = 8
 MAX_BOOK_DAYS = 30
+
+router = APIRouter()
 
 
 class CreateBooking(SQLModel, table=False):
@@ -32,10 +34,6 @@ class CreateBooking(SQLModel, table=False):
 class GpuBooking(CreateBooking, table=True):
     gpu_id: Optional[int] = Field(primary_key=True)
     created_at: datetime = datetime.now()
-
-engine = create_engine(os.getenv('SQL_URL'))
-SQLModel.metadata.create_all(engine)
-router = APIRouter()
 
 
 @router.get("/reservations", name="Get the list of Reservations for the DSRI GPUs",

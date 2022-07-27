@@ -1,13 +1,12 @@
 import time
-from typing import List, Optional
 
 from api import gpus, users
 from api.automated_tasks import backup_database, check_gpu_bookings
-from fastapi import APIRouter, FastAPI, Request, Response
+from api.database import init_db
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 from fastapi_utils.tasks import repeat_at, repeat_every
-from pydantic import BaseModel, Field
 
 # Waiting for MySQL to start
 time.sleep(7)
@@ -15,7 +14,7 @@ time.sleep(7)
 api_router = APIRouter()
 api_router.include_router(users.router, prefix="/user", tags=["Users"])
 api_router.include_router(gpus.router, prefix="/gpu", tags=["GPUs"])
-# api_router.include_router(gpus.router, prefix="/gpu", tags=["GPUs"])
+
 
 app = FastAPI(
     title='Manage DSRI users and GPU scheduling',
@@ -33,8 +32,14 @@ app = FastAPI(
         "url": "https://github.com/vemonet",
     },
 )
-
 app.include_router(api_router)
+
+
+
+@app.on_event("startup")
+def create_db() -> None:
+    init_db()
+
 
 # @repeat_every(seconds=60 * 60 * 24)  # 1 day
 # Note: internal time in the container is 2 hours earlier than Central European Time
