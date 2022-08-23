@@ -113,7 +113,7 @@ We use [**RedHat Ceph storage**](https://www.redhat.com/fr/technologies/storage/
 
 |                   | GPUs | RAM (GB) | CPU (cores) |
 | ----------------- | ---- | -------- | ----------- |
-| GPU node capacity | 8    | 528 GB   | 40 cores    |
+| GPU node capacity | 8    | 512 GB   | 40 cores    |
 
 <img src="/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure " style={{maxWidth: '100%', maxHeight: '100%'}} />
 
