@@ -7,7 +7,7 @@ This page will help you to start a workspace to run your code and experiments on
 
 ## Introduction to containers
 
-Anything running in DSRI needs to be running in a docker container. Docker containers are lightweight Virtual Machines, you can see them as a clean minimalist Linux computers with only what you need to run your programs installed. This allows you to completely control the environment where your code runs, and avoid conflicts.
+Anything running in DSRI needs to be running in a docker container. Docker containers are namespaces that share the kernel on a linux system, you can see them as a clean minimalist Linux computers with only what you need to run your programs installed. This allows you to completely control the environment where your code runs, and avoid conflicts.
 
 When running experiments we can start from existing images that have been already published for popular data science applications with a web interface. You can use, for example, JupyterLab when running python, RStudio when running R, or VisualStudio Code if you prefer.
 
