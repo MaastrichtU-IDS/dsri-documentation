@@ -27,9 +27,9 @@ app = FastAPI(
         "url": "https://opensource.org/licenses/MIT"
     },
     contact = {
-        "name": "Vincent Emonet",
-        "email": "vincent.emonet@gmail.com",
-        "url": "https://github.com/vemonet",
+        "name": "DSRI support team",
+        "email": "DSRI-SUPPORT-L@maastrichtuniversity.nl",
+        "url": "https://github.com/MaastrichtU-IDS/dsri-documentation",
     },
 )
 app.include_router(api_router)

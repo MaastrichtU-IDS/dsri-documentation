@@ -40,7 +40,7 @@ The DSRI team at Maastricht University"""
 
 ## Send an email with UM smtp server (require VPN connection)
 # https://kb.icts.maastrichtuniversity.nl/display/ISM/E-mail+-+Universal+UM+email+server+names
-def send_email(msg, to, fromaddr="vincent.emonet@maastrichtuniversity.nl", subject="📀 DSRI GPU bookings"):
+def send_email(msg, to, fromaddr="DSRI-SUPPORT-L@maastrichtuniversity.nl", subject="📀 DSRI GPU bookings"):
     # fromaddr = f"{os.getenv('CLUSTER_USER')}@maastrichtuniversity.nl"
     # fromaddr = 'DSRI-SUPPORT-L@maastrichtuniversity.nl'
     
