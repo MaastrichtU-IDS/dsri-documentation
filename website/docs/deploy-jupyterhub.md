@@ -5,6 +5,12 @@ title: JupyterHub
 
 JupyterHub is ideal to enable multiple users easily start predefined workspaces in the same project. 
 
+:::warning Experimental
+
+🧪 Deploying JupyterHub is still experimental, and it can be a bit tricky to configure. Feel free to [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) to ask for help.
+
+:::
+
 
 ## 🧊 Install kfctl
 
@@ -25,7 +31,7 @@ git clone https://github.com/MaastrichtU-IDS/odh-manifests
 cd odh-manifests/kfdef
 ```
 
-## 🪐 Deploy JupyterHub and Spark
+## 🪐 Deploy JupyterHub
 
 :::info Go the the kfdef folder
 
@@ -33,13 +39,13 @@ All scripts need to be run from the `kfdef` folder 📂
 
 :::
 
-You can deploy JupyterHub with 2 different authentications system, use the file corresponding to your choice:
+You can deploy JupyterHub with 2 different authentications system, use the `KfDef` file corresponding to your need:
 
-* For the default DSRI authentication use `kfctl_openshift_dsri.yaml`
+* For the default DSRI authentication based on UM login, use the `kfctl_openshift_dsri.yaml` file
 
-* For GitHub authentication use `kfctl_openshift_github.yaml`
+* For GitHub authentication, use `kfctl_openshift_github.yaml`
 
-  * You need to create a new GitHub OAuth app: https://github.com/settings/developers
+  * You will need to create a new GitHub OAuth app: https://github.com/settings/developers
 
   * And provide the GitHub client ID and secret through environment variable before running the start script:
 
@@ -48,7 +54,11 @@ You can deploy JupyterHub with 2 different authentications system, use the file 
     export GITHUB_CLIENT_SECRET=YOUR_CLIENT_SECRET
     ```
 
-First you will need to change the `namespace:` in the file you want to deploy, to provide the project where you want to start JupyterHub (currently `opendatahub-ids`), then you can deploy JupyterHub and Spark with `kfctl`:
+We recommend you to copy the `KfDef` file of your choice and use this copy to define your JupyterHub deployment.
+
+In the `KfDef` file, you will need to change the `namespace:` to the DSRI project where you want to deploy JupyterHub.
+
+Then you can deploy the JupyterHub described in your `KfDef` file using our script (which uses `kfctl` under the hood):
 
 ```bash
 ./start_odh.sh kfctl_openshift_dsri.yaml
@@ -56,6 +66,11 @@ First you will need to change the `namespace:` in the file you want to deploy, t
 
 🗄️ Persistent volumes are automatically created for each instance started in JupyterHub to insure persistence of the data even JupyterHub is stopped. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
+:::success Configure JupyterHub
+
+You can further configure your JupyterHub deployment by editing the overlays defined in your `KfDef` file. Overlays can be found in the `odh-manifests` repository in the `jupyterhub/jupyterhub/overlays` folder. Feel free to [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) to ask for help configuring your JupyterHub.
+
+:::
 
 <!--
 
