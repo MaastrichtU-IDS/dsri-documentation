@@ -12,9 +12,10 @@ You can start a container using the **JupyterLab** template in the [Catalog web 
 
 When instantiating the template you can provide a few parameters, such as:
 
-* Password to access the notebook
-* Optionally you can provide a git repository to be automatically cloned in the JupyterLab (if there is a `requirements.txt` packages will be automatically installed with `pip`)
-* Docker image to use for the notebook (see below for more details on customizing the docker image) 
+* **Password** to access the notebook
+* Optionally you can provide a **git repository** to be automatically cloned in the JupyterLab (if there is a `requirements.txt` packages will be automatically installed with `pip`)
+* **Docker image** to use for the notebook (see below for more details on customizing the docker image) 
+* Your **git username and email** to automatically configure git
 
 The DSRI will automatically create a persistent volume to store data you will put in the `/home/jovyan/work` folder (the folder used by the notebook interface). You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
@@ -22,7 +23,8 @@ The DSRI will automatically create a persistent volume to store data you will pu
 
 With this template you can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
 
-* `ghcr.io/maastrichtu-ids/jupyterlab:latest`: custom image for data science on the DSRI, with additional kernels (Java, SPARQL), conda integration, VisualStudio Code, OpenRefine, and autocomplete for Python
+* `ghcr.io/maastrichtu-ids/jupyterlab:latest`: custom image for data science on the DSRI, with additional kernels (Java), conda integration, VisualStudio Code, and autocomplete for Python
+* `ghcr.io/maastrichtu-ids/jupyterlab:knowledge-graph`: custom image for working with knowledge graph on the DSRI, with SPARQL kernel and OpenRefine
 * `jupyter/scipy-notebook`: some packages for science are preinstalled 
 * `jupyter/datascience-notebook`: with Julia kernel
 * `jupyter/tensorflow-notebook`: with tensorflow package pre-installed
