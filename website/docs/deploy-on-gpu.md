@@ -79,6 +79,15 @@ You can use the following command in the terminal of your container on the DSRI 
 nvidia-smi
 ```
 
+:::info Windows
+
+When using above command with the oc client on windows you might receive an error like: 
+error: unable to parse "'[{op:": yaml: found unexpected end of stream
+
+This is because the single quotation mark on windows is handled differently. Try replacing the single quotation marks in the command with double quotation marks and the command should work.
+
+:::
+
 ## Disable the GPU
 
 The GPU allocated to your workspace will be automatically disabled the after your booking ends at 9:00.
