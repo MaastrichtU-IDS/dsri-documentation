@@ -208,6 +208,7 @@ function Registration() {
   const departmentsList = [
     {id: 'BIGCAT', label: 'Department of Bioinformatics'},
     {id: 'DKE', label: 'Department of Knowledge Engineering'},
+    {id: 'FASOS', label: 'Faculty of Arts and Social Sciences'},
     {id: 'FHML', label: 'Faculty of Health, Medicine and Life Sciences'},
     {id: 'FSE', label: 'Faculty of Science and Engineering'},
     {id: 'GWFP', label: 'Gravitational Waves and Fundamental Physics'},
@@ -220,12 +221,10 @@ function Registration() {
     {id: 'MSP', label: 'Maastricht Science Programme'},
     {id: 'NUTRIM', label: 'School of Nutrition and Translational Research in Metabolism'},
     {id: 'PHARTOX', label: 'Department of Pharmacology & Toxicology'},
-    // {id: 'PN', label: '???'},
     {id: 'SBE', label: 'School of Business and Economics'},
     {id: 'TECH LAB', label: 'Law and Tech Lab'},
     {id: 'TGX', label: 'Department of Toxicogenomics'},
     {id: 'PSYCHO', label: 'Faculty of Psychology and Neuroscience'},
-    {id: 'FASOS', label: 'Faculty of Arts and Social Sciences'},
     {id: 'UM', label: 'Maastricht University'},
     // {id: 'Other', label: 'Other'},
   ]
