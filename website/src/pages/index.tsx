@@ -103,7 +103,7 @@ function Home() {
     const deptUsersArray = []
     const deptLabelArray = []
     Object.keys(stats).map((dept: string) => {
-      if (stats[dept]['users'] > 3) {
+      if (stats[dept]['users'] > 1) {
         deptUsersArray.push(stats[dept]['users'])
         deptLabelArray.push(dept)
       }
