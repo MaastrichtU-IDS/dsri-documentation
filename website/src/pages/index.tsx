@@ -187,6 +187,7 @@ function Home() {
   const departmentsList = [
     {id: 'BIGCAT', label: 'Department of Bioinformatics'},
     {id: 'DKE', label: 'Department of Knowledge Engineering'},
+    {id: 'FASOS', label: 'Faculty of Arts and Social Sciences'},
     {id: 'FHML', label: 'Faculty of Health, Medicine and Life Sciences'},
     {id: 'FSE', label: 'Faculty of Science and Engineering'},
     {id: 'GWFP', label: 'Gravitational Waves and Fundamental Physics'},
