@@ -7,7 +7,6 @@ from api.notifications import post_msg_to_slack
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
-
 ## NOT USED ANYMORE: everything happens in api/automated_tasks.py now
 
 

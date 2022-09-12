@@ -17,7 +17,7 @@ COPY . /app
 
 RUN python setup.py install
 
-# Copy cron file to the cron.d directory
+## Copy cron file to the cron.d directory
 # COPY cron/gpu-notification-cron /etc/cron.d/gpu-notification-cron
 # RUN chmod 0644 /etc/cron.d/gpu-notification-cron  && \
 #     crontab /etc/cron.d/gpu-notification-cron
@@ -29,22 +29,21 @@ RUN python setup.py install
 
 # Download kubectl and oc CLI
 RUN cd /tmp && \
-    wget https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz && \
+    wget -q https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz && \
     tar xvf oc.tar.gz && \
     mv oc kubectl /usr/local/bin/
     # curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
 
-# # Create non root user app
+## Create non root user "app"
 # RUN addgroup --system app && adduser --system --group app
-
-# # Make sure all files belongs to the app user
+## Make sure all files belongs to the app user
 # RUN chown -R app:app /app && \
 #     chown -R app:app $HOME
-
 # USER app
 
 
 ENV APP_MODULE=api.main:app
 
-# CMD ["uvicorn", "api.main:app",  "--host", "0.0.0.0", "--port", "80"]
+# TODO: remove this to use gunicorn in prod, need to fix cron job first 
+CMD ["uvicorn", "api.main:app",  "--host", "0.0.0.0", "--port", "80"]
