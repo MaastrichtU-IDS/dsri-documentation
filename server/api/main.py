@@ -43,10 +43,12 @@ def create_db() -> None:
 
 # @repeat_every(seconds=60 * 60 * 24)  # 1 day
 # Note: internal time in the container is 2 hours earlier than Central European Time
+# Can be changed with tzdata apt pkg
 # Everyday at 09:00
 @app.on_event("startup")
 @repeat_at(cron='0 7 * * *')
 def daily_checks() -> None:
+    print('✔️ DAILY CHECK')
     check_gpu_bookings()
 
 

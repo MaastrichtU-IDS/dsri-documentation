@@ -34,4 +34,16 @@ RUN cd /tmp && \
     # curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
 
-CMD ["uvicorn", "api.main:app",  "--host", "0.0.0.0", "--port", "80"]
+# # Create non root user app
+# RUN addgroup --system app && adduser --system --group app
+
+# # Make sure all files belongs to the app user
+# RUN chown -R app:app /app && \
+#     chown -R app:app $HOME
+
+# USER app
+
+
+ENV APP_MODULE=api.main:app
+
+# CMD ["uvicorn", "api.main:app",  "--host", "0.0.0.0", "--port", "80"]

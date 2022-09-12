@@ -47,6 +47,7 @@ class CreateUser(SQLModel, table=False):
 
     # class config: validate_assignment = True
 
+
 class User(CreateUser, table=True):
     comment: str = ''
     access_enabled: bool = False

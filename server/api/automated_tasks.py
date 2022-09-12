@@ -77,7 +77,7 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
         }
         dyn_quota.patch(body=body, namespace=project_id)
         logs = logs + f'🧊 GPU quota of {project_id} set to 0'
-        log(logs)
+        log.info(logs)
 
     except Exception as err:
         logs = logs + f'❌ Could not set the GPU quota to 0 in *{project_id}*. Error: {str(err)[:21]}'
@@ -85,7 +85,7 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
     return logs
 
     # with oc.project(project_id), oc.timeout(10*60):
-    #     log(f"✅ Found the project {oc.get_project_name()}, disabling GPU")
+    #     log.info(f"✅ Found the project {oc.get_project_name()}, disabling GPU")
     
     # Stop the GPU pod, and change GPU quota to 0
     # cmds = [
@@ -95,8 +95,8 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
     # ]
     # for cmd in cmds:
     #     # os.system(cmd)
-    #     # log(subprocess.run(cmd.split(' '), capture_output=True))
-    #     log(subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT))
+    #     # log.info(subprocess.run(cmd.split(' '), capture_output=True))
+    #     log.info(subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT))
 
     #     return f"🛬✅ Successfully disabled GPU for {app_id} in {project_id}"
     # except Exception as err:
@@ -161,7 +161,7 @@ def enable_gpu(project_id, app_id, dyn_client):
     return logs, email
 
     # with oc.project(project_id), oc.timeout(10*60):
-    #     log(f"✅ Found the project {oc.get_project_name()}, enabling GPU")
+    #     log.info(f"✅ Found the project {oc.get_project_name()}, enabling GPU")
     # Change GPU quota to 1, and enable the GPU in the pod
     # cmds = [
     #     """oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 1}}}' -n """ + project_id,
@@ -169,15 +169,15 @@ def enable_gpu(project_id, app_id, dyn_client):
     # ]
     # for cmd in cmds:
     #     # os.system(cmd)
-    #     # log(subprocess.run(cmd.split(' '), capture_output=subprocess.PIPE).stdout.decode('utf-8'))
-    #     # log(subprocess.run(cmd.split(' '), capture_output=True))
-    #     log(subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT))
+    #     # log.info(subprocess.run(cmd.split(' '), capture_output=subprocess.PIPE).stdout.decode('utf-8'))
+    #     # log.info(subprocess.run(cmd.split(' '), capture_output=True))
+    #     log.info(subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT))
 
     # return f"🚀✅ Successfully enabled GPU for {app_id} in {project_id}"
 
 
 def check_gpu_bookings() -> None:
-    log(f'🔎 Checking GPU reservations to send booking notifications on the {datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
+    log.info(f'🔎 Checking GPU reservations to send booking notifications on the {datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
 
     # Connect to the SQL DB
     engine = create_engine(os.getenv('SQL_URL'))
@@ -217,7 +217,7 @@ Make sure you have properly moved all data you want to keep in the persistent fo
                     slack_msg = disable_gpu(resa["project_id"], resa["app_id"], dyn_client)
                     slack_msg = f"""🚀🔌 Disabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} and {end_date}):\n""" + slack_msg
                     post_msg_to_slack(slack_msg)
-                    # log(slack_msg)
+                    # log.info(slack_msg)
 
 
                 # Check GPU booking starting
@@ -231,10 +231,10 @@ The GPU will be automatically disabled at the end of your booking on the {end_da
 """
                     send_email(email_msg, to=resa["user_email"], subject="📀 DSRI GPU booking starting")
                     post_msg_to_slack(slack_msg)
-                    # log(slack_msg)
+                    # log.info(slack_msg)
 
             except Exception as err:
-                log(err)
+                log.error(err)
 
             # send_msg = ''
             # if len(start_msgs) > 0:
@@ -248,7 +248,7 @@ The GPU will be automatically disabled at the end of your booking on the {end_da
 
 
 def backup_database() -> None:
-    log(f'💾 Backing up the SQL database (export to CSV) on the {datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
+    log.info(f'💾 Backing up the SQL database (export to CSV) on the {datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
 
     # Connect to the SQL DB
     engine = create_engine(os.getenv('SQL_URL'))
@@ -276,7 +276,7 @@ def backup_database() -> None:
         [writer.writerow([getattr(curr, column.name) for column in User.__mapper__.columns]) for curr in results]
         outfile.close()
 
-        log(f'✅ Database backed up successfully on the {date}')
+        log.info(f'✅ Database backed up successfully on the {date}')
 
 
 

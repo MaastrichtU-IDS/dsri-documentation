@@ -1,17 +1,30 @@
 import datetime
+import logging
 
 from api.config import settings
 from kubernetes import client
 from openshift.dynamic import DynamicClient
 from openshift.helper.userpassauth import OCPLoginConfiguration
 
+## Instantiate logging utility
+log = logging.getLogger()
+log.setLevel(logging.INFO)
+console_handler = logging.StreamHandler()
+formatter = logging.Formatter(
+    "%(asctime)s %(levelname)s: [%(module)s:%(funcName)s] %(message)s"
+)
+console_handler.setFormatter(formatter)
+log.addHandler(console_handler)
 
-def log(msg)-> None:
-    msg = '[' + str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S")) + '] ' + str(msg)
-    print(msg)
+## You can also ask more details like line number: 
+# "%(asctime)s - %(module)s - %(funcName)s - line:%(lineno)d - %(levelname)s - %(message)s"
+## You can also export logs to a file
+# fh = logging.FileHandler(filename='./server.log')
+# fh.setFormatter(formatter)
+# logger.addHandler(fh)
 
 
-# https://github.com/openshift/openshift-restclient-python
+## Login to the OpenShift cluster using https://github.com/openshift/openshift-restclient-python
 def oc_login():
     """Login to the OpenShift cluster"""
     # os.system(f"oc login {settings.CLUSTER_URL} --insecure-skip-tls-verify -u {settings.CLUSTER_USER} -p {settings.CLUSTER_PASSWORD}")

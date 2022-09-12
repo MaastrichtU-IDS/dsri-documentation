@@ -13,13 +13,6 @@ services:
     # command: cron -f && uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
     command: uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
 
-  # cronjob:
-  #   volumes:
-  #     - ./server/api:/app/api
-  #     - ./server/cron:/app/cron
-  #     - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
-  #     - ./backup:/backup
-
 
   gpu-calendar:
     ports:
@@ -39,10 +32,9 @@ services:
       - 8080:80
 
 
-  # server:
-  #   build: server
-  #   ports:
-  #     - 4000:4000
+  # cronjob:
   #   volumes:
-  #     - ./server:/app
-  #   command: yarn dev
+  #     - ./server/api:/app/api
+  #     - ./server/cron:/app/cron
+  #     - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
+  #     - ./backup:/backup
