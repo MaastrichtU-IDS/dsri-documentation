@@ -2,11 +2,12 @@ FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
 
 WORKDIR /app/
 
-ENV PYTHONUNBUFFERED='1'
+ENV PYTHONUNBUFFERED='1' \
+    TZ=Europe/Amsterdam
 
 RUN apt-get update && \
-    apt-get install -y wget
-# apt-get install -y wget cron
+    apt-get install -y wget tzdata
+
 
 COPY requirements.txt /app/
 

@@ -46,16 +46,15 @@ def create_db() -> None:
 # Can be changed with tzdata apt pkg
 # Everyday at 09:00
 @app.on_event("startup")
-@repeat_at(cron='0 7 * * *')
+@repeat_at(cron='0 9 * * *')
 def daily_checks() -> None:
-    print('✔️ DAILY CHECK')
     check_gpu_bookings()
 
 
 # @repeat_every(seconds=60 * 60 * 24 * 7)  # 7 days
 # At 09:00 on Monday and Thursday
 @app.on_event("startup")
-@repeat_at(cron='0 7 * * 1,4')
+@repeat_at(cron='0 9 * * 1,4')
 def weekly_backup() -> None:
     backup_database()
 
