@@ -5,6 +5,8 @@ services:
   api:
     ports:
       - 8000:80
+    environment:
+      - ENABLE_CRON=true
     volumes:
       - ./server/api:/app/api
       # - ./server/cron:/app/cron

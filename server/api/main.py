@@ -2,6 +2,7 @@ import time
 
 from api import gpus, users
 from api.automated_tasks import backup_database, check_gpu_bookings
+from api.config import settings
 from api.database import init_db
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -41,22 +42,20 @@ def create_db() -> None:
     init_db()
 
 
-# @repeat_every(seconds=60 * 60 * 24)  # 1 day
-# Note: internal time in the container is 2 hours earlier than Central European Time
-# Can be changed with tzdata apt pkg
-# Everyday at 09:00
-@app.on_event("startup")
-@repeat_at(cron='0 9 * * *')
-def daily_checks() -> None:
-    check_gpu_bookings()
+if settings.ENABLE_CRON:
+    # Everyday at 09:00
+    @app.on_event("startup")
+    @repeat_at(cron='0 9 * * *')
+    def daily_checks() -> None:
+        check_gpu_bookings()
 
+    # At 09:00 on Monday and Thursday
+    @app.on_event("startup")
+    @repeat_at(cron='0 9 * * 1,4')
+    def weekly_backup() -> None:
+        backup_database()
 
-# @repeat_every(seconds=60 * 60 * 24 * 7)  # 7 days
-# At 09:00 on Monday and Thursday
-@app.on_event("startup")
-@repeat_at(cron='0 9 * * 1,4')
-def weekly_backup() -> None:
-    backup_database()
+    # @repeat_every(seconds=60 * 60 * 24 * 7)  # 7 days
 
 
 app.add_middleware(

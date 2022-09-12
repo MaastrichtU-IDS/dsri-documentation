@@ -3,11 +3,32 @@ version: "3"
 services:
 
   api:
-    environment:
+    volumes:
       - ./backup:/backup
+    environment:
       - VIRTUAL_HOST=api.dsri.maastrichtuniversity.nl
       - LETSENCRYPT_HOST=api.dsri.maastrichtuniversity.nl
       - VIRTUAL_PORT=80
+
+
+  # Run the API on a single thread just for the CRON job
+  cron:
+    build: ./server
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - phpmyadmin
+    volumes:
+      - ./backup:/backup
+    environment:
+      - SQL_URL=mysql://dsri-user:${PASSWORD-password}@mysql:3306/dsri-db
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
+      - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
+      - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
+      - CLUSTER_PASSWORD=${CLUSTER_PASSWORD-password}
+      - API_PASSWORD=${API_PASSWORD-password}
+      - ENABLE_CRON=true
+    command: uvicorn api.main:app --host 0.0.0.0 --port 80
 
 
   gpu-calendar:
