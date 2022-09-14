@@ -42,10 +42,9 @@ yarn start
 
 Run the stack with docker-compose:
 
-* Database accessible through phpMyAdmin on http://localhost:8080
-* API on http://localhost:8000, automatically reloaded on change to the code
+* API on http://localhost:8000, automatically reloaded on change to the code, with CRON job enabled
 * The GPU calendar on http://localhost:8001
-* A CRON job to notify (via email or Slack) about GPU booking everyday
+* Database accessible through phpMyAdmin on http://localhost:8002
 
 ```bash
 docker-compose up
