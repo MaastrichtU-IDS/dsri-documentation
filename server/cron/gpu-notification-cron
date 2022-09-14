@@ -1,7 +1,7 @@
 SHELL=/bin/bash
 # BASH_ENV=/container.env
 
-## NOT USED ANYMORE: everything happens in api/automated_tasks.py now
+## NOT USED ANYMORE: everything happens in api/automated_tasks.py
 
 00 9 * * * source /.env.sh && /usr/local/bin/python /app/cron/check_gpu_bookings.py >> /var/log/bookings.log 2>&1
 # Everyday at 09:30
