@@ -30,18 +30,12 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 
 ### Just run the website
 
-To check changes in the documentation, go to the `/website` directory and start the website on http://localhost:19006 using the production API for user stats:
+To check changes in the documentation, go to the `/website` directory and start the website on http://localhost:19006 using the production API for user statistics:
 
 ```shell
 cd website
 yarn install
-API_URL=https://api.dsri.maastrichtuniversity.nl yarn start
-```
-
-Or use docker-compose:
-
-```bash
-docker-compose -f docker-compose.website.yml up 
+yarn start
 ```
 
 ### Run the full stack
@@ -63,7 +57,8 @@ Then, in another terminal, run the website on http://localhost:3000, it will use
 
 ```bash
 cd website
-yarn start
+yarn install
+yarn dev
 ```
 
 ## Deploy in production

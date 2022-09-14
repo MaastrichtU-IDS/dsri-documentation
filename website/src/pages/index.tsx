@@ -18,8 +18,8 @@ import 'chart.js/auto';
 
 // Resolve environment variables:
 declare var process : { env: { API_URL: string } }
-const apiUrl: string = (process.env.API_URL as string) || 'http://localhost:8000';
-// const apiUrl: string = (process.env.API_URL as string) || 'https://api.dsri.maastrichtuniversity.nl';
+const apiUrl: string = (process.env.API_URL as string) || 'https://api.dsri.maastrichtuniversity.nl';
+// const apiUrl: string = (process.env.API_URL as string) || 'http://localhost:8000';
 
 const features = [
   {
