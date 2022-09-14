@@ -25,6 +25,18 @@ RUN cd /tmp && \
     # curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
 
+COPY requirements.txt /app/
+
+RUN pip install -r requirements.txt
+
+COPY . /app
+
+RUN python setup.py install
+
+# By default this image entrypoint will use gunicorn to start multiple uvicorn workers 
+
+
+## Running as non-root dont work, the API crashes directly at start without notice
 # ## Create non root user "app" in group "app"
 # RUN addgroup --system app && adduser --system --group app
 # ## Make sure all files belongs to the app user
@@ -35,19 +47,7 @@ RUN cd /tmp && \
 # USER app
 
 
-COPY requirements.txt /app/
-
-RUN pip install -r requirements.txt
-
-COPY . /app
-
-RUN python setup.py install
-
-
-# By default this image entrypoint will use gunicorn to start multiple uvicorn workers 
-
-
-## Copy cron file to the cron.d directory
+## If you want to use crontab: copy cron file to the cron.d directory
 # COPY cron/gpu-notification-cron /etc/cron.d/gpu-notification-cron
 # RUN chmod 0644 /etc/cron.d/gpu-notification-cron  && \
 #     crontab /etc/cron.d/gpu-notification-cron
