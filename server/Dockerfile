@@ -25,14 +25,13 @@ RUN cd /tmp && \
     # curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
 
-## Create non root user "app"
+## Create non root user "app" in group "app"
 RUN addgroup --system app && adduser --system --group app
 
 ## Make sure all files belongs to the app user
 RUN chown -R app:app /app && \
     chown -R app:app $HOME && \
-    chown -R app:app /usr/local/lib/python3.8 && \
-    chown -R app:app /usr/local/bin
+    chown -R app:app /usr/local
 
 ## Switch to app user to install the python app
 USER app
