@@ -14,7 +14,8 @@ ENV TZ=Europe/Amsterdam \
 #   LOG_LEVEL=info
 
 RUN apt-get update && \
-    apt-get install -y wget tzdata
+    apt-get install -y wget tzdata && \
+    pip install --upgrade pip
 
 # Download kubectl and oc CLI
 RUN cd /tmp && \
