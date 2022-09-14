@@ -30,7 +30,8 @@ RUN addgroup --system app && adduser --system --group app
 
 ## Make sure all files belongs to the app user
 RUN chown -R app:app /app && \
-    chown -R app:app $HOME
+    chown -R app:app $HOME && \
+    chown -R app:app /usr/local/lib/python3.8
 
 ## Switch to app user to install the python app
 USER app
