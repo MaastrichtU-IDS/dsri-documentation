@@ -26,6 +26,12 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 - Static content (any resource to download, images, css, js) can be provided in [website/static](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/static)
 - Pages other than `docs` are in [website/src/pages](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/src/pages) (e.g. `help.md` or `index.tsx`)
 
+### Add an announcement
+
+You can easily add a general announcement bar on the website if you want to pass some information to your users, like dates of maintenance
+
+Open the file `website/docusaurus.config.js` and update the `announcementBar` variable
+
 ## Run for development
 
 ### Just run the website
