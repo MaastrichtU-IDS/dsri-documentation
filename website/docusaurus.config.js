@@ -100,15 +100,13 @@ module.exports={
   ],
   "themeConfig": {
     "hideableSidebar": true,
-    // "announcementBar": {
-    //   "id": 'announcementbar',
-    //   "content":
-    //     '⭐️ If you like the DSRI, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/MaastrichtU-IDS/dsri-documentation">GitHub</a>! ⭐️',
-    // },
-    "announcementBar": {
-      "id": 'announcementbar',
-      "content":
-        '🔨 Maintenance will be performed on the DSRI from the 22 to the 30 of October, please make sure your data is backed up outside the DSRI before this date 🔨',
+    announcementBar: {
+      id: 'support_us',
+      content:
+        '🔨 <b>Maintenance</b> will be performed on the DSRI <b>from the 22 to the 30 of October</b>, please make sure your data is backed up outside the DSRI before this date 🔨',
+      backgroundColor: '#fdd835',
+      // textColor: '#091E42',
+      // isCloseable: false,
     },
     "prism": {
       "additionalLanguages": ['powershell'],
