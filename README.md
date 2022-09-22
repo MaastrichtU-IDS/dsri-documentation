@@ -30,7 +30,9 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 
 You can easily add a general announcement bar on the website if you want to pass some information to your users, like dates of maintenance
 
-Open the file `website/docusaurus.config.js` and update the `announcementBar` variable
+Open the file `website/docusaurus.config.js` and update the `announcementBar` variable.
+
+You can comment the `announcementBar` code block when you want to remove the announcement bar.
 
 ## Run for development
 
