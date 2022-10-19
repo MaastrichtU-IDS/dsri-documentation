@@ -8,7 +8,7 @@ from api.users import User
 from sqlmodel import Session, SQLModel, create_engine, select
 
 
-## NOT USED ANYMORE: everything happens in api/automated_tasks.py now
+## NOT USED ANYMORE: everything happens in api/automated_tasks.py
 
 
 # def backup_database() -> None:

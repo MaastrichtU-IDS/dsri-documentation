@@ -65,10 +65,28 @@ Use the **`/workspace/persistent` folder**, which is the JupyterLab workspace, t
 
 ## Enable the GPU
 
-You will receive an email when the GPU has been enabled in your project. You can then update your deployment to use the GPUs using this command (our deployment name is `jupyterlab-gpu` in those 2 examples, change it to yours if it is different)
+You will receive an email when the GPU has been enabled in your project. You can then update your deployment to use the GPUs using either the `oc` command-line tool, or by editing the deployment configuration from the web UI
+
+* **With the Command Line Interface**, run the following command from the terminal of your laptop after having installed the `oc` command-line tool.
+
+We use `jupyterlab-gpu` as deployment name is  in the example, change it to yours if it is different.
 
 ```bash
 oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
+```
+
+* Or **through the web UI**
+
+In the **Topology** view click on the circle representing your GPU application, then click on the **Actions** button in the top right of the screen, and click on **Edit Deployment Config** at the bottom of the list
+
+In the Deployment Config text editor, hit `ctrl + f` to search for "**resources**". You should see a line `- resources: {}` under `containers:`. You need to change this line to the following to enable GPU in your application (and make sure the indentation match the rest of the file):
+
+```yaml
+        - resources:
+            requests:
+              nvidia.com/gpu: 1
+            limits:
+              nvidia.com/gpu: 1
 ```
 
 Then wait for the pod to restart, or start it if it was stopped.

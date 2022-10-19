@@ -26,32 +26,33 @@ Browse all documentation pages [here](https://github.com/MaastrichtU-IDS/dsri-do
 - Static content (any resource to download, images, css, js) can be provided in [website/static](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/static)
 - Pages other than `docs` are in [website/src/pages](https://github.com/MaastrichtU-IDS/d2s-docs/tree/master/website/src/pages) (e.g. `help.md` or `index.tsx`)
 
+### Add an announcement
+
+You can easily add a general announcement bar on the website if you want to pass some information to your users, like dates of maintenance
+
+Open the file `website/docusaurus.config.js` and update the `announcementBar` variable.
+
+You can comment the `announcementBar` code block when you want to remove the announcement bar.
+
 ## Run for development
 
 ### Just run the website
 
-To check changes in the documentation, go to the `/website` directory and start the website on http://localhost:19006 using the production API for user stats:
+To check changes in the documentation, go to the `/website` directory and start the website on http://localhost:19006 using the production API for user statistics:
 
 ```shell
 cd website
 yarn install
-API_URL=https://api.dsri.maastrichtuniversity.nl yarn start
-```
-
-Or use docker-compose:
-
-```bash
-docker-compose -f docker-compose.website.yml up 
+yarn start
 ```
 
 ### Run the full stack
 
 Run the stack with docker-compose:
 
-* Database accessible through phpMyAdmin on http://localhost:8080
-* API on http://localhost:8000, automatically reloaded on change to the code
+* API on http://localhost:8000, automatically reloaded on change to the code, with CRON job enabled
 * The GPU calendar on http://localhost:8001
-* A CRON job to notify (via email or Slack) about GPU booking everyday
+* Database accessible through phpMyAdmin on http://localhost:8002
 
 ```bash
 docker-compose up
@@ -63,7 +64,8 @@ Then, in another terminal, run the website on http://localhost:3000, it will use
 
 ```bash
 cd website
-yarn start
+yarn install
+yarn dev
 ```
 
 ## Deploy in production

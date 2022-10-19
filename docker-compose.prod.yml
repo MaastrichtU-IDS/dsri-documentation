@@ -1,21 +1,47 @@
 version: "3"
 
+# To deploy in prod we use a nginx proxy for docker containers with a companion to enable HTTPS with LetsEncrypt
+# https://github.com/nginx-proxy/nginx-proxy
+# https://github.com/nginx-proxy/acme-companion
+
 services:
 
+
+
   api:
-    environment:
+    volumes:
       - ./backup:/backup
+    environment:
       - VIRTUAL_HOST=api.dsri.maastrichtuniversity.nl
       - LETSENCRYPT_HOST=api.dsri.maastrichtuniversity.nl
       - VIRTUAL_PORT=80
+
+
+  # Run the API on a single thread just for the CRON job in prod (enabled with env variable)
+  # Because gunicorn would run the process on every workers
+  cron:
+    build: ./server
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - phpmyadmin
+    volumes:
+      - ./backup:/backup
+    environment:
+      - SQL_URL=mysql://dsri-user:${PASSWORD-password}@mysql:3306/dsri-db
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
+      - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
+      - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
+      - CLUSTER_PASSWORD=${CLUSTER_PASSWORD-password}
+      - API_PASSWORD=${API_PASSWORD-password}
+      - ENABLE_CRON=true
+    command: uvicorn api.main:app --host 0.0.0.0 --port 80
 
 
   gpu-calendar:
     environment:
       - VIRTUAL_HOST=calendar.dsri.maastrichtuniversity.nl
       - LETSENCRYPT_HOST=calendar.dsri.maastrichtuniversity.nl
-      # - VIRTUAL_HOST=calendar.dsri.semanticscience.org
-      # - LETSENCRYPT_HOST=calendar.dsri.semanticscience.org
       - VIRTUAL_PORT=80
 
 
@@ -24,13 +50,18 @@ services:
       - ./data:/var/lib/mysql
       - ./backup:/backup
 
-  # cronjob:
-  #   volumes:
-  #     - ./backup:/backup
-
   phpmyadmin:
     environment:
       - PMA_ABSOLUTE_URI=https://admin.dsri.maastrichtuniversity.nl
       - VIRTUAL_HOST=admin.dsri.maastrichtuniversity.nl
       - LETSENCRYPT_HOST=admin.dsri.maastrichtuniversity.nl
       - VIRTUAL_PORT=80
+
+
+  ## Website could be also served with nginx from the same server as the API
+  # website:
+  #   build: website
+  #   environment:
+  #     - VIRTUAL_HOST=dsri.maastrichtuniversity.nl
+  #     - LETSENCRYPT_HOST=dsri.maastrichtuniversity.nl
+  #     - VIRTUAL_PORT=80

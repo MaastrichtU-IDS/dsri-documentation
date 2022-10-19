@@ -47,6 +47,7 @@ class CreateUser(SQLModel, table=False):
 
     # class config: validate_assignment = True
 
+
 class User(CreateUser, table=True):
     comment: str = ''
     access_enabled: bool = False
@@ -57,7 +58,7 @@ class User(CreateUser, table=True):
 @router.post("/register", name="Register a user to access the DSRI",
     description="Register a user in the DSRI database to request access to the DSRI. Email needs to end with `@maastrichtuniversity.nl`",
     response_model=dict,
-)            
+)
 def register_user(createUser: CreateUser = Body(...)) -> dict:
     with Session(engine) as session:
         db_user = User.from_orm(createUser)
@@ -95,7 +96,7 @@ def register_user(createUser: CreateUser = Body(...)) -> dict:
 @router.get("/stats", name="Stats about the DSRI users and projects",
     description="Some stats about the DSRI users and projects",
     response_model=dict,
-)            
+)
 def get_stats() -> dict:
     with Session(engine) as session:
         statement = select(User).order_by(User.created_at)
@@ -131,7 +132,7 @@ def get_stats() -> dict:
             projects_list.append(project.metadata.name)
 
     return JSONResponse({
-        'users': user_count, 
+        'users': user_count,
         'departments': affiliation_stats,
         'projects': len(projects_list),
         'project_types': project_stats,
@@ -148,7 +149,7 @@ class AdminPassword(BaseModel):
 @router.post("/admin", name="Admin info about the DSRI users",
     description="Admin information about the DSRI users",
     response_model=dict,
-)            
+)
 def post_users_admin(body: AdminPassword = Body(...)) -> dict:
     if body.password != settings.API_PASSWORD:
         raise HTTPException(status_code=403, detail=f"Wrong password")
@@ -169,7 +170,7 @@ def post_users_admin(body: AdminPassword = Body(...)) -> dict:
         dyn_client, k8s_client, kubeConfig = oc_login()
         v1_projects = dyn_client.resources.get(api_version='user.openshift.io/v1', kind='User')
         cluster_users = v1_projects.get()
-        
+
         cluster_users_list = []
         users_not_in_db = []
         for cluster_user in cluster_users.items:
@@ -179,7 +180,7 @@ def post_users_admin(body: AdminPassword = Body(...)) -> dict:
             })
             cluster_username = cluster_user.metadata.name.lower()
             found_in_db = False
-            
+
             # Check database users if there is one matching
             for db_user in db_users:
                 if db_user['email'].lower().startswith(cluster_username):
@@ -188,9 +189,12 @@ def post_users_admin(body: AdminPassword = Body(...)) -> dict:
                 if db_user['employee_id'].lower().startswith(cluster_username):
                     found_in_db = True
                     break
-                
+
             if not found_in_db:
                 users_not_in_db.append(cluster_user.metadata.name)
+
+        # TODO: get infos from Active Directory and compare with our users
+        # To see if some users have left the university
 
         return JSONResponse({
             'users_not_in_database': users_not_in_db,

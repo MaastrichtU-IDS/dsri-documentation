@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Publishing is usually done automatically by a GitHub Action
+# You need to use SSH with git authentication for this script to work
+
 git push
 cd website/
 yarn install
