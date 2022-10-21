@@ -91,6 +91,24 @@ You can try above method if you want to connect **more applications to the same 
 
 :::
 
+### Expand existing Persistent Storage
+
+1. Switch to the **Administrator** view
+
+2. Go to the **Project** panel 
+
+3. Select your project
+
+4. Expand the **Storage** panel then go to the **Persistent Volume Claim** panel
+
+5. Click on the three dots (⋮) next to the **Persistent Volume Claim** you want to expand.
+ 
+6. Click on **Expand PVC** in the menu.
+
+7. Enter the size you want to expand your PVC with.
+
+8. Hit **Expand**. It can take upto 2 minutes before your PVC is expanded.
+
 ### Use the dynamic storage
 
 Dynamic **persistent** volumes can be created automatically by an application template.
