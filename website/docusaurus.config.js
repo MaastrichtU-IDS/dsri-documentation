@@ -76,7 +76,7 @@ module.exports={
           "path": "blog"
         },
         "theme": {
-          "customCss": "../src/css/customTheme.css"
+          "customCss": "./src/css/customTheme.css"
         }
       }
     ]
@@ -99,7 +99,11 @@ module.exports={
     ],
   ],
   "themeConfig": {
-    "hideableSidebar": true,
+    docs: {
+      sidebar: {
+        hideable: true,
+      }
+    },
     announcementBar: {
       id: 'support_us',
       content:
