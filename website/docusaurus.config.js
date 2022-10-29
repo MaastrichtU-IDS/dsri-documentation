@@ -104,14 +104,14 @@ module.exports={
         hideable: true,
       }
     },
-    announcementBar: {
-      id: 'support_us',
-      content:
-        '🔨 <b>Maintenance</b> will be performed on the DSRI <b>from the 22 to the 30 of October</b>, please make sure your data is backed up outside the DSRI before this date 🔨',
-      backgroundColor: '#fdd835',
+    //announcementBar: {
+    //  id: 'support_us',
+    //  content:
+    //    '🔨 <b>Maintenance</b> will be performed on the DSRI <b>from the 22 to the 30 of October</b>, please make sure your data is backed up outside the DSRI before this date 🔨',
+    //  backgroundColor: '#fdd835',
       // textColor: '#091E42',
       // isCloseable: false,
-    },
+    //},
     "prism": {
       "additionalLanguages": ['powershell'],
       // "additionalLanguages": ['powershell', 'dockerfile'],

@@ -3,35 +3,6 @@ id: guide-known-issues
 title: Known Issues
 ---
 
-## Pod mysteriously not restarting
-
-If your pod is not restarting for a mysterious reason then it might be due to too long file and folder paths.
-
-It is an error brought to you by RedHat's SELinux, where your pod will fail to restart if you have a too long nested file path on the persistent volume (yes those types of error still exist in 2022!).
-
-This issue should be fixed in the next version of OpenShift. But before we get it: be careful as some applications, such as snakemake, have a tendency to create folders with really long name which can trigger this problem. Try to use the ephemeral storage in this case to work around the issue (and copy only the code, data and results to the persistent folder). 
-
-If you need to recover files from those persistent volumes the workaround for now is to set a `nodeSelector` label on the `deployment config` of your application. Using this label your pods will be able to start again:
-
-```
-oc patch dc <name-of-the-deployment-config> -p '{"spec":{"template":{"spec":{"nodeSelector":{"dsri.unimaas.nl/2022workaround":"true"}}}}}'
-```
-
-Finding out the name of the `deployent config` can be done either via the webinterface or by commandline. To show all deployment configs in your project:
-
-```
-oc get dc
-```
-
-```
-NAME         REVISION   DESIRED   CURRENT   TRIGGERED BY
-jupyterlab   1          1         1         config,image(jupyterlab:latest)
-matlab       1          1         1         config,image(matlab:latest)
-ubuntu       2          1         1         config,image(ubuntu:latest)
-```
-
-To check your deployment config name via the web ui, go to the `topology` page in the developer view and note the name next to `DC` in blue under your pod.
-
 ## Cannot access your data in the persistent folder
 
 Sometimes you cannot access anymore the data you put in the persistent folder of your container. It can be due to a node going down, if the persistent volume your pod is connected to is on this node, then it cannot access it anymore.
