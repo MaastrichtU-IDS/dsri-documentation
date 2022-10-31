@@ -43,3 +43,4 @@ jobs:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     #     # GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
     #     ## Default token does not have required access: secrets.GITHUB_TOKEN
+    # RUN you annoying pipeline
