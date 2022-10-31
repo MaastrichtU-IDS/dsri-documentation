@@ -7,6 +7,7 @@
         <lastBuildDate>Tue, 24 Oct 2017 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
         <item>
             <title><![CDATA[New Version 1.0.0]]></title>
             <link>https://dsri.maastrichtuniversity.nl/blog/2017/10/24/new-version-1.0.0</link>
