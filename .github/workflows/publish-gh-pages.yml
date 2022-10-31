@@ -27,8 +27,8 @@ jobs:
         API_URL: https://api.dsri.maastrichtuniversity.nl
         # API_URL: https://api.dsri.137.120.31.101.nip.io
       run: |
-        # git config --global user.email "vincent.emonet@maastrichtuniversity.nl"
-        # git config --global user.name "Vincent Emonet"
+        git config --global user.email "vincent.emonet@maastrichtuniversity.nl"
+        git config --global user.name "Vincent Emonet"
         cd website
         yarn install
         yarn deploy
