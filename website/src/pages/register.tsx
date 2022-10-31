@@ -67,7 +67,8 @@ function Registration() {
       // Email validation
       let errorMessages = state.errorMessages
       if (!event.target.value.match(
-          /^[a-zA-Z0-9\.-_]+@(?:student.)?maastrichtuniversity.nl$/
+          /^[a-zA-Z0-9._-]+@(?:student.)?maastrichtuniversity.nl$/
+          // /^[a-zA-Z0-9\.-_]+@(?:student.)?maastrichtuniversity.nl$/
           // /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         )) {
         errorMessages['email'] = 'Provide your email, must end with @maastrichtuniversity.nl or @student.maastrichtuniversity.nl'
