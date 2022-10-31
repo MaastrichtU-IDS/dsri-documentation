@@ -77,7 +77,10 @@ function GpuBooking() {
     if (event.target.id === 'email') {
       // Email validation
       let errorMessages = state.errorMessages
-      if (!event.target.value.match(/^[a-zA-Z0-9\.-_]+@(?:student.)?maastrichtuniversity.nl$/)) {
+      if (!event.target.value.match(
+          /^[a-zA-Z0-9\._-]+@(?:student.)?maastrichtuniversity.nl$/
+          // /^[a-zA-Z0-9\.-_]+@(?:student.)?maastrichtuniversity.nl$/
+        )) {
         errorMessages['email'] = 'Provide your email, must end with @maastrichtuniversity.nl or @student.maastrichtuniversity.nl'
         updateState({ errorMessages: errorMessages})
       } else {

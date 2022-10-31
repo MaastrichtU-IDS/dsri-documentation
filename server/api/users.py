@@ -41,7 +41,8 @@ class CreateUser(SQLModel, table=False):
 
     @validator("email")
     def validate_email(cls, v):
-        pattern = re.compile("^[a-zA-Z0-9\.-_]+@(?:student.)?maastrichtuniversity.nl$")
+        pattern = re.compile("^[a-zA-Z0-9\._-]+@(?:student.)?maastrichtuniversity.nl$")
+        # pattern = re.compile("^[a-zA-Z0-9\.-_]+@(?:student.)?maastrichtuniversity.nl$")
         assert pattern.match(v)
         return v
 
