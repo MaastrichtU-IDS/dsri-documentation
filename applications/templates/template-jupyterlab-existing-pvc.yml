@@ -176,10 +176,13 @@ objects:
       deploymentconfig: "${APPLICATION_NAME}"
     template:
       metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
           deploymentconfig: "${APPLICATION_NAME}"
       spec:
+        runtimeClassname: selinux
         serviceAccountName: "anyuid"
         # nodeSelector:
         #   dsri.unimaas.nl/cpu: 'true'
