@@ -2395,26 +2395,6 @@
     react-json-view "^1.21.3"
     tslib "^2.4.0"
 
-"@docusaurus/plugin-google-analytics@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-google-analytics/-/plugin-google-analytics-2.1.0.tgz#c9a7269817b38e43484d38fad9996e39aac4196c"
-  integrity sha512-4cgeqIly/wcFVbbWP03y1QJJBgH8W+Bv6AVbWnsXNOZa1yB3AO6hf3ZdeQH9x20v9T2pREogVgAH0rSoVnNsgg==
-  dependencies:
-    "@docusaurus/core" "2.1.0"
-    "@docusaurus/types" "2.1.0"
-    "@docusaurus/utils-validation" "2.1.0"
-    tslib "^2.4.0"
-
-"@docusaurus/plugin-google-gtag@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-google-gtag/-/plugin-google-gtag-2.1.0.tgz#e4f351dcd98b933538d55bb742650a2a36ca9a32"
-  integrity sha512-/3aDlv2dMoCeiX2e+DTGvvrdTA+v3cKQV3DbmfsF4ENhvc5nKV23nth04Z3Vq0Ci1ui6Sn80TkhGk/tiCMW2AA==
-  dependencies:
-    "@docusaurus/core" "2.1.0"
-    "@docusaurus/types" "2.1.0"
-    "@docusaurus/utils-validation" "2.1.0"
-    tslib "^2.4.0"
-
 "@docusaurus/plugin-sitemap@2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@docusaurus/plugin-sitemap/-/plugin-sitemap-2.1.0.tgz#b316bb9a42a1717845e26bd4e2d3071748a54b47"
@@ -2440,8 +2420,6 @@
     "@docusaurus/plugin-content-docs" "2.1.0"
     "@docusaurus/plugin-content-pages" "2.1.0"
     "@docusaurus/plugin-debug" "2.1.0"
-    "@docusaurus/plugin-google-analytics" "2.1.0"
-    "@docusaurus/plugin-google-gtag" "2.1.0"
     "@docusaurus/plugin-sitemap" "2.1.0"
     "@docusaurus/theme-classic" "2.1.0"
     "@docusaurus/theme-common" "2.1.0"
