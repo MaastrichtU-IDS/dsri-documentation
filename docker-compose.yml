@@ -1,13 +1,13 @@
 version: "3"
 
 services:
-  # Frontend deployed on GitHub Pages by a GitHub Action 
+  # Frontend deployed on GitHub Pages by a GitHub Action
 
   mysql:
     restart: unless-stopped
     image: mariadb:10.3
     # image: mysql:5.7
-    environment: 
+    environment:
       MYSQL_DATABASE: dsri-db
       MYSQL_ROOT_PASSWORD: ${PASSWORD-password}
       MARIADB_USER: dsri-user
@@ -24,7 +24,7 @@ services:
 
   phpmyadmin:
     # image: phpmyadmin/phpmyadmin
-    image: phpmyadmin/phpmyadmin:5.1
+    image: phpmyadmin/phpmyadmin:latest
     depends_on:
       - mysql
     environment:

@@ -113,11 +113,13 @@ objects:
     template:
       metadata:
         annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
           alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
           app: "${APPLICATION_NAME}"
           deploymentconfig: "${APPLICATION_NAME}"
       spec:
+        runtimeClassName: selinux
         serviceAccountName: anyuid
         # nodeSelector:
         #   dsri.unimaas.nl/cpu: 'true'
