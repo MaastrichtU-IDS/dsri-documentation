@@ -280,8 +280,8 @@ function GpuBooking() {
   // }
   const getGpuColor: any = (gpuCount: any) => {
     let color = 'success' // Green
-    if (gpuCount > 3) color = 'warning' // Orange
-    if (gpuCount > 5) color = 'error' // Red
+    if (gpuCount > 5) color = 'warning' // Orange
+    if (gpuCount > 6) color = 'error' // Red
     return color
   }
   
