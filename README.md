@@ -152,7 +152,7 @@ SET PASSWORD FOR 'username'@'%' = PASSWORD('newpassword');
 
 A CSV backup of the database is generated every week by a CRON job (cf. https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/server/api/main.py#L52) and stored locally on the server where the service is deployed.
 
-For reliability reason we choose to export as CSV: open, lightweight, hard to corrupt, and contains all informations we need to backup (otherwise we would need to fight with weird backup tools poorly built by lost sysadmins that fails most of the time just to save some useless indexes, which just leads to increased chances of corrupting the data we backup...)
+For reliability reason we choose to export as CSV: open, lightweight, hard to corrupt, and contains all information we need to backup (otherwise we would need to fight with weird backup tools poorly built by lost sysadmins that fails most of the time just to save some useless indexes, which just leads to increased chances of corrupting the data we backup...)
 
 ## Markdown tips
 

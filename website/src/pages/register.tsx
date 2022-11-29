@@ -247,7 +247,7 @@ function Registration() {
           </h1>
 
           <p style={{marginBottom: '30px'}}>
-            We need a few informations about you and your project before granting you access to the Data Science Research Infrastructure at Maastricht University.
+            We need to know a bit about you and your project before granting you access to the Data Science Research Infrastructure at Maastricht University.
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -566,7 +566,7 @@ function Registration() {
                 <CircularProgress style={{marginTop: '20px'}} />
               }
               <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
-                  ✔️&nbsp;&nbsp;User registered successfully, soon you will receive an email with more informations to access and use the DSRI.
+                  ✔️&nbsp;&nbsp;User registered successfully, soon you will receive an email with more information on how to access and use the DSRI.
               </Paper>
               <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px'}} sx={{ display: state.openError }}>
                 ⚠️&nbsp;&nbsp;{state.errorMessage}

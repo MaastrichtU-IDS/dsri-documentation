@@ -41,7 +41,7 @@ You can easily deploy your GPU workspace from the DSRI catalog:
 1. Go to the [DSRI Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog): Click on **Add to Project**, then **Browse Catalog**
 2. Search the catalog for  "GPU", and make sure the Template checkbox is enabled
 3. Choose the template: **JupyterLab on GPU**
-4. Follow the instructions to create the template in the DSRI web UI, all informations about the images you can use are provided there. The most notable is the base image you want to use for your workspace (`cuda`, `tensorflow` or `pytorch`)
+4. Follow the instructions to create the template in the DSRI web UI, all information about the images you can use are provided there. The most notable is the base image you want to use for your workspace (`cuda`, `tensorflow` or `pytorch`)
 
 Access the workspace from the route created (the small arrow at the top right of your application bubble in the Topology page).
 
@@ -51,7 +51,7 @@ You can now add your code and data in the persistent folder to be fully prepared
 
 You can install dependencies with `apt-get`, `conda` or `pip`. We recommend your to use scripts stored in the persistent folder to easily install all your requirements, so you can reinstall them when we enable the GPU, as it restarts the workspace.
 
-For more informations on how to use `conda`/`mamba` to install new dependencies or complete environment (useful if you need to use a different version of python than the one installed by default) checkout [this page](/docs/deploy-jupyter#%EF%B8%8F-manage-dependencies-with-conda). 
+For more information on how to use `conda`/`mamba` to install new dependencies or complete environment (useful if you need to use a different version of python than the one installed by default) checkout [this page](/docs/deploy-jupyter#%EF%B8%8F-manage-dependencies-with-conda). 
 
 ⚠️ We recommend you to also try and debug your code on small sample using the CPU before getting the GPU, this way you will be able to directly start long running task when you get the GPU, instead of losing time debugging your code (it's probably not going to work on the first try, you know it).
 
