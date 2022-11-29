@@ -281,7 +281,7 @@ function GpuBooking() {
   const getGpuColor: any = (gpuCount: any) => {
     let color = 'success' // Green
     if (gpuCount > 5) color = 'warning' // Orange
-    if (gpuCount > 6) color = 'error' // Red
+    if (gpuCount > 7) color = 'error' // Red
     return color
   }
   
@@ -291,11 +291,14 @@ function GpuBooking() {
     return (
       <>
       {dayIsBooked && 
-        <div style={{cursor: 'not-allowed'}}>
-          <span style={{color: '#b0bec5', pointerEvents: 'none', cursor: 'not-allowed'}}>
-            {format(day, "d")}
-          </span>
-        </div>
+        <Badge badgeContent={booking['gpus'].length} color={getGpuColor(booking['gpus'].length)}
+            style={{right: -3,top: 0,padding: '0 4px'}}>
+          <div style={{cursor: 'not-allowed'}}>
+            <span style={{color: '#b0bec5', pointerEvents: 'none', cursor: 'not-allowed'}}>
+              {format(day, "d")}
+            </span>
+          </div>
+        </Badge>
       }
       {!dayIsBooked && booking['gpus'].length > 0 &&
         <Tooltip title={'GPUs booked: ' + booking['gpus'].join(', ')}>
