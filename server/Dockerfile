@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
 
 WORKDIR /app/
 
@@ -34,7 +34,7 @@ COPY . /app
 
 RUN python setup.py install
 
-# By default this image entrypoint will use gunicorn to start multiple uvicorn workers 
+# By default this image entrypoint will use gunicorn to start multiple uvicorn workers
 
 
 ## Running as non-root dont work, the API crashes directly at start without notice
