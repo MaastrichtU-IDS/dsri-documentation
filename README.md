@@ -91,7 +91,7 @@ You can also use `yarn` to automatically upgrade packages that can:
 yarn upgrade
 ```
 
-Alternatively you can also change the packages versions requirements in the `package.json` and run `yarn update`
+Alternatively you can also change the packages versions requirements in the `package.json` and run `yarn`
 
 ## Deploy in production
 
