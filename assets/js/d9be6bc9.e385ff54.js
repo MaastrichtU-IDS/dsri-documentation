@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6049],{7088:(e,t,c)=>{c.r(t),c.d(t,{default:()=>s});var n=c(7294);const s=function(){return n.useEffect((function(){window.location.replace("https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392")}),[]),n.createElement("div",null)}}}]);
