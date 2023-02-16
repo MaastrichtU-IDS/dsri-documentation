@@ -68,7 +68,6 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
-    network_mode: host
     restart: unless-stopped
 
   # Use letsencrypt to serve HTTPS https://github.com/nginx-proxy/acme-companion
@@ -81,15 +80,14 @@ services:
     volumes:
       - /data/certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
       - acme:/etc/acme.sh
+    volumes_from:
+      - nginx-proxy
     environment:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - REUSE_KEY=false
       - DEBUG=true
       - DEFAULT_EMAIL=DSRI-SUPPORT-L@maastrichtuniversity.nl
-    network_mode: host
     restart: unless-stopped
 
 
