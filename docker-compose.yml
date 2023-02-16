@@ -23,6 +23,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    restart: unless-stopped
     depends_on:
       - mysql
     environment:
