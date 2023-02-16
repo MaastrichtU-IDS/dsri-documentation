@@ -8,7 +8,7 @@ services:
 
   api:
     volumes:
-      - ./backup:/backup
+      - /data/database/backup:/backup
     environment:
       - VIRTUAL_HOST=api.dsri.maastrichtuniversity.nl
       - LETSENCRYPT_HOST=api.dsri.maastrichtuniversity.nl
@@ -24,7 +24,7 @@ services:
       - mysql
       - phpmyadmin
     volumes:
-      - ./backup:/backup
+      - /data/database/backup:/backup
     environment:
       - SQL_URL=mysql://dsri-user:${DB_PASSWORD-password}@mysql:3306/dsri-db
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
@@ -45,8 +45,8 @@ services:
 
   mysql:
     volumes:
-      - ./data:/var/lib/mysql
-      - ./backup:/backup
+      - /data/database/data:/var/lib/mysql
+      - /data/database/backup:/backup
 
   phpmyadmin:
     environment:
