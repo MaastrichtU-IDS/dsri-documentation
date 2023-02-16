@@ -48,25 +48,38 @@ yarn start
 
 ### Run the full stack
 
-Run the stack with docker-compose:
+To run the full stack including the database and API, we use docker-compose
 
-* API on http://localhost:8000, automatically reloaded on change to the code, with CRON job enabled
-* The GPU calendar on http://localhost:8001
-* Database accessible through phpMyAdmin on http://localhost:8002
+1. Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
 
-```bash
-docker-compose up
-```
+   ```bash
+   DB_PASSWORD=password
+   API_PASSWORD=password
+   CLUSTER_USER=dsri.username
+   CLUSTER_PASSWORD=password
+   SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
+   SLACK_CHANNEL=C03B48CQ3QW
+   ```
 
-> ⚠️ The first time you start the stack you might need to stop and restart the stack once the SQL database has been initialized for the API to properly connect to the database
+2. Run the stack:
 
-Then, in another terminal, run the website on http://localhost:3000, it will use the local API to display stats:
+   * API on http://localhost:8000, automatically reloaded on change to the code, with CRON job enabled
+   * The GPU calendar on http://localhost:8001
+   * Database accessible through phpMyAdmin on http://localhost:8002
 
-```bash
-cd website
-yarn install
-yarn dev
-```
+   ```bash
+   docker-compose up
+   ```
+
+   > ⚠️ The first time you start the stack you might need to stop and restart the stack once the SQL database has been initialized for the API to properly connect to the database
+
+3. In another terminal, run the website on http://localhost:3000, it will use the local API to display stats:
+
+   ```bash
+   cd website
+   yarn install
+   yarn dev
+   ```
 
 ### Update dependencies
 
@@ -92,7 +105,7 @@ The GitHub Action will automatically compile the website to HTML in the `gh-page
 
 Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
 
-```
+```bash
 DB_PASSWORD=password
 API_PASSWORD=password
 CLUSTER_USER=dsri.username
