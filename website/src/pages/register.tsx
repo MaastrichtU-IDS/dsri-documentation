@@ -153,8 +153,8 @@ function Registration() {
     }
 
     if (!error) {
-      axios.post(apiUrl + '/user/register', 
-        state.formObj, 
+      axios.post(apiUrl + '/user/register',
+        state.formObj,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ function Registration() {
           if (res.data.errorMessage) {
             updateState({
               loading: false,
-              openError: 'inline', 
+              openError: 'inline',
               openSuccess: 'none',
               errorMessage: res.data.errorMessage})
           } else {
@@ -179,8 +179,8 @@ function Registration() {
         })
         .catch(function (error) {
           updateState({
-            openSuccess: 'none', 
-            openError: 'inline', 
+            openSuccess: 'none',
+            openError: 'inline',
             loading: false,
             errorMessage: 'Error when adding the user to the database, please retry.'
           })
@@ -230,11 +230,11 @@ function Registration() {
     // {id: 'Other', label: 'Other'},
   ]
   const projectTypeList = [
-    "Machine Learning on CPU (python, jupyter, matlab)", 
-    "Machine Learning on GPU (python, jupyter, matlab)", 
-    "Bioinformatics pipeline (python, conda, sequencing pipeline, workflows)", 
-    "Data hosting (SQL, knowledge graph, key-value stores, data lakes)", 
-    "Data processing (python, java, workflows, services orchestration)", 
+    "Machine Learning on CPU (python, jupyter, matlab)",
+    "Machine Learning on GPU (python, jupyter, matlab)",
+    "Bioinformatics pipeline (python, conda, sequencing pipeline, workflows)",
+    "Data hosting (SQL, knowledge graph, key-value stores, data lakes)",
+    "Data processing (python, java, workflows, services orchestration)",
     "Continuous Delivery / Integration (website deployment, jenkins, argo cd)"
   ]
 
@@ -528,11 +528,11 @@ function Registration() {
               <Grid item xs={0} sm={2}></Grid>
               <Grid item xs={12} sm={8}>
                 <p>
-                  The DSRI infrastructure is accessible for UM researchers and students. 
-                  Although DSRI has all relevant security and privacy measures in place to ensure a stable system, 
-                  we want to emphasize it is the responsibility of the user which data they are using to perform their work on DSRI. 
-                  <br/>GDPR compliance is the responsibility of the researcher. 
-                  In case there are any questions, you can visit this website (<a href="https://library.maastrichtuniversity.nl/research-support/rdm/guide/#personal-data-privacy-security" target="_blank" rel="noopener noreferrer">https://library.maastrichtuniversity.nl/research-support/rdm/guide/#personal-data-privacy-security</a>) 
+                  The DSRI infrastructure is accessible for UM researchers and students.
+                  Although DSRI has all relevant security and privacy measures in place to ensure a stable system,
+                  we want to emphasize it is the responsibility of the user which data they are using to perform their work on DSRI.
+                  <br/>GDPR compliance is the responsibility of the researcher.
+                  In case there are any questions, you can visit this website (<a href="https://library.maastrichtuniversity.nl/research-support/rdm/guide/#personal-data-privacy-security" target="_blank" rel="noopener noreferrer">https://library.maastrichtuniversity.nl/research-support/rdm/guide/#personal-data-privacy-security</a>)
                   or contact your faculty information manager.
                 </p>
                 <FormControlLabel control={
@@ -562,7 +562,7 @@ function Registration() {
             </Grid>
 
             <Box style={{ marginTop: '20px'}}>
-              {state.loading && 
+              {state.loading &&
                 <CircularProgress style={{marginTop: '20px'}} />
               }
               <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
@@ -575,7 +575,7 @@ function Registration() {
 
             <button type="submit" style={{margin: '30px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
-              )}>Submit</button> 
+              )}>Submit</button>
 
           </form>
 

@@ -11,11 +11,6 @@ from api.utils import log, oc_login
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session, SQLModel, create_engine, select
 
-# from datetime import datetime, timedelta
-# from scholarly import scholarly
-
-
-oc_api_version = 'apps.openshift.io/v1'
 
 
 def disable_gpu(project_id, app_id, dyn_client) -> str:
@@ -23,10 +18,10 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
 
     try:
         # Turn down the DeploymentConfig to 0 replicas
-        dyn_dc = dyn_client.resources.get(api_version=oc_api_version, kind='DeploymentConfig')
+        dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='DeploymentConfig')
         body = {
             'kind': 'DeploymentConfig',
-            'apiVersion': oc_api_version,
+            'apiVersion': settings.CLUSTER_API_VERSION,
             'metadata': {'name': app_id},
             'spec': {
                 'replicas': 0,
@@ -40,10 +35,10 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
 
     try:
         # Patch DeploymentConfig GPU limits
-        dyn_dc = dyn_client.resources.get(api_version=oc_api_version, kind='DeploymentConfig')
+        dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='DeploymentConfig')
         body = {
             'kind': 'DeploymentConfig',
-            'apiVersion': oc_api_version,
+            'apiVersion': settings.CLUSTER_API_VERSION,
             'metadata': {'name': app_id},
             'spec': {
                 'template': {
@@ -71,7 +66,7 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
             'kind': 'ResourceQuota',
             'apiVersion': 'v1',
             'metadata': {'name': 'gpu-quota'},
-            "spec": { 
+            "spec": {
                 "hard": { "requests.nvidia.com/gpu": 0 }
             }
         }
@@ -86,7 +81,7 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
 
     # with oc.project(project_id), oc.timeout(10*60):
     #     log.info(f"✅ Found the project {oc.get_project_name()}, disabling GPU")
-    
+
     # Stop the GPU pod, and change GPU quota to 0
     # cmds = [
     #     """oc patch dc/""" + app_id + """ --type=json -p='[{"op": "replace", "path": "/spec/replicas", "value": 0}]' -n """ + project_id,
@@ -113,7 +108,7 @@ def enable_gpu(project_id, app_id, dyn_client):
             'kind': 'ResourceQuota',
             'apiVersion': 'v1',
             'metadata': {'name': 'gpu-quota'},
-            "spec": { 
+            "spec": {
                 "hard": { "requests.nvidia.com/gpu": 1 }
             }
         }
@@ -123,10 +118,10 @@ def enable_gpu(project_id, app_id, dyn_client):
 
         try:
             # Patch DeploymentConfig
-            dyn_dc = dyn_client.resources.get(api_version=oc_api_version, kind='DeploymentConfig')
+            dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='DeploymentConfig')
             body = {
                 'kind': 'DeploymentConfig',
-                'apiVersion': oc_api_version,
+                'apiVersion': settings.CLUSTER_API_VERSION,
                 'metadata': {'name': app_id},
                 'spec': {
                     'template': {
@@ -135,7 +130,7 @@ def enable_gpu(project_id, app_id, dyn_client):
                                 {
                                     "name": app_id,
                                     "resources": {
-                                        "requests": {"nvidia.com/gpu": 1}, 
+                                        "requests": {"nvidia.com/gpu": 1},
                                         "limits": {"nvidia.com/gpu": 1}
                                     }
                                 }
@@ -180,14 +175,14 @@ def check_gpu_bookings() -> None:
     log.info(f'🔎 Checking GPU reservations to send booking notifications on the {datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
 
     # Connect to the SQL DB
-    engine = create_engine(os.getenv('SQL_URL'))
+    engine = create_engine(settings.SQL_URL)
     SQLModel.metadata.create_all(engine)
-    
+
     # Connect to the OpenShift cluster
     dyn_client, k8s_client, kubeConfig = oc_login()
 
     # Query the SQL DB to get the GPU reservations
-    # And send msgs if reservations starts/ends 
+    # And send msgs if reservations starts/ends
     with Session(engine) as session:
         statement = select(GpuBooking)
         results = session.exec(statement).all()
@@ -217,7 +212,6 @@ Make sure you have properly moved all data you want to keep in the persistent fo
                     slack_msg = disable_gpu(resa["project_id"], resa["app_id"], dyn_client)
                     slack_msg = f"""🚀🔌 Disabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} and {end_date}):\n""" + slack_msg
                     post_msg_to_slack(slack_msg)
-                    # log.info(slack_msg)
 
 
                 # Check GPU booking starting
@@ -231,19 +225,9 @@ The GPU will be automatically disabled at the end of your booking on the {end_da
 """
                     send_email(email_msg, to=resa["user_email"], subject="📀 DSRI GPU booking starting")
                     post_msg_to_slack(slack_msg)
-                    # log.info(slack_msg)
 
             except Exception as err:
                 log.error(err)
-
-            # send_msg = ''
-            # if len(start_msgs) > 0:
-            #     send_msg = send_msg + '<h2>🚀 Reservations starting</h2>\n<p>\n' + '</p>\n<p>'.join(start_msgs) + '\n</p>\n'
-            # if len(end_msgs) > 0:
-            #     send_msg = send_msg + '\n<h2>🛬 Reservations ending</h2>\n<p>\n' + '</p>\n<p>'.join(end_msgs) + '\n</p>\n'
-            # TODO: Send email disabled because UM smtp not reachable from IDS servers
-            # if len(send_msg) > 0:
-            #     send_email(send_msg)
 
 
 
@@ -251,15 +235,15 @@ def backup_database() -> None:
     log.info(f'💾 Backing up the SQL database (export to CSV) on the {datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
 
     # Connect to the SQL DB
-    engine = create_engine(os.getenv('SQL_URL'))
+    engine = create_engine(settings.SQL_URL)
     SQLModel.metadata.create_all(engine)
     DUMP_PATH = '/backup'
 
     with Session(engine) as session:
         date = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         folder_path = f'{DUMP_PATH}/dsri-db_{date}'
-        pathlib.Path(folder_path).mkdir(parents=True, exist_ok=True) 
-        
+        pathlib.Path(folder_path).mkdir(parents=True, exist_ok=True)
+
         # Dump GPU bookings
         outfile = open(f'{folder_path}/dsri-db_{date}_gpu-booking.csv', 'w')
         writer = csv.writer(outfile)

@@ -4,9 +4,9 @@ The documentation website at [dsri.maastrichtuniversity.nl](https://dsri.maastri
 
 ## Contribute
 
-Contributions are welcome! See the [guidelines to contribute 👨‍💻](https://dsri.maastrichtuniversity.nl/contributing).
+Contributions are welcome! See the [guidelines to contribute to the website 👨‍💻](https://dsri.maastrichtuniversity.nl/docs/contribute).
 
-## Edit documentation pages
+### Edit documentation pages
 
 Editing a documentation file is as easy as going to https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/website/docs/introduction.md.
 
@@ -58,7 +58,7 @@ Run the stack with docker-compose:
 docker-compose up
 ```
 
-> ⚠️ The first time you start the stack you will need to stop and restart the stack once the SQL database has been initialized for the API to properly connect to the database
+> ⚠️ The first time you start the stack you might need to stop and restart the stack once the SQL database has been initialized for the API to properly connect to the database
 
 Then, in another terminal, run the website on http://localhost:3000, it will use the local API to display stats:
 
@@ -68,27 +68,37 @@ yarn install
 yarn dev
 ```
 
+### Update dependencies
+
+Dependabot will automatically create pull requests to update libraries containing a known vulnerability that have been fixed in newer version.
+
+You can also use `yarn` to automatically upgrade packages that can:
+
+```bash
+yarn upgrade
+```
+
+Alternatively you can also change the packages versions requirements in the `package.json` and run `yarn update`
+
 ## Deploy in production
 
 ### Deploy the frontend to GitHub pages
 
 The documentation website at [dsri.maastrichtuniversity.nl](https://dsri.maastrichtuniversity.nl/) is automatically updated by a [GitHub Action](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/actions) at each push to the `master` branch of this repository.
 
-Make sure the `/website/build` directory has been generated before deploying.
-
-```shell
-./publish-github-page.sh
-```
+The GitHub Action will automatically compile the website to HTML in the `gh-page` branch which is served by GitHub Page.
 
 ### Deploy the backend on a server
 
 Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
 
 ```
-CLUSTER_USER=user
+DB_PASSWORD=password
+API_PASSWORD=password
+CLUSTER_USER=dsri.username
 CLUSTER_PASSWORD=password
 SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
-SLACK_CHANNEL=UQL6BCQJH
+SLACK_CHANNEL=C03B48CQ3QW
 ```
 
 Start the docker-compose in production using jwilder's [nginx-proxy](https://github.com/jwilder/nginx-proxy) and [nip.io](https://nip.io/).
