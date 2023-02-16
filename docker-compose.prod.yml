@@ -59,12 +59,15 @@ services:
   # https://github.com/nginx-proxy/nginx-proxy
   nginx-proxy:
     image: nginxproxy/nginx-proxy:latest
+    container_name: nginx-proxy
     ports:
       - 80:80
       - 443:443
     volumes:
       - /data/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
     network_mode: host
     restart: unless-stopped
 
@@ -72,17 +75,18 @@ services:
   # Docs: https://github.com/nginx-proxy/acme-companion/wiki/Container-configuration
   nginx-encrypt-https:
     image: nginxproxy/acme-companion:latest
-    # image: jrcs/letsencrypt-nginx-proxy-companion:v1.13
+    container_name: acme-companion
     depends_on:
       - nginx-proxy
     volumes:
       - /data/certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - acme:/etc/acme.sh
     environment:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - REUSE_KEY=false
       - DEBUG=true
-      # - DEFAULT_EMAIL=vincent.emonet@maastrichtuniversity.nl
+      - DEFAULT_EMAIL=DSRI-SUPPORT-L@maastrichtuniversity.nl
     network_mode: host
     restart: unless-stopped
 
@@ -94,3 +98,8 @@ services:
   #     - VIRTUAL_HOST=dsri.maastrichtuniversity.nl
   #     - LETSENCRYPT_HOST=dsri.maastrichtuniversity.nl
   #     - VIRTUAL_PORT=80
+
+volumes:
+  vhost:
+  html:
+  acme:
