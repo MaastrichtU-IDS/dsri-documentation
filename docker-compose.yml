@@ -6,7 +6,6 @@ services:
   mysql:
     restart: unless-stopped
     image: mariadb:10.3
-    # image: mysql:5.7
     environment:
       MYSQL_DATABASE: dsri-db
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD-password}
@@ -23,7 +22,6 @@ services:
     command: --max-allowed-packet=16M
 
   phpmyadmin:
-    # image: phpmyadmin/phpmyadmin
     image: phpmyadmin/phpmyadmin:latest
     depends_on:
       - mysql
