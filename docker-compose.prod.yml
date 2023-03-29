@@ -6,11 +6,9 @@ version: "3"
 
 services:
 
-
-
   api:
     volumes:
-      - ./backup:/backup
+      - /data/database/backup:/backup
     environment:
       - VIRTUAL_HOST=api.dsri.maastrichtuniversity.nl
       - LETSENCRYPT_HOST=api.dsri.maastrichtuniversity.nl
@@ -26,9 +24,9 @@ services:
       - mysql
       - phpmyadmin
     volumes:
-      - ./backup:/backup
+      - /data/database/backup:/backup
     environment:
-      - SQL_URL=mysql://dsri-user:${PASSWORD-password}@mysql:3306/dsri-db
+      - SQL_URL=mysql://dsri-user:${DB_PASSWORD-password}@mysql:3306/dsri-db
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
       - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
       - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
@@ -47,8 +45,8 @@ services:
 
   mysql:
     volumes:
-      - ./data:/var/lib/mysql
-      - ./backup:/backup
+      - /data/database/data:/var/lib/mysql
+      - /data/database/backup:/backup
 
   phpmyadmin:
     environment:
@@ -58,6 +56,41 @@ services:
       - VIRTUAL_PORT=80
 
 
+  # https://github.com/nginx-proxy/nginx-proxy
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy:latest
+    container_name: nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /data/certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+    restart: unless-stopped
+
+  # Use letsencrypt to serve HTTPS https://github.com/nginx-proxy/acme-companion
+  # Docs: https://github.com/nginx-proxy/acme-companion/wiki/Container-configuration
+  nginx-encrypt-https:
+    image: nginxproxy/acme-companion:latest
+    container_name: acme-companion
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - /data/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - acme:/etc/acme.sh
+    volumes_from:
+      - nginx-proxy
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+      - REUSE_KEY=false
+      - DEBUG=true
+      - DEFAULT_EMAIL=DSRI-SUPPORT-L@maastrichtuniversity.nl
+    restart: unless-stopped
+
+
   ## Website could be also served with nginx from the same server as the API
   # website:
   #   build: website
@@ -65,3 +98,8 @@ services:
   #     - VIRTUAL_HOST=dsri.maastrichtuniversity.nl
   #     - LETSENCRYPT_HOST=dsri.maastrichtuniversity.nl
   #     - VIRTUAL_PORT=80
+
+volumes:
+  vhost:
+  html:
+  acme:

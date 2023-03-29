@@ -7,7 +7,8 @@ from openshift.dynamic import DynamicClient
 from openshift.helper.userpassauth import OCPLoginConfiguration
 
 ## Instantiate logging utility
-log = logging.getLogger()
+log = logging.getLogger("uvicorn.error")
+log.propagate = False
 log.setLevel(logging.INFO)
 console_handler = logging.StreamHandler()
 formatter = logging.Formatter(
