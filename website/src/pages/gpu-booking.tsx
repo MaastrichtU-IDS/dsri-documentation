@@ -332,7 +332,7 @@ function GpuBooking() {
           </h1>
 
           <p style={{marginTop: '10px'}}>
-            Once you booked a GPU, you will receive an email with more information, and the GPU will be enabled in your DSRI project for the period requested. You can book a GPU for a maximum of 4 weeks.
+            Once you booked a GPU, you will receive an email with more information, and the GPU will be enabled in your DSRI project for the period requested. You can book a GPU for a maximum of 7 days.
           </p>
           <p style={{marginBottom: '40px'}}>
             The DSRI has 8 GPUs, the number in the badge on a date indicates the number of GPUs already booked this day, and greyed out days are already fully booked.
