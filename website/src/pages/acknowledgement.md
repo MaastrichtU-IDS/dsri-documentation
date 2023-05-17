@@ -39,3 +39,5 @@ If you are planning to present or publish your work which was made possible by u
 * **PSnpBind: a database of mutated binding site protein-ligand complexes constructed using a multithreaded virtual screening workflow**, *A Ammar, R Cavill, C Evelo, E Willighagen*, [Journal of Cheminformatics](https://link.springer.com/article/10.1186/s13321-021-00573-5), 2022.
 
 * **A Statutory Article Retrieval Dataset in French**, *Antoine Louis and Gerasimos Spanakis*, [In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics](https://arxiv.org/abs/2108.11792), May 2022.
+
+* **Oropharyngeal Tumour Segmentation Using Ensemble 3D PET-CT Fusion Networks for the HECKTOR Challenge**, *Bontempi, D., Dekker, A., Teuwen, J. and Traverso, A*, [Head and Neck Tumor Segmentation: First Challenge, HECKTOR 2020, Held in Conjunction with MICCAI 2020, Lima, Peru, October 4, 2020, Proceedings 12603 (2021): 65](https://link.springer.com/content/pdf/10.1007/978-3-030-67194-5.pdf#page=75), 2021.
