@@ -24,7 +24,7 @@ If you are planning to present or publish your work which was made possible by u
 
 **"This research was made possible, in part, using the Data Science Research Infrastructure (DSRI) hosted at Maastricht University."**
 
-# They cited the DSRI
+# Citations
 
 * **Finding the Law: Enhancing Statutory Article Retrieval via Graph Neural Networks**, *Antoine Louis, Gijs van Dijck, and Gerasimos Spanakis*, [Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics, pages 2761–2776, Dubrovnik, Croatia. Association for Computational Linguistics](https://aclanthology.org/2023.eacl-main.203), 2023.
 
@@ -36,8 +36,17 @@ If you are planning to present or publish your work which was made possible by u
 
 * **The value of maintaining cognition in patients with mild cognitive impairment: The innovation headroom and potential cost-effectiveness of roflumilast,**, *Ron Handels, Sabine Grimm, Arjan Blokland, Nina Possemis, Inez Ramakers, Anke Sambeth, Frans Verhey, Stephanie Vos, Manuela Joore, Jos Prickaerts, Linus Jönsson*, [Alzheimer's & Dementia](https://doi.org/10.1002/alz.13001), 2023.
 
+* **Image based prognosis in head and neck cancer using convolutional neural networks: a case study in reproducibility and optimization**, *Pedro Mateus, Leroy Volmer, Leonard Wee et al.* [PREPRINT (Version 1)](https://doi.org/10.21203/rs.3.rs-2761751/v1), april 2023.
+
 * **PSnpBind: a database of mutated binding site protein-ligand complexes constructed using a multithreaded virtual screening workflow**, *A Ammar, R Cavill, C Evelo, E Willighagen*, [Journal of Cheminformatics](https://link.springer.com/article/10.1186/s13321-021-00573-5), 2022.
+
+* **Knowledge Base Construction from Pre-trained Language Models by Prompt learning**, *Ning, X., and Celebi, R.*, [CEUR Workshop Proceedings](https://ceur-ws.org/Vol-3274/paper4.pdf), 2022
 
 * **A Statutory Article Retrieval Dataset in French**, *Antoine Louis and Gerasimos Spanakis*, [In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics](https://arxiv.org/abs/2108.11792), May 2022.
 
+* **Improving correlation capture in generating imbalanced data using differentially private conditional GANs**, *Sun, C., van Soest, J., & Dumontier, M.*. [arXiv preprint arXiv:2206.13787](https://arxiv.org/pdf/2206.13787v1.pdf), 2022.
+
+* **ciTIzen-centric DAta pLatform (TIDAL): Sharing distributed personal data in a privacy-preserving manner for health research**, *Sun, C., Gallofré Ocaña, M., van Soest, J., & Dumontier, M.*, [Semantic Web, (Preprint), 1-20](https://www.semantic-web-journal.net/system/files/swj3220.pdf), 2022.
+
 * **Oropharyngeal Tumour Segmentation Using Ensemble 3D PET-CT Fusion Networks for the HECKTOR Challenge**, *Bontempi, D., Dekker, A., Teuwen, J. and Traverso, A*, [Head and Neck Tumor Segmentation: First Challenge, HECKTOR 2020, Held in Conjunction with MICCAI 2020, Lima, Peru, October 4, 2020, Proceedings 12603 (2021): 65](https://link.springer.com/content/pdf/10.1007/978-3-030-67194-5.pdf#page=75), 2021.
+
