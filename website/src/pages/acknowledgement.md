@@ -26,6 +26,8 @@ If you are planning to present or publish your work which was made possible by u
 
 # Citations
 
+* **Generating synthetic personal health data using conditional generative adversarial networks combining with differential privacy**, *Chang Sun, Johan van Soest, Michel Dumontier*, [Journal of Biomedical Informatics](https://doi.org/10.1016/j.jbi.2023.104404), 2023.
+
 * **Finding the Law: Enhancing Statutory Article Retrieval via Graph Neural Networks**, *Antoine Louis, Gijs van Dijck, and Gerasimos Spanakis*, [Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics, pages 2761–2776, Dubrovnik, Croatia. Association for Computational Linguistics](https://aclanthology.org/2023.eacl-main.203), 2023.
 
 * **VendorLink: An NLP approach for Identifying & Linking Vendor Migrants & Potential Aliases on Darknet Markets**, *Vageesh Saxena, Nils Rethmeier, Gijs Van Dijck, Gerasimos Spanakis*, [Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics, pages to appear, Toronto, Canada. Association for Computational Linguistics](https://arxiv.org/abs/2305.02763), 2023.
