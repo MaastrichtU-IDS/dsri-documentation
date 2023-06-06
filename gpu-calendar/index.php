@@ -154,7 +154,7 @@ if(isset($_GET['week'])) {
       <div class="col-md-3">
       
       <div class="dropdown">
-      Select week</br>
+      <p>Select week</p>
         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo ($weekstart - 604800) ?>';">
       Prev  
       </button>
@@ -163,7 +163,6 @@ if(isset($_GET['week'])) {
       <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo ($weekstart + 604800) ?>';">
       Next  
       </button> 
-        
       </div>
       <br />
 
@@ -257,6 +256,8 @@ reserved by: " . $row2['user_email'] . "\"><p style=\"font-size: 12px;\">" . $ro
 
       </tbody>
       </table>
+
+      <p> Reservation starts and ends at 09:00 CEST </p>
       </div>
     </main>
   </div>
