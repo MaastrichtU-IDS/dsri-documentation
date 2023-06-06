@@ -137,6 +137,14 @@ $(document).mouseup(function () {
 <div class="container-fluid">
   <div class="row"><!--
 <?php include('includes/menu.php'); ?>
+<?php
+if(isset($_GET['week'])) {
+  $weekstart = $_GET['week'];
+}
+  else {
+    $weekstart = strtotime( 'monday this week' );
+  }
+?>
 -->
 
     <main class="col-md-9 col-lg-10 px-md-4">
@@ -146,29 +154,20 @@ $(document).mouseup(function () {
       <div class="col-md-3">
       
       <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          Select week
-        </button>
-        <?php 
-        $thisweek = strtotime( 'monday this week' );
-        ?>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="index.php"><?php echo date( 'Y-m-d',$thisweek) . " to ". date( 'Y-m-d',$thisweek + 86400*7)?></a></li>
-          <li><a class="dropdown-item" href="index.php?week=<?php echo ($thisweek + 604800) ?>"><?php echo date( 'Y-m-d',$thisweek + 436800) . " to ". date( 'Y-m-d',$thisweek + 604800 + 86400*6)?></a></li>
-          <li><a class="dropdown-item" href="index.php?week=<?php echo ($thisweek + 1209600) ?>"><?php echo date( 'Y-m-d',$thisweek + 1209600) . " to ". date( 'Y-m-d',$thisweek + 1209600 + 86400*6)?></a></li>
-          <li><a class="dropdown-item" href="index.php?week=<?php echo ($thisweek + 1814400) ?>"><?php echo date( 'Y-m-d',$thisweek + 1814400) . " to ". date( 'Y-m-d',$thisweek + 1814400 + 86400*6)?></a></li>
-        </ul>
+      Select week</br>
+        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo ($weekstart - 604800) ?>';">
+      Prev  
+      </button>
+      <?php echo date( 'Y-m-d',$weekstart) . " to ". date( 'Y-m-d',$weekstart + 86400*6)?>
+       
+      <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo ($weekstart + 604800) ?>';">
+      Next  
+      </button> 
+        
       </div>
       <br />
 
       <?php
-
-      if(isset($_GET['week'])) {
-        $weekstart = $_GET['week'];
-      }
-        else {
-          $weekstart = strtotime( 'monday this week' );
-        }
       $weekend = $weekstart + 604800;
 
 
@@ -185,13 +184,13 @@ $(document).mouseup(function () {
         <thead>
         <tr>
           <th>GPU</th>
-          <th colspan=24>Monday (<?=$monday?>)</th>
-          <th colspan=24>Tuesday (<?=$tuesday?>)</th>
-          <th colspan=24>Wednesday (<?=$wednesday?>)</th>
-          <th colspan=24>Thursday (<?=$thursday?>)</th>
-          <th colspan=24>Friday (<?=$friday?>)</th>
-          <th colspan=24>Saturday (<?=$saturday?>)</th>
-          <th colspan=24>Sunday (<?=$sunday?>)</th>
+          <th colspan=1>Monday (<?=$monday?>)</th>
+          <th colspan=1>Tuesday (<?=$tuesday?>)</th>
+          <th colspan=1>Wednesday (<?=$wednesday?>)</th>
+          <th colspan=1>Thursday (<?=$thursday?>)</th>
+          <th colspan=1>Friday (<?=$friday?>)</th>
+          <th colspan=1>Saturday (<?=$saturday?>)</th>
+          <th colspan=1>Sunday (<?=$sunday?>)</th>
         </tr>
         </thead>
         <tbody>
@@ -205,9 +204,9 @@ $(document).mouseup(function () {
             echo "<tr><td>" . $row["short_description"] . "</td>";
             $previousend = 0;
             $previousbegin = 0;
-            $hours=168;
-            for ($x = 0; $x <= $hours; $x++) {
-              $tdtime = $weekstart + ($x*3600);
+            $days=7;
+            for ($x = 0; $x <= $days; $x++) {
+              $tdtime = $weekstart + ($x*3600*24);
               $reservation=0;
               $sql2 = "SELECT * FROM gpubooking WHERE gpu_id=$gpuid AND FROM_UNIXTIME($tdtime) >= starting_date AND FROM_UNIXTIME($tdtime) <= ending_date";
               $result2 = $conn->query($sql2);
@@ -215,15 +214,15 @@ $(document).mouseup(function () {
                 while($row2 = $result2->fetch_assoc()) {
                   //calculate colspan
                   if(strtotime($row2['starting_date'])<$weekstart){
-                    $colspan = (strtotime($row2['ending_date'])-$weekstart)/3600;
-                    if(strtotime($row2['ending_date'])>($weekstart+(3600*168))){
-                      $colspan = 168;
+                    $colspan = (strtotime($row2['ending_date'])-$weekstart)/3600/24;
+                    if(strtotime($row2['ending_date'])>($weekstart+(3600*168*24))){
+                      $colspan = 7;
                   }
                 }
                   else{
-                  $colspan = (strtotime($row2['ending_date'])-strtotime($row2['starting_date']))/3600;
-                  if(strtotime($row2['ending_date'])>($weekstart+(3600*168))){
-                    $colspan = 168 - $x;
+                  $colspan = (strtotime($row2['ending_date'])-strtotime($row2['starting_date']))/3600/24;
+                  if(strtotime($row2['ending_date'])>($weekstart+(3600*168*24))){
+                    $colspan = 7 - $x;
                 }
 
                   }
