@@ -138,11 +138,12 @@ $(document).mouseup(function () {
   <div class="row"><!--
 <?php include('includes/menu.php'); ?>
 <?php
+  $currweek = strtotime( 'monday this week' )
 if(isset($_GET['week'])) {
   $weekstart = $_GET['week'];
 }
   else {
-    $weekstart = strtotime( 'monday this week' );
+    $weekstart = $currweek;
   }
 ?>
 -->
@@ -156,12 +157,13 @@ if(isset($_GET['week'])) {
       <div class="dropdown">
       <p>Select week</p>
         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo ($weekstart - 604800) ?>';">
-      Prev  
+      <<<  
       </button>
+      <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo ($currweek) ?>';">
       <?php echo date( 'Y-m-d',$weekstart) . " to ". date( 'Y-m-d',$weekstart + 86400*6)?>
-       
+      </button>
       <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo ($weekstart + 604800) ?>';">
-      Next  
+      >>>  
       </button> 
       </div>
       <br />
