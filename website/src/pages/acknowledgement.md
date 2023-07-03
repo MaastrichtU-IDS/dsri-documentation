@@ -26,6 +26,8 @@ If you are planning to present or publish your work which was made possible by u
 
 # Citations
 
+* **Diffusion connectivity disparities across Parkinson’s disease motor subtypes and non-demented controls: a postmortem ultra high field MRI study**, *Boonstra JT, Michielse S, Temel Y, Jahanshahi A, and Roebroeck A*, [Neuroanatomical Variation In Parkinson’s Disease Motor Subtypes p67](https://cris.maastrichtuniversity.nl/ws/portalfiles/portal/141986304/c7913.pdf#page=67), 2023.
+
 * **Generating synthetic personal health data using conditional generative adversarial networks combining with differential privacy**, *Chang Sun, Johan van Soest, Michel Dumontier*, [Journal of Biomedical Informatics](https://doi.org/10.1016/j.jbi.2023.104404), 2023.
 
 * **Finding the Law: Enhancing Statutory Article Retrieval via Graph Neural Networks**, *Antoine Louis, Gijs van Dijck, and Gerasimos Spanakis*, [Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics, pages 2761–2776, Dubrovnik, Croatia. Association for Computational Linguistics](https://aclanthology.org/2023.eacl-main.203), 2023.
