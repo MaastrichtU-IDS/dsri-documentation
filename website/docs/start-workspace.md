@@ -128,7 +128,7 @@ Note that starting more than 1 pod will not increase the amount of resources you
 
 When you try to access your workspace and you encounter the page below, usually this indicates that your pod is not running. For example, this will be the case if you stopped your pod, or if there was maintenance on the cluster.
 
-<img src="/img/screenshot_application_unavailable.png" alt="Screenshot of page that says Application is not available" style={{maxWidth: '100%', maxHeight: '100%'}}>
+<img src="/img/screenshot_application_unavailable.png" alt="Screenshot of page that says Application is not available" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 To start the pod, go to the **Topology** page, and click on the up arrow ⬆️ next to the number of pods deployed. Make sure you scale it to 1. Scaling it to more than 1 will not increase the amount of resources you have access to, most of the time it will only waste resources and causes weird behavior on your side.
 
