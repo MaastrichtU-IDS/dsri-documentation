@@ -10,7 +10,7 @@ If you need help or have questions about the Data Science Research Infrastructur
 
 # 📝 Submit a ticket
 
-If you are having technical issues, such as "my pod does not restart anymore", and need help from the DSRI team, submit a [ticket in the UM ServiceDesk application](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392).
+If you are having technical issues, such as "my pod does not restart anymore", and need help from the DSRI team, [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) in the UM ServiceDesk.
 
 
 ## 💬 Join the DSRI Slack
@@ -29,14 +29,12 @@ You can request us to delete the data related to you in the DSRI user database, 
 
 ## 📬 Contact us
 
-Contact us at **[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl)** if you have any questions.
+For any technical questions, please contact us through the ticketing system. [Click here to submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392). For non-technical questions you can contact us at **[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl)**
 
-The DSRI team is composed of individuals from the [Institute of Data Science](https://maastrichtuniversity.nl/ids) (IDS) and the [Information and Communications Technology Services](https://maastrichtuniversity.nl/icts) (ICTS) at [Maastricht University](https://maastrichtuniversity.nl).
+The DSRI team members:
 
-- **Vincent Emonet** - Data Science Engineer at [IDS](https://maastrichtuniversity.nl/ids)
-- **Carlos Utrilla Guerrero** - Research Data Scientist at [IDS](https://maastrichtuniversity.nl/ids)
-- **Marcel Brouwers** - System, Security and Network Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Chris Kuipers** - System, Security and Network Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Jordy Frijns** - System, Security and Network Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Rob Schlooz** - Project Manager at [IDS](https://maastrichtuniversity.nl/ids)
-- **Michel Dumontier** - Project Investigator at [IDS](https://maastrichtuniversity.nl/ids)
+- **Chris Kuipers** - System Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
+- **Jordy Frijns** - System Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
+- **Marcel Brouwers** - System Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
+- **Sander Boumen** - System Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
+
