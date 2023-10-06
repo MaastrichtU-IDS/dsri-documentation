@@ -26,6 +26,8 @@ If you are planning to present or publish your work which was made possible by u
 
 # Citations
 
+* **Interpretable Long-Form Legal Question Answering with Retrieval-Augmented Large Language Models**, *Antoine Louis, Gijs van Dijck, Gerasimos Spanakis*, [https://arxiv.org/abs/2309.17050](https://arxiv.org/abs/2309.17050), 2023.
+
 * **Diffusion connectivity disparities across Parkinson’s disease motor subtypes and non-demented controls: a postmortem ultra high field MRI study**, *Boonstra JT, Michielse S, Temel Y, Jahanshahi A, and Roebroeck A*, [Neuroanatomical Variation In Parkinson’s Disease Motor Subtypes p67](https://cris.maastrichtuniversity.nl/ws/portalfiles/portal/141986304/c7913.pdf#page=67), 2023.
 
 * **Generating synthetic personal health data using conditional generative adversarial networks combining with differential privacy**, *Chang Sun, Johan van Soest, Michel Dumontier*, [Journal of Biomedical Informatics](https://doi.org/10.1016/j.jbi.2023.104404), 2023.
