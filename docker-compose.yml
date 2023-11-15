@@ -56,6 +56,19 @@ services:
     environment:
       - DB_PASSWORD=${DB_PASSWORD-password}
 
+  gpu-booking:
+    build: ./gpu-reservation/docker/php
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - phpmyadmin
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD-password}
+    # Bind the container folder to the host folder env setting
+    volumes:
+      - ${FOLDER_BOOKING_APP}:/var/www/html
+      - ${FOLDER_SAML_CONFIG}:/var/www/simplesamlphp/config
+      - ${FOLDER_SAML_METADATA}:/var/www/simplesamlphp/metadata
 
   # cron:
   #   # Same image as the API
