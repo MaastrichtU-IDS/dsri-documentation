@@ -20,6 +20,14 @@ You need to be connected to the UM network to access the DSRI.
 
   Log in to that using your UM username and password.
 
+:::info Students
+
+By default the UM VPN is only available to employees. As a student you can access UM resources from any location via [Student Desktop Anywhere](https://athenadesktop.maastrichtuniversity.nl). However, if VPN access is absolutely necessary you can request access via your course coordinator. 
+
+:::
+
+
+
   * The **prefix of your UM email address** with the first letter capitalized, e.g. `Firstname.Lastname` or `F.Lastname`Or your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`
 
     <img src="/img/vpn-login.png" alt="VPN Log in View" style={{maxWidth: '100%', maxHeight: '100%'}} />
@@ -72,6 +80,5 @@ Provide your UM username and password. (**employee number** at Maastricht Univer
   > Provide your UM password when prompted.
 
 * For **students**:
-  * You can request VPN access at this email: [servicedesk-icts@maastrichtuniversity.nl](mailto:servicedesk-icts@maastrichtuniversity.nl) (cf. [ICTS contact page](https://www.maastrichtuniversity.nl/support/ict-facilities))
-  * Or use the Athena Student Desktop at [athenadesktop.maastrichtuniversity.nl](https://athenadesktop.maastrichtuniversity.nl)
+  * By default the UM VPN is only available to employees. As a student you can access UM resources from any location via [Student Desktop Anywhere](https://athenadesktop.maastrichtuniversity.nl). However, if VPN access is absolutely necessary you can request access via your course coordinator.
 
