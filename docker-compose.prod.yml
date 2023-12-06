@@ -58,6 +58,7 @@ services:
       - SAML_SALT=${SAML_SALT}
       - SAML_ADMIN_PW=${SAML_ADMIN_PW}
       - SAML_TRUSTED_DOMAINS=${SAML_TRUSTED_DOMAINS}
+      - SAML_BASEURLPATH=${SAML_BASEURLPATH}
 
   mysql:
     volumes:
