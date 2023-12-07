@@ -69,6 +69,7 @@ services:
       - ${FOLDER_BOOKING_APP}:/var/www/html
       - ${FOLDER_SAML_CONFIG}:/var/www/simplesamlphp/config
       - ${FOLDER_SAML_METADATA}:/var/www/simplesamlphp/metadata
+      - ${FOLDER_SAML_CERT}:/var/www/simplesamlphp/cert
 
   # cron:
   #   # Same image as the API
