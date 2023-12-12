@@ -7,9 +7,9 @@ Login to an external container registry can be helpful to pull private images, o
 
 You will need to create a secret in your project, then link it to the default service account of this project.
 
-We detail here the process for [UM Harbor](https://cr.icts.unimaas.nl), [GitHub Container Registry](https://docs.github.com/en/packages/guides/about-github-container-registry) and [Docker Hub](https://hub.docker.com/), but the process is similar for any other container registry (e.g. [quay.io](https://quay.io/))
+We detail here the process for [UM Container registry](https://cr.icts.unimaas.nl), [GitHub Container Registry](https://docs.github.com/en/packages/guides/about-github-container-registry) and [Docker Hub](https://hub.docker.com/), but the process is similar for any other container registry (e.g. [quay.io](https://quay.io/))
 
-## UM Harbor
+## UM Container registry 
 
 :::info Access
 
@@ -17,7 +17,7 @@ You need to be connected to the UM network to access this container registry.
 
 :::
 
-This container registry is available at [UM Harbor](https://cr.icts.unimaas.nl). Here you can login using your **UM credentials** by clicking on the "Login via OIDC provider"
+This container registry is available at [UM Container registry](https://cr.icts.unimaas.nl). Here you can login using your **UM credentials** by clicking on the "Login via OIDC provider"
 
 <img class="screenshot" src="/img/screenshot_harbor_login_page.png" alt="Harbor_login_page" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
 
@@ -28,7 +28,7 @@ You don't need to follow the steps below if you are using one of the Public proj
 :::
 
 ### Logging in with Docker CLI
-1. Go to [UM Harbor](https://cr.icts.unimaas.nl), click on your username in the top right corner followed by clicking on **User Profile**. Click on the **Copy** icon.
+1. Go to [UM Container registry](https://cr.icts.unimaas.nl), click on your username in the top right corner followed by clicking on **User Profile**. Click on the **Copy** icon.
 2. Login with your credentials:
 ```
 docker login cr.icts.unimaas.nl
@@ -39,7 +39,7 @@ docker login cr.icts.unimaas.nl
 
 ### Using a Proxy Cache
 
-1. Go to [UM Harbor](https://cr.icts.unimaas.nl), look for a project of type **Proxy Cache**. For each of the mayor registries we created a **Proxy Cache**. Remember the project name, for example **dockerhub**.
+1. Go to [UM Container registry](https://cr.icts.unimaas.nl), look for a project of type **Proxy Cache**. For each of the mayor registries we created a **Proxy Cache**. Remember the project name, for example **dockerhub**.
 2. On the DSRI you can deploy an image like in this example:
 
 <img class="screenshot" src="/img/screenshot_harbor_proxy_cache.png" alt="Harbor_proxy_cache" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
@@ -55,13 +55,13 @@ docker pull cr.icts.unimaas.nl/dockerhub/ubuntu:22.04
 
 ### Creating your own project
 
-1. Go to [UM Harbor](https://cr.icts.unimaas.nl), click on **+ NEW PROJECT**. Fill in the details of project name and Access Level (preferred method is to leave the checkbox unchecked).
+1. Go to [UM Container registry](https://cr.icts.unimaas.nl), click on **+ NEW PROJECT**. Fill in the details of project name and Access Level (preferred method is to leave the checkbox unchecked).
 
 2. Click OK
 
 ### Using your own user
 
-1. Go to [UM Harbor](https://cr.icts.unimaas.nl), click on your username in the top right corner followed by clicking on **User Profile**. Click on the **Copy** icon.
+1. Go to [UM Container registry](https://cr.icts.unimaas.nl), click on your username in the top right corner followed by clicking on **User Profile**. Click on the **Copy** icon.
 
 2. Create a secret to login to UM Harbor Container Registry in your project:
 
@@ -75,7 +75,7 @@ oc secrets link default um-harbor-secret --for=pull
 
 ### Using a robot account
 
-1. Go to [UM Harbor](https://cr.icts.unimaas.nl), click on your project if you already created one.
+1. Go to [UM Container registry](https://cr.icts.unimaas.nl), click on your project if you already created one.
 
 2. Click on the tab **Robot Accounts**
 
