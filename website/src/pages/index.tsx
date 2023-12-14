@@ -256,6 +256,9 @@ function Home() {
       },
       options: {
         scales: {
+          x: {
+            type: 'time'
+          },
           y: {
             beginAtZero: true
           }
