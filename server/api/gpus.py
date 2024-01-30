@@ -11,7 +11,7 @@ from pydantic import validator
 from sqlmodel import Field, Session, SQLModel, select
 
 
-NUMBER_OF_GPUS = 8
+NUMBER_OF_GPUS = 7
 MAX_BOOK_DAYS = 7
 
 router = APIRouter()
