@@ -566,7 +566,7 @@ function Registration() {
                 <CircularProgress style={{marginTop: '20px'}} />
               }
               <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
-                  ✔️&nbsp;&nbsp;User registered successfully, soon you will receive an email with more information on how to access and use the DSRI.
+                  ✔️&nbsp;&nbsp;User registered successfully, after manual review you will receive an email with more information on how to access and use the DSRI.
               </Paper>
               <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px'}} sx={{ display: state.openError }}>
                 ⚠️&nbsp;&nbsp;{state.errorMessage}
