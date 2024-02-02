@@ -26,6 +26,8 @@ If you are planning to present or publish your work which was made possible by u
 
 # Citations
 
+* **Comparing text mining and manual coding methods: Analysing interview data on quality of care in long-term care for older adults**, *Coen Hacking, Hilde Verbeek, Jan P. H. Hamers, Sil Aarts*, [https://doi.org/10.1371/journal.pone.0292578](https://doi.org/10.1371/journal.pone.0292578), 2023.
+
 * **IDTraffickers: An Authorship Attribution Dataset to link and connect Potential Human-Trafficking Operations on Text Escort Advertisements**, *Vageesh Saxena, Benjamin Bashpole, Gijs Van Dijck, Gerasimos Spanakis*, [https://arxiv.org/abs/2310.05484](https://arxiv.org/abs/2310.05484), 2023.
 
 * **Interpretable Long-Form Legal Question Answering with Retrieval-Augmented Large Language Models**, *Antoine Louis, Gijs van Dijck, Gerasimos Spanakis*, [https://arxiv.org/abs/2309.17050](https://arxiv.org/abs/2309.17050), 2023.
