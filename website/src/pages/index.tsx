@@ -311,9 +311,6 @@ function Home() {
           }
         },
         scales: {
-          x: {
-            type: 'time'
-          },
           y: {
             beginAtZero: true
           }
