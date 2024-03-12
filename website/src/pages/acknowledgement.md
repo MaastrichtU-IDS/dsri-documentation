@@ -26,6 +26,8 @@ If you are planning to present or publish your work which was made possible by u
 
 # Citations
 
+* **Actionability of Synthetic Data in a Heterogeneous and Rare Healthcare Demographic; Adolescents and Young Adults (AYAs) with Cancer**, *J. (Joshi) Hogenboom, A. (Aiara) Lobo Gomes, A.L.A.J. (Andre) Dekker, W.T.A. (Winette) Van Der Graaf, O. (Olga) Husson, L.Y.L. (Leonard) Wee*, [https://doi.org/10.1101/2024.03.04.24303526](https://doi.org/10.1101/2024.03.04.24303526), 2024.
+
 * **ColBERT-XM: A Modular Multi-Vector Representation Model for Zero-Shot Multilingual Information Retrieval**, *Antoine Louis, Vageesh Saxena, Gijs van Dijck, Gerasimos Spanakis*, [https://arxiv.org/html/2402.15059v1](https://arxiv.org/html/2402.15059v1), 2024.
 
 * **Comparing text mining and manual coding methods: Analysing interview data on quality of care in long-term care for older adults**, *Coen Hacking, Hilde Verbeek, Jan P. H. Hamers, Sil Aarts*, [https://doi.org/10.1371/journal.pone.0292578](https://doi.org/10.1371/journal.pone.0292578), 2023.
