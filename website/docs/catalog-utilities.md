@@ -51,6 +51,15 @@ Start Ubuntu with a web UI accessible via a URL (using VNC). You will be the `ro
 
 You can start the application using the **Ubuntu with web UI** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
 
+:::info Login Credentials
+
+Username: **root**
+
+Password: **Template creation password**
+
+:::
+
+
 This template uses the Docker image defined at https://github.com/fcwu/docker-ubuntu-vnc-desktop
 
 :::caution Less stable than the official image
