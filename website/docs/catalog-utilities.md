@@ -13,14 +13,6 @@ Start Ubuntu with the `root` user which has `sudo` permissions to install anythi
 
 You can start the application using the **Ubuntu** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
 
-:::info Login Credentials
-
-Username: **root**
-
-Password: **Template creation password**
-
-:::
-
 This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
 
 :::info Persistent data folder
