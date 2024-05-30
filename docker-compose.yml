@@ -42,8 +42,9 @@ services:
       - SQL_URL=mysql://dsri-user:${DB_PASSWORD-password}@mysql:3306/dsri-db
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
       - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
-      - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
-      - CLUSTER_PASSWORD=${CLUSTER_PASSWORD-password}
+      # - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
+      # - CLUSTER_PASSWORD=${CLUSTER_PASSWORD-password}
+      - CLUSTER_API_KEY=${CLUSTER_API_KEY-token}
       - API_PASSWORD=${API_PASSWORD-password}
 
 

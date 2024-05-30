@@ -4,8 +4,9 @@ from pydantic import BaseSettings, validator
 class Settings(BaseSettings):
     API_PASSWORD: str = 'password'
 
-    CLUSTER_USER: str = 'dsri_user'
-    CLUSTER_PASSWORD: str = 'password'
+    # CLUSTER_USER: str = 'dsri_user'
+    # CLUSTER_PASSWORD: str = 'password'
+    CLUSTER_API_KEY: str = 'token'
     CLUSTER_URL: str = 'https://api.dsri2.unimaas.nl:6443'
     CLUSTER_API_VERSION = 'apps.openshift.io/v1'
 

@@ -52,11 +52,18 @@ To run the full stack including the database and API, we use docker-compose
 
 1. Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
 
-   ```bash
+   <!-- ```bash
    DB_PASSWORD=password
    API_PASSWORD=password
    CLUSTER_USER=dsri.username
    CLUSTER_PASSWORD=password
+   SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
+   SLACK_CHANNEL=C03B48CQ3QW
+   ``` -->
+   ```bash
+   DB_PASSWORD=password
+   API_PASSWORD=password
+   CLUSTER_API_KEY=token
    SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
    SLACK_CHANNEL=C03B48CQ3QW
    ```
