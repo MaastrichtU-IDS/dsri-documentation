@@ -113,3 +113,19 @@ You can also enable and use the [JupyterLab Git extension](https://github.com/ju
 It will prompt you for a username and password if the repository is private.
 
 <img src="https://raw.githubusercontent.com/jupyterlab/jupyterlab-git/master/docs/figs/preview.gif" alt="JupyterLab Git extension" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+### 🐶 Example
+
+Initialize repository
+
+<img src="/img/sample_git_page.png" alt="Initialize repo" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+Include git details in DSRI project setup
+
+<img src="/img/sample_git_details_jupyter.png" alt="git details" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+Verify automatic deployment
+
+<img src="/img/sample_workspace.png" alt="workspace" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+<img src="/img/sample_requirements.png" alt="requirements" style={{maxWidth: '100%', maxHeight: '100%'}} />
