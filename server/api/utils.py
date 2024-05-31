@@ -28,7 +28,6 @@ log.addHandler(console_handler)
 ## Login to the OpenShift cluster using https://github.com/openshift/openshift-restclient-python
 def oc_login():
     """Login to the OpenShift cluster"""
-    # os.system(f"oc login {settings.CLUSTER_URL} --insecure-skip-tls-verify -u {settings.CLUSTER_USER} -p {settings.CLUSTER_PASSWORD}")
     kubeConfig = OCPLoginConfiguration(
         api_key=settings.CLUSTER_API_KEY
         # ocp_username=settings.CLUSTER_USER,
@@ -36,7 +35,6 @@ def oc_login():
     )
     kubeConfig.host = settings.CLUSTER_URL
     kubeConfig.verify_ssl = False
-    # kubeConfig.ssl_ca_cert = '/app/dsri.pem' # use a certificate bundle for the TLS validation
 
     # Retrieve the auth token
     # kubeConfig.get_token()
