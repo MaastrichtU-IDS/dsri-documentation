@@ -29,10 +29,11 @@ log.addHandler(console_handler)
 def oc_login():
     """Login to the OpenShift cluster"""
     kubeConfig = OCPLoginConfiguration(
-        api_key=settings.CLUSTER_API_KEY
+        # api_key=settings.CLUSTER_API_KEY
         # ocp_username=settings.CLUSTER_USER,
         # ocp_password=settings.CLUSTER_PASSWORD
     )
+    kubeConfig.api_key = {"authorization": "Bearer " + settings.CLUSTER_API_KEY}
     kubeConfig.host = settings.CLUSTER_URL
     kubeConfig.verify_ssl = False
 
