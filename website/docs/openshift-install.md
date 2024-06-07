@@ -72,13 +72,13 @@ See the [official documentation to install the client](https://docs.okd.io/lates
 
 ## Login in the terminal with `oc`
 
-To use the `oc` Command Line Interface, you will need to authenticate to the [DSRI](https://console-openshift-console.apps.dsri2.unimaas.nl/console) in you terminal (edit it to use your username):
+To use the `oc` Command Line Interface, you will need to authenticate to the [DSRI](https://console-openshift-console.apps.dsri2.unimaas.nl/console) in your terminal:
 
 ```bash
-oc login https://api.dsri2.unimaas.nl:6443 -u Your.Username
+oc login --token=<token>
 ```
 
-Otherwise try to use the token provided by the Web UI:
+The token is provided by the Web UI:
 
 1. Go to the [DSRI web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console).
 
