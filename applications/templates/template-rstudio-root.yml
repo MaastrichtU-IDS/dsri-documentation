@@ -155,7 +155,7 @@ objects:
           #     memory: 4Gi
           volumeMounts:
           - name: data
-            mountPath: "/home/rstudio"
+            mountPath: "/home/rstudio/persistent"
           env:
           - name: USER
             value: "rstudio"
