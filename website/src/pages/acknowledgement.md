@@ -26,6 +26,8 @@ If you are planning to present or publish your work which was made possible by u
 
 # Citations
 
+* **Audio-Language Datasets of Scenes and Events: A Survey**, *Gijs Wijngaard, Elia Formisano, Michele Esposito and Michel Dumontier*, [https://arxiv.org/pdf/2407.06947](https://arxiv.org/pdf/2407.06947), 2024.
+
 * **Actionability of Synthetic Data in a Heterogeneous and Rare Healthcare Demographic; Adolescents and Young Adults (AYAs) with Cancer**, *J. (Joshi) Hogenboom, A. (Aiara) Lobo Gomes, A.L.A.J. (Andre) Dekker, W.T.A. (Winette) Van Der Graaf, O. (Olga) Husson, L.Y.L. (Leonard) Wee*, [https://www.medrxiv.org/content/10.1101/2024.03.04.24303526v1.full.pdf](https://www.medrxiv.org/content/10.1101/2024.03.04.24303526v1.full.pdf), 2024.
 
 * **ColBERT-XM: A Modular Multi-Vector Representation Model for Zero-Shot Multilingual Information Retrieval**, *Antoine Louis, Vageesh Saxena, Gijs van Dijck, Gerasimos Spanakis*, [https://arxiv.org/html/2402.15059v1](https://arxiv.org/html/2402.15059v1), 2024.
