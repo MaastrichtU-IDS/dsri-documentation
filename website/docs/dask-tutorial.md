@@ -48,7 +48,7 @@ darr = da.from_array(narr, chunks=3)
 darr
 ```
 
-<img src="/img/screenshot-dask.png" alt="dask table" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/Screenshot-dask.png" alt="dask table" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 The image above shows that the Dask array contains four chunks as we set chunks to 3. Under the hood, each chunk is a NumPy array in itself.
 
