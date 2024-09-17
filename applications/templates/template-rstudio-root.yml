@@ -8,6 +8,10 @@ metadata:
     description: |-
       Start RStudio with the rstudio user which has root permissions (sudo).
 
+      🔑 Default credentials are
+      - login: rstudio
+      - password: $user_password
+
       🐳 Available images with this template:
       bioconductor/bioconductor_docker:devel
       rocker/rstudio
