@@ -11,12 +11,12 @@
         "collapsed": false,
         "items": [
           "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-database", "deploy-matlab",
-          "deploy-jupyterhub", "deploy-spark", "mpi-jobs", "neuroscience", "catalog-genomics",
+          "deploy-jupyterhub", "dask-cluster", "deploy-spark", "mpi-jobs", "neuroscience", "catalog-genomics",
           "catalog-imaging", "catalog-utilities"
         ]
       }
     ],
-    "Guides": [ "guide-vpn","access-um-servers", "dask-cluster", "dask-tutorial", "guide-workshop", "increase-process-speed", "guide-known-issues", "project-management", "login-docker-registry", 
+    "Guides": [ "guide-vpn","access-um-servers", "dask-tutorial", "guide-workshop", "increase-process-speed", "guide-known-issues", "project-management", "login-docker-registry", 
       "openshift-commands", "openshift-storage", "guide-publish-image", 
       "openshift-delete-objects", "tools-machine-learning", "glossary",
       {
