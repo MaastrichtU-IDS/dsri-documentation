@@ -1,6 +1,6 @@
 ---
 id: dask-cluster
-title: Setup Local Dask Cluster for Parallelization
+title: Deploy Dask Cluster
 ---
 
 ## 🧊 Installation with Helm
