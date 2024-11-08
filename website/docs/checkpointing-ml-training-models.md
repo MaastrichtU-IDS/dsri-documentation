@@ -22,7 +22,9 @@ For instance, Let suppose,
 3) Checkpoint fequencty: every z hours
 
 => Then total number of checkpoints during the complete training time (NCP) = (x *24)/ z
+
 => Total Time Spent on Checkpointing (TTSC) [in hours] = NCP * y/3600 
+
 => % of Taining time spent on checkpointing = TTSC/TT*24
 
 ## how to do checkpointing in popular Deep Learning libraries?
