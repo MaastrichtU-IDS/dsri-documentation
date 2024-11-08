@@ -21,10 +21,63 @@ For instance, Let suppose,
 2) Time needed to save every checkpoint: y seconds
 3) Checkpoint fequencty: every z hours
 
-=> Then total number of checkpoints during the complete training time (NCP) = (x *24)/ z
+=> Then, Total Number of Checkpoints during the complete training time (NCP) = (x *24)/ z
 
 => Total Time Spent on Checkpointing (TTSC) [in hours] = NCP * y/3600 
 
-=> % of Taining time spent on checkpointing = TTSC/TT*24
+=> % of Training time spent on checkpointing = TTSC/TT*24
 
-## how to do checkpointing in popular Deep Learning libraries?
+## Support for Checkpointing in Tensorflow/Keras and PyTorch ?
+
+Both PyTorch and TensorFlow/Keras support checkpointing. The follwoing sections provide an example of how Checkpointing can be done in these libraries.
+
+## Tensorflow/Keras based checkpointing:
+
+```python
+import tensorflow as tf
+
+#Imports the ModelCheckpoint class
+from tensorflow.keras.callbacks import ModelCheckpoint
+
+# Create your model as you normally would and compile it:
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Dense(64, activation='relu', input_shape=(32,)),
+    tf.keras.layers.Dense(10, activation='softmax')
+])
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Create a Checkpoint Callback
+checkpoint_callback = ModelCheckpoint(
+#filepath should be a path to your persistent volume. Example, /home/jovyan path in your JupyterLab pod.
+    filepath='model_checkpoint.h5',  # You can use formats like .hdf5 or .ckpt. 
+    save_best_only=True,
+    monitor='val_loss',
+    mode='min',
+    verbose=1
+)
+
+# Train the Model with the Checkpoint Callback
+history = model.fit(
+    x_train, y_train,
+    validation_data=(x_val, y_val),
+    epochs=10,
+    callbacks=[checkpoint_callback]
+)
+
+# Loading a Saved Checkpoint
+# Load the model architecture + weights if you saved the full model
+model = tf.keras.models.load_model('model_checkpoint.h5')
+
+# If you saved only the weights, you would need to create the model architecture first, then load weights:
+model.load_weights('model_checkpoint.h5')
+
+# Optional Parameters for Checkpointing, Example with Custom Save Intervals
+checkpoint_callback = ModelCheckpoint(
+    filepath='model_checkpoint_epoch_{epoch:02d}.h5',
+    save_freq='epoch',
+    save_weights_only=True,
+    verbose=1
+)
+
+
+```
