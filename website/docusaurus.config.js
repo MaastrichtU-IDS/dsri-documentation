@@ -143,6 +143,11 @@ module.exports={
           "label": "GPU calendar",
           "position": "left"
         },
+         {
+          "to": "/contact",
+          "label": "Contact",
+          "position": "left"
+        },
         {
           "to": "/acknowledgement",
           "label": "Acknowledgement",
