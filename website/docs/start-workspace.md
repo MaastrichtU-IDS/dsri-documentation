@@ -21,9 +21,9 @@ We prepared generic Docker images for data science workspaces with your favorite
 
 1. Login to the DSRI dashboard
 2. Select your project, or create one with a meaningful short name representing your project, e.g. `workspace-yourname`
-3. Go to the **+Add** page, and select to add **From Catalog**
+3. Go to the **+Add** page, and select to add **From Developer Catalog => All services**
 
-<img src="/img/screenshot_access_catalog.png" alt="Access catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_access_catalog_manu17112024.png" alt="Access catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 4. Search for templates corresponding to the application you want to deploy among the one described below (make sure the filter for templates is properly checked). 
 
