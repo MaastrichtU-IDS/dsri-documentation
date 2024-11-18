@@ -10,7 +10,7 @@ If you need help or have questions about the Data Science Research Infrastructur
 
 # 📝 Submit a ticket
 
-If you are having technical issues, such as "my pod does not restart anymore", and need help from the DSRI team, [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) in the UM ServiceDesk.
+If you are having technical issues, such as "my pod does not restart anymore", and need help from the DSRI team, [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) in the ICTS Self-Service Portal.
 
 
 ## 💬 Join the DSRI Slack
@@ -26,15 +26,4 @@ Contact us at [dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maa
 ## 🧹 Delete your data
 
 You can request us to delete the data related to you in the DSRI user database, and in the DSRI cluster. Contact **[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl)** to request the deletion of your data.
-
-## 📬 Contact us
-
-For any technical questions, please contact us through the ticketing system. [Click here to submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392). For non-technical questions you can contact us at **[dsri-support-l@maastrichtuniversity.nl](mailto:dsri-support-l@maastrichtuniversity.nl)**
-
-The DSRI team members:
-
-- **Chris Kuipers** - System Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Jordy Frijns** - System Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Marcel Brouwers** - System Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
-- **Sander Boumen** - System Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
 

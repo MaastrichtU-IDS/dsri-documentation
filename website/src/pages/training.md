@@ -29,10 +29,10 @@ All training [materials](https://maastrichtu-ids.github.io/dsri-workshop-start-a
 **Do you want to get started with the DSRI?** Contact us at [dsri-support-l@maastrichtuniversity.nl]([mailto:dsri-support-l@maastrichtuniversity.nl]) to start preparing a training for your department.
 
 
-## Past training
+[ ## Past training]: #
 
-### 1. Learning the basics: Quick start with the DSRI at the DKE _(6 April 2022)_
+[ ### 1. Learning the basics: Quick start with the DSRI at the DKE _(6 April 2022)_]: #
 
-Students from DKE learned the basics on how and why to use the Data Science Research Infrastructure (DSRI) for their data science projects. Together with Prof. Enrique Hortal from DKE, we demostrated the usefulness of using DSRI.
+[ Students from DKE learned the basics on how and why to use the Data Science Research Infrastructure (DSRI) for their data science projects. Together with Prof. Enrique Hortal from DKE, we demostrated the usefulness of using DSRI.]: #
 
-<img src="/img/workshop1.jpg" alt="Login screen" style={{maxWidth: '40%', maxHeight: '40%'}} class = "center" />
+[<img src="/img/workshop1.jpg" alt="Login screen" style={{maxWidth: '40%', maxHeight: '40%'}} class = "center" />]: #
