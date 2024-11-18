@@ -4,20 +4,6 @@ description: acknowledge the DSRI
 hide_table_of_contents: true
 ---
 
-# Acknowledgments
-
-The DSRI is an initiative, which was made possible by the joint efforts of different collaborating parties who have also provided funding for establishing the cluster:
-
-* **Maastricht University I-Board**
-* **Maastricht University - Institute of Data Science (IDS)**
-* **Maastricht University - ICT Service Centre (ICTS)**
-* **Maastricht University - School of Business and Economics (SBE)**
-* **Maastricht University - Maastricht Centre for Systems Biology (MaCSBio)**
-* **Maastricht University - Department of Bioinformatics (BiGCaT)**
-* **MAASTRO**
-* **DELL**
-* **NVIDIA**
-
 # Acknowledging the DSRI in your publications
 
 If you are planning to present or publish your work which was made possible by using the DSRI, we encourage you to acknowledge the use of DSRI. For this purpose we propose to add the following sentence to your publication: 
