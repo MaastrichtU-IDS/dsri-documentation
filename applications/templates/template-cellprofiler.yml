@@ -16,8 +16,8 @@ metadata:
       cellprofiler --run
       cellprofiler --run-headless
 
-      Use the GitHub mirror to avoid DockerHub pull limits (cf. https://github.com/vemonet/cellprofiler): 
-      ghcr.io/vemonet/cellprofiler
+      Use the GitHub mirror to avoid DockerHub pull limits (cf. https://github.com/MaastrichtU-Library/cellprofiler): 
+      ghcr.io/maastrichtu-library/cellprofiler
 
       Or use the official image from https://hub.docker.com/r/cellprofiler/cellprofiler
       cellprofiler/cellprofiler:4.1.3
@@ -49,7 +49,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
   description: See https://hub.docker.com/r/cellprofiler/cellprofiler for more details on the image
-  value: ghcr.io/vemonet/cellprofiler:latest
+  value: ghcr.io/maastrichtu-library/cellprofiler:latest
   required: true
 
 objects:
