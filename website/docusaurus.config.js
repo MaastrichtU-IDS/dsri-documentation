@@ -164,7 +164,7 @@ module.exports={
     "image": "img/undraw_online.svg",
     "footer": {
       "links": [],
-      "copyright": `Copyright © ${new Date().getFullYear()} <a href='https://maastrichtuniversity.nl/ids' target='_blank' rel='noopener noreferrer'>Institute of Data Science</a> at Maastricht University`,
+      "copyright": `Copyright © ${new Date().getFullYear()} <a href='https://library.maastrichtuniversity.nl/' target='_blank' rel='noopener noreferrer'>University Library</a> at Maastricht University`,
       "logo": {
         "src": "img/favicon.ico",
         "href": "https://maastrichtuniversity.nl/"
