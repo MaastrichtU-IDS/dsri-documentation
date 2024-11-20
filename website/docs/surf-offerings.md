@@ -14,7 +14,7 @@ A cluster computer is essentially a group of interconnected computers, called no
 
 Cluster computers are designed for high-performance workloads, allowing users to run hundreds of computational tasks simultaneously.
 
-<img src="/img/screenshot_developer_perspective.png" alt="Developer Perspective" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_cluster.png" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 
@@ -65,11 +65,10 @@ The DSRI team is here to help you navigate SURF’s services, including:
 3) Use Case Analysis:  
    We assess whether your research project is a good fit for SURF’s services.
    
-## External Resources
+## External Resources and references
 
-* 
-* 
-
-*
+* SURF: https://www.surf.nl/en
+* Deep Learning Tutorials by UvA: https://uvadlc-notebooks.readthedocs.io/en/latest/index.html
+* Access to services via grants: https://www.surf.nl/en/small-compute-applications-nwo
  
 
