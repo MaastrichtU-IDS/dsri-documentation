@@ -1,15 +1,23 @@
 ---
 id: surf-offerings
-title: SURF's digital services for conducting research and development 
+title: SURF's Digital Services for Research and Development
 ---
 ## What is SURF?
 
-SURF is the ICT cooperative of Dutch education and research institutions. The members, the owners of SURF, join forces to develop or procure the best possible digital services, work together on complex innovation issues and develop and share knowledge with each other. Computing and Storage infrastructure plays a vital role in conducting cutting-edge research. SURF supports researchers with various computing and storage services. However, before diving further, lets briefly understand what is a cluster computer.
+SURF is the ICT cooperative for Dutch education and research institutions. As a collaborative organization, SURF’s members—its owners—work together to deliver top-tier digital services, address complex innovation challenges, and exchange valuable knowledge.
+
+Computing and storage infrastructure are essential for cutting-edge research. SURF supports researchers with a diverse range of computing and storage services. But before diving into these services, let’s briefly explore what a cluster computer is.
 
 ## What is a cluster computer?
-You can imagine a cluster computer as a collection of regular computers (known as nodes), tied together with network cables that are similar to the network cables in your home or office (see the figure below - credit: SURF team). Each node has its own CPU, memory and disk space, in addition to which they generally have access to a shared file system. On a cluster computer, you can run hundreds of computational tasks simultaneously.
 
-Interacting with a cluster computer is different from a normal computer. Normal computers are mostly used interactively, i.e. you type a command or click with your mouse, and your computer instantly responds by e.g. running a program. Cluster computers are mostly used non-interactively. 
+A cluster computer is essentially a group of interconnected computers, called nodes, working together as a unified system. Each node has its own CPU, memory, and disk space, along with access to a shared file system. Imagine these nodes connected by network cables, like those in your home or office.
+
+Cluster computers are designed for high-performance workloads, allowing users to run hundreds of computational tasks simultaneously.
+
+<img src="/img/screenshot_developer_perspective.png" alt="Developer Perspective" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+
+
 
 ## Different types of Services provided by SURF:
 
@@ -42,9 +50,21 @@ These hosted workspaces aka virtual machines can be used for conducting research
 
 
 
-## How DSRI team can help you?
+## How to Get Started with SURF Services?
 
+The DSRI team is here to help you navigate SURF’s services, including:
 
+1) Grant Applications:  
+    We assist researchers in applying for SURF grants. For instance:
+    * Small applications: Up to 1 million System Billing Units (SBU) on Snellius and/or 100 TB of dCache storage.
+    * Large applications: Customized resource allocations based on project needs.
+
+2) Resource Estimation:  
+   Unsure about your computing and storage requirements? We help estimate your needs in terms of SURF’s billing units.
+   
+3) Use Case Analysis:  
+   We assess whether your research project is a good fit for SURF’s services.
+   
 ## External Resources
 
 * 
