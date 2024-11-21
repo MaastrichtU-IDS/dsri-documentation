@@ -1,5 +1,5 @@
 ---
-id: Enabling-VPN-WSL
+id: enabling-vpn-wsl
 title: Enabling VPN access in WSL2
 ---
 ## Follow these steps in the WSL2 environment:
