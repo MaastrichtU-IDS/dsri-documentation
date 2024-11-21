@@ -74,6 +74,12 @@ See the [official documentation to install the client](https://docs.okd.io/lates
 
 To use the `oc` Command Line Interface, you will need to authenticate to the [DSRI](https://console-openshift-console.apps.dsri2.unimaas.nl/console) in your terminal:
 
+:::warning PASSWORD NOT SUPPORTED
+
+Authentication to the `oc` Command Line Interface using your password is not supported. 
+
+:::
+
 ```bash
 oc login --token=<token>
 ```
