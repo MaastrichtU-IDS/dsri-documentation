@@ -19,6 +19,7 @@
     "Guides": [ "guide-vpn","access-um-servers", "dask-tutorial", "guide-workshop", "increase-process-speed", "guide-known-issues", "project-management", "login-docker-registry", 
       "openshift-commands", "openshift-storage", "guide-publish-image", "checkpointing-ml-training",
       "openshift-delete-objects", "tools-machine-learning", "glossary",
+
       {
         "type": "category",
         "label": "Workflows",
@@ -28,6 +29,8 @@
         ]
       },
       "contribute"
-    ]
+    ],
+
+     "Miscellaneous": ["surf-offerings"]
   }
 }
