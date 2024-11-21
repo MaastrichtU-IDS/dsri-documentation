@@ -56,7 +56,7 @@ The DSRI team is here to help you navigate SURF’s services, including:
 
 1) Grant Applications:  
     We assist researchers in applying for SURF grants. For instance:
-    * Small applications: Up to 1 million System Billing Units (SBU) on Snellius and/or 100 TB of dCache storage.
+    * Small applications: Up to 1 million System Billing Units (SBU) on Snellius and/or 100 TB of dCache storage.(https://www.surf.nl/en/small-compute-applications-nwo)
     * Large applications: Customized resource allocations based on project needs.
 
 2) Resource Estimation:  
@@ -69,6 +69,5 @@ The DSRI team is here to help you navigate SURF’s services, including:
 
 * SURF: https://www.surf.nl/en
 * Deep Learning Tutorials by UvA: https://uvadlc-notebooks.readthedocs.io/en/latest/index.html
-* Access to services via grants: https://www.surf.nl/en/small-compute-applications-nwo
- 
+
 
