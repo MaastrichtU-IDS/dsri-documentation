@@ -24,10 +24,10 @@ hub:
   command: []
   concurrentSpawnLimit: 64
   config:
-    Authenticator:
     JupyterHub:
       admin_access: true
       authenticator_class: dummy
+#    Authenticator:
 #      admin_users:
 #        - admin
 #      allowed_users:
