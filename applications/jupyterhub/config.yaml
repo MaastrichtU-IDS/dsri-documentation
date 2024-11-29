@@ -1,0 +1,526 @@
+cull:
+  adminUsers: true
+  concurrency: 10
+  enabled: true
+  every: 600
+  maxAge: 0
+  removeNamedServers: false
+  timeout: 3600
+  users: false
+custom: {}
+debug:
+  enabled: false
+enabled: null
+fullnameOverride: ''
+global:
+  safeToShowValues: false
+hub:
+  activeServerLimit: null
+  allowNamedServers: false
+  annotations: {}
+  args: []
+  authenticatePrometheus: null
+  baseUrl: /
+  command: []
+  concurrentSpawnLimit: 64
+  config:
+    Authenticator:
+    JupyterHub:
+      admin_access: true
+      authenticator_class: dummy
+#      admin_users:
+#        - admin
+#      allowed_users:
+#        - user1
+#    DummyAuthenticator:
+#      password: a-shared-secret-password
+#    JupyterHub:
+#      authenticator_class: dummy
+#    GitHubOAuthenticator:
+#      client_id: your-client-id
+#      client_secret: your-client-secret
+#      oauth_callback_url: https://<route name>-<project name>.apps.dsri2.unimaas.nl/hub/oauth_callback
+#    JupyterHub:
+#      authenticator_class: github
+  consecutiveFailureLimit: 5
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    runAsGroup: 1000860000
+    runAsUser: 1000860000
+  cookieSecret: null
+  db:
+    password: null
+    pvc:
+      accessModes:
+        - ReadWriteOnce
+      annotations: {}
+      selector: {}
+      storage: 1Gi
+      storageClassName: null
+      subPath: null
+    type: sqlite-pvc
+    upgrade: null
+    url: null
+  deploymentStrategy:
+    type: Recreate
+  existingSecret: null
+  extraConfig: {}
+  extraContainers: []
+  extraEnv: {}
+  extraFiles: {}
+  extraPodSpec: {}
+  extraVolumeMounts: []
+  extraVolumes: []
+  image:
+    name: quay.io/jupyterhub/k8s-hub
+    pullPolicy: null
+    pullSecrets: []
+    tag: 3.3.8
+  initContainers: []
+  labels: {}
+  lifecycle: {}
+  livenessProbe:
+    enabled: true
+    failureThreshold: 30
+    initialDelaySeconds: 300
+    periodSeconds: 10
+    timeoutSeconds: 3
+  loadRoles: {}
+  namedServerLimitPerUser: null
+  networkPolicy:
+    allowedIngressPorts: []
+    egress: []
+    egressAllowRules:
+      cloudMetadataServer: true
+      dnsPortsCloudMetadataServer: true
+      dnsPortsKubeSystemNamespace: true
+      dnsPortsPrivateIPs: true
+      nonPrivateIPs: true
+      privateIPs: true
+    enabled: false
+    ingress: []
+    interNamespaceAccessLabels: ignore
+  nodeSelector: {}
+  pdb:
+    enabled: false
+    maxUnavailable: null
+    minAvailable: 1
+  podSecurityContext:
+    fsGroup: 1000860000
+  readinessProbe:
+    enabled: true
+    failureThreshold: 1000
+    initialDelaySeconds: 0
+    periodSeconds: 2
+    timeoutSeconds: 1
+  redirectToServer: null
+  resources: {}
+  revisionHistoryLimit: null
+  service:
+    annotations: {}
+    extraPorts: []
+    loadBalancerIP: null
+    ports:
+      nodePort: null
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: null
+  services: {}
+  shutdownOnLogout: null
+  templatePaths: []
+  templateVars: {}
+  tolerations: []
+imagePullSecret:
+  automaticReferenceInjection: true
+  create: false
+  email: null
+  password: null
+  registry: null
+  username: null
+imagePullSecrets: []
+ingress:
+  annotations: {}
+  enabled: false
+  hosts: []
+  ingressClassName: null
+  pathSuffix: null
+  pathType: Prefix
+  tls: []
+nameOverride: null
+prePuller:
+  annotations: {}
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    runAsGroup: 1000860001
+    runAsUser: 1000860001
+  continuous:
+    enabled: true
+  extraImages: {}
+  extraTolerations: []
+  hook:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      runAsGroup: 1000860001
+      runAsUser: 1000860001
+    enabled: true
+    image:
+      name: quay.io/jupyterhub/k8s-image-awaiter
+      pullPolicy: null
+      pullSecrets: []
+      tag: 3.3.8
+    nodeSelector: {}
+    podSchedulingWaitDuration: 10
+    pullOnlyOnChanges: true
+    resources: {}
+    serviceAccount:
+      annotations: {}
+      create: true
+      name: null
+    tolerations: []
+  labels: {}
+  pause:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      runAsGroup: 1000860001
+      runAsUser: 1000860001
+    image:
+      name: registry.k8s.io/pause
+      pullPolicy: null
+      pullSecrets: []
+      tag: '3.9'
+  pullProfileListImages: true
+  resources: {}
+  revisionHistoryLimit: null
+proxy:
+  annotations: {}
+  chp:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      runAsGroup: 1000860001
+      runAsUser: 1000860001
+    defaultTarget: null
+    errorTarget: null
+    extraCommandLineFlags: []
+    extraEnv: {}
+    extraPodSpec: {}
+    image:
+      name: quay.io/jupyterhub/configurable-http-proxy
+      pullPolicy: null
+      pullSecrets: []
+      tag: 4.6.1
+    livenessProbe:
+      enabled: true
+      failureThreshold: 30
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 3
+    networkPolicy:
+      allowedIngressPorts:
+        - http
+        - https
+      egress: []
+      egressAllowRules:
+        cloudMetadataServer: true
+        dnsPortsCloudMetadataServer: true
+        dnsPortsKubeSystemNamespace: true
+        dnsPortsPrivateIPs: true
+        nonPrivateIPs: true
+        privateIPs: true
+      enabled: false
+      ingress: []
+      interNamespaceAccessLabels: ignore
+    nodeSelector: {}
+    pdb:
+      enabled: false
+      maxUnavailable: null
+      minAvailable: 1
+    readinessProbe:
+      enabled: true
+      failureThreshold: 1000
+      initialDelaySeconds: 0
+      periodSeconds: 2
+      timeoutSeconds: 1
+    resources: {}
+    revisionHistoryLimit: null
+    tolerations: []
+  deploymentStrategy:
+    rollingUpdate: null
+    type: Recreate
+  https:
+    enabled: false
+    hosts: []
+    letsencrypt:
+      acmeServer: 'https://acme-v02.api.letsencrypt.org/directory'
+      contactEmail: null
+    manual:
+      cert: null
+      key: null
+    secret:
+      crt: tls.crt
+      key: tls.key
+      name: null
+    type: letsencrypt
+  labels: {}
+  secretSync:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      runAsGroup: 1000860001
+      runAsUser: 1000860001
+    image:
+      name: quay.io/jupyterhub/k8s-secret-sync
+      pullPolicy: null
+      pullSecrets: []
+      tag: 3.3.8
+    resources: {}
+  secretToken: null
+  service:
+    annotations: {}
+    disableHttpPort: false
+    extraPorts: []
+    labels: {}
+    loadBalancerIP: null
+    loadBalancerSourceRanges: []
+    nodePorts:
+      http: null
+      https: null
+    type: LoadBalancer
+  traefik:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      runAsGroup: 1000860001
+      runAsUser: 1000860001
+    extraDynamicConfig: {}
+    extraEnv: {}
+    extraInitContainers: []
+    extraPodSpec: {}
+    extraPorts: []
+    extraStaticConfig: {}
+    extraVolumeMounts: []
+    extraVolumes: []
+    hsts:
+      includeSubdomains: false
+      maxAge: 15724800
+      preload: false
+    image:
+      name: traefik
+      pullPolicy: null
+      pullSecrets: []
+      tag: v2.11.0
+    labels: {}
+    networkPolicy:
+      allowedIngressPorts:
+        - http
+        - https
+      egress: []
+      egressAllowRules:
+        cloudMetadataServer: true
+        dnsPortsCloudMetadataServer: true
+        dnsPortsKubeSystemNamespace: true
+        dnsPortsPrivateIPs: true
+        nonPrivateIPs: true
+        privateIPs: true
+      enabled: false
+      ingress: []
+      interNamespaceAccessLabels: ignore
+    nodeSelector: {}
+    pdb:
+      enabled: false
+      maxUnavailable: null
+      minAvailable: 1
+    resources: {}
+    revisionHistoryLimit: null
+    serviceAccount:
+      annotations: {}
+      create: true
+      name: null
+    tolerations: []
+rbac:
+  create: true
+scheduling:
+  corePods:
+    nodeAffinity:
+      matchNodePurpose: prefer
+    tolerations:
+      - effect: NoSchedule
+        key: hub.jupyter.org/dedicated
+        operator: Equal
+        value: core
+      - effect: NoSchedule
+        key: hub.jupyter.org_dedicated
+        operator: Equal
+        value: core
+  podPriority:
+    defaultPriority: 0
+    enabled: false
+    globalDefault: false
+    imagePullerPriority: -5
+    userPlaceholderPriority: -10
+  userPlaceholder:
+    annotations: {}
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      runAsGroup: 1000860001
+      runAsUser: 1000860001
+    enabled: true
+    image:
+      name: registry.k8s.io/pause
+      pullPolicy: null
+      pullSecrets: []
+      tag: '3.9'
+    labels: {}
+    replicas: 0
+    resources: {}
+    revisionHistoryLimit: null
+  userPods:
+    nodeAffinity:
+      matchNodePurpose: prefer
+    tolerations:
+      - effect: NoSchedule
+        key: hub.jupyter.org/dedicated
+        operator: Equal
+        value: user
+      - effect: NoSchedule
+        key: hub.jupyter.org_dedicated
+        operator: Equal
+        value: user
+  userScheduler:
+    annotations: {}
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      runAsGroup: 1000860001
+      runAsUser: 1000860001
+    enabled: true
+    extraPodSpec: {}
+    image:
+      name: registry.k8s.io/kube-scheduler
+      pullPolicy: null
+      pullSecrets: []
+      tag: v1.26.15
+    labels: {}
+    logLevel: 4
+    nodeSelector: {}
+    pdb:
+      enabled: true
+      maxUnavailable: 1
+      minAvailable: null
+    pluginConfig:
+      - args:
+          scoringStrategy:
+            resources:
+              - name: cpu
+                weight: 1
+              - name: memory
+                weight: 1
+            type: MostAllocated
+        name: NodeResourcesFit
+    plugins:
+      score:
+        disabled:
+          - name: NodeResourcesBalancedAllocation
+          - name: NodeAffinity
+          - name: InterPodAffinity
+          - name: NodeResourcesFit
+          - name: ImageLocality
+        enabled:
+          - name: NodeAffinity
+            weight: 14631
+          - name: InterPodAffinity
+            weight: 1331
+          - name: NodeResourcesFit
+            weight: 121
+          - name: ImageLocality
+            weight: 11
+    replicas: 2
+    resources: {}
+    revisionHistoryLimit: null
+    serviceAccount:
+      annotations: {}
+      create: true
+      name: null
+    tolerations: []
+singleuser:
+  allowPrivilegeEscalation: false
+  cloudMetadata:
+    blockWithIptables: false
+    ip: 169.254.169.254
+  cmd: jupyterhub-singleuser
+  cpu:
+    guarantee: null
+    limit: null
+  defaultUrl: null
+  events: true
+  extraAnnotations: {}
+  extraContainers: []
+  extraEnv: {}
+  extraFiles: {}
+  extraLabels:
+    hub.jupyter.org/network-access-hub: 'true'
+  extraNodeAffinity:
+    preferred: []
+    required: []
+  extraPodAffinity:
+    preferred: []
+    required: []
+  extraPodAntiAffinity:
+    preferred: []
+    required: []
+  extraPodConfig: {}
+  extraResource:
+    guarantees: {}
+    limits: {}
+  extraTolerations: []
+  fsGid: 100
+  image:
+    name: quay.io/jupyterhub/k8s-singleuser-sample
+    pullPolicy: null
+    pullSecrets: []
+    tag: 3.3.8
+  initContainers: []
+  lifecycleHooks: {}
+  memory:
+    guarantee: 1G
+    limit: null
+  networkPolicy:
+    allowedIngressPorts: []
+    egress: []
+    egressAllowRules:
+      cloudMetadataServer: false
+      dnsPortsCloudMetadataServer: true
+      dnsPortsKubeSystemNamespace: true
+      dnsPortsPrivateIPs: true
+      nonPrivateIPs: true
+      privateIPs: false
+    enabled: false
+    ingress: []
+    interNamespaceAccessLabels: ignore
+  networkTools:
+    image:
+      name: quay.io/jupyterhub/k8s-network-tools
+      pullPolicy: null
+      pullSecrets: []
+      tag: 3.3.8
+    resources: {}
+  nodeSelector: {}
+  podNameTemplate: null
+  profileList: []
+  serviceAccountName: null
+  startTimeout: 300
+  storage:
+    capacity: 2Gi
+    dynamic:
+      pvcNameTemplate: 'claim-{username}{servername}'
+      storageAccessModes:
+        - ReadWriteOnce
+      storageClass: null
+      volumeNameTemplate: 'volume-{username}{servername}'
+    extraLabels: {}
+    extraVolumeMounts: []
+    extraVolumes: []
+    homeMountPath: /home/jovyan
+    static:
+      pvcName: null
+      subPath: '{username}'
+    type: dynamic
+  uid: 1000
