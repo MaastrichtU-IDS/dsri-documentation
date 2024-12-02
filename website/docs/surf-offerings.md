@@ -1,7 +1,9 @@
 ---
 id: surf-offerings
-title: SURF's Digital Services for Research and Development
+title: SURF Offerings
 ---
+## SURF's Digital Services for Research and Development
+
 ## What is SURF?
 
 SURF is the ICT cooperative for Dutch education and research institutions. As a collaborative organization, SURF’s members—its owners—work together to deliver top-tier digital services, address complex innovation challenges, and exchange valuable knowledge.
