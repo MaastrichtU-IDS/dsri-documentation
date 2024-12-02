@@ -1,7 +1,9 @@
 ---
 id: speeding-tensorflow-dl
-title: Speeding up Tensorflow based deep learning pipelines
+title: Tensorflow Optimization
 ---
+## 🔶 Speeding up Tensorflow based deep learning pipelines
+
 The amount of resources that you have is not nearly as important as using them to their maximum potential. It’s all about doing more with less.In this write up, we discuss optimizations related to data preparation, data reading, data augmentation,training, and inference. 
 
 ## A possible checklist for speeding up your deep learning pipeline in Tensorflow? 
