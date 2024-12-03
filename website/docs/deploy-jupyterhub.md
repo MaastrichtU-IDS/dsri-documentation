@@ -11,7 +11,7 @@ Deploying JupyterHub is still experimental, and it can be a bit tricky to config
 
 :::
 
-## Installing the Helm Chart repository
+## Installing the Helm Chart repository 
 
 After you have created a project you can start with installing the JupyterHub Helm Chart. If you do not have access to DSRI or created a project yet, and you need to find out how, please refer to our [documentation.](https://dsri.maastrichtuniversity.nl/docs/)
 
@@ -56,8 +56,12 @@ At the moment the latest -and only- version which is supported by DSRI is versio
 
 #
 
+:::warning
+
 Download the preconfigured `config.yaml` from our [GitHub repository](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/applications/jupyterhub).
 The default config that is provided by JupyterHub will not work. Certain things need to be changed for a working deployment. We have done this for you for version 3.3.8!
+
+:::
 
 ### Installing the Helm Chart
 
