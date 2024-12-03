@@ -226,7 +226,7 @@ Feel free to [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/
 
 #
 
-## Deploying JupyrerHub using the Command Line Interface (CLI) 🪐
+## Deploying JupyterHub using the Command Line Interface (CLI) 🪐
 ### Installing the Helm Chart repository
 
 After you have created a project you can start with installing the JupyterHub Helm Chart. If you do not have access to DSRI or created a project yet, and you need to find out how, please refer to our [documentation.](https://dsri.maastrichtuniversity.nl/docs/)
