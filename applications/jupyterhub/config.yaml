@@ -391,7 +391,7 @@ scheduling:
       allowPrivilegeEscalation: false
       runAsGroup: 1000860001
       runAsUser: 1000860001
-    enabled: true
+    enabled: false
     extraPodSpec: {}
     image:
       name: registry.k8s.io/kube-scheduler
