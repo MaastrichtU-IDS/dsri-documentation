@@ -1,13 +1,13 @@
 import time
-from typing import List, Optional
 
 from api import gpus, users
 from api.automated_tasks import backup_database, check_gpu_bookings
-from fastapi import APIRouter, FastAPI, Request, Response
+from api.config import settings
+from api.database import init_db
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 from fastapi_utils.tasks import repeat_at, repeat_every
-from pydantic import BaseModel, Field
 
 # Waiting for MySQL to start
 time.sleep(7)
@@ -15,7 +15,7 @@ time.sleep(7)
 api_router = APIRouter()
 api_router.include_router(users.router, prefix="/user", tags=["Users"])
 api_router.include_router(gpus.router, prefix="/gpu", tags=["GPUs"])
-# api_router.include_router(gpus.router, prefix="/gpu", tags=["GPUs"])
+
 
 app = FastAPI(
     title='Manage DSRI users and GPU scheduling',
@@ -28,29 +28,34 @@ app = FastAPI(
         "url": "https://opensource.org/licenses/MIT"
     },
     contact = {
-        "name": "Vincent Emonet",
-        "email": "vincent.emonet@gmail.com",
-        "url": "https://github.com/vemonet",
+        "name": "DSRI support team",
+        "email": "DSRI-SUPPORT-L@maastrichtuniversity.nl",
+        "url": "https://github.com/MaastrichtU-IDS/dsri-documentation",
     },
 )
-
 app.include_router(api_router)
 
-# @repeat_every(seconds=60 * 60 * 24)  # 1 day
-# Note: internal time in the container is 2 hours earlier than Central European Time
-# Everyday at 09:00
-@app.on_event("startup")
-@repeat_at(cron='0 7 * * *')
-def daily_checks() -> None:
-    check_gpu_bookings()
 
 
-# @repeat_every(seconds=60 * 60 * 24 * 7)  # 7 days
-# At 09:00 on Monday and Thursday
 @app.on_event("startup")
-@repeat_at(cron='0 7 * * 1,4')
-def weekly_backup() -> None:
-    backup_database()
+def create_db() -> None:
+    init_db()
+
+
+if settings.ENABLE_CRON:
+    # Everyday at 09:00
+    @app.on_event("startup")
+    @repeat_at(cron='0 9 * * *')
+    def daily_checks() -> None:
+        check_gpu_bookings()
+
+    # At 09:00 on Monday and Thursday
+    @app.on_event("startup")
+    @repeat_at(cron='0 9 * * 1,4')
+    def weekly_backup() -> None:
+        backup_database()
+
+    # @repeat_every(seconds=60 * 60 * 24 * 7)  # 7 days
 
 
 app.add_middleware(

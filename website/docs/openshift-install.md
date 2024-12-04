@@ -54,7 +54,7 @@ Or manually download the program and add it to your path:
    1. Open the Control Panel, and click on **System**
    2. Click on **Advance system settings** on the left or open the **Advance** tab of *System Properties.* 
    3. Click the button labeled **Environment Variables...** at the bottom. 
-   4. Look for the option in the **User variables** section for **Path**.
+   4. Look for the option **Path** in either the **User variables** section (for the current user) or the **System variables** section (for all users on the system).
 
 <img class="screenshot" src="/img/OC_Path.png" alt="Set OC Path" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
 
@@ -72,13 +72,19 @@ See the [official documentation to install the client](https://docs.okd.io/lates
 
 ## Login in the terminal with `oc`
 
-To use the `oc` Command Line Interface, you will need to authenticate to the [DSRI](https://console-openshift-console.apps.dsri2.unimaas.nl/console) in you terminal (edit it to use your username):
+To use the `oc` Command Line Interface, you will need to authenticate to the [DSRI](https://console-openshift-console.apps.dsri2.unimaas.nl/console) in your terminal:
+
+:::warning PASSWORD NOT SUPPORTED
+
+Authentication to the `oc` Command Line Interface using your password is not supported. 
+
+:::
 
 ```bash
-oc login https://api.dsri2.unimaas.nl:6443 -u Your.Username
+oc login --token=<token>
 ```
 
-Otherwise try to use the token provided by the Web UI:
+The token is provided by the Web UI:
 
 1. Go to the [DSRI web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console).
 

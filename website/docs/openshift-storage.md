@@ -9,7 +9,7 @@ Different storages can be used when running services on the DSRI:
 
 ⚡ **Dynamic storage**:  automatically create a persistent storage when starting an application. Can also be created in the OpenShift web UI, using the `dynamic-maprfs` Storage Class.
 
-🗄️ **Persistent storage**:  a persistent storage can be created by the DSRI team for a persistent storage of the data. [Contact the DSRI team](/help) to request a persistent storage. 
+🗄️ **Persistent storage**:  You can use a persistent storage volume to store data. Please see the Create the Persistent Storage section. You can do this yourself. Please keep in mind that there are no backups made of data on DSRI. 
 
 :::caution Storage per project
 
@@ -90,6 +90,24 @@ On the **Topology** page select your application,
 You can try above method if you want to connect **more applications to the same storage**
 
 :::
+
+### Expand existing Persistent Storage
+
+1. Switch to the **Administrator** view
+
+2. Go to the **Project** panel 
+
+3. Select your project
+
+4. Expand the **Storage** panel then go to the **Persistent Volume Claim** panel
+
+5. Click on the three dots (⋮) next to the **Persistent Volume Claim** you want to expand.
+ 
+6. Click on **Expand PVC** in the menu.
+
+7. Enter the size you want to expand your PVC with.
+
+8. Hit **Expand**. It can take upto 2 minutes before your PVC is expanded.
 
 ### Use the dynamic storage
 

@@ -2,26 +2,23 @@ version: "3"
 
 services:
 
+  # In dev we can use 1 container for the API and CRON job
   api:
     ports:
       - 8000:80
+    environment:
+      - ENABLE_CRON=true
     volumes:
       - ./server/api:/app/api
-      # - ./server/cron:/app/cron
-      # - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
       - ./backup:/backup
-    # command: cron -f && uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
     command: uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
-
-  # cronjob:
-  #   volumes:
-  #     - ./server/api:/app/api
-  #     - ./server/cron:/app/cron
-  #     - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
-  #     - ./backup:/backup
 
 
   gpu-calendar:
+    ports:
+      - 8001:80
+
+  gpu-booking:
     ports:
       - 8001:80
 
@@ -36,13 +33,12 @@ services:
 
   phpmyadmin:
     ports:
-      - 8080:80
+      - 8002:80
 
 
-  # server:
-  #   build: server
-  #   ports:
-  #     - 4000:4000
+  # cronjob:
   #   volumes:
-  #     - ./server:/app
-  #   command: yarn dev
+  #     - ./server/api:/app/api
+  #     - ./server/cron:/app/cron
+  #     - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
+  #     - ./backup:/backup

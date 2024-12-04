@@ -77,7 +77,10 @@ function GpuBooking() {
     if (event.target.id === 'email') {
       // Email validation
       let errorMessages = state.errorMessages
-      if (!event.target.value.match(/^[a-zA-Z0-9\.-_]+@(?:student.)?maastrichtuniversity.nl$/)) {
+      if (!event.target.value.match(
+          /^[a-zA-Z0-9\._-]+@(?:student.)?maastrichtuniversity.nl$/
+          // /^[a-zA-Z0-9\.-_]+@(?:student.)?maastrichtuniversity.nl$/
+        )) {
         errorMessages['email'] = 'Provide your email, must end with @maastrichtuniversity.nl or @student.maastrichtuniversity.nl'
         updateState({ errorMessages: errorMessages})
       } else {
@@ -277,8 +280,8 @@ function GpuBooking() {
   // }
   const getGpuColor: any = (gpuCount: any) => {
     let color = 'success' // Green
-    if (gpuCount > 3) color = 'warning' // Orange
-    if (gpuCount > 5) color = 'error' // Red
+    if (gpuCount > 5) color = 'warning' // Orange
+    if (gpuCount > 7) color = 'error' // Red
     return color
   }
   
@@ -288,11 +291,14 @@ function GpuBooking() {
     return (
       <>
       {dayIsBooked && 
-        <div style={{cursor: 'not-allowed'}}>
-          <span style={{color: '#b0bec5', pointerEvents: 'none', cursor: 'not-allowed'}}>
-            {format(day, "d")}
-          </span>
-        </div>
+        <Badge badgeContent={booking['gpus'].length} color={getGpuColor(booking['gpus'].length)}
+            style={{right: -3,top: 0,padding: '0 4px'}}>
+          <div style={{cursor: 'not-allowed'}}>
+            <span style={{color: '#b0bec5', pointerEvents: 'none', cursor: 'not-allowed'}}>
+              {format(day, "d")}
+            </span>
+          </div>
+        </Badge>
       }
       {!dayIsBooked && booking['gpus'].length > 0 &&
         <Tooltip title={'GPUs booked: ' + booking['gpus'].join(', ')}>
@@ -326,10 +332,10 @@ function GpuBooking() {
           </h1>
 
           <p style={{marginTop: '10px'}}>
-            Once you booked a GPU, you will receive an email with more informations, and the GPU will be enabled in your DSRI project for the period requested. You can book a GPU for a maximum of 4 weeks.
+            Once you booked a GPU, you will receive an email with more information, and the GPU will be enabled in your DSRI project for the period requested. You can book a GPU for a maximum of 7 days.
           </p>
           <p style={{marginBottom: '40px'}}>
-            The DSRI has 8 GPUs, the number in the badge on a date indicates the number of GPUs already booked this day, and greyed out days are already fully booked.
+            The DSRI has 7 GPUs, the number in the badge on a date indicates the number of GPUs already booked this day, and greyed out days are already fully booked.
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -446,8 +452,8 @@ function GpuBooking() {
                 ⚠️&nbsp;&nbsp;{state.errorMessage}
               </Paper>
               <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
-                ✔️&nbsp;&nbsp;GPU requested successfully, you will receive emails with more informations to use the GPU on the DSRI once your booking starts.
-                {/* ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email, or Slack message, with more informations to use the GPU on the DSRI the day your booking starts (if you don't get a message, directly contact Vincent Emonet on Slack). */}
+                ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email with more information to use the GPU on the DSRI once your booking starts.
+                {/* ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email, or Slack message, with more information to use the GPU on the DSRI the day your booking starts (if you don't get a message, directly contact Vincent Emonet on Slack). */}
               </Paper>
             </Box>
 

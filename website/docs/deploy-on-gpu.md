@@ -41,7 +41,7 @@ You can easily deploy your GPU workspace from the DSRI catalog:
 1. Go to the [DSRI Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog): Click on **Add to Project**, then **Browse Catalog**
 2. Search the catalog for  "GPU", and make sure the Template checkbox is enabled
 3. Choose the template: **JupyterLab on GPU**
-4. Follow the instructions to create the template in the DSRI web UI, all informations about the images you can use are provided there. The most notable is the base image you want to use for your workspace (`cuda`, `tensorflow` or `pytorch`)
+4. Follow the instructions to create the template in the DSRI web UI, all information about the images you can use are provided there. The most notable is the base image you want to use for your workspace (`cuda`, `tensorflow` or `pytorch`)
 
 Access the workspace from the route created (the small arrow at the top right of your application bubble in the Topology page).
 
@@ -51,7 +51,7 @@ You can now add your code and data in the persistent folder to be fully prepared
 
 You can install dependencies with `apt-get`, `conda` or `pip`. We recommend your to use scripts stored in the persistent folder to easily install all your requirements, so you can reinstall them when we enable the GPU, as it restarts the workspace.
 
-For more informations on how to use `conda`/`mamba` to install new dependencies or complete environment (useful if you need to use a different version of python than the one installed by default) checkout [this page](/docs/deploy-jupyter#%EF%B8%8F-manage-dependencies-with-conda). 
+For more information on how to use `conda`/`mamba` to install new dependencies or complete environment (useful if you need to use a different version of python than the one installed by default) checkout [this page](/docs/deploy-jupyter#%EF%B8%8F-manage-dependencies-with-conda). 
 
 ⚠️ We recommend you to also try and debug your code on small sample using the CPU before getting the GPU, this way you will be able to directly start long running task when you get the GPU, instead of losing time debugging your code (it's probably not going to work on the first try, you know it).
 
@@ -65,10 +65,28 @@ Use the **`/workspace/persistent` folder**, which is the JupyterLab workspace, t
 
 ## Enable the GPU
 
-You will receive an email when the GPU has been enabled in your project. You can then update your deployment to use the GPUs using this command (our deployment name is `jupyterlab-gpu` in those 2 examples, change it to yours if it is different)
+You will receive an email when the GPU has been enabled in your project. You can then update your deployment to use the GPUs using either the `oc` command-line tool, or by editing the deployment configuration from the web UI
+
+* **With the Command Line Interface**, run the following command from the terminal of your laptop after having installed the `oc` command-line tool.
+
+We use `jupyterlab-gpu` as deployment name is  in the example, change it to yours if it is different.
 
 ```bash
 oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
+```
+
+* Or **through the web UI**
+
+In the **Topology** view click on the circle representing your GPU application, then click on the **Actions** button in the top right of the screen, and click on **Edit Deployment Config** at the bottom of the list
+
+In the Deployment Config text editor, hit `ctrl + f` to search for "**resources**". You should see a line `- resources: {}` under `containers:`. You need to change this line to the following to enable GPU in your application (and make sure the indentation match the rest of the file):
+
+```yaml
+        - resources:
+            requests:
+              nvidia.com/gpu: 1
+            limits:
+              nvidia.com/gpu: 1
 ```
 
 Then wait for the pod to restart, or start it if it was stopped.
@@ -78,6 +96,15 @@ You can use the following command in the terminal of your container on the DSRI 
 ```bash
 nvidia-smi
 ```
+
+:::info Windows
+
+When using above command with the oc client on windows you might receive an error like: 
+error: unable to parse "'[{op:": yaml: found unexpected end of stream
+
+This is because the single quotation mark on windows is handled differently. Try replacing the single quotation marks in the command with double quotation marks and the command should work.
+
+:::
 
 ## Disable the GPU
 

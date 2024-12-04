@@ -5,7 +5,7 @@ title: Libraries for Machine Learning
 
 :::caution Work in progress
 
-This page is in development, feel free to [edit it](https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/tools-machine-learning.md) to add more informations.
+This page is in development, feel free to [edit it](https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/docs/tools-machine-learning.md) to add more information.
 
 :::
 

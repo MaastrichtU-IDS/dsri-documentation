@@ -18,8 +18,8 @@ import 'chart.js/auto';
 
 // Resolve environment variables:
 declare var process : { env: { API_URL: string } }
-const apiUrl: string = (process.env.API_URL as string) || 'http://localhost:8000';
-// const apiUrl: string = (process.env.API_URL as string) || 'https://api.dsri.maastrichtuniversity.nl';
+const apiUrl: string = (process.env.API_URL as string) || 'https://api.dsri.maastrichtuniversity.nl';
+// const apiUrl: string = (process.env.API_URL as string) || 'http://localhost:8000';
 
 const features = [
   {
@@ -103,7 +103,7 @@ function Home() {
     const deptUsersArray = []
     const deptLabelArray = []
     Object.keys(stats).map((dept: string) => {
-      if (stats[dept]['users'] > 3) {
+      if (stats[dept]['users'] > 1) {
         deptUsersArray.push(stats[dept]['users'])
         deptLabelArray.push(dept)
       }
@@ -187,6 +187,7 @@ function Home() {
   const departmentsList = [
     {id: 'BIGCAT', label: 'Department of Bioinformatics'},
     {id: 'DKE', label: 'Department of Knowledge Engineering'},
+    {id: 'FASOS', label: 'Faculty of Arts and Social Sciences'},
     {id: 'FHML', label: 'Faculty of Health, Medicine and Life Sciences'},
     {id: 'FSE', label: 'Faculty of Science and Engineering'},
     {id: 'GWFP', label: 'Gravitational Waves and Fundamental Physics'},
@@ -318,7 +319,7 @@ function Home() {
 
 
   React.useEffect(() => {
-    axios.get(apiUrl + '/user/stats', 
+    axios.get(apiUrl + '/user/stats',
       {
         headers: {
           'Content-Type': 'application/json',
@@ -340,7 +341,7 @@ function Home() {
 
 
   return (
-    <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University"> 
+    <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University">
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
@@ -389,7 +390,7 @@ function Home() {
             </Grid>
             <Grid item xs={1} sm={3}></Grid>
             <Grid item xs={10} sm={6} style={{ textAlign: 'right' }}>
-              <Line data={state.timelineChart['data']} 
+              <Line data={state.timelineChart['data']}
                 options={state.timelineChart['options']}
               />
             </Grid>
@@ -399,7 +400,7 @@ function Home() {
               <Typography variant='h6'>
                 Users per affiliation
               </Typography>
-              <Pie data={state.usersDeptPie['data']} 
+              <Pie data={state.usersDeptPie['data']}
                 options={state.usersDeptPie['options']}
                 // style={{margin: '30px'}}
                 plugins={[
@@ -411,7 +412,7 @@ function Home() {
               <Typography variant='h6'>
                 Users per project types
               </Typography>
-              <Bar data={state.projectTypesPie['data']} 
+              <Bar data={state.projectTypesPie['data']}
                 options={state.projectTypesPie['options']}
                 plugins={[
                   ChartDataLabels,

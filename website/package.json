@@ -4,9 +4,9 @@
   "homepage": "https://dsri.maastrichtuniversity.nl",
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "API_URL=http://localhost:8000 docusaurus start",
-    "dev": "API_URL=https://api.dsri.maastrichtuniversity.nl docusaurus start",
-    "build": "docusaurus build",
+    "dev": "API_URL=http://localhost:8000 docusaurus start",
+    "start": "API_URL=https://api.dsri.maastrichtuniversity.nl docusaurus start",
+    "build": "API_URL=https://api.dsri.maastrichtuniversity.nl docusaurus build",
     "clear": "docusaurus clear",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -14,11 +14,12 @@
   },
   "devDependencies": {
     "@types/node": "^17.0.9",
+    "react-native-dotenv": "^3.4.11",
     "remarkable-extlink": "^1.1.0"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-beta.17",
-    "@docusaurus/preset-classic": "^2.0.0-beta.17",
+    "@docusaurus/core": "^2.1.0",
+    "@docusaurus/preset-classic": "^2.1.0",
     "@easyops-cn/docusaurus-search-local": "^0.23.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",

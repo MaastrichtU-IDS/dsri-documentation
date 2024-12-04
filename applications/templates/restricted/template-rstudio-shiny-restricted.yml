@@ -231,9 +231,12 @@ objects:
     replicas: 1
     template:
       metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: rstudio
       spec:
+        runtimeClassName: selinux
         #nodeSelector:
         #  dsri.unimaas.nl/cpu: 'true'
         volumes:

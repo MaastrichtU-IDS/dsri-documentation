@@ -66,6 +66,18 @@ Just do the inverse:
 oc cp <pod_ID>:<path_to_copy> <local_destination>
 ```
 
+### Download data from SURFdrive
+
+You can download data from your SURFdrive to your pod by creating a public link to the file:
+
+1. Go to the file in SURFdrive you'd like to share
+2. Click share and the create public link
+3. Fill in a name for the public link (like DSRI). The name does not matter much, but it can help you keep track of the goal of the public link.
+4. Click copy to clipboard
+5. Visit link in browser and copy the direct URL displayed on that page.
+6. Use the direct URL you just copied to download the file using either wget or curl (e.g. "wget https://surfdrive.surf.nl/files/index.php/s/5mFwyAKj4UexlJb/download")
+7. Revoke link in the SURFdrive portal
+
 ## Synchronizes files with `oc rsync`
 
 If you have a lot of large files and/or they are updated regularly, you can use `rsync` as it synchronizes the files if they already exist, preventing duplication and making synchronization faster.  You can also see the progress with `rsync` which you cannot with `cp`. And if the upload is stopped for any reason `rsync` should pick it up from where it stopped (instead of restarting from scratch like `oc cp` does)

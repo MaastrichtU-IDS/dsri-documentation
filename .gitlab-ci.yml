@@ -1,5 +1,7 @@
 image: node:8
 
+# Not used
+
 before_script:
   - cd website
   - npm install

@@ -101,10 +101,13 @@ objects:
       deploymentconfig: "${APPLICATION_NAME}"
     template:
       metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
           deploymentconfig: "${APPLICATION_NAME}"
       spec:
+        runtimeClassName: selinux
         serviceAccountName: anyuid
         #nodeSelector:
         # dsri.unimaas.nl/cpu: 'true'
@@ -120,6 +123,13 @@ objects:
           ports:
           - containerPort: 8787
             protocol: TCP
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+            requests:
+              cpu: '4'
+              memory: 32Gi
           # resources:
           #   limits:
           #     cpu: '64'

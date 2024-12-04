@@ -1,33 +1,47 @@
 import datetime
-import os
+import logging
 
+from api.config import settings
 from kubernetes import client
 from openshift.dynamic import DynamicClient
 from openshift.helper.userpassauth import OCPLoginConfiguration
 
+## Instantiate logging utility
+log = logging.getLogger("uvicorn.error")
+log.propagate = False
+log.setLevel(logging.INFO)
+console_handler = logging.StreamHandler()
+formatter = logging.Formatter(
+    "%(asctime)s %(levelname)s: [%(module)s:%(funcName)s] %(message)s"
+)
+console_handler.setFormatter(formatter)
+log.addHandler(console_handler)
 
-def log(msg)-> None:
-    msg = '[' + str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S")) + '] ' + str(msg)
-    print(msg)
+## You can also ask more details like line number:
+# "%(asctime)s - %(module)s - %(funcName)s - line:%(lineno)d - %(levelname)s - %(message)s"
+## You can also export logs to a file
+# fh = logging.FileHandler(filename='./server.log')
+# fh.setFormatter(formatter)
+# logger.addHandler(fh)
 
 
-# https://github.com/openshift/openshift-restclient-python
+## Login to the OpenShift cluster using https://github.com/openshift/openshift-restclient-python
 def oc_login():
-    cluster_user = os.getenv('CLUSTER_USER')
-    cluster_password = os.getenv('CLUSTER_PASSWORD')
-    cluster_url = 'https://api.dsri2.unimaas.nl:6443'
-    # os.system(f"oc login {cluster_url} --insecure-skip-tls-verify -u {cluster_user} -p {cluster_password}")
-
-    kubeConfig = OCPLoginConfiguration(ocp_username=cluster_user, ocp_password=cluster_password)
-    kubeConfig.host = cluster_url
+    """Login to the OpenShift cluster"""
+    kubeConfig = OCPLoginConfiguration(
+        # api_key=settings.CLUSTER_API_KEY
+        # ocp_username=settings.CLUSTER_USER,
+        # ocp_password=settings.CLUSTER_PASSWORD
+    )
+    kubeConfig.api_key = {"authorization": "Bearer " + settings.CLUSTER_API_KEY}
+    kubeConfig.host = settings.CLUSTER_URL
     kubeConfig.verify_ssl = False
-    # kubeConfig.ssl_ca_cert = '/app/dsri.pem' # use a certificate bundle for the TLS validation
-    
+
     # Retrieve the auth token
-    kubeConfig.get_token()
+    # kubeConfig.get_token()
     # print('Auth token: {0}'.format(kubeConfig.api_key))
     # print('Token expires: {0}'.format(kubeConfig.api_key_expires))
-    
+
     k8s_client = client.ApiClient(kubeConfig)
     dyn_client = DynamicClient(k8s_client)
 

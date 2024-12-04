@@ -7,7 +7,7 @@ This page will help you to start a workspace to run your code and experiments on
 
 ## Introduction to containers
 
-Anything running in DSRI needs to be running in a docker container. Docker containers are lightweight Virtual Machines, you can see them as a clean minimalist Linux computers with only what you need to run your programs installed. This allows you to completely control the environment where your code runs, and avoid conflicts.
+Anything running in DSRI needs to be running in a docker container. Docker containers are namespaces that share the kernel on a linux system, you can see them as a clean minimalist Linux computers with only what you need to run your programs installed. This allows you to completely control the environment where your code runs, and avoid conflicts.
 
 When running experiments we can start from existing images that have been already published for popular data science applications with a web interface. You can use, for example, JupyterLab when running python, RStudio when running R, or VisualStudio Code if you prefer.
 
@@ -21,9 +21,9 @@ We prepared generic Docker images for data science workspaces with your favorite
 
 1. Login to the DSRI dashboard
 2. Select your project, or create one with a meaningful short name representing your project, e.g. `workspace-yourname`
-3. Go to the **+Add** page, and select to add **From Catalog**
+3. Go to the **+Add** page, and select to add **From Developer Catalog => All services**
 
-<img src="/img/screenshot_access_catalog.png" alt="Access catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
+<img src="/img/screenshot_access_catalog_manu17112024.png" alt="Access catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 4. Search for templates corresponding to the application you want to deploy among the one described below (make sure the filter for templates is properly checked). 
 
@@ -123,6 +123,24 @@ On the **Topology** page click on the down arrow ⬇️ next to the number of po
 You can then restart the pod by clicking the up arrow ⬆️
 
 Note that starting more than 1 pod will not increase the amount of resources you have access to, most of the time it will only waste resources and might ends up in weird behavior on your side. The web UI will randomly assign you to 1 of the pod started when you access it. This only works for clusters with multiple workers, such as Apache Flink and Spark. Or if you connect directly to each pod with the terminal to run different processes.
+
+## Start your application
+
+When you try to access your workspace and you encounter the page below, usually this indicates that your pod is not running. For example, this will be the case if you stopped your pod, or if there was maintenance on the cluster.
+
+<img src="/img/screenshot_application_unavailable.png" alt="Screenshot of page that says Application is not available" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+To start the pod, go to the **Topology** page, and click on the up arrow ⬆️ next to the number of pods deployed. Make sure you scale it to 1. Scaling it to more than 1 will not increase the amount of resources you have access to, most of the time it will only waste resources and causes weird behavior on your side.
+
+<img src="/img/screenshot_scaledown_pod.png" alt="Scale down pod" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+:::caution Do not waste resources
+
+Please only scale up resources you're using, and scale down when you're not using them anymore. Consuming resources consumes unnecessary power and might prevent other users from using the DSRI.
+
+:::
+
+
 
 ## Optional: define a docker image
 

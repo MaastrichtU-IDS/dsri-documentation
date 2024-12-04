@@ -2,18 +2,19 @@ import os
 from datetime import datetime, timedelta
 from typing import List, Optional
 
+from api.database import engine
 from api.notifications import post_msg_to_slack, send_email
 from fastapi import APIRouter, Body, FastAPI, Request, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import validator
-from sqlmodel import Field, Session, SQLModel, create_engine, select
-
-# from api.notifications import post_msg_to_slack
+from sqlmodel import Field, Session, SQLModel, select
 
 
-NUMBER_OF_GPUS = 8
-MAX_BOOK_DAYS = 30
+NUMBER_OF_GPUS = 7
+MAX_BOOK_DAYS = 7
+
+router = APIRouter()
 
 
 class CreateBooking(SQLModel, table=False):
@@ -33,15 +34,11 @@ class GpuBooking(CreateBooking, table=True):
     gpu_id: Optional[int] = Field(primary_key=True)
     created_at: datetime = datetime.now()
 
-engine = create_engine(os.getenv('SQL_URL'))
-SQLModel.metadata.create_all(engine)
-router = APIRouter()
-
 
 @router.get("/reservations", name="Get the list of Reservations for the DSRI GPUs",
     description="List of reservations for the DSRI GPUs",
     response_model=List[dict],
-)            
+)
 def get_gpu_reservations() -> List[dict]:
     with Session(engine) as session:
         statement = select(GpuBooking)
@@ -49,14 +46,14 @@ def get_gpu_reservations() -> List[dict]:
         reservations = []
         for resa in results:
             resa = jsonable_encoder(resa)
-            # Dont return user email and project ID for privacy 
+            # Dont return user email and project ID for privacy
             del resa['user_email']
             del resa['project_id']
             reservations.append(resa)
     return JSONResponse(reservations)
 
 
-# Get a dict with all days with GPUs booked 
+# Get a dict with all days with GPUs booked
 def get_booked_days() -> dict:
     with Session(engine) as session:
         statement = select(GpuBooking)
@@ -82,7 +79,7 @@ def get_booked_days() -> dict:
 @router.get("/booked-days", name="Get days when DSRI GPUs are booked",
     description="Dict of days, with which GPUs are booked for each day, and if the day is fully booked",
     response_model=dict,
-)            
+)
 def get_gpu_booked_days() -> dict:
     booked_days = get_booked_days()
     return JSONResponse(booked_days)
@@ -91,7 +88,7 @@ def get_gpu_booked_days() -> dict:
 @router.post("/request", name="Request a DSRI GPU for a period",
     description="Request a DSRI GPU for a period, this will check if any GPU are available for the requested period",
     response_model=dict,
-)            
+)
 def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     # Generate GPU ID depending on availability
     booked_days = get_booked_days()
@@ -125,7 +122,7 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
         if str(gpu_id) in booked_gpus:
             gpu_id += 1
         else:
-            break;
+            break
     if gpu_id > NUMBER_OF_GPUS:
         return JSONResponse({'errorMessage': 'No GPU available for the dates provided. You need to choose a period were a GPU is continually available. Check the detailed view of the GPU schedule.'})
 

@@ -3,35 +3,6 @@ id: guide-known-issues
 title: Known Issues
 ---
 
-## Pod mysteriously not restarting
-
-If your pod is not restarting for a mysterious reason then it might be due to too long file and folder paths.
-
-It is an error brought to you by RedHat's SELinux, where your pod will fail to restart if you have a too long nested file path on the persistent volume (yes those types of error still exist in 2022!).
-
-This issue should be fixed in the next version of OpenShift. But before we get it: be careful as some applications, such as snakemake, have a tendency to create folders with really long name which can trigger this problem. Try to use the ephemeral storage in this case to work around the issue (and copy only the code, data and results to the persistent folder). 
-
-If you need to recover files from those persistent volumes the workaround for now is to set a `nodeSelector` label on the `deployment config` of your application. Using this label your pods will be able to start again:
-
-```
-oc patch dc <name-of-the-deployment-config> -p '{"spec":{"template":{"spec":{"nodeSelector":{"dsri.unimaas.nl/2022workaround":"true"}}}}}'
-```
-
-Finding out the name of the `deployent config` can be done either via the webinterface or by commandline. To show all deployment configs in your project:
-
-```
-oc get dc
-```
-
-```
-NAME         REVISION   DESIRED   CURRENT   TRIGGERED BY
-jupyterlab   1          1         1         config,image(jupyterlab:latest)
-matlab       1          1         1         config,image(matlab:latest)
-ubuntu       2          1         1         config,image(ubuntu:latest)
-```
-
-To check your deployment config name via the web ui, go to the `topology` page in the developer view and note the name next to `DC` in blue under your pod.
-
 ## Cannot access your data in the persistent folder
 
 Sometimes you cannot access anymore the data you put in the persistent folder of your container. It can be due to a node going down, if the persistent volume your pod is connected to is on this node, then it cannot access it anymore.
@@ -39,6 +10,32 @@ Sometimes you cannot access anymore the data you put in the persistent folder of
 You can easily fix this issue by restarting the pod of your application, it will make it properly connect to resources on nodes that are up.
 
 To restart the pod, go in topology, click on your application, go to the details tab, and decrease the pod count to 0, then put it back up to 1.
+
+## Large volumes
+
+:::warning Pod or Deployment will not start
+You could run into a following message in the **Events** tab that looks similar to this
+
+```
+Error: kubelet may be retrying requests that are timing out in CRI-O due to system load. Currently at stage container volume configuration: context deadline exceeded: error reserving ctr name
+```
+
+:::
+
+The issue above will occur if you are using a **large persistent volume**. It can be resolved by adding the following to your Deployment(Config):
+```
+spec:
+  template:
+    metadata:
+      annotations:
+        io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+    spec:
+      runtimeClassName: selinux
+```
+Take note of the **indentation** and the place in the file!
+
+An example of this can be found here:
+<img class="screenshot" src="/img/screenshot_large_volume_issue.png" alt="Storage" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
 
 ## DockerHub pull limitations
 
@@ -54,7 +51,7 @@ error: update acceptor rejected my-app-1: pods for rc 'my-project/my-app-1' took
 Then check for the application ImageStream in **Build** > **Images**, and you might see this for your application image:
 
 ```
-Internal error occurred: toomanyrequests: You have reached your pull rate limit. 
+Internal error occurred: toomanyrequests: You have reached your pull rate limit.
 You may increase the limit by authenticating and upgrading: https://www.docker.com/increase-rate-limit.
 ```
 
@@ -84,12 +81,12 @@ Follow those instructions on your laptop:
 
 1. [Login to the GitHub Container Registry](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-publish-image#login-to-github-container-registry) with `docker login`.
 
-2. Pull the docker image from 
+2. Pull the docker image from
 
    ```bash
    docker pull myorg/myimage:latest
    ```
-
+git@github.com:MaastrichtU-IDS/dsri-documentation.gitgit@github.com:MaastrichtU-IDS/dsri-documentation.gitgit@github.com:MaastrichtU-IDS/dsri-documentation.git
 3. Change its tag
 
    ```bash
@@ -184,7 +181,7 @@ bash
 
 3. After that use git command like **`git pull` or `git push`**, it asked me for username and password. applying valid username and password and git command working.
 
-##### Windows: 
+##### Windows:
 
 1. Go to Windows **Credential Manager**. This is done in a EN-US Windows by pressing the Windows Key and typing 'credential'. In other localized Windows variants you need to use the localized term.
 
@@ -194,7 +191,7 @@ bash
 
 2. Edit the git entry under Windows Credentials, replacing old password with the new one.
 
-##### Mac: 
+##### Mac:
 
 1. cmd+space and type "KeyChain Access",
 
@@ -209,10 +206,10 @@ bash
 
 :::warning Spot the issue
 
-If you get 403 forbidden issue while try to upload folders / files or creating new folder / file 
+If you get 403 forbidden issue while try to upload folders / files or creating new folder / file
 
 ```
-403 forbidden 
+403 forbidden
 ```
 
 :::

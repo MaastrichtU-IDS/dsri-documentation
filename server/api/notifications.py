@@ -7,10 +7,10 @@ from email.mime.text import MIMEText
 import requests
 
 
-# To post to Slack, create an app with a bot, and get its bot token: https://api.slack.com/apps 
+# To post to Slack, create an app with a bot, and get its bot token: https://api.slack.com/apps
 # Bot tokens access scope: chat:write chat:write.customize
 def post_msg_to_slack(text):
-    print('📬️ Sending a Slack message')
+    # print('📬️ Sending a Slack message')
     data = {
         "channel": os.getenv('SLACK_CHANNEL'),
         "text": text,
@@ -21,8 +21,8 @@ def post_msg_to_slack(text):
     print(str(os.getenv('SLACK_BOT_TOKEN')))
     try:
         return requests.post(
-            'https://slack.com/api/chat.postMessage', 
-            json.dumps(data), 
+            'https://slack.com/api/chat.postMessage',
+            json.dumps(data),
             headers={
                 'Authorization': 'Bearer ' + str(os.getenv('SLACK_BOT_TOKEN')),
                 'Content-type': 'application/json; charset=utf-8'
@@ -40,12 +40,9 @@ The DSRI team at Maastricht University"""
 
 ## Send an email with UM smtp server (require VPN connection)
 # https://kb.icts.maastrichtuniversity.nl/display/ISM/E-mail+-+Universal+UM+email+server+names
-def send_email(msg, to, fromaddr="vincent.emonet@maastrichtuniversity.nl", subject="📀 DSRI GPU bookings"):
-    # fromaddr = f"{os.getenv('CLUSTER_USER')}@maastrichtuniversity.nl"
-    # fromaddr = 'DSRI-SUPPORT-L@maastrichtuniversity.nl'
-    
+def send_email(msg, to, fromaddr="DSRI-SUPPORT-L@maastrichtuniversity.nl", subject="📀 DSRI GPU bookings"):
     toaddrs  = [to]
-    print(f"📬️ Sending an email from {fromaddr} to {toaddrs}")
+    # print(f"📬️ Sending an email from {fromaddr} to {toaddrs}")
 
     # Create message container - the correct MIME type is multipart/alternative.
     email = MIMEMultipart('alternative')
@@ -74,16 +71,10 @@ def send_email(msg, to, fromaddr="vincent.emonet@maastrichtuniversity.nl", subje
 
     try :
         smtp = smtplib.SMTP(host='smtp.maastrichtuniversity.nl', port=25)
-        # identify ourselves to smtp client
-        # smtp.ehlo()
-        # smtp.starttls()
-        # smtp.set_debuglevel(False)
-        # smtp.login(os.getenv('CLUSTER_USER'), os.getenv('CLUSTER_PASSWORD'))
-        
+
         smtp.sendmail(fromaddr, toaddrs, email.as_string())
         smtp.quit()
         # print('✅ Email sent')
     except Exception as e:
-        print('Error sending the email')
-        print(e)
+        print(f'Error sending the email: {e}')
 

@@ -76,7 +76,7 @@ module.exports={
           "path": "blog"
         },
         "theme": {
-          "customCss": "../src/css/customTheme.css"
+          "customCss": "./src/css/customTheme.css"
         }
       }
     ]
@@ -99,12 +99,19 @@ module.exports={
     ],
   ],
   "themeConfig": {
-    "hideableSidebar": true,
-    // "announcementBar": {
-    //   "id": 'supportus',
-    //   "content":
-    //     '⭐️ If you like the DSRI, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/MaastrichtU-IDS/dsri-documentation">GitHub</a>! ⭐️',
-    // },
+    docs: {
+      sidebar: {
+        hideable: true,
+      }
+    },
+    //announcementBar: {
+    //  id: 'support_us',
+    //  content:
+    //    '🔨 <b>Maintenance</b> will be performed on the DSRI <b>from the 22 to the 30 of October</b>, please make sure your data is backed up outside the DSRI before this date 🔨',
+    //  backgroundColor: '#fdd835',
+      // textColor: '#091E42',
+      // isCloseable: false,
+    //},
     "prism": {
       "additionalLanguages": ['powershell'],
       // "additionalLanguages": ['powershell', 'dockerfile'],
@@ -136,6 +143,11 @@ module.exports={
           "label": "GPU calendar",
           "position": "left"
         },
+         {
+          "to": "/contact",
+          "label": "Contact",
+          "position": "left"
+        },
         {
           "to": "/acknowledgement",
           "label": "Acknowledgement",
@@ -152,7 +164,7 @@ module.exports={
     "image": "img/undraw_online.svg",
     "footer": {
       "links": [],
-      "copyright": "Copyright © 2021 <a href='https://maastrichtuniversity.nl/ids' target='_blank' rel='noopener noreferrer'>Institute of Data Science</a> at Maastricht University",
+      "copyright": `Copyright © ${new Date().getFullYear()} <a href='https://library.maastrichtuniversity.nl/' target='_blank' rel='noopener noreferrer'>University Library</a> at Maastricht University`,
       "logo": {
         "src": "img/favicon.ico",
         "href": "https://maastrichtuniversity.nl/"

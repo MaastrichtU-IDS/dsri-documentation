@@ -128,10 +128,13 @@ objects:
       deploymentconfig: "${APPLICATION_NAME}"
     template:
       metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
           deploymentconfig: "${APPLICATION_NAME}"
       spec:
+        runtimeClassName: selinux
         serviceAccountName: anyuid
         #nodeSelector:
         # dsri.unimaas.nl/cpu: 'true'
@@ -146,6 +149,8 @@ objects:
           - containerPort: 5900
             protocol: TCP
           env:
+          - name: MOZ_DISABLE_CONTENT_SANDBOX
+            value: "1"
           - name: HTTP_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -163,6 +168,13 @@ objects:
                 name: "${APPLICATION_NAME}"
           # - name: USER
           #   value: "${USERNAME}"
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+            requests:
+              cpu: '2'
+              memory: 4Gi
           # resources:
           #   limits:
           #     cpu: '64'
