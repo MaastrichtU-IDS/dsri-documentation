@@ -7299,8 +7299,7 @@ acorn-walk@^8.0.0:
   integrity sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA==
 
 
-
-acorn@^8.0.4, acorn@^8.4.1, acorn@^8.5.0:
+acorn@^8.0.4, acorn@^8.5.0:
 
   version "8.7.0"
 
@@ -10387,23 +10386,6 @@ enhanced-resolve@^5.10.0:
     tapable "^2.2.0"
 
 
-
-enhanced-resolve@^5.9.2:
-
-  version "5.9.2"
-
-  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.9.2.tgz#0224dcd6a43389ebfb2d55efee517e5466772dd9"
-
-  integrity sha512-GIm3fQfwLJ8YZx2smuHpBKkXC1yOk+OBEmKckVyL0i/ea8mqDEykK3ld5dgH1QYPNyT/lIllxV2LULnxCHaHkA==
-
-  dependencies:
-
-    graceful-fs "^4.2.4"
-
-    tapable "^2.2.0"
-
-
-
 entities@^2.0.0:
 
   version "2.2.0"
@@ -12983,17 +12965,6 @@ json-buffer@3.0.0:
   resolved "https://registry.yarnpkg.com/json-buffer/-/json-buffer-3.0.0.tgz#5b1f397afc75d677bde8bcfc0e47e1f9a3d9a898"
 
   integrity sha1-Wx85evx11ne96Lz8Dkfh+aPZqJg=
-
-
-
-json-parse-better-errors@^1.0.2:
-
-  version "1.0.2"
-
-  resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
-
-  integrity sha512-mrqyZKfX5EhL7hvqcV6WG1yYjnjeuYDzDhhcAAUrq8Po85NBQBJP+ZDUT75qZQ98IkUoBqdkExkukOU7Ts2wrw==
-
 
 
 json-parse-even-better-errors@^2.3.0, json-parse-even-better-errors@^2.3.1:
@@ -18867,23 +18838,6 @@ wait-on@^6.0.1:
     rxjs "^7.5.4"
 
 
-
-watchpack@^2.3.1:
-
-  version "2.3.1"
-
-  resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-2.3.1.tgz#4200d9447b401156eeca7767ee610f8809bc9d25"
-
-  integrity sha512-x0t0JuydIo8qCNctdDrn1OzH/qDzk2+rdCOC3YzumZ42fiMqmQ7T3xQurykYMhYfHaPHTp4ZxAx2NfUo1K6QaA==
-
-  dependencies:
-
-    glob-to-regexp "^0.4.1"
-
-    graceful-fs "^4.1.2"
-
-
-
 watchpack@^2.4.0:
 
   version "2.4.0"
@@ -19097,7 +19051,6 @@ webpack-sources@^3.2.2, webpack-sources@^3.2.3:
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
 
 
-
 webpack@^5.69.1:
 
   version "5.70.0"
@@ -19165,6 +19118,7 @@ webpack@^5.73.0:
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.74.0.tgz#02a5dac19a17e0bb47093f2be67c695102a55980"
 
   integrity sha512-A2InDwnhhGN4LYctJj6M1JEaGL7Luj6LOmyBHjcI8529cm5p6VXiTIW2sn6ffvEAKmveLzvu4jrihwXtPojlAA==
+
 
   dependencies:
 
