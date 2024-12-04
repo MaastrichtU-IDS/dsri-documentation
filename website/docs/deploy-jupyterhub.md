@@ -108,6 +108,14 @@ To set up an organization and team, please refer to GitHub's [documentation.](ht
 #
 
 ## Deploying JupyterHub using the DSRI website 🪐
+
+:::warning Before you begin download the config.yaml
+
+Download the preconfigured `config.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config.yaml).
+The default config that is provided by JupyterHub will not work. 
+
+:::
+
 ### Installing the JupyterHub Helm Chart repository
 
 After you have created a project you can start with installing the JupyterHub Helm Chart. If you do not have access to DSRI or created a project yet, and you need to find out how, please refer to our [documentation.](https://dsri.maastrichtuniversity.nl/docs/)
@@ -174,6 +182,15 @@ And choose the right Chart version: `3.3.8` (1). Note that this is an important 
 
 <img src="/img/jupyterhub-helm-chart-install-five.png" alt="" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
+#
+
+Now, change the config with the content of the `config.yaml` you have downloaded from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config.yaml).
+Copy the content of the `config.yaml` and paste it in the highlighted box to replace the old with the new config. Click `Create` to install the JupyterHub Helm Chart.
+
+<img src="/img/jupyterhub-helm-chart-install-six.png" alt="" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+#
+
 ### Creating a secured route
 
 Create a secured route, with TLS edge termination.
@@ -212,7 +229,7 @@ Now, click the `Actions` drop down menu, and choose `Upgrade` (1).
 
 #
 
-In the box -highlighted in the picutre below- you can make changes to the config.yaml. After you have made your changes click `Upgrade` and your upgraded JupyterHub Helm Chart Release will automatically be deployed.
+In the box -highlighted in the picutre below- you can make changes to the config.yaml. After you have made your changes, click `Upgrade` and your upgraded JupyterHub Helm Chart Release will automatically be deployed.
 
 <img src="/img/jupyterhub-helm-chart-upgrade-chart-three.png" alt="" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
@@ -227,7 +244,15 @@ Feel free to [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/
 #
 
 ## Deploying JupyterHub using the Command Line Interface (CLI) 🪐
-### Installing the Helm Chart repository
+
+:::warning Before you begin download the config.yaml
+
+Download the preconfigured `config.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config.yaml).
+The default config that is provided by JupyterHub will not work. 
+
+:::
+
+### Installing the JupyterHub Helm Chart repository
 
 After you have created a project you can start with installing the JupyterHub Helm Chart. If you do not have access to DSRI or created a project yet, and you need to find out how, please refer to our [documentation.](https://dsri.maastrichtuniversity.nl/docs/)
 
@@ -255,6 +280,8 @@ At the moment the latest -and only- Helm Chart version which is supported by DSR
 :::
 
 #
+
+Make sure you use the right `config.yaml` downloaded from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config.yaml).
 
 Install the Helm Chart using the following command:
 
