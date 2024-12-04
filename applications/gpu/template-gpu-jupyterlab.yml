@@ -180,7 +180,14 @@ objects:
             image: ${IMAGE_NAME}
             imagePullPolicy: ${IMAGE_PULL_POLICY}
             # nvcr.io/nvidia/tensorflow:21.08-tf2-py3
-            resources: {}
+            # resources: {}
+            resources:
+              limits:
+                cpu: '64'
+                memory: 256Gi
+              requests:
+                cpu: '8'
+                memory: 32Gi
               # requests:
               #   nvidia.com/gpu: '${GPU_LIMIT}'
               # limits:

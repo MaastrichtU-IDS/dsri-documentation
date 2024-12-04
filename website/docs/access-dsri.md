@@ -50,13 +50,11 @@ Use your general UM password.
 
 If you do not have access to the DSRI [contact us](mailto:dsri-support-l@maastrichtuniversity.nl).
 
-You will be able to login at **[https://console-openshift-console.apps.dsri2.unimaas.nl](https://console-openshift-console.apps.dsri2.unimaas.nl)** either using:
-
-* The **prefix of your UM email address** with the first letter capitalized, e.g. `Firstname.Lastname` or `F.Lastname`
-* Or your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`
-* If you are a **student**, it will always be your **student ID** at Maastricht University (a.k.a. your I number), e.g. `I6000000`
+You will be able to login at **[https://console-openshift-console.apps.dsri2.unimaas.nl](https://console-openshift-console.apps.dsri2.unimaas.nl)** using the standard maastricht portal upon clicking the login button:
 
 <img src="/img/screenshot_login_screen.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+<img src="/img/screenshot_um_login_screen.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 :::info Command line interface
 

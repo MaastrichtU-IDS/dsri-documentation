@@ -168,6 +168,13 @@ objects:
                 name: "${APPLICATION_NAME}"
           # - name: USER
           #   value: "${USERNAME}"
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+            requests:
+              cpu: '2'
+              memory: 4Gi
           # resources:
           #   limits:
           #     cpu: '64'

@@ -2,6 +2,8 @@
 
 node_modules
 
+gpu-calendar/Dockerfile
+
 lib/core/metadata.js
 lib/core/MetadataBlog.js
 

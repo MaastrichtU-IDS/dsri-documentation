@@ -71,11 +71,6 @@ def send_email(msg, to, fromaddr="DSRI-SUPPORT-L@maastrichtuniversity.nl", subje
 
     try :
         smtp = smtplib.SMTP(host='smtp.maastrichtuniversity.nl', port=25)
-        # "identify" ourselves to smtp client
-        # smtp.ehlo()
-        # smtp.starttls()
-        # smtp.set_debuglevel(False)
-        # smtp.login(os.getenv('CLUSTER_USER'), os.getenv('CLUSTER_PASSWORD'))
 
         smtp.sendmail(fromaddr, toaddrs, email.as_string())
         smtp.quit()
