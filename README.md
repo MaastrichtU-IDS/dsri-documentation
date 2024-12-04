@@ -2,11 +2,11 @@
 
 The documentation website at [dsri.maastrichtuniversity.nl](https://dsri.maastrichtuniversity.nl/) is automatically updated by a [GitHub Action](/actions) at each push to this `master` branch.
 
-## Contribute
+## 📝 Contribute
 
-Contributions are welcome! See the [guidelines to contribute 👨‍💻](https://dsri.maastrichtuniversity.nl/contributing).
+Contributions are welcome! See the [guidelines to contribute to the website](https://dsri.maastrichtuniversity.nl/docs/contribute).
 
-## Edit documentation pages
+### Edit documentation pages
 
 Editing a documentation file is as easy as going to https://github.com/MaastrichtU-IDS/dsri-documentation/edit/master/website/docs/introduction.md.
 
@@ -34,7 +34,7 @@ Open the file `website/docusaurus.config.js` and update the `announcementBar` va
 
 You can comment the `announcementBar` code block when you want to remove the announcement bar.
 
-## Run for development
+## 🧑‍💻 Run for development
 
 ### Just run the website
 
@@ -48,50 +48,80 @@ yarn start
 
 ### Run the full stack
 
-Run the stack with docker-compose:
+To run the full stack including the database and API, we use docker-compose
 
-* API on http://localhost:8000, automatically reloaded on change to the code, with CRON job enabled
-* The GPU calendar on http://localhost:8001
-* Database accessible through phpMyAdmin on http://localhost:8002
+1. Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
+
+   <!-- ```bash
+   DB_PASSWORD=password
+   API_PASSWORD=password
+   CLUSTER_USER=dsri.username
+   CLUSTER_PASSWORD=password
+   SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
+   SLACK_CHANNEL=C03B48CQ3QW
+   ``` -->
+   ```bash
+   DB_PASSWORD=password
+   API_PASSWORD=password
+   CLUSTER_API_KEY=token
+   SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
+   SLACK_CHANNEL=C03B48CQ3QW
+   ```
+
+2. Run the stack:
+
+   * API on http://localhost:8000, automatically reloaded on change to the code, with CRON job enabled
+   * The GPU calendar on http://localhost:8001
+   * Database accessible through phpMyAdmin on http://localhost:8002
+
+   ```bash
+   docker-compose up
+   ```
+
+   > ⚠️ The first time you start the stack you might need to stop and restart the stack once the SQL database has been initialized for the API to properly connect to the database
+
+3. In another terminal, run the website on http://localhost:3000, it will use the local API to display stats:
+
+   ```bash
+   cd website
+   yarn install
+   yarn dev
+   ```
+
+### Update dependencies
+
+Dependabot will automatically create pull requests to update libraries containing a known vulnerability that have been fixed in newer version.
+
+You can also use `yarn` to automatically upgrade packages that can:
 
 ```bash
-docker-compose up
+yarn upgrade
 ```
 
-> ⚠️ The first time you start the stack you will need to stop and restart the stack once the SQL database has been initialized for the API to properly connect to the database
+Alternatively you can also change the packages versions requirements in the `package.json` and run `yarn`
 
-Then, in another terminal, run the website on http://localhost:3000, it will use the local API to display stats:
-
-```bash
-cd website
-yarn install
-yarn dev
-```
-
-## Deploy in production
+## 🚀 Deploy in production
 
 ### Deploy the frontend to GitHub pages
 
 The documentation website at [dsri.maastrichtuniversity.nl](https://dsri.maastrichtuniversity.nl/) is automatically updated by a [GitHub Action](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/actions) at each push to the `master` branch of this repository.
 
-Make sure the `/website/build` directory has been generated before deploying.
-
-```shell
-./publish-github-page.sh
-```
+The GitHub Action will automatically compile the website to HTML in the `gh-page` branch which is served by GitHub Page.
 
 ### Deploy the backend on a server
 
 Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
 
-```
-CLUSTER_USER=user
+```bash
+DB_PASSWORD=password
+API_PASSWORD=password
+CLUSTER_USER=dsri.username
 CLUSTER_PASSWORD=password
 SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
-SLACK_CHANNEL=UQL6BCQJH
+SLACK_CHANNEL=C03B48CQ3QW
 ```
 
-Start the docker-compose in production using jwilder's [nginx-proxy](https://github.com/jwilder/nginx-proxy) and [nip.io](https://nip.io/).
+Start the docker-compose in production using [nginx-proxy](https://github.com/nginx-proxy/nginx-proxy).
 
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
@@ -154,7 +184,7 @@ A CSV backup of the database is generated every week by a CRON job (cf. https://
 
 For reliability reason we choose to export as CSV: open, lightweight, hard to corrupt, and contains all information we need to backup (otherwise we would need to fight with weird backup tools poorly built by lost sysadmins that fails most of the time just to save some useless indexes, which just leads to increased chances of corrupting the data we backup...)
 
-## Markdown tips
+## 💡 Markdown tips
 
 ```markdown
 :::note
@@ -200,7 +230,7 @@ Convert a mkv video to webm (better for direct embedding):
 ffmpeg -i video_dsri_introduction.mkv -c:v libvpx -crf 10 -c:a libvorbis video_dsri_introduction.webm
 ```
 
-## Mermaid sourcecodes
+## 🧜‍♀️ Mermaid sourcecodes
 
 Request access to UM internal servers
 
@@ -223,6 +253,6 @@ sequenceDiagram
     DSRI-team->>+Researcher: UM system accessible from DSRI
 ```
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 Documentation website generated using [Docusaurus](https://docusaurus.io/).

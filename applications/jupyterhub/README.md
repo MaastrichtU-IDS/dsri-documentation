@@ -1,54 +1,37 @@
+Reference documentation: https://z2jh.jupyter.org/en/stable/jupyterhub/installation.html
 
-Deprecated: use Open Data Hub operator to deploy JupyterHub
+For extended documentation on how to install JupyterHub in OpenShift see: https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub/
 
-Steps for deployment on OpenShift in 2017: https://github.com/jupyterhub/helm-chart/issues/26
+## Install the Helm Chart 
 
-Video (2017): https://www.youtube.com/watch?v=buOl6WGa8x4
-
-Latest Helm chart for JupyterHub: https://zero-to-jupyterhub.readthedocs.io/en/latest/jupyterhub/installation.html
-
-## Fix permissions
-
-Fix permissions issues in the project where JupyterHub will be deployed. Make the `default`, `hub` and `user-scheduler` service accounts in this project to accept `anyuid`:
+Add the JupyterHub Helm Chart repository:
 
 ```bash
-oc adm policy add-scc-to-user anyuid -z default -n workspace-vemonet
-oc adm policy add-scc-to-user anyuid -z hub -n workspace-vemonet
-oc adm policy add-scc-to-user anyuid -z user-scheduler -n workspace-vemonet
-```
-
-## Fix Network Policy
-
-The network policy can be defined directly in the values.yaml of the helm chart. But of course, it won't work because people writing Kubernetes app are still trying to figure out how basic templating works. So here's a fix:
-
-```bash
-oc apply -f network-policy.yml
-```
-
-## Install the Helm chart
-
-```bash
-helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+helm repo add jupyterhub https://hub.jupyter.org/helm-chart/
 helm repo update
 ```
 
-## Deploy JupyterHub Helm chart
+## Deploy JupyterHub
 
-Start JupyterHub in the `workspace-vemonet` project:
+At the moment the latest -and only- version that is supported by DSRI is version 3.3.8. Newer versions will not work, and older versions are not tested and/or configured!
 
 ```bash
 helm upgrade --cleanup-on-fail \
   --install jupyterhub jupyterhub/jupyterhub \
-  --version=1.1.3 \
-  --namespace=workspace-vemonet \
+  --version=3.3.8 \
+  --namespace=<NAMESPACE> \
   --values config.yaml
 ```
 
-Forward the service on your http://localhost:8081
+Note that this config.yaml will use dummy authentication, in other words you can fill in whatever user/password combination you would like. **Use this for testing purposes only!!!** Other ways of authentication are in the config.yaml, whereas commented out. For documentation and how to set up other means of authentication please refer to: https://z2jh.jupyter.org/en/stable/administrator/authentication.html
+
+Create a secrured route, with TLS edge termination:
 
 ```bash
-oc port-forward svc/proxy-public 8081:80
+oc create route edge <NAME OF ROUTE> --namespace <NAMESPACE> --service=proxy-public --port=http
 ```
+
+## Remove deployed JupyterHub Helm Chart
 
 Delete it:
 
@@ -56,13 +39,63 @@ Delete it:
 helm uninstall jupyterhub
 ```
 
-## To try 
+## Changes made in config.yaml
 
-cf. https://github.com/jupyterhub/helm-chart/issues/26
+The config.yaml is based on the default config provided by JupyterHub themselves. Changes are necessary to deploy a working JupyterHub Helm Chart.
 
-Grant the `default` service account in the project `edit` access:
+Network policies are disabled, but kept in for reference. Custom network policies are not necessary and conflict with internal OpenShift functionalities.
 
-```bash
-oc policy add-role-to-user edit -z default -n workspace-vemonet
+Changes made in the config.yaml
+
+```
+networkPolicy:
+    # ...
+    enabled: true > false
 ```
 
+```
+fsGroup: 1000 > 1000860000
+```
+
+```
+runAsGroup: 1000 > 1000860000
+runAsUser: 1000 > 1000860000
+```
+
+```
+runAsGroup: 65534 > 1000860001
+runAsUser: 65534 > 1000860001
+```
+
+```
+singleuser:
+  # ...
+  storage:
+    capacity: 10Gi > 2Gi
+```
+
+## Additions made to the config.yaml
+
+```
+hub:
+  # ...
+  config:
+    Authenticator:
+    JupyterHub:
+      admin_access: true
+      authenticator_class: dummy
+#      admin_users:
+#        - admin
+#      allowed_users:
+#        - user1
+#    DummyAuthenticator:
+#      password: a-shared-secret-password
+#    JupyterHub:
+#      authenticator_class: dummy
+#    GitHubOAuthenticator:
+#      client_id: your-client-id
+#      client_secret: your-client-secret
+#      oauth_callback_url: https://<route name>-<project name>.apps.dsri2.unimaas.nl/hub/oauth_callback
+#    JupyterHub:
+#      authenticator_class: github
+```
