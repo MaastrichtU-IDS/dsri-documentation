@@ -13,11 +13,11 @@ Provide a few parameters, and instantiate the template. The DSRI will automatica
 
 <img src="/img/screenshot-deploy-vscode.png" alt="Deploy VSCode" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-:::caution Use Chrome
+<!-- :::caution Use Chrome
 
 Unfortunately, we recommend to **use Google Chrome** web browser as pasting in the terminal (`ctrl + shift + v`) might not work on Firefox
 
-:::
+::: -->
 
 ## Use Git in VSCode
 

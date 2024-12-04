@@ -1,18 +1,17 @@
 version: "3"
 
 services:
-  # Frontend deployed on GitHub Pages by a GitHub Action 
+  # Frontend deployed on GitHub Pages by a GitHub Action
 
   mysql:
     restart: unless-stopped
     image: mariadb:10.3
-    # image: mysql:5.7
-    environment: 
+    environment:
       MYSQL_DATABASE: dsri-db
-      MYSQL_ROOT_PASSWORD: ${PASSWORD-password}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD-password}
       MARIADB_USER: dsri-user
-      MARIADB_PASSWORD: ${PASSWORD-password}
-      MARIADB_ROOT_PASSWORD: ${PASSWORD-password}
+      MARIADB_PASSWORD: ${DB_PASSWORD-password}
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD-password}
     # volumes:
     #   - ./data:/var/lib/mysql
     #   - ./backup:/backup
@@ -23,14 +22,14 @@ services:
     command: --max-allowed-packet=16M
 
   phpmyadmin:
-    # image: phpmyadmin/phpmyadmin
-    image: phpmyadmin/phpmyadmin:5.1
+    image: phpmyadmin/phpmyadmin:latest
+    restart: unless-stopped
     depends_on:
       - mysql
     environment:
-      - PMA_PASSWORD=${PASSWORD-password}
-      - MYSQL_ROOT_PASSWORD=${PASSWORD-password}
-      - MYSQL_PASSWORD=${PASSWORD-password}
+      - PMA_PASSWORD=${DB_PASSWORD-password}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD-password}
+      - MYSQL_PASSWORD=${DB_PASSWORD-password}
       - PMA_HOST=mysql:3306
 
   api:
@@ -40,11 +39,12 @@ services:
       - mysql
       - phpmyadmin
     environment:
-      - SQL_URL=mysql://dsri-user:${PASSWORD-password}@mysql:3306/dsri-db
+      - SQL_URL=mysql://dsri-user:${DB_PASSWORD-password}@mysql:3306/dsri-db
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
       - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
-      - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
-      - CLUSTER_PASSWORD=${CLUSTER_PASSWORD-password}
+      # - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
+      # - CLUSTER_PASSWORD=${CLUSTER_PASSWORD-password}
+      - CLUSTER_API_KEY=${CLUSTER_API_KEY-token}
       - API_PASSWORD=${API_PASSWORD-password}
 
 
@@ -55,8 +55,22 @@ services:
       - mysql
       - phpmyadmin
     environment:
-      - DB_PASSWORD=${PASSWORD-password}
+      - DB_PASSWORD=${DB_PASSWORD-password}
 
+  gpu-booking:
+    build: ./gpu-reservation/docker/php
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - phpmyadmin
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD-password}
+    # Bind the container folder to the host folder env setting
+    volumes:
+      - ${FOLDER_BOOKING_APP}:/var/www/html
+      - ${FOLDER_SAML_CONFIG}:/var/www/simplesamlphp/config
+      - ${FOLDER_SAML_METADATA}:/var/www/simplesamlphp/metadata
+      - ${FOLDER_SAML_CERT}:/var/www/simplesamlphp/cert
 
   # cron:
   #   # Same image as the API
@@ -66,7 +80,7 @@ services:
   #     - mysql
   #     - phpmyadmin
   #   environment:
-  #     - SQL_URL=mysql://dsri-user:${PASSWORD-password}@mysql:3306/dsri-db
+  #     - SQL_URL=mysql://dsri-user:${DB_PASSWORD-password}@mysql:3306/dsri-db
   #     - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
   #     - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
   #   command: /app/cron/start_cron.sh

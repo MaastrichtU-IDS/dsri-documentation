@@ -51,7 +51,7 @@ oc get events
 
 If you cannot figure out the issue by yourself:
 
-1. **Gather relevant informations to help the DSRI team** to solve your issue: URL to the faulty application, which error was shown in the **Events** tab? Or in the **Logs** tab?
+1. **Gather relevant information to help the DSRI team** to solve your issue: URL to the faulty application, which error was shown in the **Events** tab? Or in the **Logs** tab?
 2. Seek help on the `#helpdesk` DSRI Slack channel
 3. Checkout if an issue have already been created for this problem, or create a new one: [https://github.com/MaastrichtU-IDS/dsri-documentation/issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues)
 

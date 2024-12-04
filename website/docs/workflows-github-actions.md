@@ -12,7 +12,7 @@ Here are some of the advantage of GitHub Actions:
 * It provides a good logging system directly available in your repository on GitHub
 * Define triggers (on code push, cron job, manual request), and secrets (such as passwords) easily
 
-For more informations about GitHub Actions workflows, go to https://github.com/features/actions
+For more information about GitHub Actions workflows, go to https://github.com/features/actions
 
 ## Install the chart
 

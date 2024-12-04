@@ -10,10 +10,9 @@ from fastapi.responses import JSONResponse
 from pydantic import validator
 from sqlmodel import Field, Session, SQLModel, select
 
-# from api.notifications import post_msg_to_slack
 
-NUMBER_OF_GPUS = 8
-MAX_BOOK_DAYS = 30
+NUMBER_OF_GPUS = 7
+MAX_BOOK_DAYS = 7
 
 router = APIRouter()
 
@@ -39,7 +38,7 @@ class GpuBooking(CreateBooking, table=True):
 @router.get("/reservations", name="Get the list of Reservations for the DSRI GPUs",
     description="List of reservations for the DSRI GPUs",
     response_model=List[dict],
-)            
+)
 def get_gpu_reservations() -> List[dict]:
     with Session(engine) as session:
         statement = select(GpuBooking)
@@ -47,14 +46,14 @@ def get_gpu_reservations() -> List[dict]:
         reservations = []
         for resa in results:
             resa = jsonable_encoder(resa)
-            # Dont return user email and project ID for privacy 
+            # Dont return user email and project ID for privacy
             del resa['user_email']
             del resa['project_id']
             reservations.append(resa)
     return JSONResponse(reservations)
 
 
-# Get a dict with all days with GPUs booked 
+# Get a dict with all days with GPUs booked
 def get_booked_days() -> dict:
     with Session(engine) as session:
         statement = select(GpuBooking)
@@ -80,7 +79,7 @@ def get_booked_days() -> dict:
 @router.get("/booked-days", name="Get days when DSRI GPUs are booked",
     description="Dict of days, with which GPUs are booked for each day, and if the day is fully booked",
     response_model=dict,
-)            
+)
 def get_gpu_booked_days() -> dict:
     booked_days = get_booked_days()
     return JSONResponse(booked_days)
@@ -89,7 +88,7 @@ def get_gpu_booked_days() -> dict:
 @router.post("/request", name="Request a DSRI GPU for a period",
     description="Request a DSRI GPU for a period, this will check if any GPU are available for the requested period",
     response_model=dict,
-)            
+)
 def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     # Generate GPU ID depending on availability
     booked_days = get_booked_days()

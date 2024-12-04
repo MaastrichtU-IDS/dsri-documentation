@@ -319,7 +319,7 @@ function Home() {
 
 
   React.useEffect(() => {
-    axios.get(apiUrl + '/user/stats', 
+    axios.get(apiUrl + '/user/stats',
       {
         headers: {
           'Content-Type': 'application/json',
@@ -341,7 +341,7 @@ function Home() {
 
 
   return (
-    <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University"> 
+    <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University">
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
@@ -390,7 +390,7 @@ function Home() {
             </Grid>
             <Grid item xs={1} sm={3}></Grid>
             <Grid item xs={10} sm={6} style={{ textAlign: 'right' }}>
-              <Line data={state.timelineChart['data']} 
+              <Line data={state.timelineChart['data']}
                 options={state.timelineChart['options']}
               />
             </Grid>
@@ -400,7 +400,7 @@ function Home() {
               <Typography variant='h6'>
                 Users per affiliation
               </Typography>
-              <Pie data={state.usersDeptPie['data']} 
+              <Pie data={state.usersDeptPie['data']}
                 options={state.usersDeptPie['options']}
                 // style={{margin: '30px'}}
                 plugins={[
@@ -412,7 +412,7 @@ function Home() {
               <Typography variant='h6'>
                 Users per project types
               </Typography>
-              <Bar data={state.projectTypesPie['data']} 
+              <Bar data={state.projectTypesPie['data']}
                 options={state.projectTypesPie['options']}
                 plugins={[
                   ChartDataLabels,

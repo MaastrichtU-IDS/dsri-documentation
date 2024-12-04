@@ -25,7 +25,7 @@ The amount of objects might seems a bit overwhelming at first, but this is what 
 
 First, you need to create your **Template** objects, this will be the main object we will create here as all other objects defined will be deployed by this template. 
 
-In this part we mainly just provide the description and informations that will be shown to users when deploying the application from the DSRI web UI catalog.
+In this part we mainly just provide the description and information that will be shown to users when deploying the application from the DSRI web UI catalog.
 
 ```yaml
 ---

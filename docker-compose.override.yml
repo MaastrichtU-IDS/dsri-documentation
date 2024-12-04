@@ -18,6 +18,10 @@ services:
     ports:
       - 8001:80
 
+  gpu-booking:
+    ports:
+      - 8001:80
+
   mysql:
     volumes:
       - ./data:/var/lib/mysql
