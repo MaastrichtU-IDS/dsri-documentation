@@ -27,5 +27,9 @@ cellprofiler --run
 cellprofiler --run-headless
 ```
 
+:::info Getting Started
 
+🐬 For more information using cell profiler from the command line see [this post](https://carpenter-singh-lab.broadinstitute.org/blog/getting-started-using-cellprofiler-command-line)
+
+:::
 

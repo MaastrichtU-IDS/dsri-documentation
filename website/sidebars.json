@@ -11,14 +11,15 @@
         "collapsed": false,
         "items": [
           "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-database", "deploy-matlab",
-          "deploy-jupyterhub", "deploy-spark", "mpi-jobs", "neuroscience", "catalog-genomics",
+          "deploy-jupyterhub", "dask-cluster", "deploy-spark", "mpi-jobs", "neuroscience", "catalog-genomics",
           "catalog-imaging", "catalog-utilities"
         ]
       }
     ],
-    "Guides": [ "guide-vpn","access-um-servers", "guide-workshop", "increase-process-speed", "guide-known-issues", "project-management", "login-docker-registry", 
-      "openshift-commands", "openshift-storage", "guide-publish-image", 
-      "openshift-delete-objects", "tools-machine-learning", "glossary",
+    "Guides": ["access-um-servers", "checkpointing-ml-training", "dask-tutorial", "guide-known-issues", "guide-publish-image", "guide-vpn", "guide-workshop", "login-docker-registry", 
+      "openshift-commands", "openshift-storage", 
+      "openshift-delete-objects", "project-management", "tools-machine-learning", "glossary",
+
       {
         "type": "category",
         "label": "Workflows",
@@ -28,6 +29,8 @@
         ]
       },
       "contribute"
-    ]
+    ],
+
+     "Miscellaneous": ["enabling-vpn-wsl", "increase-process-speed", "profile-pytorch-code","speeding-tensorflow-dl","surf-offerings" ]
   }
 }

@@ -8,6 +8,10 @@ metadata:
     description: |-
       Start RStudio with the rstudio user which has root permissions (sudo).
 
+      🔑 Default credentials are
+      - login: rstudio
+      - password: $user_password
+
       🐳 Available images with this template:
       bioconductor/bioconductor_docker:devel
       rocker/rstudio
@@ -146,6 +150,13 @@ objects:
             protocol: TCP
           - containerPort: 3838
             protocol: TCP
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+            requests:
+              cpu: '4'
+              memory: 32Gi
           # resources:
           #   limits:
           #     cpu: '64'
@@ -155,7 +166,7 @@ objects:
           #     memory: 4Gi
           volumeMounts:
           - name: data
-            mountPath: "/home/rstudio"
+            mountPath: "/home/rstudio/persistent"
           env:
           - name: USER
             value: "rstudio"

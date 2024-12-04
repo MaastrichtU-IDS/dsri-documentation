@@ -1,0 +1,28 @@
+# A secured route needs to be added to acces JupyterHub via the browser, using a automatically generated URL.
+# Route to proxy-public pod.
+# TLS edge termination.
+# oc create route edge <NAME OF ROUTE> --namespace <NAMESPACE> --service=proxy-public --port=http 
+# https://docs.openshift.com/container-platform/4.14/networking/routes/secured-routes.html
+
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: <NAME OF ROUTE>
+  namespace: <NAMESPACE>
+  labels:
+    app: jupyterhub
+    app.kubernetes.io/managed-by: Helm
+    chart: jupyterhub-3.3.8
+    component: proxy-public
+    heritage: Helm
+    release: jupyterhub
+spec:
+  to:
+    kind: Service
+    name: proxy-public
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: ''
+    destinationCACertificate: ''
+  port:
+    targetPort: http
