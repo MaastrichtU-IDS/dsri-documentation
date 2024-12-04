@@ -13,6 +13,14 @@ Start Ubuntu with the `root` user which has `sudo` permissions to install anythi
 
 You can start the application using the **Ubuntu** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
 
+:::info Login Credentials
+
+Username: **root**
+
+Password: **Template creation password**
+
+:::
+
 This template uses the Ubuntu image hosted on DockerHub, see its documentation at https://hub.docker.com/r/ubuntu
 
 :::info Persistent data folder
@@ -50,6 +58,15 @@ To quickly access it from the terminal you can use the **Terminal** tab in the p
 Start Ubuntu with a web UI accessible via a URL (using VNC). You will be the `root` user which has elevated permissions to install anything via `apt install <package-name>`. Before you install a package run `apt update`. This also solves `E: unable to locate package` and `E: no installation candidate` errors.
 
 You can start the application using the **Ubuntu with web UI** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
+
+:::info Login Credentials
+
+Username: **root**
+
+Password: **Template creation password**
+
+:::
+
 
 This template uses the Docker image defined at https://github.com/fcwu/docker-ubuntu-vnc-desktop
 

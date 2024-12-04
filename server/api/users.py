@@ -64,7 +64,6 @@ def register_user(createUser: CreateUser = Body(...)) -> dict:
     with Session(engine) as session:
         db_user = User.from_orm(createUser)
         # db_user = User.validate(createUser)
-        print(db_user)
         try:
             session.add(db_user)
             session.commit()
@@ -75,21 +74,16 @@ def register_user(createUser: CreateUser = Body(...)) -> dict:
             # Sometime we get "MySQL server has gone away" and we just need to rerun the query
             print(e)
             print('Got "MySQL server has gone away" error, retrying to add the user.')
-            # engine = create_engine(os.getenv('SQL_URL'))
             time.sleep(1)
             return register_user(createUser)
-            # else:
-            #     print('Operational error')
-            #     print(e)
-            #     return JSONResponse({'errorMessage': 'Error creating the user in the database, try again!'})
         except Exception as e:
             print(e)
             return JSONResponse({'errorMessage': f'Error creating the user in the database, please communicate this error message to the DSRI support team to help resolve it: {e}'})
 
 
-    # TODO: add this email to the dsri-allow-login list automatically
+    # TODO: add this email to the dsri-allow-login list automatically?
 
-    print(post_msg_to_slack(f'👤➕ New user: {createUser.email}'))
+    post_msg_to_slack(f'👤➕ New user: {createUser.email}')
     return JSONResponse({'message': f'User {createUser.email} successfully added'})
 
 

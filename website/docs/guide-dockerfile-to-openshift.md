@@ -13,8 +13,9 @@ git clone git@gitlab.maastrichtuniversity.nl:dsri-examples/dockerfile-to-okd.git
 After cloning you now have a local folder containing a Dockerfile and index.html file. Inspect both files.
 
 Login with the openshift client:
+[Authenticate to the OpenShift cluster](/docs/openshift-install) using `oc login` .
 ```shell
-oc login https://console-openshift-console.apps.dsri2.unimaas.nl
+oc login --token=<token>
 ```
 
 Create a new project if you don't have a project yet you can work with (change myproject to a project name of your choice:

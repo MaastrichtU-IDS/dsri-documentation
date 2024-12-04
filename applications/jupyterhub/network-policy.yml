@@ -1,7 +1,11 @@
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
 # https://discourse.jupyter.org/t/kubernetes-api-request-to-the-proxy-failed-with-status-code-599-retrying/8018/9
 # https://docs.openshift.com/container-platform/4.6/networking/network_policy/about-network-policy.html
+# Keep this in as a reference. Branch RCS-45 introduced a new config.yaml which disabled any networkPolicies, thus depracating this file.
+# However, it might be useful in the future, hence keeping it in the repository.
+# oc apply -f network-policy.yml
+
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
 metadata:
   name: allow-same-namespace
 spec:

@@ -11,7 +11,7 @@ Here is an overview of common `oc` commands:
 
 | **Command**                      | **Description**                                              |
 | -------------------------------- | ------------------------------------------------------------ |
-| `oc login <host> -u <user>`      | Login to the DSRI OpenShift cluster in your terminal         |
+| `oc login --token=<token>`      | Login to the DSRI OpenShift cluster in your terminal         |
 | `oc get projects`                | List all available projects                                  |
 | `oc project <project> `          | Switch to project                                            |
 | `oc get pods `                   | Get running pods (a pod can run one or multiple containers for your application) |
