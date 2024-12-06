@@ -111,7 +111,7 @@ Use the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-
 
 [MongoDB](https://www.mongodb.com/) is a general purpose, document-based, distributed database built for modern application developers and for the cloud era. 
 
-Use the **MongoDB** template in the DSRI OpenShift web UI catalog.
+Use the **MongoDB** chart in the DSRI OpenShift web UI catalog.
 
 :::tip Connect to the database
 
@@ -149,10 +149,10 @@ Use the service name as hostname to connect from another pod in the same project
 
 Use the official DockerHub image if you have an enterprise license. Or [build](https://maastrichtu-ids.github.io/dsri-documentation/docs/guide-dockerfile-to-openshift) GraphDB free edition image from [graphdb-docker on GitHub](https://github.com/Ontotext-AD/graphdb-docker).
 
-After copying the `.zip` file in the `graphdb-docker/free-edition` folder, go the `graphdb-docker` folder in your terminal:
+After downloading the `.zip` file from the github to your laptop, unzip it and go the `graphdb-docker-master` folder in your terminal:
 
 ```bash
-cd graphdb-docker
+cd graphdb-docker-master
 ```
 
 Before creating your GraphDB ImageStream, make sure you are in the right project:
@@ -170,7 +170,7 @@ oc new-build --name graphdb --binary
 Build the image on the DSRI and save it in the ImageStream:
 
 ```bash
-oc start-build graphdb --from-dir=free-edition --follow --wait
+oc start-build graphdb --from-dir=. --follow --wait
 ```
 
 You can now use the **Ontotext GraphDB** template to deploy a GraphDB instance on DSRI. 
@@ -183,13 +183,14 @@ Use the service name as hostname to connect from another pod in the same project
 
 :::
 
+<!-- 
 ### AllegroGraph
 
 [AllegroGraph®](https://franz.com/agraph/) is a modern, high-performance, persistent graph database. It supports  SPARQL, RDFS++, and Prolog reasoning from numerous client applications. 
 
 AllegroGraph has not been tested on DSRI yet, but it can be deployed on Kubernetes using Helm, cf. https://www.github.com/franzinc/agraph-examples/tree/master/clustering%2Fkubernetes%2Fmmr%2Fkubernetes-mmr.md
 
-<!-- 
+
 
 ### Blazegraph triplestore
 
