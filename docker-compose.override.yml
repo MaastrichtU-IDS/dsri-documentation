@@ -35,6 +35,10 @@ services:
     ports:
       - 8002:80
 
+  web:
+    volumes:
+      - .:/astuto
+
 
   # cronjob:
   #   volumes:

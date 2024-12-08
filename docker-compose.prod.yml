@@ -73,6 +73,11 @@ services:
       - LETSENCRYPT_HOST=admin.dsri.maastrichtuniversity.nl
       - VIRTUAL_PORT=80
 
+  web:
+    environment:
+      - VIRTUAL_HOST=roadmap.dsri.maastrichtuniversity.nl
+      - LETSENCRYPT_HOST=roadmap.dsri.maastrichtuniversity.nl
+      - VIRTUAL_PORT=80
 
   # https://github.com/nginx-proxy/nginx-proxy
   nginx-proxy:
