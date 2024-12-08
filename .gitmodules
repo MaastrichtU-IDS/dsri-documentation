@@ -1,3 +1,7 @@
 [submodule "gpu-reservation"]
 	path = gpu-reservation
 	url = git@gitlab.maastrichtuniversity.nl:linux-tb/gpu-reservation.git
+
+[submodule "astuto"]
+	path = astuto
+	url = git@github.com:MaastrichtU-Library/astuto.git
