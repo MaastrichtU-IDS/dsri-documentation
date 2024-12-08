@@ -1,0 +1,20 @@
+.likeButtonContainer {
+  @extend
+    .d-flex,
+    .flex-column,
+    .mr-3;
+
+  .likeButton:hover {
+    cursor: pointer;
+    transform: scale(1.15);
+  }
+
+  .likeCountLabel {
+    @extend .mt-2;
+    
+    text-align: center;
+  }
+
+  .likeCountLabel-medium { font-size: 18px; }
+  .likeCountLabel-large { font-size: 22px; }
+}

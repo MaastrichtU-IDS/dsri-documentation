@@ -1,0 +1,29 @@
+.postStatusesList {
+  @extend
+    .p-0,
+    .m-0;
+ 
+  list-style: none;
+  
+  .postStatusEditable {
+    @extend
+      .d-flex,
+      .justify-content-between,
+      .p-3;
+
+    .postStatusEditableActions { @extend .d-flex; }
+  }
+}
+
+.postStatusForm {
+  @extend
+    .d-flex,
+    .flex-grow-1,
+    .m-2;
+
+  column-gap: 8px;
+
+  .postStatusColorInput {
+    flex: 0 1 100px;
+  }
+}

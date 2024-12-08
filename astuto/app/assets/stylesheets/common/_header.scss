@@ -1,0 +1,108 @@
+.header {
+  @extend
+    .navbar,
+    .navbar-expand-md,
+    .navbar-light;
+
+  position: sticky;
+  z-index: 1;
+  top: 0px;
+
+  background-color: white;
+
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgba(0, 0, 0, 0.25);
+
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15), 0 1px 8px rgba(0,0,0,0.15);
+
+  margin-bottom: 1em;
+
+  .brand {
+    @extend .navbar-brand;
+
+    font-size: 18pt;
+    font-weight: 700;
+
+    .logo {
+      @extend
+        .d-inline-block,
+        .align-top,
+        .mr-2;
+
+      height: 36px;
+    }
+  }
+
+  .brandDisabled {
+    pointer-events: none;
+  }
+
+  .navbarToggler {
+    @extend .navbar-toggler;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .boardsNav {
+    @extend
+      .navbar-nav,
+      .mr-auto;
+
+    .nav-item {
+      @extend
+        .badge,
+        .text-uppercase;
+      
+      font-size: 14px;
+      text-align: left;
+
+      a:hover { color: var(--primary-color); }
+      
+      &.active {
+        @extend .badgeLight;
+
+        a { color: var(--primary-color) !important };
+      }
+    }
+
+  }
+
+  .profileNav {
+    @extend
+      .navbar-nav,
+      .ml-auto;
+
+    .profileToggle {
+      @extend
+        .nav-link,
+        .dropdown-toggle;
+
+      &::after { vertical-align: middle; }
+    }
+
+    .fullname {
+      color: var(--astuto-black);
+      vertical-align: middle;
+    }
+  }
+
+  .boards-dropdown {
+    .dropdown-item {
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+  }
+
+  .dropdown-item:active {
+    color: white !important;
+    background-color: var(--primary-color);
+  }
+
+  .dropdown-header {
+    text-transform: uppercase;
+    color: var(--astuto-grey);
+  }
+}

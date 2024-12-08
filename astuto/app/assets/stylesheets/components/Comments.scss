@@ -1,0 +1,123 @@
+.commentsContainer {
+  @extend .mt-2;
+
+  .commentForm {
+    @extend
+      .form-control,
+      .w-100,
+      .p-2,
+      .mr-2;
+
+    height: 80px;
+    min-height: 80px;
+    resize: vertical;
+    
+    border: thin solid grey;
+    border-radius: 4px;
+  }
+
+  .newCommentForm {
+    @extend
+      .d-flex,
+      .flex-column,
+      .mt-4;
+
+    .commentBodyForm {
+      @extend .d-flex;
+    }
+
+    .commentIsUpdateForm {
+      @extend
+        .d-flex,
+        .justify-content-between,
+        .mt-3;
+
+      margin-left: 58px;
+    }
+
+    .currentUserAvatar {
+      @extend
+        .gravatar,
+        .align-self-end,
+        .mr-2;
+    }
+
+    .submitCommentButton {
+      @extend
+        .align-self-end;
+
+      box-sizing: border-box;
+      width: 120px;
+      height: 40px;
+    }
+  }
+
+  .editCommentForm {
+    textarea {
+      @extend .my-2;
+    }
+
+    & > div {
+      @extend
+        .d-flex,
+        .justify-content-between;
+    }
+
+    .editCommentFormActions { @extend .d-flex; }
+  }
+
+  .commentsTitle {
+    @extend
+      .text-secondary,
+      .text-uppercase,
+      .font-weight-lighter,
+      .mt-5,
+      .mb-2;
+  }
+
+  .commentList { @extend .mb-4; }
+
+  .commentList > .commentList {
+    padding-left: 32px;
+  }
+
+  .comment {
+    @extend
+      .mb-2;
+
+    .commentHeader {
+      @extend
+        .d-flex,
+        .align-items-end,
+        .titleText;
+
+      height: 36px;
+
+      .commentAuthor {
+        @extend .ml-2;
+
+        vertical-align: middle;
+      }
+
+      .postUpdateBadge {
+        @extend
+          .badge,
+          .badgeLight,
+          .ml-2;
+      }
+    }
+
+    .commentBody {
+      @extend .my-2;
+
+      p { @extend .my-2; }
+      p:nth-child(1) { @extend .m-0; }
+    }
+
+    .commentFooter {
+      @extend .d-flex;
+
+      font-size: 13px;
+    }
+  }
+}

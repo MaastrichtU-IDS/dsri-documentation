@@ -1,0 +1,47 @@
+services:
+  redis:
+    image: redis:7
+    environment: &redis-env
+      REDIS_URL: redis://redis:6379/0
+      REDIS_PASSWORD: redispassword
+    command: ["/bin/sh", "-c", "redis-server --requirepass \"$${REDIS_PASSWORD}\""]
+    ports:
+      - "6379:6379"
+           
+  db:
+    image: postgres:14.5
+    environment: &db-env
+      POSTGRES_USER: astuto_dsri
+      POSTGRES_PASSWORD: dbpass
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    environment: &web-env
+      <<: [*db-env, *redis-env]
+      ACTIVE_JOB_BACKEND: sidekiq
+      BASE_URL: http://localhost:80
+      SECRET_KEY_BASE: 99A8B5170B658E4FBF2A3DCC30C40C4382F6565D3DD9E5EA9B26515700612AFB
+
+    ports:
+      - "8003:80"
+    depends_on:
+      - redis
+      - db
+
+  sidekiq:
+    image: riggraz/astuto:latest
+    entrypoint: ["bundle", "exec", "sidekiq", "-q", "default", "-q", "mailers", "-e", "development"] # -e can be either "development" or "production"
+    environment:
+      <<: *web-env
+      IS_SIDEKIQ: true
+    depends_on:
+      - redis
+      - db
+
+volumes:
+  dbdata:

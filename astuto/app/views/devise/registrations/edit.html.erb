@@ -1,0 +1,147 @@
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <h2><%= t('common.forms.auth.profile_settings') %></h2>
+
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <% if not current_user.has_set_password? %>
+    <%=
+      react_component(
+        'UserProfile/SetPasswordDialog',
+        {
+          sendSetPasswordInstructionsEndpoint: send_set_password_instructions_path(email: current_user.email),
+          authenticityToken: form_authenticity_token
+        },
+      )
+    %>
+
+    <fieldset disabled="disabled">
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :full_name, t('common.forms.auth.full_name') %>
+    <%= f.text_field :full_name, autocomplete: "full-name", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email, t('common.forms.auth.email') %>
+    <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
+  </div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>
+      <b><%= t('common.forms.auth.waiting_confirmation', email: resource.unconfirmed_email) %></b>
+      <br /><br />
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :password, t('common.forms.auth.password') %>
+    <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+    <small id="passwordEditHelp" class="form-text text-muted">
+      <%= t('common.forms.auth.password_leave_blank_help') %>
+    </small>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password_confirmation, t('common.forms.auth.password_confirmation') %>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+  </div>
+
+  <hr />
+
+  <h3><%= t('common.forms.auth.notifications') %></h3>
+  <br />
+  <div class="form-group">
+    <%= f.label :notifications_enabled, t('activerecord.attributes.user.notifications_enabled') %>
+    &nbsp;
+    <%= f.check_box :notifications_enabled, style: "transform: scale(1.5)" %>
+    <small id="notificationsHelp" class="form-text text-muted">
+      <%= t('common.forms.auth.notifications_enabled_help') %>
+    </small>
+  </div>
+
+  <% if Rails.application.sidekiq_enabled? %>
+    <div class="form-group">
+      <%= f.label :recap_notification_frequency, t('activerecord.attributes.user.recap_notification_frequency') %>
+      <%= f.select :recap_notification_frequency,
+        [
+          [t('common.forms.auth.recap_notification_frequency_never'), "never"],
+          [t('common.forms.auth.recap_notification_frequency_daily'), "daily"],
+          [t('common.forms.auth.recap_notification_frequency_weekly'), "weekly"],
+          [t('common.forms.auth.recap_notification_frequency_monthly'), "monthly"]
+        ],
+        { include_blank: false },
+         class: "form-control" %>
+      <small id="recapNotificationFrequencyHelp" class="form-text text-muted">
+        <%= t('common.forms.auth.recap_notification_frequency_help') %>
+      </small>
+    </div>
+  <% else %>
+    <% if not Rails.application.multi_tenancy? %>
+      <p>You have to <a href="https://docs.astuto.io/deploy-with-sidekiq">enable Sidekiq</a> to receive recap notifications.</p>
+    <% end %>
+  <% end %>
+
+  <hr />
+
+  <div class="form-group">
+    <%= f.label :current_password, t('common.forms.auth.current_password') %>
+    <%= f.password_field :current_password, autocomplete: "current-password", required: true, class: "form-control" %>
+    <small id="currentPasswordHelp" class="form-text text-muted">
+      <%= t('common.forms.auth.current_password_required_help') %>
+    </small>
+  </div>
+
+  <div class="actions">
+    <%= f.submit t('common.forms.auth.update_profile'), class: "btnPrimary btn-block" %>
+  </div>
+
+  <% if not current_user.has_set_password? %>
+    </fieldset>
+  <% end %>
+<% end %>
+
+<% if current_user.moderator? %>
+  <br />
+  <div class="edit_user">
+    <%=
+      react_component(
+        'UserProfile/GenerateApiKeyDialog',
+        {
+          currentApiKey: current_user.api_key.present? ? token_mask(current_user.api_key.token_prefix) : nil,
+          generateApiKeyEndpoint: api_keys_path,
+          authenticityToken: form_authenticity_token
+        },
+      )
+    %>
+  </div>
+<% end %>
+
+<br />
+
+<div class="edit_user">
+  <h3><%= t('common.forms.auth.cancel_account') %></h3>
+  
+  <%= button_to t('common.forms.auth.cancel_account'),
+    registration_path(resource_name),
+    onclick: "return confirm('#{t('common.confirmation')}')",
+    method: :delete,
+    class: "btn btn-danger btn-block" %>
+</div>
+
+<br />
+
+<% if Rails.application.multi_tenancy? && user_signed_in? && current_user.owner? %>
+  <div class="edit_user">
+    <h3>Delete feedback space</h3>
+
+    <p>
+      Deleting the feedback space will also delete all the feedback and users associated with it. This action cannot be undone.
+    </p>
+    <p>
+      If you want to delete the feedback space, please send an email to <a href="mailto:info@astuto.io">info@astuto.io</a> from the email address associated with this feedback space.
+    </p>
+  </div>
+<% end %>
+
+<br />

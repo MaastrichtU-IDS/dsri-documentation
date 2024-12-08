@@ -1,0 +1,22 @@
+.siteSettingsInfo {
+  text-align: center;
+
+  .error {
+    color: red;
+  }
+
+  .warning {
+    color: #fd7e14;
+  }
+}
+
+.siteSettingsInfo.siteSettingsInfoSticky {
+  position: sticky;
+  bottom: 16px;
+  z-index: 100;
+  margin: 0 auto;
+
+  span.warning {
+    margin-bottom: 8px;
+  }
+}

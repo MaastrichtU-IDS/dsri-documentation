@@ -1,0 +1,178 @@
+.boardContainer {
+  @extend .twoColumnsContainer;
+
+  @include media-breakpoint-down(sm) {
+    .postStatusFilterContainer {
+      flex-direction: row !important;
+      flex-wrap: wrap;
+    }
+
+    .postList { width: 100%; }
+  }
+
+  .newPostContainer {
+    background-color: var(--astuto-grey-light);
+    text-align: center;
+
+    .boardTitle {
+      font-size: 25px;
+      font-weight: 600;
+    }
+
+    .boardDescription {
+      @extend .mutedText;
+    }
+
+    .newPostForm {
+      @extend
+        .mt-4,
+        .mb-2;
+
+      #postDescription {
+        height: 100px;
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .form-group-dnf {
+        margin: 0;
+        padding: 0;
+        height: 1px;
+
+        /* honeypot field 1 */
+        #email {
+          visibility: hidden;
+          height: 1px;
+        }
+      }
+
+      /* honeypot field 2 */
+      #name {
+        position: absolute;
+        left: -9999px;
+      }
+    }
+
+    .anonymousFeedbackLink {
+      @extend .my-2;
+    }
+
+    /* style lists */
+    ul {
+      width: fit-content;
+      margin: 0 auto;
+      margin-bottom: 1rem;
+      li {
+        text-align: left;
+        position: relative;
+        left: -8px;
+      }
+    }
+  }
+  
+  .sidebarFilters {
+    @extend .m-0, .p-0;
+  }
+
+  .postStatusListItemContainer {
+    @extend
+      .d-flex,
+      .align-self-stretch;
+  }
+
+  .postStatusListItemLink {
+    @extend
+      .flex-grow-1;
+
+    &:hover { text-decoration: none; }
+  }
+
+  .postStatusListItem {
+    @extend
+      .p-1;
+
+    height: 40px;
+
+    &:hover {
+      filter: brightness(85%);
+      cursor: pointer;
+    }
+
+    span.badge {
+      display: block; font-size: 15px;
+    }
+  }
+
+  .postStatusListItemSelected {
+    filter: brightness(85%);
+  }
+
+  .resetFilter {
+    @extend
+      .flex-grow-0,
+      .flex-shrink-0,
+      .rounded-circle,
+      .align-self-center,
+      .p-0;
+
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+  }
+
+  .dateFilterBox {
+    label { @extend .m-0; }
+    #startDateFilter, #endDateFilter { @extend .mb-1; }
+  }
+
+  .postList {
+    @extend
+      .d-flex,
+      .flex-column,
+      .flex-grow-1;
+  }
+
+  .postListItem {
+    @extend
+      .card3D,
+      .d-flex,
+      .flex-row,
+      .justify-content-start,
+      .mb-3,
+      .p-3;
+
+    min-height: 140px;
+    color: var(--astuto-black);
+
+    @include media-breakpoint-down(sm) {
+      height: auto;
+    }
+
+    &:hover { cursor: pointer; }
+
+    .postContainer {
+      @extend
+        .d-flex,
+        .flex-column,
+        .justify-content-between;
+    }
+  }
+
+  .postTitle {
+    @extend
+      .font-weight-bold,
+      .mb-2;
+  }
+
+  .postDetails {
+    @extend
+      .d-flex,
+      .justify-content-start,
+      .text-uppercase,
+      .mt-2;
+
+    .badge {
+      @extend .mr-2;
+    }
+  }
+}

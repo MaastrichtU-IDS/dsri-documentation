@@ -1,0 +1,15 @@
+<%=
+  react_component(
+    'Board',
+    {
+      board: @board,
+      isLoggedIn: user_signed_in?,
+      isPowerUser: user_signed_in? ? current_user.moderator? : false,
+      currentUserFullName: user_signed_in? ? current_user.full_name_or_email : '',
+      tenantSetting: @tenant_setting,
+      componentRenderedAt: Time.now.to_i,
+      postStatusesToShowInFilter: @post_statuses_to_show_in_filter,
+      authenticityToken: form_authenticity_token
+    }
+  )
+%>
