@@ -4,7 +4,7 @@ $app_title = "DSRI GPU reservation";
 
 //Please fill in the servername, username, password and database
 //mysql settings
-$servername = getenv('DB_HOST') ?: 'localhost';
+$servername = getenv('DB_HOST') ?: 'mysql';
 $dbusername = getenv('DB_USER') ?: 'dsri-user';
 $dbpassword = getenv('DB_PASSWORD');
 $database = getenv('DB_NAME') ?: 'dsri-db';
