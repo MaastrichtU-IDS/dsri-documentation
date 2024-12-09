@@ -21,28 +21,6 @@ See the [official Docker image documentation](https://github.com/rocker-org/rock
 
 :::
 
-## Restricted RStudio with Shiny server
-
-Start a RStudio application, with a complementary Shiny server, using a regular `rstudio` user, **without `sudo` privileges**.
-
-Create the template in your project:
-
-* In the DSRI web UI, go to **+ Add**, then click on **YAML**, add the content of the [template-rstudio-shiny-restricted.yml](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/restricted/template-rstudio-shiny-restricted.yml) file, and validate.
-
-* You can also do it using the terminal:
-
-  ```bash
-  oc apply -f https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/master/applications/templates/restricted/template-rstudio-shiny-restricted.yml
-  ```
-
-Once the template has been created in your project, use the **RStudio with Shiny server** template in the OpenShift web UI catalog. It will automatically create a persistent storage for the data.
-
-:::caution No sudo privileges
-
-You will not have `sudo` privileges in the application.
-
-:::
-
 ## Use Git in RStudio
 
 The fastest way to get started is to use `git` from the terminal, for example to clone a git repository use `git clone`
