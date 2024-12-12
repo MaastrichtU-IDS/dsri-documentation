@@ -197,7 +197,7 @@ services:
       - API_PASSWORD=${API_PASSWORD}
       - ENABLE_CRON=true
     volumes:
-    #  - /data/database/backup:/backup # use this in dev 
+    #  - ./data/database/backup:/backup # use this in dev 
       - /data/database/backup:/backup
     #  - ./server/api:/app/api
     #  - ./server/cron:/app/cron
@@ -231,4 +231,3 @@ volumes:
   vhost:
   html:
   acme:
-  dbdata:
