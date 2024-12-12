@@ -128,8 +128,8 @@ objects:
               cpu: '32'
               memory: 200Gi
             requests:
-              cpu: '4'
-              memory: 32Gi
+              cpu: '2'
+              memory: 4Gi
           # resources:
           #   limits:
           #     cpu: '64'
