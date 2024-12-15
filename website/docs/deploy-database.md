@@ -111,13 +111,45 @@ Use the [ZooKeeper / Apache Drill deployment ](https://github.com/Agirish/drill-
 
 [MongoDB](https://www.mongodb.com/) is a general purpose, document-based, distributed database built for modern application developers and for the cloud era. 
 
-Use the **MongoDB** chart in the DSRI OpenShift web UI catalog.
+**MongoDB** can be deployed via Helm Chart as follows:
 
-:::tip Connect to the database
+1) Install the Helm Client as explained in (https://dsri.maastrichtuniversity.nl/docs/helm)
 
-Use the service name as hostname to connect from another pod in the same project.
+2) Add the Bitnami Helm Repository. Bitnami offers a wide range of Helm charts, and you can add their repository with the following command:
+```bash
+ helm repo add bitnami https://charts.bitnami.com/bitnami
 
-:::
+ helm repo update
+```
+3) you can **deploy MongoDB** as follows:
+```bash
+   helm install my-mongodb bitnami/mongodb
+```
+4) You can connect with **my-mongodb** as follows (within the cluster, for ex; via a terminal session opened at https://console-openshift-console.apps.dsri2.unimaas.nl/):
+
+In the follwoing scripts, we assume that we are working with a project/namespace named as 'manu-test'. Replace this with your own project/namespace name.
+MongoDB can be accessed on the following DNS name(s) and ports from within your cluster:
+
+    my-mongodb.manu-test.svc.cluster.local
+
+To get the root password run:
+
+    export MONGODB_ROOT_PASSWORD=$(kubectl get secret --namespace manu-test my-mongodb -o jsonpath="{.data.mongodb-root-password}" | base64 -d)
+
+To connect to your database, create a MongoDB; client container:
+
+    kubectl run --namespace manu-test my-mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=$MONGODB_ROOT_PASSWORD" --image docker.io/bitnami/mongodb:8.0.4-debian-12-r0 --command -- bash
+
+Then, run the following command:
+
+    export MONGODB_ROOT_USER="root"
+    mongosh admin --host "my-mongodb" --authenticationDatabase admin --username $MONGODB_ROOT_USER --password $MONGODB_ROOT_PASSWORD
+
+To connect to your database from outside the cluster execute the following commands:
+
+    kubectl port-forward --namespace manu-test svc/my-mongodb 27017:27017 &
+    mongosh --host 127.0.0.1 --authenticationDatabase admin --username $MONGODB_ROOT_USER --password $MONGODB_ROOT_PASSWORD
+
 
 ### Redis 🎲
 
