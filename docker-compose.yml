@@ -31,7 +31,8 @@ services:
       - html:/usr/share/nginx/html
     restart: unless-stopped
     networks:
-      - default
+      default: 
+        ipv4_address: 172.19.0.4
 
   # Use letsencrypt to serve HTTPS https://github.com/nginx-proxy/acme-companion
   # Docs: https://github.com/nginx-proxy/acme-companion/wiki/Container-configuration
@@ -54,7 +55,8 @@ services:
       - acme:/etc/acme.sh
     restart: unless-stopped
     networks:
-      - default
+      default: 
+        ipv4_address: 172.19.0.5
 
   mysql:
     restart: unless-stopped
@@ -78,15 +80,16 @@ services:
       - /data/database/data:/var/lib/mysql
       - /data/database/backup:/backup
     networks:
-      - default
+      default: 
+        ipv4_address: 172.19.0.6
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin
     depends_on:
       - mysql
-    ports:
-      - 8002:80
+    # ports:
+    #  - 8002:80
     environment:
       - PMA_PASSWORD=${DB_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
@@ -98,7 +101,8 @@ services:
       - VIRTUAL_PORT=80
     restart: unless-stopped
     networks:
-      - default
+      default: 
+        ipv4_address: 172.19.0.7
 
   dsri-api:
     build: ./server
@@ -107,8 +111,8 @@ services:
       - mysql
       - phpmyadmin
     command: uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
-    ports:
-      - 8000:80
+    # ports:
+    #  - 8000:80
     environment:
       - VIRTUAL_HOST=api.dsri.maastrichtuniversity.nl
       - LETSENCRYPT_HOST=api.dsri.maastrichtuniversity.nl
@@ -125,7 +129,8 @@ services:
       - ./server/api:/app/api
     restart: unless-stopped
     networks:
-      - default
+      default: 
+        ipv4_address: 172.19.0.8
 
   gpu-calendar:
     build: ./gpu-calendar
@@ -133,8 +138,8 @@ services:
     depends_on:
       - mysql
       - phpmyadmin
-    ports:
-      - 8001:80
+    # ports:
+    #  - 8001:80
     environment:
       - DB_PASSWORD=${DB_PASSWORD}
       - VIRTUAL_HOST=calendar.dsri.maastrichtuniversity.nl
@@ -142,7 +147,8 @@ services:
       - VIRTUAL_PORT=80
     restart: unless-stopped
     networks:
-      - default
+      default: 
+        ipv4_address: 172.19.0.9
 
   gpu-booking:
     build: ./gpu-reservation/docker/php
@@ -150,8 +156,8 @@ services:
     depends_on:
       - mysql
       - phpmyadmin
-    ports:
-      - 8001:80
+    # ports:
+    #  - 8001:80
     environment:
       - VIRTUAL_HOST=booking.dsri.maastrichtuniversity.nl
       - LETSENCRYPT_HOST=booking.dsri.maastrichtuniversity.nl
@@ -176,7 +182,8 @@ services:
       - ${FOLDER_SAML_CERT}:/var/www/simplesamlphp/cert
     restart: unless-stopped
     networks:
-      default:
+      default: 
+        ipv4_address: 172.19.0.10
 
   # Run the API on a single thread just for the CRON job in prod (enabled with env variable)
   # Because gunicorn would run the process on every workers
@@ -204,28 +211,16 @@ services:
     #  - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
     restart: unless-stopped
     networks:
-      - default
-
-  # cron:
-  #   # Same image as the API
-  #   build: ./server
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - mysql
-  #     - phpmyadmin
-  #   environment:
-  #     - SQL_URL=mysql://dsri-user:${DB_PASSWORD-password}@mysql:3306/dsri-db
-  #     - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN-xoxb}
-  #     - SLACK_CHANNEL=${SLACK_CHANNEL-UQL6BCQJH}
-  #   command: /app/cron/start_cron.sh
-
+      default: 
+        ipv4_address: 172.19.0.11
 
 networks:
   default:
+    driver: bridge
     ipam:
-      driver: default
       config:
-        - subnet: "172.21.1.0/24"
+        - subnet: "172.19.0.0/24"
+          gateway: 172.19.0.1
 
 volumes:
   vhost:
