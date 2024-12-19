@@ -24,7 +24,7 @@ git clone https://github.com/kubeflow/mpi-operator.git
 cd mpi-operator/examples/v2beta1/pi
 ```
 
-2. Open the `tensorflow-mnist.yaml` file, and make sure the `apiVersion` on the first line is the following:
+2. Open the `pi.yaml` file, and make sure the `apiVersion` on the first line is the following:
 
 ```yaml
 apiVersion: kubeflow.org/v2beta1
