@@ -24,12 +24,9 @@ git clone https://github.com/kubeflow/mpi-operator.git
 cd mpi-operator/examples/v2beta1/horovod
 ```
 
-2. Open the `tensorflow-mnist.yaml` file, and fix the `apiVersion` on the first line:
+2. Open the `tensorflow-mnist.yaml` file, and make sure the `apiVersion` on the first line is the following:
 
 ```yaml
-# From
-apiVersion: kubeflow.org/v1
-# To
 apiVersion: kubeflow.org/v2beta1
 ```
 
