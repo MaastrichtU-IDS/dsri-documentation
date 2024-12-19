@@ -33,6 +33,18 @@ apiVersion: kubeflow.org/v2beta1
 You will also need to specify those containers can run with the `root` user by adding the `serviceAccountName` between `spec:` and `container:` for the launcher and the worker templates:
 
 ```yaml
+#...
+  Launcher:
+      replicas: 1
+      template:
+        spec:
+          serviceAccountName: anyuid
+          containers:
+          - image: docker.io/kubeflow/mpi-horovod-mnist
+
+#...
+    Worker:
+      replicas: 2
       template:
         spec:
           serviceAccountName: anyuid
