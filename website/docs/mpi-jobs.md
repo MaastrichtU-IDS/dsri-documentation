@@ -5,31 +5,46 @@ title: Run MPI jobs
 
 We deployed the [MPI Operator](https://github.com/kubeflow/mpi-operator) from Kubeflow to run MPI jobs on the DSRI.
 
+:::warning Request access to the MPI Operator
+
+To be able to deploy MPI-Jobs you will need to [ask the DSRI admins](https://dsri.maastrichtuniversity.nl/help) to enable the MPI Operator in your project. Once enabled you will be able to start an MPI-job in a few clicks.
+
+:::
+
 > The MPI Operator makes it easy to run allreduce-style distributed training on Kubernetes. Please check out [this blog post](https://medium.com/kubeflow/introduction-to-kubeflow-mpi-operator-and-industry-adoption-296d5f2e6edc) for an introduction to MPI Operator and its industry adoption.
 
-## Run MPI jobs on CPU
+## Run MPI-jobs on CPU
 
-Checkout the [repository of the CPU benchmark](https://github.com/kubeflow/mpi-operator/tree/master/examples/horovod) for a complete example of an MPI job: python script, `Dockerfile`, and the job deployment YAML.
+Checkout the [repository of the CPU benchmark](https://github.com/kubeflow/mpi-operator/tree/master/examples/v2beta1/horovod) for a complete example of an MPI-job: python script, `Dockerfile`, and the job deployment YAML.
 
 1. Clone the repository, and go to the example folder:
 
 ```bash
 git clone https://github.com/kubeflow/mpi-operator.git
-cd mpi-operator/examples/horovod
+cd mpi-operator/examples/v2beta1/horovod
 ```
 
-2. Open the `tensorflow-mnist.yaml` file, and fix the `apiVersion` on the first line:
+2. Open the `tensorflow-mnist.yaml` file, and make sure the `apiVersion` on the first line is the following:
 
 ```yaml
-# From
-apiVersion: kubeflow.org/v1
-# To
-apiVersion: kubeflow.org/v1alpha2
+apiVersion: kubeflow.org/v2beta1
 ```
 
 You will also need to specify those containers can run with the `root` user by adding the `serviceAccountName` between `spec:` and `container:` for the launcher and the worker templates:
 
 ```yaml
+#...
+  Launcher:
+      replicas: 1
+      template:
+        spec:
+          serviceAccountName: anyuid
+          containers:
+          - image: docker.io/kubeflow/mpi-horovod-mnist
+
+#...
+    Worker:
+      replicas: 2
       template:
         spec:
           serviceAccountName: anyuid
@@ -40,7 +55,7 @@ You will also need to specify those containers can run with the `root` user by a
 Your `tensorflow-mnist.yaml` file should look like this: 
 
 ```yaml
-apiVersion: kubeflow.org/v1alpha2
+apiVersion: kubeflow.org/v2beta1
 kind: MPIJob
 metadata:
   name: tensorflow-mnist
