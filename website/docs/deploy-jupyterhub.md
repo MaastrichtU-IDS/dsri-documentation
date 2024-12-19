@@ -19,14 +19,13 @@ Download the preconfigured `config.yaml` from our [GitHub repository](https://ra
 The default config that is provided by JupyterHub will not work. 
 
 :::
-
 #
 
 ### Setting user's default persistent volume size
 
 #### Persistent volumes 
 
-Persistent volumes are automatically created for each user and instance started in JupyterHub to ensure persistence of the data even JupyterHub is stopped. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
+Persistent volumes are automatically created for each user and instance started in JupyterHub to ensure persistence of the data even if JupyterHub is stopped. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
 It is possible to change the default size of a persistent volume claim for a user in the `config.yaml`. In our `config.yaml` the default value is `2Gi`. However if you think that your users will need more storage space you can change this default size in the `config.yaml`. 
 
@@ -39,11 +38,11 @@ singleuser:
 
 ### Configuring an authentication method
 
-At the moment we support three different authentication methods. One for testing purposes (dummy authenthication), one for people who are working alone in a JupyterHub instance or with one or two collaborators (allowed_users / admin_users authenthication), and one for allowing groups of people to collaborate in the same JupyterHub instance (GitHub OAuth). By default the dummy authentication is set in the `config.yaml`. **Note that this is only for testing purposes!!!** However, with very few changes to the `config.yaml` you can set up the other authentication methods. For reference see [the zero2jupyterhub documentation about authentication methods](https://z2jh.jupyter.org/en/stable/administrator/authentication.html)
+At the moment we support three different authentication methods. One for testing purposes (dummy authentication), one for people who are working alone in a JupyterHub instance or with one or two collaborators (allowed_users / admin_users authentication), and one for allowing groups of people to collaborate in the same JupyterHub instance (GitHub OAuth). By default the dummy authentication is set in the `config.yaml`. **Note that this is only for testing purposes!!!** However, with very few changes to the `config.yaml` you can set up the other authentication methods. For reference see [the zero2jupyterhub documentation about authentication methods](https://z2jh.jupyter.org/en/stable/administrator/authentication.html)
 
 #### Dummy authentication
 
-This authentication method is set by default and is only there so that you can easily test your JupyterHub instance without the need of setting up proper authentication. The catch with this method is that whatever username/password combination you fill in, you will get access! In other words this is **completely not safe to use in usecases other than testing!** 
+This authentication method is set by default and is only there so that you can easily test your JupyterHub instance without the need of setting up proper authentication. The catch with this method is that whatever username/password combination you fill in, you will get access! In other words this is **completely not safe to use in use cases other than testing!** 
 In the `config.yaml` you see -besides the commented out other authentication methods- the following block of text:
 
 ```bash
@@ -61,11 +60,11 @@ Some parts are intentionally left out here, shown as dots `# ...` for better rep
 
 #
 
-Fill in any usernamer and password combination you would like and the useraccount will be made. Note that this useraccount really is made and has its own userpod in the deployment. It has a persistent volume as well and all other properties like any other useraccount that will be made. However you can use whatever password you will fill in to access this account. In other words do not use this user actively and definitely do not store any (sensitive) data in this useraccount!
+Fill in any usernamer and password combination you would like and the user account will be made. Note that this user account literally is made and has its own pod in the project. It also has a persistent volume and all the other properties of any other user account created. However, you can use whatever password you want to access this account. In other words do not use this user actively and definitely do not store any (sensitive) data in this user account!
 
 #### allow_users / admin_users authentication
 
-If you will be working on your own in your JupyterHub instance it will be easiest to use the allow_users / admin_users authentication method. This method will let you specify an user and admin account with a shared password. **It is important that you keep this password a secret and safe! If people will get their hands on this they can acces your JupyterHub instance and login as an admin, which can lead to hefty consequences.** 
+If you will be working on your own in your JupyterHub instance it will be easiest to use the allow_users / admin_users authentication method. This method allows you to specify a user and admin account with a shared password. **It is important that you keep this password a secret and safe! If people will get their hands on this they can acces your JupyterHub instance and login as an admin, which can lead to hefty consequences.** 
 
 If you want to make use of this config uncomment the following block of text and comment out the previous block of text seen at the `Dummy authentication` section above:
 
@@ -84,11 +83,11 @@ hub:
       authenticator_class: dummy
 ```
 
-Note that this password is in plaintext in your `config.yaml`. **Do not use password you use for other accounts, this is never a good idea and is surely not a good idea in this case!** Unfortunately it is not possible to set passwords in JupyterHub using secrets in the DSRI at the moment. If you need to share your JupyterHub instance with others we recommend you to use the GitHub OAuth authentication method described below. 
+Note that this password is in plaintext in your `config.yaml`. **Do not use a password you use for other accounts, this is never a good idea and is surely not a good idea in this case!** Unfortunately it is not possible to set passwords in JupyterHub using secrets in the DSRI at the moment. If you need to share your JupyterHub instance with others we recommend you to use the GitHub OAuth authentication method described below. 
 
 #### GitHub OAuth authentication
 
-This authentication method is the most secure option we provide at the moment. The major caveat is that you and the people you want to collaborate with need a GitHub account. Moreover, you will need to create an organization and team within that organization, or have access to an organization and team. You grant the people authorization to log in into the JupyterHub instance with their GitHub account by adding them to a team in an organization in GitHub.
+This authentication method is the most secure option we provide at the moment. The major caveat is that you and the people you want to collaborate with need a GitHub account. Moreover, you will need to create an organization and team within that organization, or have access to an organization and team. To set up an organization and team, please refer to GitHub's [documentation](https://docs.github.com/en/organizations). You grant the people authorization to log in into the JupyterHub instance with their GitHub account by adding them to a team in an organization in GitHub.
 
 ```bash
 hub:
@@ -102,8 +101,7 @@ hub:
       authenticator_class: github
 ```
 
-For creating an OAuth app in GitHub please refer to GitHub's [documentation.](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). The GitHub OAuth app will provide your client ID and client secret. The `<route name>` and `<project name>` you provided yourself in the previous steps, fill those in accordingly. 
-To set up an organization and team, please refer to GitHub's [documentation.](https://docs.github.com/en/organizations) as well. 
+For creating an OAuth app in GitHub please refer to GitHub's [documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). The GitHub OAuth app will provide the client ID and client secret. Fill in the `<route name>` and `<project name>` at the `oauth_callback_url` section. To set up a route to get your `<route name>` see the following section: [Creating a secured route using the DSRI website](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route), or [Creating a secured route using the CLI](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route-1). Note that you can change the `<route name>` at a later moment by upgrading the `config.yaml`. 
 
 #
 
@@ -289,19 +287,19 @@ Install the Helm Chart using the following command:
 helm upgrade --cleanup-on-fail \
   --install jupyterhub jupyterhub/jupyterhub \
   --version=3.3.8 \
-  --namespace=<NAMESPACE> \
+  --namespace=<project name> \
   --values config.yaml
 ```
-`<NAMESPACE>` is the name of the namespace your project is in. 
+`<project name>` is the name of your project.
 
 ### Creating a secured route
 
 Create a secured route, with TLS edge termination:
 
 ```bash
-oc create route edge <NAME OF ROUTE> --namespace <NAMESPACE> --service=proxy-public --port=http
+oc create route edge <NAME OF ROUTE> --namespace <project name> --service=proxy-public --port=http
 ```
-`<NAMESPACE>` is the name of the namespace your project is in. 
+`<project name>` is the name of your project.
 `<NAME OF ROUTE>` is the name of the route. 
 
 ### Upgrading the config.yaml
@@ -312,12 +310,10 @@ Run the following command with your new config.yaml:
 helm upgrade --cleanup-on-fail \
   --install jupyterhub jupyterhub/jupyterhub \
   --version=3.3.8 \
-  --namespace=<NAMESPACE> \
+  --namespace=<project name> \
   --values config.yaml
 ```
-`<NAMESPACE>` is the name of the namespace your project is in. 
-
-**Note** that the namespace should be the same namespace as the one where your original deployment was initiated!
+`<project name>` is the name of your project.
 
 #
 
