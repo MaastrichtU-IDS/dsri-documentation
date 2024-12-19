@@ -7,15 +7,15 @@ We deployed the [MPI Operator](https://github.com/kubeflow/mpi-operator) from Ku
 
 :::warning Request access to the MPI Operator
 
-To be able to deploy MPI-Jobs you will need to [ask the DSRI admins](/help) to enable the MPI Operator in your project. It will be done quickly, once enabled you will be able to start a MPI-job in a few clicks.
+To be able to deploy MPI-Jobs you will need to [ask the DSRI admins](https://dsri.maastrichtuniversity.nl/help) to enable the MPI Operator in your project. Once enabled you will be able to start an MPI-job in a few clicks.
 
 :::
 
 > The MPI Operator makes it easy to run allreduce-style distributed training on Kubernetes. Please check out [this blog post](https://medium.com/kubeflow/introduction-to-kubeflow-mpi-operator-and-industry-adoption-296d5f2e6edc) for an introduction to MPI Operator and its industry adoption.
 
-## Run MPI jobs on CPU
+## Run MPI-jobs on CPU
 
-Checkout the [repository of the CPU benchmark](https://github.com/kubeflow/mpi-operator/tree/master/examples/v2beta1/horovod) for a complete example of an MPI job: python script, `Dockerfile`, and the job deployment YAML.
+Checkout the [repository of the CPU benchmark](https://github.com/kubeflow/mpi-operator/tree/master/examples/v2beta1/horovod) for a complete example of an MPI-job: python script, `Dockerfile`, and the job deployment YAML.
 
 1. Clone the repository, and go to the example folder:
 
