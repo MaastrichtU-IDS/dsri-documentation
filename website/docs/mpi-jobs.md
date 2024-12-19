@@ -5,48 +5,66 @@ title: Run MPI jobs
 
 We deployed the [MPI Operator](https://github.com/kubeflow/mpi-operator) from Kubeflow to run MPI jobs on the DSRI.
 
+:::warning Request access to the MPI Operator
+
+To be able to deploy MPI-Jobs you will need to [ask the DSRI admins](https://dsri.maastrichtuniversity.nl/help) to enable the MPI Operator in your project. Once enabled you will be able to start an MPI-job in a few clicks.
+
+:::
+
 > The MPI Operator makes it easy to run allreduce-style distributed training on Kubernetes. Please check out [this blog post](https://medium.com/kubeflow/introduction-to-kubeflow-mpi-operator-and-industry-adoption-296d5f2e6edc) for an introduction to MPI Operator and its industry adoption.
 
-## Run MPI jobs on CPU
+## Run MPI-jobs on CPU
 
-Checkout the [repository of the CPU benchmark](https://github.com/kubeflow/mpi-operator/tree/master/examples/horovod) for a complete example of an MPI job: python script, `Dockerfile`, and the job deployment YAML.
+Checkout the [repository of the example](https://github.com/kubeflow/mpi-operator/tree/master/examples/v2beta1/pi) for a complete example of an MPI-job: python script, `Dockerfile`, and the job deployment YAML.
 
 1. Clone the repository, and go to the example folder:
 
 ```bash
 git clone https://github.com/kubeflow/mpi-operator.git
-cd mpi-operator/examples/horovod
+cd mpi-operator/examples/v2beta1/pi
 ```
 
-2. Open the `tensorflow-mnist.yaml` file, and fix the `apiVersion` on the first line:
+2. Open the `pi.yaml` file, and make sure the `apiVersion` on the first line is the following:
 
 ```yaml
-# From
-apiVersion: kubeflow.org/v1
-# To
-apiVersion: kubeflow.org/v1alpha2
+apiVersion: kubeflow.org/v2beta1
 ```
 
 You will also need to specify those containers can run with the `root` user by adding the `serviceAccountName` between `spec:` and `container:` for the launcher and the worker templates:
 
 ```yaml
+#...
+  Launcher:
+      replicas: 1
       template:
         spec:
           serviceAccountName: anyuid
           containers:
-          - image: docker.io/kubeflow/mpi-horovod-mnist
+          - image: mpioperator/mpi-pi:openmpi
+
+#...
+    Worker:
+      replicas: 2
+      template:
+        spec:
+          serviceAccountName: anyuid
+          containers:
+          - image: mpioperator/mpi-pi:openmpi
 ```
 
 Your `tensorflow-mnist.yaml` file should look like this: 
 
 ```yaml
-apiVersion: kubeflow.org/v1alpha2
+apiVersion: kubeflow.org/v2beta1
 kind: MPIJob
 metadata:
-  name: tensorflow-mnist
+  name: pi
 spec:
   slotsPerWorker: 1
-  cleanPodPolicy: Running
+  runPolicy:
+    cleanPodPolicy: Running
+    ttlSecondsAfterFinished: 60
+  sshAuthMountPath: /home/mpiuser/.ssh
   mpiReplicaSpecs:
     Launcher:
       replicas: 1
@@ -54,53 +72,47 @@ spec:
         spec:
           serviceAccountName: anyuid
           containers:
-          - image: docker.io/kubeflow/mpi-horovod-mnist
+          - image: mpioperator/mpi-pi:openmpi
             name: mpi-launcher
+            securityContext:
+              runAsUser: 1000
             command:
             - mpirun
             args:
-            - -np
+            - -n
             - "2"
-            - --allow-run-as-root
-            - -bind-to
-            - none
-            - -map-by
-            - slot
-            - -x
-            - LD_LIBRARY_PATH
-            - -x
-            - PATH
-            - -mca
-            - pml
-            - ob1
-            - -mca
-            - btl
-            - ^openib
-            - python
-            - /examples/tensorflow_mnist.py
+            - /home/mpiuser/pi
             resources:
               limits:
                 cpu: 1
-                memory: 2Gi
+                memory: 1Gi
     Worker:
       replicas: 2
       template:
         spec:
           serviceAccountName: anyuid
           containers:
-          - image: docker.io/kubeflow/mpi-horovod-mnist
+          - image: mpioperator/mpi-pi:openmpi
             name: mpi-worker
+            securityContext:
+              runAsUser: 1000
+            command:
+            - /usr/sbin/sshd
+            args:
+            - -De
+            - -f
+            - /home/mpiuser/.sshd_config
             resources:
               limits:
-                cpu: 2
-                memory: 4Gi
+                cpu: 1
+                memory: 1Gi
 
 ```
 
 3. Once this has been set, create the job in your current project on the DSRI (change with `oc project my-project`):
 
 ```bash
-oc create -f tensorflow-mnist.yaml
+oc create -f pi.yaml
 ```
 
 You should see the 2 workers and the main job running in your project **Topology** page in the DSRI web UI. You can then easily check the logs of the launcher and workers.
