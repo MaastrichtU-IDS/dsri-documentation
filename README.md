@@ -52,21 +52,30 @@ To run the full stack including the database and API, we use docker-compose
 
 1. Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
 
-   <!-- ```bash
+   ``` bash
+   DB_NAME=dsri-db
+   DB_USER=dsri-user
    DB_PASSWORD=password
+   DB_HOST=mysql
    API_PASSWORD=password
-   CLUSTER_USER=dsri.username
-   CLUSTER_PASSWORD=password
    SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
-   SLACK_CHANNEL=C03B48CQ3QW
-   ``` -->
-   ```bash
-   DB_PASSWORD=password
-   API_PASSWORD=password
-   CLUSTER_API_KEY=token
-   SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
-   SLACK_CHANNEL=C03B48CQ3QW
+   SLACK_CHANNEL=C00000000QW
+   CLUSTER_API_KEY=""
+   SMTP_FROM=email@email.nl
+   SMTP_HOST=
+   SMTP_PORT=
+   SAML_SP_ENTITY_ID=
+   SAML_SALT=
+   SAML_ADMIN_PW=
+   SAML_TRUSTED_DOMAINS=
+   SAML_BASEURLPATH=
+   FOLDER_BOOKING_APP=/foo
+   FOLDER_SAML_CONFIG=/foo
+   FOLDER_SAML_METADATA=/foo
+   FOLDER_SAML_CERT=/foo
    ```
+
+###
 
 2. Run the stack:
 
@@ -74,11 +83,19 @@ To run the full stack including the database and API, we use docker-compose
    * The GPU calendar on http://localhost:8001
    * Database accessible through phpMyAdmin on http://localhost:8002
 
-   ```bash
-   docker-compose up
+    ```bash
+   # Don't forget to switch to the right volumes for development!
+
+   # Build images for dsri-api, cron, gpu-calender and gpu-reservation
+   docker compose build --no-cache
+
+   # Start the containers (detached), you can also choose to up specific services e.g. append: nginx_proxy dsri-api 
+   docker compose up -d --force-recreate
    ```
 
    > ⚠️ The first time you start the stack you might need to stop and restart the stack once the SQL database has been initialized for the API to properly connect to the database
+
+###
 
 3. In another terminal, run the website on http://localhost:3000, it will use the local API to display stats:
 
@@ -100,6 +117,8 @@ yarn upgrade
 
 Alternatively you can also change the packages versions requirements in the `package.json` and run `yarn`
 
+###
+
 ## 🚀 Deploy in production
 
 ### Deploy the frontend to GitHub pages
@@ -113,19 +132,39 @@ The GitHub Action will automatically compile the website to HTML in the `gh-page
 Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
 
 ```bash
+DB_NAME=dsri-db
+DB_USER=dsri-user
 DB_PASSWORD=password
+DB_HOST=mysql
 API_PASSWORD=password
-CLUSTER_USER=dsri.username
-CLUSTER_PASSWORD=password
 SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
-SLACK_CHANNEL=C03B48CQ3QW
+SLACK_CHANNEL=C00000000QW
+CLUSTER_API_KEY=""
+SMTP_FROM=email@email.nl
+SMTP_HOST=
+SMTP_PORT=
+SAML_SP_ENTITY_ID=
+SAML_SALT=
+SAML_ADMIN_PW=
+SAML_TRUSTED_DOMAINS=
+SAML_BASEURLPATH=
+FOLDER_BOOKING_APP=/foo
+FOLDER_SAML_CONFIG=/foo
+FOLDER_SAML_METADATA=/foo
+FOLDER_SAML_CERT=/foo
 ```
 
 Start the docker-compose in production using [nginx-proxy](https://github.com/nginx-proxy/nginx-proxy).
 
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# Build images for dsri-api, cron, gpu-calender and gpu-reservation
+docker compose build --no-cache
+
+# Start the containers (detached), you can also choose to up specific services e.g. append: nginx_proxy dsri-api 
+docker compose up -d --force-recreate
 ```
+
+###
 
 ### Database setup
 
@@ -167,6 +206,8 @@ To change the password of your database user, click on the **SQL** tab, and exec
 ```sql
 SET PASSWORD FOR 'username'@'%' = PASSWORD('newpassword');
 ```
+
+###
 
 ### Backup
 
