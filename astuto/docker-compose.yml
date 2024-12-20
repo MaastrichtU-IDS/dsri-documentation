@@ -1,0 +1,71 @@
+services:
+  redis:
+    image: redis:${VERSION_REDIS}
+    container_name: astuto-redis
+    environment: &redis-env
+      REDIS_URL: ${REDIS_URL}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: ["/bin/sh", "-c", "redis-server --requirepass \"$${REDIS_PASSWORD}\""]
+    networks:
+      dsri-documentation_default:
+        ipv4_address: 172.19.0.20
+
+  db:
+    image: postgres:${VERSION_POSTGRES}
+    container_name: astuto-db
+    environment: &db-env
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      dsri-documentation_default:
+        ipv4_address: 172.19.0.21
+
+  web:
+    image: riggraz/astuto:${VERSION_ASTUTO}
+    container_name: astuto-web
+    environment: &web-env
+      <<: [*db-env, *redis-env]
+      ACTIVE_JOB_BACKEND: sidekiq # This enables sidekiq
+      BASE_URL: http://roadmap.dsri.maastrichtuniversity.nl
+      VIRTUAL_HOST: roadmap.dsri.maastrichtuniversity.nl
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST: roadmap.dsri.maastrichtuniversity.nl
+      LETSENCRYPT_TEST: true
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      EMAIL_DELIVERY_METHOD: ${EMAIL_DELIVERY_METHOD}
+      EMAIL_SMTP_TLS: ${EMAIL_SMTP_TLS}
+      EMAIL_SMTP_HOST: ${SMTP_HOST}
+      EMAIL_SMTP_PORT: ${SMTP_PORT}
+      EMAIL_MAIL_FROM: ${EMAIL_MAIL_FROM}
+      EMAIL_MAIL_REPLY_TO: ${EMAIL_MAIL_REPLY_TO}
+    ports:
+      - 3000:3000
+    depends_on:
+      - redis
+      - db
+    networks:
+      dsri-documentation_default:
+        ipv4_address: 172.19.0.22
+
+  sidekiq:
+    image: riggraz/astuto:${VERSION_ASTUTO}
+    container_name: astuto-sidekiq
+    entrypoint: ["bundle", "exec", "sidekiq", "-q", "default", "-q", "mailers", "-e", "production"] # -e can be either "development" or "production"
+    environment:
+      <<: *web-env
+      IS_SIDEKIQ: true
+    depends_on:
+      - redis
+      - db
+    networks:
+      dsri-documentation_default:
+        ipv4_address: 172.19.0.23
+
+networks:
+  dsri-documentation_default:
+      external: true
+
+volumes:
+  dbdata:
