@@ -11,7 +11,7 @@
         "collapsed": false,
         "items": [
           "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-database", "deploy-matlab",
-          "deploy-jupyterhub", "dask-cluster", "deploy-spark", "mpi-jobs", "neuroscience", "catalog-genomics",
+          "deploy-jupyterhub", "dask-cluster", "mpi-jobs", "neuroscience", "catalog-genomics",
           "catalog-imaging", "catalog-utilities"
         ]
       }
