@@ -9,7 +9,7 @@ Start a RStudio container based on [Rocker RStudio tidyverse images](https://git
 
 You can start a container using the **RStudio** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
 
-Provide a few parameters, and Instantiate the template. The **username** will be `rstudio` and the **password** will be what you configure yourself, the DSRI will automatically create a persistent volume to store data you will put in the `/home/rstudio` folder. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
+Provide a few parameters, and Instantiate the template. The **username** will be `root` and the **password** will be what you configure yourself, the DSRI will automatically create a persistent volume in the project space which is the `/root` folder. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
 
 
