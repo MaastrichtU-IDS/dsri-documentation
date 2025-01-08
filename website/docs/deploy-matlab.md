@@ -13,7 +13,7 @@ Start Matlab with a desktop UI accessible directly using your web browser at a U
 
 Go to the **Catalog**, make sure **Templates** are displayed (box checked), and search for **Matlab**, and provide the right parameters:
 
-* You will need to provide the password you will use to access the Matlab UI when filling the template.
+* You will need to provide the password you will use to access the Matlab UI when filling the template. **Ensure to use a password length greater than 6.**
 * You can also change the Matlab image version, see the latest version released in the [official Matlab Docker image documentation](https://hub.docker.com/r/mathworks/matlab)
 
 Once Matlab start you can access it through 2 routes (URL), which can be accessed when clicking on the Matlab node in the **Topology**:
@@ -38,7 +38,7 @@ sudo apt-get update
 sudo apt-get install unzip
 # Unzip the previous downloaded matlab installation file
 # start the matlab installation with:
-sudo .\install
+sudo ./install
 ```
 
 You will then be prompted the Matlab installation process:
@@ -49,6 +49,9 @@ You will then be prompted the Matlab installation process:
 *  Check "symbolic link" and "Improve……"
 
 ## Use Matlab in Jupyter
+**For running Matlab in Jupyter, you need to first install the matlab on your Jupyter pod. if you need assistance [ask the DSRI admins](/help)** 
+<!--
+If you need to run matlab in Jupyter 
 
 You can also use [mathworks/jupyter-matlab-proxy](https://github.com/mathworks/jupyter-matlab-proxy). You can easily install it in a JupyterLab image with `pip`:
 
@@ -57,7 +60,7 @@ pip install jupyter-matlab-proxy
 ```
 
 Follow the instructions on the [mathworks/jupyter-matlab-proxy repository](https://github.com/mathworks/jupyter-matlab-proxy) to access it.
-
+-->
 ## Deploy Matlab on GPU
 
 We use the Matlab template in the DSRI catalog to deploy a pre-built **Nvidia Matlab Deep Learning Container** on CPU or GPU nodes. See the [official documentation from MathWorks](https://nl.mathworks.com/help/cloudcenter/ug/matlab-deep-learning-container-on-dgx.html) for more details about this image.
