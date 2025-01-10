@@ -39,7 +39,7 @@ Delete it:
 helm uninstall jupyterhub
 ```
 
-## Changes made in config.yaml
+## Changes made in config-basic.yaml and config-extensive.yaml
 
 The config.yaml is based on the default config provided by JupyterHub themselves. Changes are necessary to deploy a working JupyterHub Helm Chart.
 
@@ -74,7 +74,7 @@ singleuser:
     capacity: 10Gi > 2Gi
 ```
 
-## Additions made to the config.yaml
+## Additions made to the config-basic.yaml and config-extensive.yaml
 
 ```
 hub:
@@ -98,4 +98,53 @@ hub:
 #      oauth_callback_url: https://<route name>-<project name>.apps.dsri2.unimaas.nl/hub/oauth_callback
 #    JupyterHub:
 #      authenticator_class: github
+```
+
+## Additional changes made to the config-extensive.yaml
+
+```
+cull:
+  adminUsers: true
+  concurrency: 10
+  enabled: false # set to false to disbale culling
+  every: 600
+  maxAge: 0
+  removeNamedServers: false
+  timeout: 3600
+  users: false
+```
+
+```
+singleuser:
+  #...
+  # Remove the git clone part or fill in a valid URL, otherwise the user-pod will not start!
+  cmd:
+    - /bin/bash
+    - '-c'
+    - >-
+      pip install papersize && [ "$(ls -A /home/jovyan/materials 2>/dev/null)" ]
+      || git clone https://github.com/EbookFoundation/free-programming-books.git
+      /home/jovyan/materials && exec jupyterhub-singleuser
+```
+
+```
+singleuser:
+  #...
+  image:
+    name: quay.io/jupyter/minimal-notebook
+    pullPolicy: null
+    pullSecrets: []
+    tag: 87b37b4fd818
+  profileList:
+    - display_name: "Minimal environment"
+      description: "To avoid too much bells and whistles: Python."
+      default: true
+    - display_name: "Datascience environment"
+      description: "If you want the additional bells and whistles: Python, R, and Julia."
+      kubespawner_override:
+        image: quay.io/jupyter/datascience-notebook:87b37b4fd818
+    - display_name: "Tensorflow environment"
+      description: "Here you have Tensorflow installed!"
+      kubespawner_override:
+        image: quay.io/jupyter/tensorflow-notebook:87b37b4fd818
 ```
