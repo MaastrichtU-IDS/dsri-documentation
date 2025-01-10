@@ -19,7 +19,6 @@ Download the preconfigured `config-basic.yaml` from our [GitHub repository](http
 The default config that is provided by JupyterHub will not work. 
 
 :::
-#
 
 ### Setting user's default persistent volume size
 
@@ -102,6 +101,63 @@ hub:
 ```
 
 For creating an OAuth app in GitHub please refer to GitHub's [documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). The GitHub OAuth app will provide the client ID and client secret. Fill in the `<route name>` and `<project name>` at the `oauth_callback_url` section. To set up a route to get your `<route name>` see the following section: [Creating a secured route using the DSRI website](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route), or [Creating a secured route using the CLI](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route-1). Note that you can change the `<route name>` at a later moment by upgrading the `config-basic.yaml`. 
+
+#
+
+## Extensive customization options in config-extensive.yaml
+
+It is possible to customize your JupyterHub instance further. For example we created a `config-extensive.yaml` file which has some customization options configured.
+
+:::info Download the config-extensive.yaml
+
+Download the preconfigured `config-extensive.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-extensive.yaml). 
+
+:::
+
+In this configuration we disabled culling so that user pods will not be scaled down after a time of inactivity. This can easily be activated again changing `cull: > enabled: false` to `true`.
+
+Next, we extended the startup command to install a Python package `papersize` upon user pod creation. Additionally, we pull a public GitHub repository, if it does not exist already, to the `/home/jovyan/materials` directory. This directory will automatically be made if it does not exist already. 
+
+```
+singleuser:
+  #...
+  # Remove the git clone part or fill in a valid URL, otherwise the user-pod will not start!
+  cmd:
+    - /bin/bash
+    - '-c'
+    - >-
+      pip install papersize && [ "$(ls -A /home/jovyan/materials 2>/dev/null)" ]
+      || git clone https://github.com/EbookFoundation/free-programming-books.git
+      /home/jovyan/materials && exec jupyterhub-singleuser
+```
+
+Finally, we chose to include two additional notebook images. Besides the minimal image, we include the data science and Tensorflow images. These notebook images come with other kernels, packages and extensions installed. For more information about different images provided by Jupyter, please refer to their [documentation](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html).
+
+```
+image:
+    name: quay.io/jupyter/minimal-notebook
+    pullPolicy: null
+    pullSecrets: []
+    tag: 87b37b4fd818
+  profileList:
+    - display_name: "Minimal environment"
+      description: "To avoid too much bells and whistles: Python."
+      default: true
+    - display_name: "Datascience environment"
+      description: "If you want the additional bells and whistles: Python, R, and Julia."
+      kubespawner_override:
+        image: quay.io/jupyter/datascience-notebook:87b37b4fd818
+    - display_name: "Tensorflow environment"
+      description: "Here you have Tensorflow installed!"
+      kubespawner_override:
+        image: quay.io/jupyter/tensorflow-notebook:87b37b4fd818
+```
+
+Note that we chose the latest tag at the time of writing: `87b37b4fd818`. Change this tag accordingly if more recent release is available! You can find their releases via their Quay.io repository: https://quay.io/organization/jupyter.
+
+Upon the first creation of the user pod, in other words when the user logs in for the first time. They will see a menu where they can choose their preconfigured notebook by choice. 
+
+<img src="/img/jupyterhub-notebookchoice-login.png" alt="" style={{maxWidth: '75%', maxHeight: '75%'}} />
 
 #
 
