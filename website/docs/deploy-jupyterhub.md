@@ -102,6 +102,37 @@ hub:
 
 For creating an OAuth app in GitHub please refer to GitHub's [documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). The GitHub OAuth app will provide the client ID and client secret. Fill in the `<route name>` and `<project name>` at the `oauth_callback_url` section. To set up a route to get your `<route name>` see the following section: [Creating a secured route using the DSRI website](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route), or [Creating a secured route using the CLI](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route-1). Note that you can change the `<route name>` at a later moment by upgrading the `config-basic.yaml`. 
 
+### Configure the notebook image
+
+The default notebook image used in the `config-basic.yaml` is the `k8s-singleuser-sample` image, version `3.3.8`.
+
+```
+singleuser:
+  #...
+  image:
+    name: quay.io/jupyterhub/k8s-singleuser-sample
+    pullPolicy: null
+    pullSecrets: []
+    tag: 3.3.8
+```
+
+It is, however, possible to change this notebook image to configure the JupyterHub instance to start up user pods with a customized image, which could have various things installed such as different kernels, packages and/or extensions. 
+For more information about different images provided by Jupyter, please refer to their [documentation](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html).
+
+For example you can change the notebook image to their Tensorflow image, which comes with Tensorflow pre-installed!
+
+```
+singleuser
+  #...
+  image:
+    name: quay.io/jupyter/tensorflow-notebook
+    pullPolicy: null
+    pullSecrets: []
+    tag: 87b37b4fd818
+```
+
+Note that we chose the latest tag at the time of writing: `87b37b4fd818`. Change this tag accordingly if a more recent release is available! You can find their releases via their Quay.io repository: https://quay.io/organization/jupyter.
+
 #
 
 ## Extensive customization options in config-extensive.yaml
@@ -153,7 +184,7 @@ image:
         image: quay.io/jupyter/tensorflow-notebook:87b37b4fd818
 ```
 
-Note that we chose the latest tag at the time of writing: `87b37b4fd818`. Change this tag accordingly if more recent release is available! You can find their releases via their Quay.io repository: https://quay.io/organization/jupyter.
+Note that we chose the latest tag at the time of writing: `87b37b4fd818`. Change this tag accordingly if a more recent release is available! You can find their releases via their Quay.io repository: https://quay.io/organization/jupyter.
 
 Upon the first creation of the user pod, in other words when the user logs in for the first time. They will see a menu where they can choose their preconfigured notebook by choice. 
 
