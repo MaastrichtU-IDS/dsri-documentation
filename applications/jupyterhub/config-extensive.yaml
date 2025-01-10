@@ -451,7 +451,7 @@ singleuser:
     - '-c'
     - >-
       pip install papersize && [ "$(ls -A /home/jovyan/materials 2>/dev/null)" ]
-      || git clone https://github.com/lwinckers/autoInstallPackages.git
+      || git clone https://github.com/EbookFoundation/free-programming-books.git
       /home/jovyan/materials && exec jupyterhub-singleuser
   cpu:
     guarantee: null
