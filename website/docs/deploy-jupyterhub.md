@@ -11,15 +11,14 @@ Deploying JupyterHub is still experimental, and it can be a bit tricky to config
 
 :::
 
-## Downloading and adjusting the config.yaml
+## Downloading and adjusting the config-basic.yaml
 
-:::warning Before you begin download the config.yaml
+:::warning Before you begin download the config-basic.yaml
 
-Download the preconfigured `config.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config.yaml).
+Download the preconfigured `config-basic.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-basic.yaml).
 The default config that is provided by JupyterHub will not work. 
 
 :::
-#
 
 ### Setting user's default persistent volume size
 
@@ -27,7 +26,7 @@ The default config that is provided by JupyterHub will not work.
 
 Persistent volumes are automatically created for each user and instance started in JupyterHub to ensure persistence of the data even if JupyterHub is stopped. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
 
-It is possible to change the default size of a persistent volume claim for a user in the `config.yaml`. In our `config.yaml` the default value is `2Gi`. However if you think that your users will need more storage space you can change this default size in the `config.yaml`. 
+It is possible to change the default size of a persistent volume claim for a user in the `config-basic.yaml`. In our `config-basic.yaml` the default value is `2Gi`. However if you think that your users will need more storage space you can change this default size in the `config-basic.yaml`. 
 
 ```bash
 singleuser:
@@ -38,12 +37,12 @@ singleuser:
 
 ### Configuring an authentication method
 
-At the moment we support three different authentication methods. One for testing purposes (dummy authentication), one for people who are working alone in a JupyterHub instance or with one or two collaborators (allowed_users / admin_users authentication), and one for allowing groups of people to collaborate in the same JupyterHub instance (GitHub OAuth). By default the dummy authentication is set in the `config.yaml`. **Note that this is only for testing purposes!!!** However, with very few changes to the `config.yaml` you can set up the other authentication methods. For reference see [the zero2jupyterhub documentation about authentication methods](https://z2jh.jupyter.org/en/stable/administrator/authentication.html)
+At the moment we support three different authentication methods. One for testing purposes (dummy authentication), one for people who are working alone in a JupyterHub instance or with one or two collaborators (allowed_users / admin_users authentication), and one for allowing groups of people to collaborate in the same JupyterHub instance (GitHub OAuth). By default the dummy authentication is set in the `config-basic.yaml`. **Note that this is only for testing purposes!!!** However, with very few changes to the `config-basic.yaml` you can set up the other authentication methods. For reference see [the zero2jupyterhub documentation about authentication methods](https://z2jh.jupyter.org/en/stable/administrator/authentication.html)
 
 #### Dummy authentication
 
 This authentication method is set by default and is only there so that you can easily test your JupyterHub instance without the need of setting up proper authentication. The catch with this method is that whatever username/password combination you fill in, you will get access! In other words this is **completely not safe to use in use cases other than testing!** 
-In the `config.yaml` you see -besides the commented out other authentication methods- the following block of text:
+In the `config-basic.yaml` you see -besides the commented out other authentication methods- the following block of text:
 
 ```bash
 hub:
@@ -83,7 +82,7 @@ hub:
       authenticator_class: dummy
 ```
 
-Note that this password is in plaintext in your `config.yaml`. **Do not use a password you use for other accounts, this is never a good idea and is surely not a good idea in this case!** Unfortunately it is not possible to set passwords in JupyterHub using secrets in the DSRI at the moment. If you need to share your JupyterHub instance with others we recommend you to use the GitHub OAuth authentication method described below. 
+Note that this password is in plaintext in your `config-basic.yaml`. **Do not use a password you use for other accounts, this is never a good idea and is surely not a good idea in this case!** Unfortunately it is not possible to set passwords in JupyterHub using secrets in the DSRI at the moment. If you need to share your JupyterHub instance with others we recommend you to use the GitHub OAuth authentication method described below. 
 
 #### GitHub OAuth authentication
 
@@ -101,15 +100,103 @@ hub:
       authenticator_class: github
 ```
 
-For creating an OAuth app in GitHub please refer to GitHub's [documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). The GitHub OAuth app will provide the client ID and client secret. Fill in the `<route name>` and `<project name>` at the `oauth_callback_url` section. To set up a route to get your `<route name>` see the following section: [Creating a secured route using the DSRI website](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route), or [Creating a secured route using the CLI](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route-1). Note that you can change the `<route name>` at a later moment by upgrading the `config.yaml`. 
+For creating an OAuth app in GitHub please refer to GitHub's [documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). The GitHub OAuth app will provide the client ID and client secret. Fill in the `<route name>` and `<project name>` at the `oauth_callback_url` section. To set up a route to get your `<route name>` see the following section: [Creating a secured route using the DSRI website](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route), or [Creating a secured route using the CLI](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route-1). Note that you can change the `<route name>` at a later moment by upgrading the `config-basic.yaml`. 
+
+### Configure the notebook image
+
+The default notebook image used in the `config-basic.yaml` is the `k8s-singleuser-sample` image, version `3.3.8`.
+
+```
+singleuser:
+  #...
+  image:
+    name: quay.io/jupyterhub/k8s-singleuser-sample
+    pullPolicy: null
+    pullSecrets: []
+    tag: 3.3.8
+```
+
+It is, however, possible to change this notebook image to configure the JupyterHub instance to start up user pods with a customized image, which could have various things installed such as different kernels, packages and/or extensions. 
+For more information about different images provided by Jupyter, please refer to their [documentation](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html).
+
+For example you can change the notebook image to their Tensorflow image, which comes with Tensorflow pre-installed!
+
+```
+singleuser
+  #...
+  image:
+    name: quay.io/jupyter/tensorflow-notebook
+    pullPolicy: null
+    pullSecrets: []
+    tag: 87b37b4fd818
+```
+
+Note that we chose the latest tag at the time of writing: `87b37b4fd818`. Change this tag accordingly if a more recent release is available! You can find their releases via their Quay.io repository: https://quay.io/organization/jupyter.
+
+#
+
+## Extensive customization options in config-extensive.yaml
+
+It is possible to customize your JupyterHub instance further. For example we created a `config-extensive.yaml` file which has some customization options configured.
+
+:::info Download the config-extensive.yaml
+
+Download the preconfigured `config-extensive.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-extensive.yaml). 
+
+:::
+
+In this configuration we disabled culling so that user pods will not be scaled down after a time of inactivity. This can easily be activated again changing `cull: > enabled: false` to `true`.
+
+Next, we extended the startup command to install a Python package `papersize` upon user pod creation. Additionally, we pull a public GitHub repository, if it does not exist already, to the `/home/jovyan/materials` directory. This directory will automatically be made if it does not exist already. 
+
+```
+singleuser:
+  #...
+  # Remove the git clone part or fill in a valid URL, otherwise the user-pod will not start!
+  cmd:
+    - /bin/bash
+    - '-c'
+    - >-
+      pip install papersize && [ "$(ls -A /home/jovyan/materials 2>/dev/null)" ]
+      || git clone https://github.com/EbookFoundation/free-programming-books.git
+      /home/jovyan/materials && exec jupyterhub-singleuser
+```
+
+Finally, we chose to include two additional notebook images. Besides the minimal image, we include the data science and Tensorflow images. These notebook images come with other kernels, packages and extensions installed. For more information about different images provided by Jupyter, please refer to their [documentation](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html).
+
+```
+image:
+    name: quay.io/jupyter/minimal-notebook
+    pullPolicy: null
+    pullSecrets: []
+    tag: 87b37b4fd818
+  profileList:
+    - display_name: "Minimal environment"
+      description: "To avoid too much bells and whistles: Python."
+      default: true
+    - display_name: "Datascience environment"
+      description: "If you want the additional bells and whistles: Python, R, and Julia."
+      kubespawner_override:
+        image: quay.io/jupyter/datascience-notebook:87b37b4fd818
+    - display_name: "Tensorflow environment"
+      description: "Here you have Tensorflow installed!"
+      kubespawner_override:
+        image: quay.io/jupyter/tensorflow-notebook:87b37b4fd818
+```
+
+Note that we chose the latest tag at the time of writing: `87b37b4fd818`. Change this tag accordingly if a more recent release is available! You can find their releases via their Quay.io repository: https://quay.io/organization/jupyter.
+
+Upon the first creation of the user pod, in other words when the user logs in for the first time. They will see a menu where they can choose their preconfigured notebook by choice. 
+
+<img src="/img/jupyterhub-notebookchoice-login.png" alt="" style={{maxWidth: '75%', maxHeight: '75%'}} />
 
 #
 
 ## Deploying JupyterHub using the DSRI website 🪐
 
-:::warning Before you begin download the config.yaml
+:::warning Before you begin download the config-basic.yaml
 
-Download the preconfigured `config.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config.yaml).
+Download the preconfigured `config-basic.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-basic.yaml).
 The default config that is provided by JupyterHub will not work. 
 
 :::
@@ -182,8 +269,8 @@ And choose the right Chart version: `3.3.8` (1). Note that this is an important 
 
 #
 
-Now, change the config with the content of the `config.yaml` you have downloaded from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config.yaml).
-Copy the content of the `config.yaml` and paste it in the highlighted box to replace the old with the new config. Click `Create` to install the JupyterHub Helm Chart.
+Now, change the config with the content of the `config-basic.yaml` you have downloaded from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-basic.yaml).
+Copy the content of the `config-basic.yaml` and paste it in the highlighted box to replace the old with the new config. Click `Create` to install the JupyterHub Helm Chart.
 
 <img src="/img/jupyterhub-helm-chart-install-six.png" alt="" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
@@ -209,9 +296,9 @@ Fill in the `Name` (1), choose the `Service`: `proxy-public` (2), choose the `Ta
 
 <img src="/img/jupyterhub-helm-chart-route-three.png" alt="" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-### Upgrading the config.yaml
+### Upgrading the config-basic.yaml
 
-You can upgrade your `config.yaml` easily in the DSRI web UI if you would like to change certain settings, such as user's default persistent volume claims, authentication methods, and many more things. Note that in some cases users who created an account with an old authentication method will still have access via that method, make sure you set up your preferred authentication method before allowing users to authenticate and use the JupyterHub instance.
+You can upgrade your `config-basic.yaml` easily in the DSRI web UI if you would like to change certain settings, such as user's default persistent volume claims, authentication methods, and many more things. Note that in some cases users who created an account with an old authentication method will still have access via that method, make sure you set up your preferred authentication method before allowing users to authenticate and use the JupyterHub instance.
 
 #
 
@@ -227,7 +314,7 @@ Now, click the `Actions` drop down menu, and choose `Upgrade` (1).
 
 #
 
-In the box -highlighted in the picutre below- you can make changes to the config.yaml. After you have made your changes, click `Upgrade` and your upgraded JupyterHub Helm Chart Release will automatically be deployed.
+In the box -highlighted in the picutre below- you can make changes to the config-basic.yaml. After you have made your changes, click `Upgrade` and your upgraded JupyterHub Helm Chart Release will automatically be deployed.
 
 <img src="/img/jupyterhub-helm-chart-upgrade-chart-three.png" alt="" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
@@ -243,9 +330,9 @@ Feel free to [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/
 
 ## Deploying JupyterHub using the Command Line Interface (CLI) 🪐
 
-:::warning Before you begin download the config.yaml
+:::warning Before you begin download the config-basic.yaml
 
-Download the preconfigured `config.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config.yaml).
+Download the preconfigured `config-basic.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-basic.yaml).
 The default config that is provided by JupyterHub will not work. 
 
 :::
@@ -279,7 +366,7 @@ At the moment the latest -and only- Helm Chart version which is supported by DSR
 
 #
 
-Make sure you use the right `config.yaml` downloaded from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config.yaml).
+Make sure you use the right `config-basic.yaml` downloaded from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-basic.yaml).
 
 Install the Helm Chart using the following command:
 
@@ -288,7 +375,7 @@ helm upgrade --cleanup-on-fail \
   --install jupyterhub jupyterhub/jupyterhub \
   --version=3.3.8 \
   --namespace=<project name> \
-  --values config.yaml
+  --values config-basic.yaml
 ```
 `<project name>` is the name of your project.
 
@@ -302,16 +389,16 @@ oc create route edge <NAME OF ROUTE> --namespace <project name> --service=proxy-
 `<project name>` is the name of your project.
 `<NAME OF ROUTE>` is the name of the route. 
 
-### Upgrading the config.yaml
+### Upgrading the config-basic.yaml
 
-Run the following command with your new config.yaml:
+Run the following command with your new config-basic.yaml:
 
 ```bash
 helm upgrade --cleanup-on-fail \
   --install jupyterhub jupyterhub/jupyterhub \
   --version=3.3.8 \
   --namespace=<project name> \
-  --values config.yaml
+  --values config-basic.yaml
 ```
 `<project name>` is the name of your project.
 
