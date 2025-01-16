@@ -40,6 +40,10 @@ hub:
 #      client_id: your-client-id
 #      client_secret: your-client-secret
 #      oauth_callback_url: https://<route name>-<project name>.apps.dsri2.unimaas.nl/hub/oauth_callback
+#      allowed_organizations:
+#        - my-github-organization
+#      scope:
+#        - read:org
 #    JupyterHub:
 #      authenticator_class: github
   consecutiveFailureLimit: 5

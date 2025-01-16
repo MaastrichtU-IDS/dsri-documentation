@@ -40,6 +40,10 @@ hub:
 #      client_id: your-client-id
 #      client_secret: your-client-secret
 #      oauth_callback_url: https://<route name>-<project name>.apps.dsri2.unimaas.nl/hub/oauth_callback
+#      allowed_organizations:
+#        - my-github-organization
+#      scope:
+#        - read:org
 #    JupyterHub:
 #      authenticator_class: github
   consecutiveFailureLimit: 5
@@ -450,7 +454,7 @@ singleuser:
     - /bin/bash
     - '-c'
     - >-
-      pip install papersize && [ "$(ls -A /home/jovyan/materials 2>/dev/null)" ]
+      pip install papersize pandas && [ "$(ls -A /home/jovyan/materials 2>/dev/null)" ]
       || git clone https://github.com/EbookFoundation/free-programming-books.git
       /home/jovyan/materials && exec jupyterhub-singleuser
   cpu:
@@ -526,7 +530,7 @@ singleuser:
   serviceAccountName: null
   startTimeout: 300
   storage:
-    capacity: 2Gi
+    capacity: 20Gi
     dynamic:
       pvcNameTemplate: 'claim-{username}{servername}'
       storageAccessModes:
