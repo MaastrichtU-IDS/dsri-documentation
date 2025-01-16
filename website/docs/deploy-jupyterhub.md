@@ -86,7 +86,10 @@ Note that this password is in plaintext in your `config-basic.yaml`. **Do not us
 
 #### GitHub OAuth authentication
 
-This authentication method is the most secure option we provide at the moment. The major caveat is that you and the people you want to collaborate with need a GitHub account. Moreover, you will need to create an organization and team within that organization, or have access to an organization and team. To set up an organization and team, please refer to GitHub's [documentation](https://docs.github.com/en/organizations). You grant the people authorization to log in into the JupyterHub instance with their GitHub account by adding them to a team in an organization in GitHub.
+This authentication method is the most secure option we provide at the moment. The major caveat is that you and the people you want to collaborate with need a GitHub account. Moreover, you will need to create an organization, or have admin rights in an organization. 
+To set up an organization, please refer to GitHub's [documentation](https://docs.github.com/en/organizations). 
+
+Using this method, you grant people authorization to log in into the JupyterHub instance with their GitHub account based on GitHub organization membership.
 
 ```bash
 hub:
@@ -96,11 +99,37 @@ hub:
       client_id: your-client-id
       client_secret: your-client-secret
       oauth_callback_url: https://<route name>-<project name>.apps.dsri2.unimaas.nl/hub/oauth_callback
+      allowed_organizations:
+        - my-github-organization
+      scope:
+        - read:org
     JupyterHub:
       authenticator_class: github
 ```
 
-For creating an OAuth app in GitHub please refer to GitHub's [documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). The GitHub OAuth app will provide the client ID and client secret. Fill in the `<route name>` and `<project name>` at the `oauth_callback_url` section. To set up a route to get your `<route name>` see the following section: [Creating a secured route using the DSRI website](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route), or [Creating a secured route using the CLI](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route-1). Note that you can change the `<route name>` at a later moment by upgrading the `config-basic.yaml`. 
+For creating an OAuth app in GitHub please refer to GitHub's [documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). 
+
+**Make sure that this OAuth app is made within the organization and not for your personal GitHub account!** From the organization's GitHub page in the left sidebar, click `Developer settings`. Then, in the left sidebar, click `OAuth apps`. 
+
+It is also possible to limit the access to specific teams in your organization. This allows to give more granular access based on team membership within the organization.
+
+```bash
+hub:
+  # ...
+  config:
+    GitHubOAuthenticator:
+      client_id: your-client-id
+      client_secret: your-client-secret
+      oauth_callback_url: https://<route name>-<project name>.apps.dsri2.unimaas.nl/hub/oauth_callback
+      allowed_organizations:
+        - my-github-organization:my-team
+      scope:
+        - read:org
+    JupyterHub:
+      authenticator_class: github
+```
+
+The GitHub OAuth app will provide the client ID and client secret. Fill in the `<route name>` and `<project name>` at the `oauth_callback_url` section. To set up a route to get your `<route name>` see the following section: [Creating a secured route using the DSRI website](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route), or [Creating a secured route using the CLI](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route-1). Note that you can change the `<route name>` at a later moment by upgrading the `config-basic.yaml`. 
 
 ### Configure the notebook image
 
