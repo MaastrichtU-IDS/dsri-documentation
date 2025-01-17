@@ -105,8 +105,8 @@ hub:
       admin_users:
         - username
       allowed_users:
+        - username1
         - username2
-        - username3
       scope:
         - read:org
     JupyterHub:
@@ -118,7 +118,7 @@ To set up an organization, please refer to GitHub's [documentation](https://docs
 
 **Make sure that the OAuth app for allowing organizations is made within the organization and not for your personal GitHub account!** From the organization's GitHub page in the left sidebar, click `Developer settings`. Then, in the left sidebar, click `OAuth apps`. 
 
-Using this method, you grant people authorization to log in to the JupyterHub instance with their GitHub account based on GitHub organization membership. Users who need admin privileges should be added to the `admin_users` group in the config. Add your own GitHub username to this list so you are sure you have admin privileges at least!
+Using this method, you grant people authorization to log in to the JupyterHub instance with their GitHub account based on GitHub organization membership. Users who need admin privileges should be added to the `admin_users` group in the config. Add your own GitHub username to this list so you are sure you have admin privileges.
 
 ```bash
 hub:
@@ -148,6 +148,8 @@ hub:
       client_id: your-client-id
       client_secret: your-client-secret
       oauth_callback_url: https://<route name>-<project name>.apps.dsri2.unimaas.nl/hub/oauth_callback
+      admin_users:
+        - username
       allowed_organizations:
         - my-github-organization:my-team
       scope:
