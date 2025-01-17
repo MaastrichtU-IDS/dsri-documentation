@@ -63,7 +63,7 @@ Fill in any usernamer and password combination you would like and the user accou
 
 #### allow_users / admin_users authentication
 
-If you will be working on your own in your JupyterHub instance it will be easiest to use the allow_users / admin_users authentication method. This method allows you to specify a user and admin account with a shared password. **It is important that you keep this password a secret and safe! If people will get their hands on this they can acces your JupyterHub instance and login as an admin, which can lead to hefty consequences.** 
+If you will be working on your own in your JupyterHub instance it will be easiest to use the allow_users / admin_users authentication method. This method allows you to specify a user and admin account with a shared password. **It is important that you keep this password a secret and safe! If people will get their hands on this they can acces your JupyterHub instance and log in as an admin, which can lead to hefty consequences.** 
 
 If you want to make use of this config uncomment the following block of text and comment out the previous block of text seen at the `Dummy authentication` section above:
 
@@ -86,10 +86,13 @@ Note that this password is in plaintext in your `config-basic.yaml`. **Do not us
 
 #### GitHub OAuth authentication
 
-This authentication method is the most secure option we provide at the moment. The major caveat is that you and the people you want to collaborate with need a GitHub account. Moreover, you will need to create an organization, or have admin rights in an organization. 
-To set up an organization, please refer to GitHub's [documentation](https://docs.github.com/en/organizations). 
+This authentication method is the most secure option we provide at the moment. It makes use of an GitHub OAuth app. The major caveat is that you and the people you want to collaborate with need a GitHub account. 
 
-Using this method, you grant people authorization to log in into the JupyterHub instance with their GitHub account based on GitHub organization membership.
+For creating an OAuth app in GitHub please refer to GitHub's [documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). 
+
+The GitHub OAuth app will provide the client ID and client secret. Fill in the `<route name>` and `<project name>` at the `oauth_callback_url` section. To set up a route to get your `<route name>` see the following section: [Creating a secured route using the DSRI website](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route), or [Creating a secured route using the CLI](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route-1). Note that you can change the `<route name>` at a later moment by upgrading the `config-basic.yaml`. 
+
+Access is granted based on username. Admin privileges are set for users in the `admin_users` group, while `allowed_users` are regular users that are able to log in to the instance.
 
 ```bash
 hub:
@@ -99,6 +102,34 @@ hub:
       client_id: your-client-id
       client_secret: your-client-secret
       oauth_callback_url: https://<route name>-<project name>.apps.dsri2.unimaas.nl/hub/oauth_callback
+      admin_users:
+        - username
+      allowed_users:
+        - username2
+        - username3
+      scope:
+        - read:org
+    JupyterHub:
+      authenticator_class: github
+```
+
+Moreover, it is possible to grant users access to the instance via an GitHub organization. For this, you will need to create an organization, or have admin rights in an organization. 
+To set up an organization, please refer to GitHub's [documentation](https://docs.github.com/en/organizations). 
+
+**Make sure that the OAuth app for allowing organizations is made within the organization and not for your personal GitHub account!** From the organization's GitHub page in the left sidebar, click `Developer settings`. Then, in the left sidebar, click `OAuth apps`. 
+
+Using this method, you grant people authorization to log in to the JupyterHub instance with their GitHub account based on GitHub organization membership. Users who need admin privileges should be added to the `admin_users` group in the config. Add your own GitHub username to this list so you are sure you have admin privileges at least!
+
+```bash
+hub:
+  # ...
+  config:
+    GitHubOAuthenticator:
+      client_id: your-client-id
+      client_secret: your-client-secret
+      oauth_callback_url: https://<route name>-<project name>.apps.dsri2.unimaas.nl/hub/oauth_callback
+      admin_users:
+        - username
       allowed_organizations:
         - my-github-organization
       scope:
@@ -106,10 +137,6 @@ hub:
     JupyterHub:
       authenticator_class: github
 ```
-
-For creating an OAuth app in GitHub please refer to GitHub's [documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). 
-
-**Make sure that this OAuth app is made within the organization and not for your personal GitHub account!** From the organization's GitHub page in the left sidebar, click `Developer settings`. Then, in the left sidebar, click `OAuth apps`. 
 
 It is also possible to limit the access to specific teams in your organization. This allows to give more granular access based on team membership within the organization.
 
@@ -128,8 +155,6 @@ hub:
     JupyterHub:
       authenticator_class: github
 ```
-
-The GitHub OAuth app will provide the client ID and client secret. Fill in the `<route name>` and `<project name>` at the `oauth_callback_url` section. To set up a route to get your `<route name>` see the following section: [Creating a secured route using the DSRI website](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route), or [Creating a secured route using the CLI](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyterhub#creating-a-secured-route-1). Note that you can change the `<route name>` at a later moment by upgrading the `config-basic.yaml`. 
 
 ### Configure the notebook image
 
