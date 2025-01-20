@@ -86,6 +86,7 @@ It is possible to access the Matlab desktop UI through VNC and a web UI, but the
 
 By default the image run with the `matlab` user which does not have `sudo` privilege, you can run the container as root if you need to install packages which require admin privileges. 
 
+<!--
 ## Build your own Matlab image
 
 Follow the instructions at: https://github.com/mathworks-ref-arch/matlab-dockerfile
@@ -120,6 +121,7 @@ Your Matlab container should now be running!
 You can access Matlab from the terminal by running `matlab`
 
 Unfortunately Matlab did not expected their users to need the graphical UI when using Matlab in containers. So only the command line is available by default. You can find more information to [enable the Matlab UI in this issue](https://github.com/mathworks-ref-arch/matlab-dockerfile/issues/18).
+-->
 
 <!--
 
