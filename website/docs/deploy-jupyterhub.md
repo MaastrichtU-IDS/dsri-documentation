@@ -466,6 +466,39 @@ Feel free to [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/
 
 :::
 
+## Connecting to a JupyterHub instance with the API
+
+It is possible to use API calls to interact with your JupyterHub instance. For more information about the JupyterHub API you can find their documentation [here](https://jupyterhub.readthedocs.io/en/stable/reference/rest-api.html).
+
+To make us of the API, first you need to access your personal API token. In your JupyterHub instance, after logging in, click `File` in the top left corner. Then click `Hub Control Panel`, and you will navigate to your Hub's control panel. Then click `Token` in the top navigation bar. 
+
+You will navigate to your API token management page. Here you can request a new API token for yourself by clicking the `Request new API token` button. You can choose to let the API token expire in one hour, one day, one week or to never let the token expire.
+
+Furthermore, you can revoke existing tokens and you can manage authorized applications which are linked via OAuth token to your JupyterHub.
+
+This is an example on how to request all users using the JupyterHub API using the Python programming language:
+```
+import requests
+import json
+
+api_token = ' <TOKEN>'
+api_url = '<URL>/hub/api'
+
+r = requests.get(f'{api_url}/users',
+    headers={
+        'Authorization': f'token {api_token}',
+})
+
+status_code = r.status_code
+print('Status code:', status_code)
+
+status = r.raise_for_status()
+print('Status:', status)
+
+users = r.json()
+print(json.dumps(users, indent=3))
+```
+Where `<TOKEN>` is your API token. And `<URL>` is your JupyterHub instance's URL.
 
 <!--
 
