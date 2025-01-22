@@ -476,7 +476,7 @@ You will navigate to your API token management page. Here you can request a new 
 
 Furthermore, you can revoke existing tokens and you can manage authorized applications which are linked via OAuth token to your JupyterHub.
 
-This is an example on how to request all users using the JupyterHub API using the Python programming language:
+This is an example on how to request all users with the JupyterHub API using the Python programming language:
 ```
 import requests
 import json
