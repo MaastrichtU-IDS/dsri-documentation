@@ -6,10 +6,10 @@ metadata:
   annotations:
     openshift.io/display-name: RStudio
     description: |-
-      Start RStudio with the rstudio user which has root permissions (sudo).
+      Start RStudio with the 'root' as username which has root permissions (sudo).
 
       🔑 Default credentials are
-      - login: rstudio
+      - login: root
       - password: $user_password
 
       🐳 Available images with this template:
