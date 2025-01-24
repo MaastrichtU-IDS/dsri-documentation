@@ -177,6 +177,8 @@ objects:
                 name: "${APPLICATION_NAME}"
           - name: ROOT
             value: "TRUE"
+          - name: RUNROOTLESS
+            value: 'true'
           - name: OPENBLAS_NUM_THREADS
             value: "${OPENBLAS_NUM_THREADS}"
         automountServiceAccountToken: false
