@@ -63,12 +63,12 @@ Follow the instructions on the [mathworks/jupyter-matlab-proxy repository](https
 -->
 ## Deploy Matlab on GPU
 
-We use the Matlab template in the DSRI catalog to deploy a pre-built **Nvidia Matlab Deep Learning Container** on CPU or GPU nodes. See the [official documentation from MathWorks](https://nl.mathworks.com/help/cloudcenter/ug/matlab-deep-learning-container-on-dgx.html) for more details about this image.
+We use the Matlab template in the DSRI catalog to deploy a pre-built **Nvidia Matlab Deep Learning Container** on CPU or GPU nodes. See the [official documentation from MathWorks](https://nl.mathworks.com/help/cloudcenter/ug/matlab-deep-learning-container-on-docker-hub.html) for more details about this image.
 
-:::caution Request access to Matlab
+:::caution Request GPU access to Matlab
 
-To be able to access the Matlab on GPU template you will need to [ask the DSRI admins](/help) to enable it in your project.
-
+By default you do not have the permission to run applications on GPU, you need to make a reservation.
+you can look into [GPU applications documentation](https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu) for more details.
 :::
 
 2 options are available to connect to your running Matlab pod terminal:
@@ -78,13 +78,16 @@ To be able to access the Matlab on GPU template you will need to [ask the DSRI a
 
 Type `bash` when first accessing to the terminal to have a better experience.
 
-Type `cd /ContainerDeepLearningData` to go in the persistent volume, and use this volume to store all data that should be preserved.
+Type `cd /home/matlab/persistent` to go in the persistent volume, and use this volume to store all data that should be preserved.
 
 Type `matlab` to access Matlab from the terminal
 
+<!--
 It is possible to access the Matlab desktop UI through VNC and a web UI, but the script to start it in `/bin/run.sh` seems to face some errors, let us know if you have any luck with this.
 
 By default the image run with the `matlab` user which does not have `sudo` privilege, you can run the container as root if you need to install packages which require admin privileges. 
+-->
+
 
 <!--
 ## Build your own Matlab image
