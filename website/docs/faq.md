@@ -5,7 +5,7 @@ title: FAQ - Frequently Asked Questions
 
 ### How do I get access to DSRI?
 
-The page [Access the DSRI](/docs/access-dsri) takes you through the details of logging in to project workspaces.
+The page on [requesting an account](/docs/access-dsri) takes you through the details of logging in an gaining access to project workspaces.
 
 ### My project is deleted and gone. Can you restore my project?
 
