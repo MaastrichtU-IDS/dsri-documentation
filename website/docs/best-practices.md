@@ -1,6 +1,6 @@
 ---
 id: best-practices
-title: Best Pracitices
+title: Best Practices
 ---
 
 <details><summary>⚠️ If This list of <b>best practices</b> revolves all around making safe and efficient use of DSRI.</summary></details>
