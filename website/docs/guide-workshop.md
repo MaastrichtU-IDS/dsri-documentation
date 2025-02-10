@@ -19,7 +19,7 @@ At FSE, you will need to send an email to [lo-fse@maastrichtuniversity.nl](mailt
 
 Fill this  [form 📬](/register) to give us more details on your project (you don't need to do it if you have already filled it in the past).
 
-## Prepare you workshop
+## Prepare your workshop
 
 Use the [DSRI documentation](/docs/access-dsri) to explain to your users how to access the DSRI.
 

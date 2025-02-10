@@ -1,6 +1,6 @@
 ---
 id: prepare-project-for-dsri
-title: Prepare your project
+title: Preparing Data
 ---
 
 ## Code in a git repository
