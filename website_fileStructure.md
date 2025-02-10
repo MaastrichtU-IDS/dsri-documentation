@@ -1,7 +1,7 @@
 DSRI Documentation
 |__Quickstart Tips
 	|__FAQ - Frequently Asked Questions
-	|__Best Pracitices
+	|__Best Practices
 	|__Openshift Command Line Tips
 |__Getting started
 	|__Introduction
@@ -35,7 +35,7 @@ DSRI Documentation
 	|__Run MPI jobs
 	|__Neuroscience research
 	|__Genomics
-	|__Imaging softwares
+	|__Imaging software
 	|__Utilities
 |__Advanced Deployment
 	|__Anatomy of a DSRI application
