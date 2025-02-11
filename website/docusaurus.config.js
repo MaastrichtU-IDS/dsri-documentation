@@ -118,9 +118,9 @@ module.exports={
     },
     "navbar": {
       "hideOnScroll": false,
-      "title": "Data Science Research Infrastructure",
+      "title": " ",
       "logo": {
-        "src": "img/favicon.ico"
+        "src": "img/dsri_.png"
       },
       "items": [
         {
@@ -158,7 +158,12 @@ module.exports={
           // "label": "GitHub",
           "position": "right",
           "className": 'header-github-link'
-        }
+        },
+        {
+          type: 'html',
+          position: 'right',
+          value: `<a href="https://www.maastrichtuniversity.nl/"><img src="/img/favicon.ico" alt="UM" width="30" height="30"/></a>`,
+        },
       ]
     },
     "image": "img/undraw_online.svg",
