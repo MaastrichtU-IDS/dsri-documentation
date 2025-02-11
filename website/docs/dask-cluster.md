@@ -1,6 +1,6 @@
 ---
 id: dask-cluster
-title: Deploy Dask Cluster
+title: Dask Cluster
 ---
 
 ## 🧊 Installation with Helm

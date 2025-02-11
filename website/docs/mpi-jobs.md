@@ -1,6 +1,6 @@
 ---
 id: mpi-jobs
-title: Run MPI jobs
+title: MPI jobs
 ---
 
 We deployed the [MPI Operator](https://github.com/kubeflow/mpi-operator) from Kubeflow to run MPI jobs on the DSRI.
