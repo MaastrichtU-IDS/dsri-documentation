@@ -157,6 +157,14 @@ hub:
     JupyterHub:
       authenticator_class: github
 ```
+#
+
+:::info UM SSO login
+
+It is possible to enable UM SSO login for your JupyterHub instance. However, this needs some setting up from our side. If you would like to enable this, please send an email to rcs-ub@maastrichtuniversity.nl.
+
+:::
+
 
 ### Configure the notebook image
 
