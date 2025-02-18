@@ -213,7 +213,7 @@ objects:
     triggers:
       - type: ImageChange
         imageChangeParams:
-          automatic: true
+          automatic: false
           containerNames:
             - ${NAME}
           from:
@@ -221,7 +221,7 @@ objects:
             name: ${NAME}:latest
       - type: ImageChange
         imageChangeParams:
-          automatic: true
+          automatic: false
           containerNames:
             - shadowjob
           from:
