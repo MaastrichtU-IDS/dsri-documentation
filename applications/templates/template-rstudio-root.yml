@@ -144,7 +144,7 @@ objects:
           # image: ${APPLICATION_NAME}:latest
           # imagePullPolicy: IfNotPresent
           image: ${APPLICATION_IMAGE}
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8787
             protocol: TCP

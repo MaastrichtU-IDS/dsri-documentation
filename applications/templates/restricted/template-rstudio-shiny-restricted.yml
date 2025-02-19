@@ -260,7 +260,7 @@ objects:
         containers:
           - name: ${NAME}
             image: ${NAME}:latest
-            imagePullPolicy: Always
+            imagePullPolicy: IfNotPresent
             ports:
               - containerPort: 8787
               - containerPort: 3838
