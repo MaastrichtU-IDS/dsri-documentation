@@ -53,7 +53,7 @@ Let’s look at each area of the deep learning pipeline step by step, including 
 4) Use Fused Operations
 5) Enable GPU Persistence
 
-## How DSRI team can help you?
+## How RCS team can help you?
 
 We can assist you  with analyzing the bottleneck/s in your deep learning pipeline and recommend the improvments to speed up your pipeline.
 

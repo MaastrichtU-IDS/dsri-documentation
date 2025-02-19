@@ -68,7 +68,7 @@ Operators are the preferred method of packaging, deploying, and managing a Kuber
 
 ## Pod
 
-A pod is the smallest logical unit in Kubernetes and OpenShift. A pod consists of one or more containers and runs on a worker node.
+A pod is the smallest logical unit in Kubernetes. A pod consists of one or more containers and runs on a worker node.
 
 ## Project
 
@@ -101,3 +101,5 @@ A service account binds together:
 * a set of secrets
 
 #### More Information: https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/
+
+

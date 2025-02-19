@@ -29,4 +29,3 @@ A backup is still always necessary though as illustrated in the [best practices]
 ### Can I use the DSRI portal with any browser?
 
 We test our portal with Firefox and Chrome. There is the possibility of unexpected behavior with other browsers.
-
