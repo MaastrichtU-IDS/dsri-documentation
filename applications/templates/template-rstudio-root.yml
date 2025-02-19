@@ -141,8 +141,6 @@ objects:
             claimName: "${APPLICATION_NAME}"
         containers:
         - name: rstudio-container
-          # image: ${APPLICATION_NAME}:latest
-          # imagePullPolicy: IfNotPresent
           image: ${APPLICATION_IMAGE}
           imagePullPolicy: IfNotPresent
           ports:
