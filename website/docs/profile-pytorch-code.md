@@ -19,7 +19,7 @@ From personal experience: if I know I'm going to run a code only once, for a few
 
 If I know that I'll run my code on multiple GPUs, for multiple days, (potentially) on multiple nodes, and/or I need to run it multiple times, I know that my resource footprint is going to be large, and it's worth spending some time and effort to optimize the code. That's when I'll create a profile. The good part is: the more often you do it, the quicker and more adapt you become at it.
 
-## How DSRI team can help you?
+## How RCS team can help you?
 
 We can assist you  with analyzing the bottleneck/s in your deep learning pipeline and recommend the improvments to speed up your pipeline.
 

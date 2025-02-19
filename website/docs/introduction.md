@@ -92,36 +92,5 @@ Here is a diagram providing a simplified explanation of how the DSRI works, usin
 
 <img src="/img/dsri_simplified_overview.png" alt="DSRI in a nutshell " style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-## The DSRI specifications
 
-### Software
-
-We use [**OKD 4.11**](https://www.okd.io/), the Origin Community Distribution of Kubernetes that powers [RedHat OpenShift](https://www.openshift.com/), a distribution of the Kubernetes container orchestration tool. Kubernetes takes care of deploying the Docker containers on the cluster of servers, the OKD distribution extends it to improve security, and provide a user-friendly web UI to manage your applications.
-
-We use [**RedHat Ceph storage**](https://www.redhat.com/fr/technologies/storage/ceph) for the distributed storage.
-
-### Hardware
-
-* 16 CPU nodes
-
-|                | RAM (GB) | CPU (cores)            | Storage (TB) |
-| -------------- | -------- | ---------------------- | ------------ |
-| Node capacity  | 512 GB   | 64 cores (128 threads) | 120 TB       |
-| Total capacity | 8 192 GB | 1 024 cores            | 1 920 TB     |
-
-* 1 GPU node: **Nvidia DGX1** 8x Tesla V100 - 32GB GPU
-
-|                   | GPUs | RAM (GB) | CPU (cores) |
-| ----------------- | ---- | -------- | ----------- |
-| GPU node capacity | 8    | 512 GB   | 40 cores    |
-
-<img src="/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure " style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-## Learn more about DSRI
-
-See the following presentation about the Data Science Research Infrastructure 
-
-<a href="/resource/2021-04-DSRI-Community-Event.pdf" target="_blank" rel="noopener noreferrer">
- <img src="/resource/DSRI-community-event.png" style={{maxWidth: '100%', maxHeight: '100%'}} alt="DSRI April 2021 Community Event Presentation" />
-</a>
 

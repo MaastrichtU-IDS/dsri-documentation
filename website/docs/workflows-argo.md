@@ -5,7 +5,7 @@ title: Run Argo workflows
 
 :::warning Install in your project
 
-Argo needs to be installed in your project, [contact the DSRI team](mailto:dsri-support-l@maastrichtuniversity.nl) to request it.
+Argo needs to be installed in your project, [contact the RCS team](mailto:dsri-support-l@maastrichtuniversity.nl) to request it.
 
 :::
 

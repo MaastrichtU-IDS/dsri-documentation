@@ -218,7 +218,7 @@ If you get 403 forbidden issue while try to upload folders / files or creating n
 
 Above issue will occur if you are not using the **persistent storage**.
 
-A persistent storage can be created by the DSRI team for a persistent storage of the data. [Contact the DSRI team](http://localhost:3000/dsri-documentation/help) to request a persistent storage.
+A persistent storage can be created by the RCS team for a persistent storage of the data. [Contact the RCS team](http://localhost:3000/dsri-documentation/help) to request a persistent storage.
 
 You can find the persistent storage name as below
 

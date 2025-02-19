@@ -48,3 +48,69 @@ html[data-theme='dark'] .header-github-link:before {
   text-align: center !important;
   color: #1c1e21 !important;
 }
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar__logo {
+  height: 50px; /* Adjust as needed */
+}
+
+.footer {
+  background-color: #f2f2f2;
+  padding: 40px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* Footer Title Styling */
+.footer__title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #110101; /* Darker red for contrast */
+  /* nborder-bottom: 2px solid #c62828;  Adds a subtle underline */
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+/* Footer Links */
+.footer__links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer__links ul li {
+  padding: 8px 0;
+  border-bottom: 0.5px solid #c62828; /* Thinner border for minimal spacing */
+  width: 20%; /* Reduce width for a refined look */
+}
+
+/* Remove border from the last item 
+.footer__links ul li:last-child {
+  border-bottom: none;
+} */
+
+/* Footer Link Styling */
+.footer__link-item {
+  color: #d65a1a;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  padding: 4px 0;
+}
+
+.footer__link-item:hover {
+  text-decoration: underline;
+  color: #8B1C1C;
+}
+
+/* Footer Paragraph Styling */
+.footer p {
+  color: #1a1a1a;
+  font-size: 14px;
+  margin: 5px 0;
+}

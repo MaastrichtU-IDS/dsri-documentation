@@ -54,7 +54,7 @@ These hosted workspaces aka virtual machines can be used for conducting research
 
 ## How to Get Started with SURF Services?
 
-The DSRI team is here to help you navigate SURF’s services, including:
+The RCS team is here to help you navigate SURF’s services, including:
 
 1) Grant Applications:  
     We assist researchers in applying for SURF grants. For instance:
