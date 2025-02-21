@@ -143,14 +143,6 @@ objects:
       # type: Rolling
     triggers:
     - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: false
-        containerNames:
-        - jupyter-notebook
-        from:
-          kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:latest
     selector:
       app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}"

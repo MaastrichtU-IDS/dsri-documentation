@@ -90,14 +90,6 @@ objects:
       type: Recreate
     triggers:
     - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: false
-        containerNames:
-        - ontotext-graphdb
-        from:
-          kind: ImageStreamTag
-          name: ${APPLICATION_IMAGE}
     replicas: 1
     selector:
       app: "${APPLICATION_NAME}"

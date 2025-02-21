@@ -117,14 +117,6 @@ objects:
           name: dshm
     triggers:
     - type: ConfigChange
-    - imageChangeParams:
-        automatic: false
-        containerNames:
-        - matlab-container
-        from:
-          kind: ImageStreamTag
-          name: "${APPLICATION_NAME}:latest"
-      type: ImageChange
 - apiVersion: v1
   kind: Service
   metadata:

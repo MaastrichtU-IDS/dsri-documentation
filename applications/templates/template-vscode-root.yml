@@ -102,14 +102,6 @@ objects:
       type: Recreate
     triggers:
     - type: ConfigChange
-    # - type: ImageChange
-    #   imageChangeParams:
-    #     automatic: false
-    #     containerNames:
-    #     - vscode-container
-    #     from:
-    #       kind: ImageStreamTag
-    #       name: vscode-imagestream
     replicas: 1
     selector:
       app: "${APPLICATION_NAME}"
