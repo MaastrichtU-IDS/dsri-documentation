@@ -1,0 +1,167 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: ontotext-graphdb
+metadata:
+  annotations:
+    description: "Start a Ontotext GraphDB triplestore, with a SPARQL endpoint\n\n\U0001F512
+      After accessing GraphDB for the first time you can easily enable security, and
+      define a password for the admin user.\n\n\U0001F4C2 We use the folder `/opt/graphdb/home`
+      in the container to store the database and import folder in the persistent storage\nYou
+      can find the persistent storage in the DSRI web UI, go to Administrator view
+      > Storage > Persistent Volume Claims\n\nVisit https://github.com/Ontotext-AD/graphdb-docker
+      for more details about the image used"
+    iconClass: icon-datavirt
+    kubectl.kubernetes.io/last-applied-configuration: "{\"apiVersion\":\"template.openshift.io/v1\",\"kind\":\"Template\",\"labels\":{\"template\":\"ontotext-graphdb\"},\"metadata\":{\"annotations\":{\"description\":\"Start
+      a Ontotext GraphDB triplestore, with a SPARQL endpoint\\n\\n\U0001F512 After
+      accessing GraphDB for the first time you can easily enable security, and define
+      a password for the admin user.\\n\\n\U0001F4C2 We use the folder `/opt/graphdb/home`
+      in the container to store the database and import folder in the persistent storage\\nYou
+      can find the persistent storage in the DSRI web UI, go to Administrator view
+      \\u003e Storage \\u003e Persistent Volume Claims\\n\\nVisit https://github.com/Ontotext-AD/graphdb-docker
+      for more details about the image used\",\"iconClass\":\"icon-datavirt\",\"openshift.io/display-name\":\"Ontotext
+      GraphDB\",\"openshift.io/documentation-url\":\"https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-database#ontotext-graphdb-triplestore\",\"openshift.io/provider-display-name\":\"Institute
+      of Data Science, UM\",\"openshift.io/support-url\":\"https://maastrichtu-ids.github.io/dsri-documentation/help\",\"tags\":\"triplestore,graph,database,rdf,sparql\"},\"name\":\"ontotext-graphdb\",\"namespace\":\"openshift\"},\"objects\":[{\"apiVersion\":\"v1\",\"kind\":\"PersistentVolumeClaim\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"accessModes\":[\"ReadWriteMany\"],\"resources\":{\"requests\":{\"storage\":\"${STORAGE_SIZE}\"}}}},{\"apiVersion\":\"apps.openshift.io/v1\",\"kind\":\"DeploymentConfig\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"replicas\":1,\"selector\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"},\"strategy\":{\"type\":\"Recreate\"},\"template\":{\"metadata\":{\"annotations\":{\"io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel\":\"true\"},\"labels\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"env\":[{\"name\":\"GDB_JAVA_OPTS\",\"value\":\"-Xmx${GRAPHDB_JAVA_MEMORY}
+      -Xms${GRAPHDB_JAVA_MEMORY}\\n-Dgraphdb.home=/opt/graphdb/home\\n-Dgraphdb.workbench.importDirectory=/opt/graphdb/home/import\\n-Dgraphdb.workbench.cors.enable=true\\n-Denable-context-index=true\\n-Dentity-pool-implementation=transactional\\n-Dgraphdb.append.request.id.headers=true\\n-Dreuse.vars.in.subselects=true\\n\"}],\"image\":\"${APPLICATION_IMAGE}\",\"name\":\"ontotext-graphdb\",\"ports\":[{\"containerPort\":7200,\"protocol\":\"TCP\"}],\"volumeMounts\":[{\"mountPath\":\"/opt/graphdb/home\",\"name\":\"data\"}]}],\"runtimeClassName\":\"selinux\",\"serviceAccountName\":\"anyuid\",\"volumes\":[{\"name\":\"data\",\"persistentVolumeClaim\":{\"claimName\":\"${APPLICATION_NAME}\"}}]}},\"triggers\":[{\"type\":\"ConfigChange\"},{\"imageChangeParams\":{\"automatic\":true,\"containerNames\":[\"ontotext-graphdb\"],\"from\":{\"kind\":\"ImageStreamTag\",\"name\":\"${APPLICATION_IMAGE}\"}},\"type\":\"ImageChange\"}]}},{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"ports\":[{\"name\":\"7200-tcp\",\"port\":7200,\"protocol\":\"TCP\",\"targetPort\":7200}],\"selector\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"}}},{\"apiVersion\":\"route.openshift.io/v1\",\"kind\":\"Route\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"host\":\"\",\"port\":{\"targetPort\":\"7200-tcp\"},\"tls\":{\"insecureEdgeTerminationPolicy\":\"Redirect\",\"termination\":\"edge\"},\"to\":{\"kind\":\"Service\",\"name\":\"${APPLICATION_NAME}\",\"weight\":100}}}],\"parameters\":[{\"description\":\"Must
+      be without spaces (use -), and unique in the project.\",\"displayName\":\"Application
+      name\",\"name\":\"APPLICATION_NAME\",\"required\":true,\"value\":\"graphdb\"},{\"description\":\"Maximum
+      memory allocated to java for GraphDB (-xms and -xmx)\",\"displayName\":\"GraphDB
+      java memory\",\"name\":\"GRAPHDB_JAVA_MEMORY\",\"required\":true,\"value\":\"8g\"},{\"description\":\"Size
+      of the storage used for the application.\",\"displayName\":\"Storage size\",\"name\":\"STORAGE_SIZE\",\"required\":true,\"value\":\"20Gi\"},{\"description\":\"The
+      GraphDB image needs to be build manually first and publish in your project\",\"displayName\":\"Application
+      Docker image name\",\"name\":\"APPLICATION_IMAGE\",\"required\":true,\"value\":\"graphdb:latest\"}]}\n"
+    openshift.io/display-name: Ontotext GraphDB
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-database#ontotext-graphdb-triplestore
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    tags: triplestore,graph,database,rdf,sparql
+  creationTimestamp: "2021-05-27T13:58:48Z"
+  name: ontotext-graphdb
+  namespace: openshift
+  resourceVersion: "1342214350"
+  uid: b185a740-cf55-4517-a8b5-7c3755b9c3ad
+objects:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: "true"
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        automountServiceAccountToken: false
+        containers:
+        - env:
+          - name: GDB_JAVA_OPTS
+            value: |
+              -Xmx${GRAPHDB_JAVA_MEMORY} -Xms${GRAPHDB_JAVA_MEMORY}
+              -Dgraphdb.home=/opt/graphdb/home
+              -Dgraphdb.workbench.importDirectory=/opt/graphdb/home/import
+              -Dgraphdb.workbench.cors.enable=true
+              -Denable-context-index=true
+              -Dentity-pool-implementation=transactional
+              -Dgraphdb.append.request.id.headers=true
+              -Dreuse.vars.in.subselects=true
+          image: ${APPLICATION_IMAGE}
+          name: ontotext-graphdb
+          ports:
+          - containerPort: 7200
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /opt/graphdb/home
+            name: data
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: ${APPLICATION_NAME}
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ontotext-graphdb
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_IMAGE}
+      type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - name: 7200-tcp
+      port: 7200
+      protocol: TCP
+      targetPort: 7200
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    host: ""
+    port:
+      targetPort: 7200-tcp
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+parameters:
+- description: Must be without spaces (use -), and unique in the project.
+  displayName: Application name
+  name: APPLICATION_NAME
+  required: true
+  value: graphdb
+- description: Maximum memory allocated to java for GraphDB (-xms and -xmx)
+  displayName: GraphDB java memory
+  name: GRAPHDB_JAVA_MEMORY
+  required: true
+  value: 8g
+- description: Size of the storage used for the application.
+  displayName: Storage size
+  name: STORAGE_SIZE
+  required: true
+  value: 20Gi
+- description: The GraphDB image needs to be build manually first and publish in your
+    project
+  displayName: Application Docker image name
+  name: APPLICATION_IMAGE
+  required: true
+  value: graphdb:latest
