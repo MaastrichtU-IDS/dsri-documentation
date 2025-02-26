@@ -96,6 +96,7 @@ objects:
                 key: application-password
                 name: "${APPLICATION_NAME}"
           image: "${APPLICATION_NAME}:latest"
+          imagePullPolicy: IfNotPresent
           name: matlab-container
           ports:
           - containerPort: 8888
