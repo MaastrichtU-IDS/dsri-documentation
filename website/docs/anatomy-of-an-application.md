@@ -171,7 +171,7 @@ We chose the `Recreate` release option to make sure the container is properly re
     - type: "ConfigChange"
     - type: "ImageChange"
       imageChangeParams:
-        automatic: true
+        automatic: false
         containerNames:
         - jupyter-notebook
         from:
@@ -404,7 +404,7 @@ objects:
     - type: ConfigChange
     - type: ImageChange
       imageChangeParams:
-        automatic: true
+        automatic: false
         containerNames:
         - jupyter-notebook
         from:

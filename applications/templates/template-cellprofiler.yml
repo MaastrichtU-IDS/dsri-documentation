@@ -95,14 +95,6 @@ objects:
       type: Recreate
     triggers:
     - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - cellprofiler-container
-        from:
-          kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:latest
     replicas: 1
     selector:
       app: "${APPLICATION_NAME}"
