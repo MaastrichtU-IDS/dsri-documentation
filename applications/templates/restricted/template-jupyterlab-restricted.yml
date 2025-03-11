@@ -126,6 +126,7 @@ objects:
         containers:
         - name: jupyter-notebook
           image: "${NOTEBOOK_IMAGE}"
+          imagePullPolicy: IfNotPresent
           command:
           - start-notebook.sh
           - "--no-browser"
