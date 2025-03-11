@@ -125,15 +125,7 @@ objects:
       type: Recreate
       # type: Rolling
     triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - custom-app
-        from:
-          kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:latest
+    - type: ConfigChanget
     selector:
       app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}"
