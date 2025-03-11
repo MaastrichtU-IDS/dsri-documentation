@@ -74,8 +74,8 @@ objects:
       from:
         kind: DockerImage
         name: ${APPLICATION_IMAGE}
-      # importPolicy:
-      #   scheduled: true
+      importPolicy:
+        scheduled: false
     lookupPolicy:
       local: true
 
