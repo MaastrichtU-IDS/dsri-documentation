@@ -106,8 +106,6 @@ objects:
       from:
         kind: DockerImage
         name: ${APPLICATION_IMAGE}
-      importPolicy:
-        scheduled: true
     lookupPolicy:
       local: true
 ```
@@ -169,14 +167,6 @@ We chose the `Recreate` release option to make sure the container is properly re
       type: "Recreate"
     triggers:
     - type: "ConfigChange"
-    - type: "ImageChange"
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - jupyter-notebook
-        from:
-          kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:latest
     selector:
       app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}"
@@ -402,14 +392,6 @@ objects:
       type: Recreate
     triggers:
     - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - jupyter-notebook
-        from:
-          kind: ImageStreamTag
-          name: ${APPLICATION_NAME}:latest
     selector:
       app: "${APPLICATION_NAME}"
       deploymentconfig: "${APPLICATION_NAME}"
