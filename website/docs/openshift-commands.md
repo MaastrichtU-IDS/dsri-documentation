@@ -1,6 +1,6 @@
 ---
 id: openshift-commands
-title: Command Line Interface
+title: Command Line Tips
 ---
 
 
@@ -143,5 +143,5 @@ oc delete all --selector template=template-jupyterstack-notebook
 
 ### Copy files
 
-See the [Load data](https://maastrichtu-ids.github.io/dsri-documentation/docs/openshift-load-data) page.
+See the [Load data](/docs/openshift-load-data) page.
 

@@ -1,6 +1,6 @@
 ---
 id: access-dsri
-title: Access the DSRI
+title: Requesting an Account
 ---
 
 ## Request an account
