@@ -95,7 +95,7 @@ objects:
         kind: DockerImage
         name: ${APPLICATION_IMAGE}
       importPolicy:
-        scheduled: true
+        scheduled: false
     lookupPolicy:
       local: true
 
@@ -133,10 +133,8 @@ objects:
             claimName: "${APPLICATION_NAME}"
         containers:
         - name: rstudio-container
-          # image: ${APPLICATION_NAME}:latest
-          # imagePullPolicy: IfNotPresent
           image: ${APPLICATION_IMAGE}
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8787
             protocol: TCP

@@ -80,7 +80,7 @@ objects:
           kind: DockerImage
           name: ${DOCKER_IMAGE}
         importPolicy: 
-          scheduled: true
+          scheduled: false
         name: latest
         referencePolicy:
           type: Source

@@ -1,0 +1,199 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: matlab-cpu-nolicense
+metadata:
+  annotations:
+    description: "Start Matlab with a desktop UI, and use your own license to enable
+      Matlab (this can be useful when the UM license server does not support the latest
+      Matlab release).\nRunning on CPU, with admin privileges to install anything
+      you need\n\n\U0001F4C2 Use the `/root/persistent` folder to store your data
+      in the persistent storage automatically created.\nYou can find the persistent
+      storage in the DSRI web UI, go to Administrator view > Storage > Persistent
+      Volume Claims\n\n\U0001F433 Visit https://hub.docker.com/r/mathworks/matlab
+      for more details about the image"
+    iconClass: icon-beaker
+    kubectl.kubernetes.io/last-applied-configuration: "{\"apiVersion\":\"template.openshift.io/v1\",\"kind\":\"Template\",\"labels\":{\"template\":\"matlab-cpu-nolicense\"},\"metadata\":{\"annotations\":{\"description\":\"Start
+      Matlab with a desktop UI, and use your own license to enable Matlab (this can
+      be useful when the UM license server does not support the latest Matlab release).\\nRunning
+      on CPU, with admin privileges to install anything you need\\n\\n\U0001F4C2 Use
+      the `/root/persistent` folder to store your data in the persistent storage automatically
+      created.\\nYou can find the persistent storage in the DSRI web UI, go to Administrator
+      view \\u003e Storage \\u003e Persistent Volume Claims\\n\\n\U0001F433 Visit
+      https://hub.docker.com/r/mathworks/matlab for more details about the image\",\"iconClass\":\"icon-beaker\",\"openshift.io/display-name\":\"Matlab
+      with your license\",\"openshift.io/documentation-url\":\"https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-matlab\",\"openshift.io/provider-display-name\":\"Institute
+      of Data Science, UM\",\"openshift.io/support-url\":\"https://maastrichtu-ids.github.io/dsri-documentation/help\",\"tags\":\"matlab,cpu,root,persistent\"},\"name\":\"matlab-cpu-nolicense\",\"namespace\":\"openshift\"},\"objects\":[{\"apiVersion\":\"v1\",\"kind\":\"Secret\",\"metadata\":{\"annotations\":{\"template.openshift.io/expose-password\":\"{.data['application-password']}\"},\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"stringData\":{\"application-password\":\"${PASSWORD}\"}},{\"apiVersion\":\"v1\",\"kind\":\"PersistentVolumeClaim\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"accessModes\":[\"ReadWriteMany\"],\"resources\":{\"requests\":{\"storage\":\"${STORAGE_SIZE}\"}}}},{\"apiVersion\":\"image.openshift.io/v1\",\"kind\":\"ImageStream\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\",\"template\":\"matlab-cpu\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"lookupPolicy\":{\"local\":true},\"tags\":[{\"from\":{\"kind\":\"DockerImage\",\"name\":\"${APPLICATION_IMAGE}\"},\"importPolicy\":{\"scheduled\":false},\"name\":\"latest\"}]}},{\"apiVersion\":\"apps.openshift.io/v1\",\"kind\":\"DeploymentConfig\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"replicas\":1,\"selector\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"},\"strategy\":{\"type\":\"Recreate\"},\"template\":{\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"args\":[\"${DEPLOYMENT_TYPE}\"],\"env\":[{\"name\":\"PASSWORD\",\"valueFrom\":{\"secretKeyRef\":{\"key\":\"application-password\",\"name\":\"${APPLICATION_NAME}\"}}}],\"image\":\"${APPLICATION_NAME}:latest\",\"name\":\"matlab-container\",\"ports\":[{\"containerPort\":8888,\"protocol\":\"TCP\"}],\"volumeMounts\":[{\"mountPath\":\"/root/persistent\",\"name\":\"data\"},{\"mountPath\":\"/dev/shm\",\"name\":\"dshm\"}]}],\"securityContext\":{\"runAsUser\":0},\"serviceAccountName\":\"anyuid\",\"volumes\":[{\"name\":\"data\",\"persistentVolumeClaim\":{\"claimName\":\"${APPLICATION_NAME}\"}},{\"emptyDir\":{\"medium\":\"Memory\"},\"name\":\"dshm\"}]}},\"triggers\":[{\"type\":\"ConfigChange\"},{\"imageChangeParams\":{\"automatic\":true,\"containerNames\":[\"matlab-container\"],\"from\":{\"kind\":\"ImageStreamTag\",\"name\":\"${APPLICATION_NAME}:latest\"}},\"type\":\"ImageChange\"}]}},{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"ports\":[{\"name\":\"8888-tcp\",\"port\":8888,\"protocol\":\"TCP\",\"targetPort\":8888}],\"selector\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"}}},{\"apiVersion\":\"route.openshift.io/v1\",\"kind\":\"Route\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"host\":\"\",\"port\":{\"targetPort\":\"8888-tcp\"},\"tls\":{\"insecureEdgeTerminationPolicy\":\"Redirect\",\"termination\":\"edge\"},\"to\":{\"kind\":\"Service\",\"name\":\"${APPLICATION_NAME}\",\"weight\":100}}}],\"parameters\":[{\"description\":\"Must
+      be unique in the project. It will be used to generate the application URL.\",\"displayName\":\"Application
+      name\",\"name\":\"APPLICATION_NAME\",\"required\":true,\"value\":\"matlab\"},{\"description\":\"The
+      password to access the Matlab web UI\",\"displayName\":\"Matlab UI password\",\"name\":\"PASSWORD\",\"required\":true},{\"description\":\"Size
+      of the storage used for Matlab (approximate).\",\"displayName\":\"Storage size\",\"name\":\"STORAGE_SIZE\",\"required\":true,\"value\":\"10Gi\"},{\"description\":\"See
+      https://hub.docker.com/r/mathworks/matlab for more details\",\"displayName\":\"Application
+      Docker image\",\"name\":\"APPLICATION_IMAGE\",\"required\":true,\"value\":\"mathworks/matlab:r2022a\"},{\"description\":\"-vnc
+      or -browser\",\"displayName\":\"Type of deployment\",\"name\":\"DEPLOYMENT_TYPE\",\"required\":true,\"value\":\"-browser\"}]}\n"
+    openshift.io/display-name: Matlab with your license
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-matlab
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    tags: matlab,cpu,root,persistent
+  creationTimestamp: "2022-05-10T15:02:57Z"
+  name: matlab-cpu-nolicense
+  namespace: openshift
+  resourceVersion: "3786759002"
+  uid: 40e77b77-bcb7-4301-8ccc-b7bd3b314d11
+objects:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: '{.data[''application-password'']}'
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  stringData:
+    application-password: ${PASSWORD}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: matlab-cpu
+    name: ${APPLICATION_NAME}
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      importPolicy:
+        scheduled: false
+      name: latest
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        automountServiceAccountToken: false
+        containers:
+        - args:
+          - ${DEPLOYMENT_TYPE}
+          env:
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: ${APPLICATION_NAME}
+          image: ${APPLICATION_NAME}:latest
+          name: matlab-container
+          ports:
+          - containerPort: 8888
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /root/persistent
+            name: data
+          - mountPath: /dev/shm
+            name: dshm
+        securityContext:
+          runAsUser: 0
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: ${APPLICATION_NAME}
+        - emptyDir:
+            medium: Memory
+          name: dshm
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: false
+        containerNames:
+        - matlab-container
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
+      type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - name: 8888-tcp
+      port: 8888
+      protocol: TCP
+      targetPort: 8888
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    host: ""
+    port:
+      targetPort: 8888-tcp
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+parameters:
+- description: Must be unique in the project. It will be used to generate the application
+    URL.
+  displayName: Application name
+  name: APPLICATION_NAME
+  required: true
+  value: matlab
+- description: The password to access the Matlab web UI
+  displayName: Matlab UI password
+  name: PASSWORD
+  required: true
+- description: Size of the storage used for Matlab (approximate).
+  displayName: Storage size
+  name: STORAGE_SIZE
+  required: true
+  value: 10Gi
+- description: See https://hub.docker.com/r/mathworks/matlab for more details
+  displayName: Application Docker image
+  name: APPLICATION_IMAGE
+  required: true
+  value: mathworks/matlab:r2022a
+- description: -vnc or -browser
+  displayName: Type of deployment
+  name: DEPLOYMENT_TYPE
+  required: true
+  value: -browser

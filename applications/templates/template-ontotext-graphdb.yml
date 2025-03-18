@@ -117,6 +117,7 @@ objects:
         containers:
         - name: ontotext-graphdb
           image: ${APPLICATION_IMAGE}
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 7200
             protocol: TCP
