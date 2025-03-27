@@ -14,7 +14,7 @@
         {
           "type": "category",
           "label": "Connecting to the UM Network",
-          "collapsed": false,
+          "collapsed": true,
           "items": ["guide-vpn", "enabling-vpn-wsl"]
         },
         "openshift-install",
@@ -31,7 +31,7 @@
         {
           "type": "category",
           "label": "Performance Optimization",
-          "collapsed": false,
+          "collapsed": true,
           "items": [
             "increase-process-speed",
             "profile-pytorch-code",
