@@ -1,36 +1,133 @@
 {
-  "docs": {
-    "Get started": ["introduction", "access-dsri", "start-workspace",
-      "openshift-install", "prepare-project-for-dsri", "openshift-load-data",
-      "openshift-delete-services", "guide-monitoring"],
-    "Deploy applications": [ 
-      "deploy-on-gpu", "guide-dockerfile-to-openshift", "deploy-from-docker", "anatomy-of-an-application", "helm", "operators",
-      {
-        "type": "category",
-        "label": "Data Science catalog",
-        "collapsed": false,
-        "items": [
-          "deploy-jupyter", "deploy-rstudio", "deploy-vscode", "deploy-database", "deploy-matlab",
-          "deploy-jupyterhub", "dask-cluster", "mpi-jobs", "neuroscience", "catalog-genomics",
-          "catalog-imaging", "catalog-utilities"
-        ]
-      }
-    ],
-    "Guides": ["access-um-servers", "checkpointing-ml-training", "dask-tutorial", "guide-known-issues", "guide-publish-image", "guide-vpn", "guide-workshop", "login-docker-registry", 
-      "openshift-commands", "openshift-storage", 
-      "openshift-delete-objects", "project-management", "tools-machine-learning", "glossary",
-
-      {
-        "type": "category",
-        "label": "Workflows",
-        "items": [
-          "workflows-introduction", "workflows-github-actions", "workflows-airflow", "workflows-argo", 
-          "workflows-nextflow", "workflows-cwl"
-        ]
-      },
-      "contribute"
-    ],
-
-     "Miscellaneous": ["enabling-vpn-wsl", "increase-process-speed", "profile-pytorch-code","speeding-tensorflow-dl","surf-offerings" ]
-  }
+  "docs": [
+    {
+      "type": "category",
+      "label": "Quickstart Tips",
+      "items": ["faq", "best-practices", "openshift-commands"]
+    },
+    {
+      "type": "category",
+      "label": "Getting started",
+      "items": [
+        "introduction",
+        "access-dsri",
+        {
+          "type": "category",
+          "label": "Connecting to the UM Network",
+          "collapsed": false,
+          "items": ["guide-vpn", "enabling-vpn-wsl"]
+        },
+        "openshift-install",
+        "project-management",
+        "start-workspace",
+        "manage-app"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Software and Hardware",
+      "items": [
+        "specs",
+        {
+          "type": "category",
+          "label": "Performance Optimization",
+          "collapsed": false,
+          "items": [
+            "increase-process-speed",
+            "profile-pytorch-code",
+            "speeding-tensorflow-dl"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Data Management",
+      "items": [
+        "prepare-project-for-dsri",
+        "openshift-load-data",
+        "openshift-storage",
+        "openshift-delete-services"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Deploy applications",
+      "items": [
+        "deploy-jupyter",
+        "deploy-rstudio",
+        "deploy-vscode",
+        "deploy-database",
+        "deploy-matlab",
+        "deploy-jupyterhub",
+        "dask-cluster",
+        "mpi-jobs",
+        "neuroscience",
+        "catalog-genomics",
+        "catalog-imaging",
+        "catalog-utilities"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Advanced Deployment",
+      "items": [
+        "anatomy-of-an-application",
+        "guide-dockerfile-to-openshift",
+        "deploy-from-docker",
+        "deploy-on-gpu",
+        "helm",
+        "operators",
+        "guide-monitoring"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Advanced Topics",
+      "items": [
+        "access-um-servers",
+        "guide-known-issues",
+        "guide-publish-image",
+        "guide-workshop",
+        "login-docker-registry",
+        "openshift-delete-objects",
+        {
+          "type": "category",
+          "label": "Machine Learning Tutorials",
+          "items": [
+            "tools-machine-learning",
+            "checkpointing-ml-training",
+            "dask-tutorial"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "CI/CD Workflows",
+          "items": [
+            "workflows-introduction",
+            "workflows-github-actions",
+            "workflows-airflow",
+            "workflows-argo",
+            "workflows-nextflow",
+            "workflows-cwl"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "doc",
+      "id": "surf-offerings",
+      "label": "SURF Offerings"
+    },
+    {
+      "type": "doc",
+      "id": "contribute",
+      "label": "Contributing to DSRI"
+    },
+    {
+      "type": "doc",
+      "id": "glossary",
+      "label": "Glossary"
+    }
+  ]
 }

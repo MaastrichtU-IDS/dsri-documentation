@@ -102,15 +102,16 @@ module.exports={
     docs: {
       sidebar: {
         hideable: true,
+        autoCollapseCategories: true,
       }
     },
     //announcementBar: {
     //  id: 'support_us',
     //  content:
-    //    '🔨 <b>Maintenance</b> will be performed on the DSRI <b>from the 22 to the 30 of October</b>, please make sure your data is backed up outside the DSRI before this date 🔨',
+    //    '🔨 <b>Maintenance</b> will be performed on the DSRI <b>from the 22 to the 30 of October</b>, please take necessary precautions make sure your data is backed up by this date 🔨',
     //  backgroundColor: '#fdd835',
-      // textColor: '#091E42',
-      // isCloseable: false,
+    //   textColor: '#091E42',
+    //   isCloseable: false,
     //},
     "prism": {
       "additionalLanguages": ['powershell'],
@@ -118,9 +119,9 @@ module.exports={
     },
     "navbar": {
       "hideOnScroll": false,
-      "title": "Data Science Research Infrastructure",
+      "title": " Data Science Reasearch Infrastructure",
       "logo": {
-        "src": "img/favicon.ico"
+        "src": "img/dsri_.ico"
       },
       "items": [
         {
@@ -129,18 +130,23 @@ module.exports={
           "position": "left"
         },
         {
-          "to": "/training",
-          "label": "Training",
-          "position": "left"
-        },
-        {
-          "to": "/help",
-          "label": "Help",
-          "position": "left"
-        },
-        {
           "to": "/gpu-booking",
           "label": "GPU calendar",
+          "position": "left"
+        },
+        //{
+        //  "to": "/help",
+        //  "label": "Help",
+        //  "position": "left"
+        //},
+        {
+          "to": "/acknowledgement",
+          "label": "Acknowledgement",
+          "position": "left"
+        },
+        {
+          "to": "/training",
+          "label": "Training",
           "position": "left"
         },
          {
@@ -149,21 +155,20 @@ module.exports={
           "position": "left"
         },
         {
-          "to": "/acknowledgement",
-          "label": "Acknowledgement",
-          "position": "left"
-        },
-        {
           "href": "https://github.com/MaastrichtU-IDS/dsri-documentation",
           // "label": "GitHub",
           "position": "right",
           "className": 'header-github-link'
-        }
+        },
+        {
+          type: 'html',
+          position: 'right',
+          value: `<a href="https://library.maastrichtuniversity.nl/"><img src="/img/favicon.ico" alt="UM" width="30" height="30"/></a>`,
+        },
       ]
     },
     "image": "img/undraw_online.svg",
     "footer": {
-      "links": [],
       "copyright": `Copyright © ${new Date().getFullYear()} <a href='https://library.maastrichtuniversity.nl/' target='_blank' rel='noopener noreferrer'>University Library</a> at Maastricht University`,
       "logo": {
         "src": "img/favicon.ico",

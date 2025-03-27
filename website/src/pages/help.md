@@ -1,6 +1,6 @@
 ---
 title: Need help?
-description: Get help with the DSRI team
+description: Get help with the RCS team
 hide_table_of_contents: true
 ---
 
@@ -10,7 +10,7 @@ If you need help or have questions about the Data Science Research Infrastructur
 
 # 📝 Submit a ticket
 
-If you are having technical issues, such as "my pod does not restart anymore", and need help from the DSRI team, [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) in the ICTS Self-Service Portal.
+If you are having technical issues, such as "my pod does not restart anymore", and need help from the RCS team, [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) in the ICTS Self-Service Portal.
 
 
 ## 💬 Join the DSRI Slack
