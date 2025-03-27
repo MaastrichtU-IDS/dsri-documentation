@@ -135,11 +135,6 @@ module.exports={
           "position": "left"
         },
         //{
-        //  "to": "/training",
-        //  "label": "Training",
-        //  "position": "left"
-        //},
-        //{
         //  "to": "/help",
         //  "label": "Help",
         //  "position": "left"
@@ -147,6 +142,11 @@ module.exports={
         {
           "to": "/acknowledgement",
           "label": "Acknowledgement",
+          "position": "left"
+        },
+        {
+          "to": "/training",
+          "label": "Training",
           "position": "left"
         },
          {
@@ -169,15 +169,6 @@ module.exports={
     },
     "image": "img/undraw_online.svg",
     "footer": {
-      "links": [
-        {
-          title: "More",
-          items: [
-            { label: "Acknowledgement", to: "/acknowledgement" },
-            { label: "Training", to: "/training"}
-          ]
-        }
-      ],
       "copyright": `Copyright © ${new Date().getFullYear()} <a href='https://library.maastrichtuniversity.nl/' target='_blank' rel='noopener noreferrer'>University Library</a> at Maastricht University`,
       "logo": {
         "src": "img/favicon.ico",
