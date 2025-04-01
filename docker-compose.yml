@@ -125,6 +125,8 @@ services:
       - ENABLE_CRON=true
     volumes:
     #  - ./data/database/backup:/backup:ro # use this in dev 
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       - /data/database/backup:/backup
       - ./server/api:/app/api
     restart: unless-stopped
@@ -145,6 +147,9 @@ services:
       - VIRTUAL_HOST=calendar.dsri.maastrichtuniversity.nl
       - LETSENCRYPT_HOST=calendar.dsri.maastrichtuniversity.nl
       - VIRTUAL_PORT=80
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
     networks:
       default: 
@@ -176,6 +181,8 @@ services:
       - SAML_BASEURLPATH=${SAML_BASEURLPATH}
     # Bind the container folder to the host folder env setting
     volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       - ${FOLDER_BOOKING_APP}:/var/www/html
       - ${FOLDER_SAML_CONFIG}:/var/www/simplesamlphp/config
       - ${FOLDER_SAML_METADATA}:/var/www/simplesamlphp/metadata
