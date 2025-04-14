@@ -96,8 +96,9 @@ services:
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - PMA_HOST=mysql:3306
       - PMA_ABSOLUTE_URI=https://admin.dsri.maastrichtuniversity.nl
-      - VIRTUAL_HOST=admin.dsri.maastrichtuniversity.nl
-      - LETSENCRYPT_HOST=admin.dsri.maastrichtuniversity.nl
+      - VIRTUAL_HOST=${ADMIN_VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${ADMIN_LETSENCRYPT_HOST}
+      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
       - VIRTUAL_PORT=80
     restart: unless-stopped
     networks:
@@ -114,8 +115,9 @@ services:
     # ports:
     #  - 8000:80
     environment:
-      - VIRTUAL_HOST=api.dsri.maastrichtuniversity.nl
-      - LETSENCRYPT_HOST=api.dsri.maastrichtuniversity.nl
+      - VIRTUAL_HOST=${API_VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${API_VIRTUAL_HOST}
+      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
       - VIRTUAL_PORT=80
       - SQL_URL=mysql://dsri-user:${DB_PASSWORD}@mysql:3306/dsri-db
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
@@ -144,8 +146,9 @@ services:
     #  - 8001:80
     environment:
       - DB_PASSWORD=${DB_PASSWORD}
-      - VIRTUAL_HOST=calendar.dsri.maastrichtuniversity.nl
-      - LETSENCRYPT_HOST=calendar.dsri.maastrichtuniversity.nl
+      - VIRTUAL_HOST=${CALENDAR_VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${CALENDAR_LETSENCRYPT_HOST}
+      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
       - VIRTUAL_PORT=80
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -164,8 +167,9 @@ services:
     # ports:
     #  - 8001:80
     environment:
-      - VIRTUAL_HOST=booking.dsri.maastrichtuniversity.nl
-      - LETSENCRYPT_HOST=booking.dsri.maastrichtuniversity.nl
+      - VIRTUAL_HOST=${BOOKING_VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${BOOKING_LETSENCRYPT_HOST}
+      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
       - VIRTUAL_PORT=80
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_USER=${DB_USER}
