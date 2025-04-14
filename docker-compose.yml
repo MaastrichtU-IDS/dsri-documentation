@@ -24,7 +24,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-    #  - ./data/certs:/etc/nginx/certs:ro # use this in dev
+    #  - ./data/certs:/etc/nginx/certs:ro # use this on your local machine
       - /data/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - vhost:/etc/nginx/vhost.d
@@ -49,7 +49,7 @@ services:
     volumes_from:
       - nginx-proxy:rw
     volumes:
-    #  - ./data/certs:/etc/nginx/certs:rw # use this in dev 
+    #  - ./data/certs:/etc/nginx/certs:rw # use this on your local machine
       - /data/certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - acme:/etc/acme.sh
@@ -75,8 +75,8 @@ services:
     #  - ./server/schemas:/docker-entrypoint-initdb.d
     command: --max-allowed-packet=16M
     volumes:
-    #  - ./data/database/data:/var/lib/mysql # use this in dev
-    #  - ./data/database/backup:/backup # use this in dev
+    #  - ./data/database/data:/var/lib/mysql # use this on your local machine
+    #  - ./data/database/backup:/backup # use this on your local machine
       - /data/database/data:/var/lib/mysql
       - /data/database/backup:/backup
     networks:
@@ -124,7 +124,7 @@ services:
       - API_PASSWORD=${API_PASSWORD}
       - ENABLE_CRON=true
     volumes:
-    #  - ./data/database/backup:/backup:ro # use this in dev 
+    #  - ./data/database/backup:/backup:ro # use this on your local machine
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - /data/database/backup:/backup
@@ -211,7 +211,7 @@ services:
       - API_PASSWORD=${API_PASSWORD}
       - ENABLE_CRON=true
     volumes:
-    #  - ./data/database/backup:/backup # use this in dev 
+    #  - ./data/database/backup:/backup # use this on your local machine
       - /data/database/backup:/backup
     #  - ./server/api:/app/api
     #  - ./server/cron:/app/cron
