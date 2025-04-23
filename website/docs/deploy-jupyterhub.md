@@ -5,9 +5,9 @@ title: JupyterHub
 
 JupyterHub is ideal to enable multiple users easily start predefined workspaces in the same project. 
 
-:::info Experimental 🧪 
+:::info Advanced 🧪 
 
-Deploying JupyterHub is still experimental, and it can be a bit tricky to configure. Feel free to [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) to ask for help.
+Configuring and deploying JupyterHub can be a bit tricky. Feel free to [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) to ask for help.
 
 :::
 
