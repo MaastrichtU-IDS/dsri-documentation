@@ -209,7 +209,7 @@ if(isset($_GET['week'])) {
             for ($x = 0; $x <= $days; $x++) {
               $tdtime = $weekstart + ($x*3600*24);
               $reservation=0;
-              $sql2 = "SELECT * FROM gpubooking WHERE gpu_id=$gpuid AND FROM_UNIXTIME($tdtime) >= starting_date AND FROM_UNIXTIME($tdtime) <= ending_date";
+              $sql2 = "SELECT * FROM gpubooking WHERE gpu_id=$gpuid AND DATE(FROM_UNIXTIME($tdtime)) BETWEEN DATE(starting_date) AND DATE(ending_date)";
               $result2 = $conn->query($sql2);
               if ($result2->num_rows > 0) {
                 while($row2 = $result2->fetch_assoc()) {
