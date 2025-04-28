@@ -214,7 +214,7 @@ if(isset($_GET['week'])) {
                 while($row2 = $result2->fetch_assoc()) {
                   // Normalize the booking dates to the start of the day
                   $startDate = strtotime(date('Y-m-d', strtotime($row2['starting_date'])));
-                  $endDate = strtotime(date('Y-m-d', strtotime($row2['ending_date'])));
+                  $endDate = strtotime(date('Y-m-d', strtotime($row2['ending_date']))) + (3600 * 24);
 
                   // Calculate colspan
                   if($startDate < $weekstart){
