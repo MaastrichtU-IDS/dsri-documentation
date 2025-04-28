@@ -28,11 +28,13 @@ By default the UM VPN is only available to employees. As a student you can acces
 
 
 
-  * The **prefix of your UM email address** with the first letter capitalized, e.g. `Firstname.Lastname` or `F.Lastname`Or your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`
+  * Your **UM account** e.g. `Firstname.Lastname` or `F.Lastname`r your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`
 
     <img src="/img/vpn-login.png" alt="VPN Log in View" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-    Then You will see below page to download the **AnyConnect Secure Mobility Client**
+  * Students need to use their **student number** and choose the **06-AssignedStudents** VPN group.
+
+    After logging in, you will see below page to download the **AnyConnect Secure Mobility Client**
 
     <img src="/img/VPN-anyconnect.png" alt="Download AnyConnect Secure Mobility Client" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
@@ -79,6 +81,4 @@ Provide your UM username and password. (**employee number** at Maastricht Univer
 
   > Provide your UM password when prompted.
 
-* For **students**:
-  * By default the UM VPN is only available to employees. As a student you can access UM resources from any location via [Student Desktop Anywhere](https://athenadesktop.maastrichtuniversity.nl). However, if VPN access is absolutely necessary you can request access via your course coordinator.
 
