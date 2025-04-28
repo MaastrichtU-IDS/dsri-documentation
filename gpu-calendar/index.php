@@ -16,7 +16,7 @@ if(isset($_GET['week']) && !is_numeric($_GET['week'])){echo "<img src=\"images/b
 
 
     <!-- Bootstrap core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -171,7 +171,6 @@ if(isset($_GET['week'])) {
       <?php
       $weekend = $weekstart + 604800;
 
-
       $monday = date( 'Y-m-d', $weekstart );
       $tuesday    = date( 'Y-m-d', $weekstart + 86400 );
       $wednesday = date( 'Y-m-d', $weekstart + 86400*2);
@@ -205,49 +204,56 @@ if(isset($_GET['week'])) {
             echo "<tr><td>" . $row["short_description"] . "</td>";
             $previousend = 0;
             $previousbegin = 0;
-            $days=7;
-            for ($x = 0; $x <= $days; $x++) {
+            $days = 7;
+            for ($x = 0; $x < $days; $x++) {
               $tdtime = $weekstart + ($x*3600*24);
-              $reservation=0;
-              $sql2 = "SELECT * FROM gpubooking WHERE gpu_id=$gpuid AND FROM_UNIXTIME($tdtime) >= starting_date AND FROM_UNIXTIME($tdtime) <= ending_date";
+              $reservation = 0;
+              $sql2 = "SELECT * FROM gpubooking WHERE gpu_id=$gpuid AND DATE(FROM_UNIXTIME($tdtime)) BETWEEN DATE(starting_date) AND DATE(ending_date)";
               $result2 = $conn->query($sql2);
               if ($result2->num_rows > 0) {
                 while($row2 = $result2->fetch_assoc()) {
-                  //calculate colspan
-                  if(strtotime($row2['starting_date'])<$weekstart){
-                    $colspan = (strtotime($row2['ending_date'])-$weekstart)/3600/24;
-                    if(strtotime($row2['ending_date'])>($weekstart+(3600*168*24))){
-                      $colspan = 7;
-                  }
-                }
-                  else{
-                  $colspan = (strtotime($row2['ending_date'])-strtotime($row2['starting_date']))/3600/24;
-                  if(strtotime($row2['ending_date'])>($weekstart+(3600*168*24))){
-                    $colspan = 7 - $x;
-                }
+                  // Normalize the booking dates to the start of the day
+                  $startDate = strtotime(date('Y-m-d', strtotime($row2['starting_date'])));
+                  $endDate = strtotime(date('Y-m-d', strtotime($row2['ending_date'])));
 
+                  // Calculate colspan
+                  if($startDate < $weekstart){
+                    $colspan = ceil(($endDate - $weekstart) / (3600 * 24));
+                      if($endDate > ($weekstart + (3600 * 24 * 7))){
+                        $colspan = 7;
+                    }
                   }
+                  else{
+                    $colspan = ceil(($endDate - $startDate) / (3600 * 24));
+                      if($endDate > ($weekstart + (3600 * 24 * 7))){
+                        $colspan = 7 - $x;
+                    }
+                  }
+
                   $color = "#0077ff;";
-                  if ($previousend > $row2['starting_date']){
+                  if ($previousend > $startDate){
                     $color = "#ff0000;";
                   }
-                  echo "<td colspan=" . $colspan . " style=\"background-color: " . $color . "\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"begin reservation: " . $row2['starting_date'] . "
-end reservation: " . $row2['ending_date'] . "
-project: " . $row2['project_id'] . "
-reserved by: " . $row2['user_email'] . "\"><p style=\"font-size: 12px;\">" . $row2['project_id'] . "</p></td>";
 
-                  $x = $x + $colspan;
-                  $reservation=1;
-                  $previousbegin = $row2['starting_date'];
-                  $previousend = $row2['ending_date'];
-                }}
+                  echo "<td colspan=" . $colspan . " style=\"background-color: " . $color . "\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"begin reservation: " . date('Y-m-d', strtotime($row2['starting_date'])) . "
+                  end reservation: " . date('Y-m-d', strtotime($row2['ending_date'])) . "
+                  project: " . $row2['project_id'] . "
+                  reserved by: " . $row2['user_email'] . "\"><p style=\"font-size: 12px;\">" . $row2['project_id'] . "</p></td>";
+                  
+                  if($colspan > 1){
+                  $x += $colspan - 1;
+                  }
 
+                  $reservation = 1;
+                  $previousbegin = $startDate;
+                  $previousend = $endDate;
+                }
+              }
 
               if($reservation==0){echo "<td></td>";}
             } 
             
           echo "</tr>";
-
 
           }
         } else {
@@ -268,7 +274,9 @@ reserved by: " . $row2['user_email'] . "\"><p style=\"font-size: 12px;\">" . $ro
 
 <script src="js/bootstrap.bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="js/dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+<script src="js/dashboard.js"></script>
   </body>
 </html>
 
