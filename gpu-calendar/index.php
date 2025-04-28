@@ -219,13 +219,13 @@ if(isset($_GET['week'])) {
                   // Calculate colspan
                   if($startDate < $weekstart){
                     $colspan = ceil(($endDate - $weekstart) / (3600 * 24));
-                      if($endDate > ($weekstart + (3600 * 24 * 7))){
+                      if($endDate > ($weekstart + (3600 * 24 * 6))){
                         $colspan = 7;
                     }
                   }
                   else{
                     $colspan = ceil(($endDate - $startDate) / (3600 * 24));
-                      if($endDate > ($weekstart + (3600 * 24 * 7))){
+                      if($endDate > ($weekstart + (3600 * 24 * 6))){
                         $colspan = 7 - $x;
                     }
                   }
@@ -235,10 +235,10 @@ if(isset($_GET['week'])) {
                     $color = "#ff0000;";
                   }
 
-                  echo "<td colspan=" . $colspan . " style=\"background-color: " . $color . "\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"begin reservation: " . date('Y-m-d', strtotime($row2['starting_date'])) . "
-                  end reservation: " . date('Y-m-d', strtotime($row2['ending_date'])) . "
-                  project: " . $row2['project_id'] . "
-                  reserved by: " . $row2['user_email'] . "\"><p style=\"font-size: 12px;\">" . $row2['project_id'] . "</p></td>";
+                  echo "<td colspan=" . $colspan . " style=\"background-color: " . $color . "\"data-bs-toggle=\"tooltip\"data-bs-html=\"true\" title=\"begin reservation: " . date('Y-m-d', strtotime($row2['starting_date'])) . "
+end reservation: " . date('Y-m-d', strtotime($row2['ending_date'])) . "
+project: " . $row2['project_id'] . "
+reserved by: " . $row2['user_email'] . "\"><p style=\"font-size: 12px;\">" . $row2['project_id'] . "</p></td>";
                   
                   if($colspan > 1){
                   $x += $colspan - 1;
