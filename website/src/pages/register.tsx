@@ -226,6 +226,7 @@ function Registration() {
     {id: 'TECH LAB', label: 'Law and Tech Lab'},
     {id: 'TGX', label: 'Department of Toxicogenomics'},
     {id: 'PSYCHO', label: 'Faculty of Psychology and Neuroscience'},
+    {id: 'UB', label: 'University Library'}
     {id: 'UM', label: 'Maastricht University'},
     // {id: 'Other', label: 'Other'},
   ]
