@@ -61,6 +61,14 @@ function Registration() {
     return null
   }
 
+  // Add char counter to project description, enforcing max chars allowed by MySQL db (255)
+  const [projectDescription, setProjectDescription] = React.useState('');
+  const handleProjectDescriptionFieldChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setProjectDescription(event.target.value);
+  };
+
   // const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   const handleTextFieldChange = (event: React.FocusEvent<HTMLInputElement>) => {
     if (event.target.id === 'email') {
@@ -126,7 +134,6 @@ function Registration() {
     // formObj['use_dsri_date'] = newValue.toISOString().split('T')[0]
     updateState({formObj: formObj})
   }
-
 
   // const handleSubmit  = (event: React.FormEvent) => {
   const handleSubmit  = (event) => {
@@ -410,12 +417,16 @@ function Registration() {
                   // className={classes.fullWidth}
                   variant="outlined"
                   onBlur={handleTextFieldChange}
-                  onChange={handleTextFieldChange}
+                  onChange={handleProjectDescriptionFieldChange}
                   size='small'
                   required
+                  inputProps={{ maxLength: 255 }}
                   // error={checkError('email')}
                   // helperText='A short description of the project(s) you want to use the DSRI for.'
                 />
+                  <Typography variant="caption" color="textSecondary">
+                      {projectDescription.length}/255 characters
+                  </Typography>
               </Grid>
 
               <Grid item xs={5} style={{textAlign: 'right'}}>
