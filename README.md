@@ -53,26 +53,42 @@ To run the full stack including the database and API, we use docker-compose
 1. Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
 
    ``` bash
+   # Virtual hosts
+   ADMIN_VIRTUAL_HOST=admin.dsri.test.unimaas.nl
+   API_VIRTUAL_HOST=api.dsri.test.unimaas.nl
+   CALENDAR_VIRTUAL_HOST=calendar.dsri.test.unimaas.nl
+   BOOKING_VIRTUAL_HOST=booking.dsri.test.unimaas.nl
+   DSRI_VIRTUAL_HOST=dsri.test.unimaas.nl
+
+   # Lets encrypt hosts
+   ADMIN_LETSENCRYPT_HOST=admin.dsri.test.unimaas.nl
+   API_LETSENCRYPT_HOST=api.dsri.test.unimaas.nl
+   CALENDAR_LETSENCRYPT_HOST=calendar.dsri.test.unimaas.nl
+   BOOKING_LETSENCRYPT_HOST=booking.dsri.test.unimaas.nl
+   DSRI_LETSENCRYPT_HOST=dsri.test.unimaas.nl
+
+   # Lets encrypt test
+   LETSENCRYPT_TEST=true
+
+   # MySQL DB
    DB_NAME=dsri-db
    DB_USER=dsri-user
    DB_PASSWORD=password
    DB_HOST=mysql
+
+   # API
    API_PASSWORD=password
-   SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
-   SLACK_CHANNEL=C00000000QW
+   CLUSTER_URL=""
    CLUSTER_API_KEY=""
+
+   # Slack
+   SLACK_BOT_TOKEN=aaaa-0000000000-0000000000-0000000000
+   SLACK_CHANNEL=CXXXXXXXXXXX      
+
+   # SMTP
    SMTP_FROM=email@email.nl
    SMTP_HOST=
    SMTP_PORT=
-   SAML_SP_ENTITY_ID=
-   SAML_SALT=
-   SAML_ADMIN_PW=
-   SAML_TRUSTED_DOMAINS=
-   SAML_BASEURLPATH=
-   FOLDER_BOOKING_APP=/foo
-   FOLDER_SAML_CONFIG=/foo
-   FOLDER_SAML_METADATA=/foo
-   FOLDER_SAML_CERT=/foo
    ```
 
 ###
@@ -131,27 +147,43 @@ The GitHub Action will automatically compile the website to HTML in the `gh-page
 
 Define the `.env` file to change the default configuration (user credential to enable/disable GPU on the cluster, Slack config):
 
-```bash
+``` bash
+# Virtual hosts
+ADMIN_VIRTUAL_HOST=admin.dsri.test.unimaas.nl
+API_VIRTUAL_HOST=api.dsri.test.unimaas.nl
+CALENDAR_VIRTUAL_HOST=calendar.dsri.test.unimaas.nl
+BOOKING_VIRTUAL_HOST=booking.dsri.test.unimaas.nl
+DSRI_VIRTUAL_HOST=dsri.test.unimaas.nl
+
+# Lets encrypt hosts
+ADMIN_LETSENCRYPT_HOST=admin.dsri.test.unimaas.nl
+API_LETSENCRYPT_HOST=api.dsri.test.unimaas.nl
+CALENDAR_LETSENCRYPT_HOST=calendar.dsri.test.unimaas.nl
+BOOKING_LETSENCRYPT_HOST=booking.dsri.test.unimaas.nl
+DSRI_LETSENCRYPT_HOST=dsri.test.unimaas.nl
+
+# Lets encrypt test
+LETSENCRYPT_TEST=true
+
+# MySQL DB
 DB_NAME=dsri-db
 DB_USER=dsri-user
 DB_PASSWORD=password
 DB_HOST=mysql
+
+# API
 API_PASSWORD=password
-SLACK_BOT_TOKEN=xoxb-0000000000-0000000000-0000000000
-SLACK_CHANNEL=C00000000QW
+CLUSTER_URL=""
 CLUSTER_API_KEY=""
+
+# Slack
+SLACK_BOT_TOKEN=aaaa-0000000000-0000000000-0000000000
+SLACK_CHANNEL=CXXXXXXXXXXX      
+
+# SMTP
 SMTP_FROM=email@email.nl
 SMTP_HOST=
 SMTP_PORT=
-SAML_SP_ENTITY_ID=
-SAML_SALT=
-SAML_ADMIN_PW=
-SAML_TRUSTED_DOMAINS=
-SAML_BASEURLPATH=
-FOLDER_BOOKING_APP=/foo
-FOLDER_SAML_CONFIG=/foo
-FOLDER_SAML_METADATA=/foo
-FOLDER_SAML_CERT=/foo
 ```
 
 Start the docker-compose in production using [nginx-proxy](https://github.com/nginx-proxy/nginx-proxy).
@@ -282,10 +314,8 @@ sequenceDiagram
     UM-SOC-->>+DSRI-team: Go ahead
     DSRI-team-->>+System admin:
 
-
-
     sequenceDiagram
-     Researcher->>+DSRI-team: Request DSRI access to UM system
+    Researcher->>+DSRI-team: Request DSRI access to UM system
     DSRI-team->>+UM-SOC: Request DSRI access to UM system
     UM-SOC-->>+DSRI-team: Go ahead
     DSRI-team->>+UM System admin: Request access from DSRI

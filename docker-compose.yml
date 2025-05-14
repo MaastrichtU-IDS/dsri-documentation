@@ -3,20 +3,19 @@
 #
 
 services:
-  # Frontend deployed on GitHub Pages by a GitHub Action
-
-  ## Website could be also served with nginx from the same server as the API
-  # website:
-  #   build: website
-  #   environment:
-  #     - VIRTUAL_HOST=dsri.maastrichtuniversity.nl
-  #     - LETSENCRYPT_HOST=dsri.maastrichtuniversity.nl
-  #     - VIRTUAL_PORT=80
+  # Prod frontend is deployed on GitHub Pages by a GitHub Action
+  website:
+    build: website
+    container_name: dsri-website
+    environment:
+      - VIRTUAL_HOST=${DSRI_VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${DSRI_LETSENCRYPT_HOST}
+      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
+      - VIRTUAL_PORT=80
 
   # To deploy in prod we use a nginx proxy for docker containers with a companion to enable HTTPS with LetsEncrypt
   # https://github.com/nginx-proxy/nginx-proxy
   # https://github.com/nginx-proxy/acme-companion
-
   nginx-proxy:
     image: nginxproxy/nginx-proxy:latest
     container_name: nginx-proxy
@@ -24,7 +23,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-    #  - ./data/certs:/etc/nginx/certs:ro # use this in dev
+    #  - ./data/certs:/etc/nginx/certs:ro # use this on your local machine
       - /data/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - vhost:/etc/nginx/vhost.d
@@ -49,7 +48,7 @@ services:
     volumes_from:
       - nginx-proxy:rw
     volumes:
-    #  - ./data/certs:/etc/nginx/certs:rw # use this in dev 
+    #  - ./data/certs:/etc/nginx/certs:rw # use this on your local machine
       - /data/certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - acme:/etc/acme.sh
@@ -75,8 +74,8 @@ services:
     #  - ./server/schemas:/docker-entrypoint-initdb.d
     command: --max-allowed-packet=16M
     volumes:
-    #  - ./data/database/data:/var/lib/mysql # use this in dev
-    #  - ./data/database/backup:/backup # use this in dev
+    #  - ./data/database/data:/var/lib/mysql # use this on your local machine
+    #  - ./data/database/backup:/backup # use this on your local machine
       - /data/database/data:/var/lib/mysql
       - /data/database/backup:/backup
     networks:
@@ -88,16 +87,15 @@ services:
     container_name: phpmyadmin
     depends_on:
       - mysql
-    # ports:
-    #  - 8002:80
     environment:
       - PMA_PASSWORD=${DB_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - PMA_HOST=mysql:3306
-      - PMA_ABSOLUTE_URI=https://admin.dsri.maastrichtuniversity.nl
-      - VIRTUAL_HOST=admin.dsri.maastrichtuniversity.nl
-      - LETSENCRYPT_HOST=admin.dsri.maastrichtuniversity.nl
+      - PMA_ABSOLUTE_URI=https://${ADMIN_VIRTUAL_HOST}
+      - VIRTUAL_HOST=${ADMIN_VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${ADMIN_LETSENCRYPT_HOST}
+      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
       - VIRTUAL_PORT=80
     restart: unless-stopped
     networks:
@@ -111,20 +109,20 @@ services:
       - mysql
       - phpmyadmin
     command: uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
-    # ports:
-    #  - 8000:80
     environment:
-      - VIRTUAL_HOST=api.dsri.maastrichtuniversity.nl
-      - LETSENCRYPT_HOST=api.dsri.maastrichtuniversity.nl
+      - VIRTUAL_HOST=${API_VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${API_VIRTUAL_HOST}
+      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
       - VIRTUAL_PORT=80
       - SQL_URL=mysql://dsri-user:${DB_PASSWORD}@mysql:3306/dsri-db
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
       - SLACK_CHANNEL=${SLACK_CHANNEL}
+      - CLUSTER_URL=${CLUSTER_URL}
       - CLUSTER_API_KEY=${CLUSTER_API_KEY}
       - API_PASSWORD=${API_PASSWORD}
       - ENABLE_CRON=true
     volumes:
-    #  - ./data/database/backup:/backup:ro # use this in dev 
+    #  - ./data/database/backup:/backup:ro # use this on your local machine
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - /data/database/backup:/backup
@@ -140,12 +138,11 @@ services:
     depends_on:
       - mysql
       - phpmyadmin
-    # ports:
-    #  - 8001:80
     environment:
       - DB_PASSWORD=${DB_PASSWORD}
-      - VIRTUAL_HOST=calendar.dsri.maastrichtuniversity.nl
-      - LETSENCRYPT_HOST=calendar.dsri.maastrichtuniversity.nl
+      - VIRTUAL_HOST=${CALENDAR_VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${CALENDAR_LETSENCRYPT_HOST}
+      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
       - VIRTUAL_PORT=80
     volumes:
       - /etc/timezone:/etc/timezone:ro
@@ -154,72 +151,6 @@ services:
     networks:
       default: 
         ipv4_address: 172.19.0.9
-
-  gpu-booking:
-    build: ./gpu-reservation/docker/php
-    container_name: gpu-booking
-    depends_on:
-      - mysql
-      - phpmyadmin
-    # ports:
-    #  - 8001:80
-    environment:
-      - VIRTUAL_HOST=booking.dsri.maastrichtuniversity.nl
-      - LETSENCRYPT_HOST=booking.dsri.maastrichtuniversity.nl
-      - VIRTUAL_PORT=80
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_USER=${DB_USER}
-      - DB_NAME=${DB_NAME}
-      - DB_HOST=${DB_HOST-mysql}
-      - SMTP_HOST=${SMTP_HOST}
-      - SMTP_PORT=${SMTP_PORT}
-      - SMTP_FROM=${SMTP_FROM}
-      - SAML_SP_ENTITY_ID=${SAML_SP_ENTITY_ID}
-      - SAML_SALT=${SAML_SALT}
-      - SAML_ADMIN_PW=${SAML_ADMIN_PW}
-      - SAML_TRUSTED_DOMAINS=${SAML_TRUSTED_DOMAINS}
-      - SAML_BASEURLPATH=${SAML_BASEURLPATH}
-    # Bind the container folder to the host folder env setting
-    volumes:
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-      - ${FOLDER_BOOKING_APP}:/var/www/html
-      - ${FOLDER_SAML_CONFIG}:/var/www/simplesamlphp/config
-      - ${FOLDER_SAML_METADATA}:/var/www/simplesamlphp/metadata
-      - ${FOLDER_SAML_CERT}:/var/www/simplesamlphp/cert
-    restart: unless-stopped
-    networks:
-      default: 
-        ipv4_address: 172.19.0.10
-
-  # Run the API on a single thread just for the CRON job in prod (enabled with env variable)
-  # Because gunicorn would run the process on every workers
-  cron:
-    build: ./server
-    container_name: cron
-    depends_on:
-      - mysql
-      - phpmyadmin
-    command: uvicorn api.main:app --host 0.0.0.0 --port 80
-    environment:
-      - SQL_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST-mysql}:3306/${DB_NAME}
-      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
-      - SLACK_CHANNEL=${SLACK_CHANNEL}
-    #  - CLUSTER_USER=${CLUSTER_USER-Vincent.Emonet}
-    #  - CLUSTER_PASSWORD=${CLUSTER_PASSWORD-password}
-      - CLUSTER_API_KEY=${CLUSTER_API_KEY}
-      - API_PASSWORD=${API_PASSWORD}
-      - ENABLE_CRON=true
-    volumes:
-    #  - ./data/database/backup:/backup # use this in dev 
-      - /data/database/backup:/backup
-    #  - ./server/api:/app/api
-    #  - ./server/cron:/app/cron
-    #  - ./server/cron/gpu-notification-cron:/etc/cron.d/gpu-notification-cron
-    restart: unless-stopped
-    networks:
-      default: 
-        ipv4_address: 172.19.0.11
 
 networks:
   default:

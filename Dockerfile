@@ -1,5 +1,3 @@
-
-
 ## Build React website
 FROM node:18-alpine AS build
 
@@ -15,7 +13,6 @@ COPY . /app
 RUN yarn build
 
 
-
 ## Serve with nginx
 FROM nginx:stable-alpine
 
@@ -23,4 +20,3 @@ COPY --from=build /app/build /usr/share/nginx/html
 # COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
-
