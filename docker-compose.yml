@@ -95,7 +95,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - PMA_HOST=mysql:3306
-      - PMA_ABSOLUTE_URI=https://admin.dsri.maastrichtuniversity.nl
+      - PMA_ABSOLUTE_URI=https://${ADMIN_VIRTUAL_HOST}
       - VIRTUAL_HOST=${ADMIN_VIRTUAL_HOST}
       - LETSENCRYPT_HOST=${ADMIN_LETSENCRYPT_HOST}
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
@@ -122,6 +122,7 @@ services:
       - SQL_URL=mysql://dsri-user:${DB_PASSWORD}@mysql:3306/dsri-db
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
       - SLACK_CHANNEL=${SLACK_CHANNEL}
+      - CLUSTER_URL=${CLUSTER_URL}
       - CLUSTER_API_KEY=${CLUSTER_API_KEY}
       - API_PASSWORD=${API_PASSWORD}
       - ENABLE_CRON=true
