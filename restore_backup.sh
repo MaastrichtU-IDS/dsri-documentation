@@ -10,7 +10,6 @@ fi
 sudo rm -rf backup/tmp
 
 sudo tar xf $1
-# sudo tar xf backup/backup-2022-01-20.tar.xz -C backup/tmp
 
 docker run --rm -v $(pwd)/backup/tmp:/backup mariadb:10.3 mariabackup --prepare --target-dir=/backup
 docker run --rm -v $(pwd)/data:/var/lib/mysql -v $(pwd)/backup/tmp:/backup mariadb:10.3 mariabackup --copy-back --target-dir=/backup
