@@ -58,12 +58,14 @@ To run the full stack including the database and API, we use docker-compose
    API_VIRTUAL_HOST=api.dsri.test.unimaas.nl
    CALENDAR_VIRTUAL_HOST=calendar.dsri.test.unimaas.nl
    BOOKING_VIRTUAL_HOST=booking.dsri.test.unimaas.nl
+   DSRI_VIRTUAL_HOST=dsri.test.unimaas.nl
 
    # Lets encrypt hosts
    ADMIN_LETSENCRYPT_HOST=admin.dsri.test.unimaas.nl
    API_LETSENCRYPT_HOST=api.dsri.test.unimaas.nl
    CALENDAR_LETSENCRYPT_HOST=calendar.dsri.test.unimaas.nl
    BOOKING_LETSENCRYPT_HOST=booking.dsri.test.unimaas.nl
+   DSRI_LETSENCRYPT_HOST=dsri.test.unimaas.nl
 
    # Lets encrypt test
    LETSENCRYPT_TEST=true
@@ -76,6 +78,7 @@ To run the full stack including the database and API, we use docker-compose
 
    # API
    API_PASSWORD=password
+   CLUSTER_URL=""
    CLUSTER_API_KEY=""
 
    # Slack
