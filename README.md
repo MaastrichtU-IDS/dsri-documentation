@@ -89,19 +89,6 @@ To run the full stack including the database and API, we use docker-compose
    SMTP_FROM=email@email.nl
    SMTP_HOST=
    SMTP_PORT=
-
-   # SAML
-   SAML_SP_ENTITY_ID=
-   SAML_SALT=
-   SAML_ADMIN_PW=
-   SAML_TRUSTED_DOMAINS=
-   SAML_BASEURLPATH=
-
-   # Booking app volumes
-   FOLDER_BOOKING_APP=/test
-   FOLDER_SAML_CONFIG=/test
-   FOLDER_SAML_METADATA=/test
-   FOLDER_SAML_CERT=/test
    ```
 
 ###
@@ -166,12 +153,14 @@ ADMIN_VIRTUAL_HOST=admin.dsri.test.unimaas.nl
 API_VIRTUAL_HOST=api.dsri.test.unimaas.nl
 CALENDAR_VIRTUAL_HOST=calendar.dsri.test.unimaas.nl
 BOOKING_VIRTUAL_HOST=booking.dsri.test.unimaas.nl
+DSRI_VIRTUAL_HOST=dsri.test.unimaas.nl
 
 # Lets encrypt hosts
 ADMIN_LETSENCRYPT_HOST=admin.dsri.test.unimaas.nl
 API_LETSENCRYPT_HOST=api.dsri.test.unimaas.nl
 CALENDAR_LETSENCRYPT_HOST=calendar.dsri.test.unimaas.nl
 BOOKING_LETSENCRYPT_HOST=booking.dsri.test.unimaas.nl
+DSRI_LETSENCRYPT_HOST=dsri.test.unimaas.nl
 
 # Lets encrypt test
 LETSENCRYPT_TEST=true
@@ -184,6 +173,7 @@ DB_HOST=mysql
 
 # API
 API_PASSWORD=password
+CLUSTER_URL=""
 CLUSTER_API_KEY=""
 
 # Slack
@@ -194,19 +184,6 @@ SLACK_CHANNEL=CXXXXXXXXXXX
 SMTP_FROM=email@email.nl
 SMTP_HOST=
 SMTP_PORT=
-
-# SAML
-SAML_SP_ENTITY_ID=
-SAML_SALT=
-SAML_ADMIN_PW=
-SAML_TRUSTED_DOMAINS=
-SAML_BASEURLPATH=
-
-# Booking app volumes
-FOLDER_BOOKING_APP=/test
-FOLDER_SAML_CONFIG=/test
-FOLDER_SAML_METADATA=/test
-FOLDER_SAML_CERT=/test
 ```
 
 Start the docker-compose in production using [nginx-proxy](https://github.com/nginx-proxy/nginx-proxy).
@@ -337,10 +314,8 @@ sequenceDiagram
     UM-SOC-->>+DSRI-team: Go ahead
     DSRI-team-->>+System admin:
 
-
-
     sequenceDiagram
-     Researcher->>+DSRI-team: Request DSRI access to UM system
+    Researcher->>+DSRI-team: Request DSRI access to UM system
     DSRI-team->>+UM-SOC: Request DSRI access to UM system
     UM-SOC-->>+DSRI-team: Go ahead
     DSRI-team->>+UM System admin: Request access from DSRI
