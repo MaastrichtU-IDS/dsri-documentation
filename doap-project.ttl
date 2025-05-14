@@ -8,10 +8,10 @@
   doap:description "The Data Science Research Infrastructure (DSRI) is a cluster of servers for Data Science research. It is based on OpenShift (Kubernetes) container orchestration to run researchers experiments." ;
 
   doap:programming-language "Kubernetes" ;
-  doap:license <https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/LICENSE.md> ;
-  doap:homepage <https://maastrichtu-ids.github.io/dsri-documentation> ;
+  doap:license <https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/LICENSE> ;
+  doap:homepage <https://dsri.maastrichtuniversity.nl/> ;
   doap:bug-database <https://github.com/MaastrichtU-IDS/dsri-documentation/issues> ;
-  doap:wiki <https://maastrichtu-ids.github.io/dsri-documentation/docs/introduction> ;
+  doap:wiki <https://dsri.maastrichtuniversity.nl/docs/> ;
   doap:service-endpoint <https://app.dsri.unimaas.nl:8443> ;
   doap:mailing-list <DSRI-SUPPORT-L@maastrichtuniversity.nl> ;
   doap:category "Research" ;
@@ -21,6 +21,6 @@
   ] ;
   doap:maintainer [
     a foaf:Person ;
-    foaf:name "Vincent Emonet" ;
-    foaf:mbox <mailto:vincent.emonet@maastrichtuniversity.nl>
+    foaf:name "Laurent Winckers" ;
+    foaf:mbox <mailto:DSRI-SUPPORT-L@maastrichtuniversity.nl>
   ] .
