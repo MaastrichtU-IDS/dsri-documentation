@@ -42,7 +42,9 @@ To check changes in the documentation, go to the `/website` directory and start 
 
 ```shell
 cd website
+
 yarn install
+
 yarn start
 ```
 
@@ -117,7 +119,9 @@ To run the full stack including the database and API, we use docker-compose
 
    ```bash
    cd website
+
    yarn install
+
    yarn dev
    ```
 
@@ -300,6 +304,8 @@ Embed a Google docs presentation (size does not change dynamically). You can che
 Convert a mkv video to webm (better for direct embedding):
 
 ```bash
+cd website/static/img/
+
 ffmpeg -i video_dsri_introduction.mkv -c:v libvpx -crf 10 -c:a libvorbis video_dsri_introduction.webm
 ```
 
