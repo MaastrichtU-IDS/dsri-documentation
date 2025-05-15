@@ -18,7 +18,7 @@ You need to be connected to the UM network to access the DSRI.
 
 ```bash
 sudo apt install openconnect
-sudo openconnect -u YOUR.USER --authgroup 01-Employees vpn.maastrichtuniversity.nl
+sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.USER --authgroup=01 vpn.maastrichtuniversity.nl
 ```
 
 **🍎 On MacOS and Windows**: download and install the **Maastricht University VPN** client available at **[vpn.maastrichtuniversity.nl](https://vpn.maastrichtuniversity.nl/)**

@@ -76,7 +76,7 @@ Provide your UM username and password. (**employee number** at Maastricht Univer
 
   ```bash
   sudo apt install openconnect
-  sudo openconnect -u YOUR.USER --authgroup 01-Employees --useragent=AnyConnect vpn.maastrichtuniversity.nl
+  sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.USER --authgroup=01 vpn.maastrichtuniversity.nl
   ```
 
   > Provide your UM password when prompted.
