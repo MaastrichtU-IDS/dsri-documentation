@@ -300,6 +300,8 @@ Embed a Google docs presentation (size does not change dynamically). You can che
 Convert a mkv video to webm (better for direct embedding):
 
 ```bash
+cd website/static/img/
+
 ffmpeg -i video_dsri_introduction.mkv -c:v libvpx -crf 10 -c:a libvorbis video_dsri_introduction.webm
 ```
 
