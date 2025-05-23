@@ -32,21 +32,30 @@ Here is a non-exhaustive list of some of the applications that can easily be dep
 
 ### Hardware
 
-* 16 CPU nodes
+* 14 CPU nodes
 
-|                | RAM (GB) | CPU (cores)            | Storage (TB) |
-| -------------- | -------- | ---------------------- | ------------ |
-| Node capacity  | 512 GB   | 64 cores (128 threads) | 120 TB       |
-| Total capacity | 8 192 GB | 1 024 cores            | 1 920 TB     |
+|                | CPU                      | Cores                     | RAM (GB) | Storage (TB) | Type                     |
+| -------------- | ------------------------ | ------------------------- | -------- | ------------ | ------------------------ |    
+| 11x CPU node   | 2x AMD EPYC 7551 32-Core | 64 cores (128 threads)    | 512 GB   | 120 TB       | Dell EMC PowerEdge R7425 |
+| 3x CPU Node    | 2x AMD EPYC 7551 32-Core | 64 cores (128 threads)    | 512 GB   | -            | Dell EMC PowerEdge R7425 |      
+| Total capacity | 28 CPUs                  | 896 cores (1 792 threads) | 7 168 GB | 1 320 TB     | -                        |
 
-* 1 GPU node: **Nvidia DGX1** 8x Tesla V100 - 32GB GPU
+</br>
 
-|                   | GPUs | RAM (GB) | CPU (cores) |
-| ----------------- | ---- | -------- | ----------- |
-| GPU node capacity | 8    | 512 GB   | 40 cores    |
+* 5 GPU nodes
 
-<img src="/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure " style={{maxWidth: '100%', maxHeight: '100%'}} />
+|                      | GPU                  | CPU                      | Cores                     | RAM (GB) | Type                     |
+| -------------------- | -------------------- | ------------------------ | ------------------------- | -------- | ------------------------ |
+| 2x GPU node capacity | 2 NVIDIA H100 80GB   | 2x AMD EPYC 7763 64-Core | 128 cores (256 threads)   | 512 GB   | Dell EMC PowerEdge R7525 |
+| 1x GPU node capacity | 2 NVIDIA A100 80GB   | 2x AMD EPYC 7763 64-Core | 128 cores (256 threads)   | 512 GB   | Dell EMC PowerEdge R7525 |
+| 1x GPU node capacity | 1 NVIDIA A100 80GB   | 2x AMD EPYC 7763 64-Core | 128 cores (256 threads)   | 512 GB   | Dell EMC PowerEdge R7525 |
+| 1x GPU node capacity | 4 NVIDIA L40S 40GB   | 2x AMD EPYC 9554 64-Core | 128 cores (256 threads)   | 1512 GB  | HPE ProLiant DL385 Gen11 |
+| Total capacity       | 11 GPUs              | 10 CPUs                  | 640 cores (1 280 threads) | 8 192 GB | -                        |
 
+
+<img src="/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+<!-- Old presentation, commented out until we have a new presentation 2025-05-23
 ## Learn more about DSRI
 
 See the following presentation about the Data Science Research Infrastructure 
@@ -54,3 +63,4 @@ See the following presentation about the Data Science Research Infrastructure
 <a href="/resource/2021-04-DSRI-Community-Event.pdf" target="_blank" rel="noopener noreferrer">
  <img src="/resource/DSRI-community-event.png" style={{maxWidth: '100%', maxHeight: '100%'}} alt="DSRI April 2021 Community Event Presentation" />
 </a>
+-->
