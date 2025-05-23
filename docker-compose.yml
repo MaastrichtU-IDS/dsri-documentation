@@ -4,7 +4,7 @@
 
 services:
   # Prod frontend is deployed on GitHub Pages by a GitHub Action
-  website:
+  dsri-website:
     build: website
     container_name: dsri-website
     environment:
