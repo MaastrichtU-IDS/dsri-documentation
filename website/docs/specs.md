@@ -34,7 +34,7 @@ Here is a non-exhaustive list of some of the applications that can easily be dep
 
 * 14 CPU nodes
 
-|                | CPU                             | Cores                     | RAM (GB)            | Storage (TB) | Type                     |
+|                | CPU                             | Cores                     | RAM                 | Storage      | Type                     |
 | -------------- | ------------------------------- | ------------------------- | ------------------- | ------------ | ------------------------ |    
 | 11x CPU node   | 2x AMD EPYC 7551 32-Core 3.0GHz | 64 cores (128 threads)    | 512 GB DDR4 2666MHz | 120 TB       | Dell EMC PowerEdge R7425 |
 | 3x CPU Node    | 2x AMD EPYC 7551 32-Core 3.0GHz | 64 cores (128 threads)    | 512 GB DDR4 2666MHz | -            | Dell EMC PowerEdge R7425 |      
@@ -44,7 +44,7 @@ Here is a non-exhaustive list of some of the applications that can easily be dep
 
 * 5 GPU nodes
 
-|                      | GPU                | CPU                              | Cores                     | RAM (GB)             | Type                     |
+|                      | GPU                | CPU                              | Cores                     | RAM                  | Type                     |
 | -------------------- | ------------------ | -------------------------------- | ------------------------- | -------------------- | ------------------------ |
 | 2x GPU node capacity | 2 NVIDIA H100 80GB | 2x AMD EPYC 7763 64-Core 3.5GHz  | 128 cores (256 threads)   | 512 GB DDR4 3200MHz  | Dell EMC PowerEdge R7525 |
 | 1x GPU node capacity | 2 NVIDIA A100 80GB | 2x AMD EPYC 7763 64-Core 3.5GHz  | 128 cores (256 threads)   | 512 GB DDR4 3200MHz  | Dell EMC PowerEdge R7525 |
