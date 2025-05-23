@@ -1,5 +1,5 @@
 # Build React website
-FROM node:24-alpine AS build
+FROM node:18-alpine AS build
 
 RUN apk add --no-cache \
     autoconf \
@@ -16,13 +16,13 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 COPY . /app
-RUN yarn build
+
+RUN yarn build:dev
 
 # Serve with nginx
-FROM nginx:stable-alpine
+FROM nginx:alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]
