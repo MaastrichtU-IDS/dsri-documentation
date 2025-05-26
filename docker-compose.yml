@@ -4,14 +4,17 @@
 
 services:
   # Prod frontend is deployed on GitHub Pages by a GitHub Action
-  website:
+  dsri-website:
     build: website
     container_name: dsri-website
     environment:
       - VIRTUAL_HOST=${DSRI_VIRTUAL_HOST}
+      - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST=${DSRI_LETSENCRYPT_HOST}
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
-      - VIRTUAL_PORT=80
+    networks:
+      default:
+        ipv4_address: 172.19.0.3
 
   # To deploy in prod we use a nginx proxy for docker containers with a companion to enable HTTPS with LetsEncrypt
   # https://github.com/nginx-proxy/nginx-proxy
@@ -19,6 +22,8 @@ services:
   nginx-proxy:
     image: nginxproxy/nginx-proxy:latest
     container_name: nginx-proxy
+    environment:
+      - DEFAULT_HOST=${DSRI_VIRTUAL_HOST}
     ports:
       - 80:80
       - 443:443
@@ -94,9 +99,9 @@ services:
       - PMA_HOST=mysql:3306
       - PMA_ABSOLUTE_URI=https://${ADMIN_VIRTUAL_HOST}
       - VIRTUAL_HOST=${ADMIN_VIRTUAL_HOST}
+      - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST=${ADMIN_LETSENCRYPT_HOST}
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
-      - VIRTUAL_PORT=80
     restart: unless-stopped
     networks:
       default: 
@@ -111,14 +116,15 @@ services:
     command: uvicorn api.main:app --host 0.0.0.0 --port 80 --reload
     environment:
       - VIRTUAL_HOST=${API_VIRTUAL_HOST}
+      - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST=${API_VIRTUAL_HOST}
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
-      - VIRTUAL_PORT=80
       - SQL_URL=mysql://dsri-user:${DB_PASSWORD}@mysql:3306/dsri-db
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
       - SLACK_CHANNEL=${SLACK_CHANNEL}
       - CLUSTER_URL=${CLUSTER_URL}
       - CLUSTER_API_KEY=${CLUSTER_API_KEY}
+      - API_URL=https://${API_VIRTUAL_HOST}
       - API_PASSWORD=${API_PASSWORD}
       - ENABLE_CRON=true
     volumes:
@@ -141,9 +147,9 @@ services:
     environment:
       - DB_PASSWORD=${DB_PASSWORD}
       - VIRTUAL_HOST=${CALENDAR_VIRTUAL_HOST}
+      - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST=${CALENDAR_LETSENCRYPT_HOST}
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
-      - VIRTUAL_PORT=80
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro

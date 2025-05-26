@@ -4,7 +4,9 @@
   "homepage": "https://dsri.maastrichtuniversity.nl",
   "scripts": {
     "docusaurus": "docusaurus",
-    "dev": "API_URL=http://localhost:8000 docusaurus start",
+    "start:local": "API_URL=http://localhost:8000 docusaurus start",
+    "start:dev": "cp docusaurus.config.dev.js docusaurus.config.js && API_URL=https://api.test.dsri.unimaas.nl docusaurus start",
+    "build:dev": "cp docusaurus.config.dev.js docusaurus.config.js && API_URL=https://api.test.dsri.unimaas.nl docusaurus build",
     "start": "API_URL=https://api.dsri.maastrichtuniversity.nl docusaurus start",
     "build": "API_URL=https://api.dsri.maastrichtuniversity.nl docusaurus build",
     "clear": "docusaurus clear",
