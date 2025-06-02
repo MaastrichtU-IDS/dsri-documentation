@@ -24,20 +24,6 @@ sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.USER --auth
 **🍎 On MacOS and Windows**: download and install the **Maastricht University VPN** client available at **[vpn.maastrichtuniversity.nl](https://vpn.maastrichtuniversity.nl/)**
 
 
-<details><summary>⚠️ If your are a <b>student</b> you will need to request access to the UM VPN first</summary>
-
-<ul>
-<li>You can try to use the Athena Student Desktop at <a href="https://athenadesktop.maastrichtuniversity.nl">athenadesktop.maastrichtuniversity.nl</a>, to access the VPN through a virtual desktop</li>
-<li>Or ask one of your teachers to request VPN access for you. You will need to send an email to the IT helpdesk of your department with the following information: </li>
-<ul>
-<li>Email of the student who will get VPN</li>
-<li> for which course (provide the course ID) or project does the student need the VPN</li>
-<li>until which date the student will need the VPN.</li>
-</ul>
-</ul>
-</details>
-
-
 ## Access the web UI
 
 Access the DSRI web UI at **[https://console-openshift-console.apps.dsri2.unimaas.nl](https://console-openshift-console.apps.dsri2.unimaas.nl)**
