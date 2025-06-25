@@ -114,8 +114,8 @@ objects:
               cpu: '64'
               memory: 256Gi
             requests:
-              cpu: '2'
-              memory: 8Gi
+              cpu: 200m
+              memory: 256Mi
           volumeMounts:
           - mountPath: "/dev/shm"
             name: dshm

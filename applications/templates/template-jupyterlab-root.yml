@@ -223,20 +223,13 @@ objects:
           failureThreshold: 40
           periodSeconds: 10
           timeoutSeconds: 2
-          # resources:
-          #   requests:
-          #       cpu: "2"
-          #       memory: "4Gi"
-          #     limits:
-          #       cpu: "${CPU_LIMIT}"
-          #       memory: "${MEMORY_LIMIT}"
           resources:
             limits:
               cpu: '32'
               memory: 200Gi
             requests:
-              cpu: '2'
-              memory: 4Gi
+              cpu: 200m
+              memory: 256Mi
         automountServiceAccountToken: false
         securityContext:
           runAsUser: 0
