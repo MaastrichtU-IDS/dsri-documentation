@@ -31,7 +31,7 @@ services:
     #  - ./data/certs:/etc/nginx/certs:ro # use this on your local machine
       - /data/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - vhost:/etc/nginx/vhost.d
+      - ./nginx/vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
     restart: unless-stopped
     networks:
