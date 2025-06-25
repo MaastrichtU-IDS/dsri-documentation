@@ -32,6 +32,7 @@ services:
       - /data/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx/vhost:/etc/nginx/vhost.d
+      - ./nginx/tokens_off.conf:/etc/nginx/conf.d/tokens_off.conf:ro
       - html:/usr/share/nginx/html
     restart: unless-stopped
     networks:
