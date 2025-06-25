@@ -30,6 +30,7 @@ build
 # generated files
 .docusaurus
 .cache-loader
+./nginx/vhost/default
 
 # misc
 .DS_Store
