@@ -37,4 +37,4 @@ The Research Computing Support team members:
 - **Laurent Winckers** - DevOps Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
 - **Manu Agarwal** - Research Software Engineer (HPC) at [UB](https://library.maastrichtuniversity.nl/)
 - **Shuai Wang** - Research Software Engineer (Software Stewardship) at [UB](https://library.maastrichtuniversity.nl/)
-- **_vacancy_** - DevOps Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
+- **Adelina Tamas** - DevOps Engineer at [ICTS](https://maastrichtuniversity.nl/icts)
