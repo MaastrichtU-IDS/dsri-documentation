@@ -197,6 +197,22 @@ singleuser
 
 Note that we chose the latest tag at the time of writing: `87b37b4fd818`. Change this tag accordingly if a more recent release is available! You can find their releases via their Quay.io repository: https://quay.io/organization/jupyter.
 
+### Adjusting spawner timeouts
+
+If the sessions fail to start with a "spawner failed" or "timeout" error, it may be because the user's container is taking too long to become read.
+
+To fix this, the start_timeout can be increased (for the pod to start) and http_timeout (for the Jupyter server to respond) in the config-basic.yaml.
+The following configuration sets both timeouts to 300 seconds (5 minutes), which is a robust starting point for most environments.
+
+```
+hub:
+  # ...
+  config:
+    KubeSpawner:
+      start_timeout: 300
+      http_timeout: 300
+```
+
 #
 
 ## Extensive customization options in config-extensive.yaml
