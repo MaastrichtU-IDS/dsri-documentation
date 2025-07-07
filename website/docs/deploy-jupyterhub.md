@@ -201,7 +201,7 @@ Note that we chose the latest tag at the time of writing: `87b37b4fd818`. Change
 
 If the sessions fail to start with a "spawner failed" or "timeout" error, it may be because the user's container is taking too long to become read.
 
-To fix this, the start_timeout can be increased (for the pod to start) and http_timeout (for the Jupyter server to respond) in the config-basic.yaml.
+To fix this, the start_timeout can be increased (for the pod to start) and http_timeout (for the Jupyter server to respond) in the `config-basic.yaml`.
 The following configuration sets both timeouts to 300 seconds (5 minutes), which is a robust starting point for most environments.
 
 ```
@@ -265,6 +265,27 @@ image:
 ```
 
 Note that we chose the latest tag at the time of writing: `87b37b4fd818`. Change this tag accordingly if a more recent release is available! You can find their releases via their Quay.io repository: https://quay.io/organization/jupyter.
+
+
+### Adjusting spawner timeouts when including multiple notebook images
+
+If the sessions fail to start with a "spawner failed" or "timeout" error, it may be because the user's container is taking too long to become read.
+
+To fix this, the start_timeout can be increased (for the pod to start) and http_timeout (for the Jupyter server to respond) in the `config-extensive.yaml`.
+The following configuration sets both timeouts to 300 seconds (5 minutes), which is a robust starting point for most environments.
+
+```
+image:
+  # ...
+  profileList:
+    # ...
+    - display_name: "Tensorflow environment"
+      description: "Here you have Tensorflow installed!"
+      kubespawner_override:
+        image: quay.io/jupyter/tensorflow-notebook:87b37b4fd818
+        start_timeout: 300
+        http_timeout: 300
+```
 
 Upon the first creation of the user pod, in other words when the user logs in for the first time. They will see a menu where they can choose their preconfigured notebook by choice. 
 
