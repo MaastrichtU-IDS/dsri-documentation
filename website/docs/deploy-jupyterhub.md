@@ -266,6 +266,9 @@ image:
 
 Note that we chose the latest tag at the time of writing: `87b37b4fd818`. Change this tag accordingly if a more recent release is available! You can find their releases via their Quay.io repository: https://quay.io/organization/jupyter.
 
+Upon the first creation of the user pod, in other words when the user logs in for the first time. They will see a menu where they can choose their preconfigured notebook by choice. 
+
+<img src="/img/jupyterhub-notebookchoice-login.png" alt="" style={{maxWidth: '75%', maxHeight: '75%'}} />
 
 ### Adjusting spawner timeouts when including multiple notebook images
 
@@ -286,10 +289,6 @@ image:
         start_timeout: 300
         http_timeout: 300
 ```
-
-Upon the first creation of the user pod, in other words when the user logs in for the first time. They will see a menu where they can choose their preconfigured notebook by choice. 
-
-<img src="/img/jupyterhub-notebookchoice-login.png" alt="" style={{maxWidth: '75%', maxHeight: '75%'}} />
 
 #
 
