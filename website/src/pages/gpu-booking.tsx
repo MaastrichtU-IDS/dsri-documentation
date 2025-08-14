@@ -332,6 +332,10 @@ function GpuBooking() {
           </h1>
 
           <p style={{marginTop: '10px'}}>
+            ⚠️ As of 14-08-2025 booking a GPU is not possible until further notice! Apologies for any inconveniences. ⚠️
+          </p>
+
+          <p style={{marginTop: '10px'}}>
             Once you booked a GPU, you will receive an email with more information, and the GPU will be enabled in your DSRI project for the period requested. You can book a GPU for a maximum of 7 days. Multiple consecutive 7-day bookings will be monitored, and any deemed unnecessary will be cancelled.
           </p>
           <p style={{marginBottom: '40px'}}>
@@ -458,10 +462,14 @@ function GpuBooking() {
             </Box>
 
             <p style={{marginTop: '10px'}}>
+              ⚠️ As of 14-08-2025 booking a GPU is not possible until further notice! Apologies for any inconveniences. ⚠️
+            </p>
+
+            <p style={{marginTop: '10px'}}>
               ⚠️ If you don't see any colored number on the calendar please reload the page, sometimes ReactJS fails to initialize the page
             </p>
 
-            <button type="submit" style={{margin: '30px 0px'}} className={clsx(
+            <button type="submit" disabled={true} style={{margin: '30px 0px', cursor: 'not-allowed'}} className={clsx(
                 'button button--outline button--primary button--lg',
               )}>Request a GPU for the selected period</button> 
           </form>
