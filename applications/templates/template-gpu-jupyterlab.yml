@@ -10,13 +10,13 @@ metadata:
       with the root user.
       
       By default the GPU will not be enabled, so you can start
-      this workspace to prepare your code and data.nOnce your the GPU has been enabled
+      this workspace to prepare your code and data. Once your the GPU has been enabled
       in your project, you can enable the GPU in your workspace with this command
       (replace jupyterlab-gpu with the name of your deployment)
       
-      oc patch dc/jupyterlab-gpu
+      oc patch deployment/jupyterlab-gpu
       --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources",
-      "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'U
+      "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
       
       📦 We recommend you to use `mamba install` to install new packages, but you can
       also use `pip install` or `apt-get install`
@@ -25,17 +25,28 @@ metadata:
       storage
       
       🐳 You can directly use the following Docker images to work on GPU:
-      - CUDA build, based on https://ngc.nvidia.com/catalog/containers/nvidia:cudanghcr.io/maastrichtu-ids/jupyterlab:cuda
-      - Tensorflow build, based on https://ngc.nvidia.com/catalog/containers/nvidia:tensorflownghcr.io/maastrichtu-ids/jupyterlab:tensorflow
-      - PyTorch build, based on https://ngc.nvidia.com/catalog/containers/nvidia:pytorchnghcr.io/maastrichtu-ids/jupyterlab:pytorch
-      - FSL, built with NeuroDocker and CUDA:ghcr.io/maastrichtu-ids/jupyterlab:fsl-gpu
+      - CUDA build, based on https://ngc.nvidia.com/catalog/containers/nvidia:cuda
+      ghcr.io/maastrichtu-ids/jupyterlab:cuda
+      - Tensorflow build, based on https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
+      ghcr.io/maastrichtu-ids/jupyterlab:tensorflow
+      - PyTorch build, based on https://ngc.nvidia.com/catalog/containers/nvidia:pytorch
+      ghcr.io/maastrichtu-ids/jupyterlab:pytorch
+      - FSL, built with NeuroDocker and CUDA:
+      ghcr.io/maastrichtu-ids/jupyterlab:fsl-gpu
       
       Feel free to check how the GPU images are built and to customize them for your project:
-      https://github.com/MaastrichtU-IDS/jupyterlabnnU0001F4CB️ You can find some
-      examples for Tensorflow and PyTorch in the following repositories:nhttps://gitlab.maastrichtuniversity.nl/dsri-examples/dsri-tensorflow-workspacenhttps://gitlab.maastrichtuniversity.nl/dsri-examples/dsri-pytorch-workspacennU0001F5D1️
+      https://github.com/MaastrichtU-IDS/jupyterlab
+      
+      🔧 You can find some
+      examples for Tensorflow and PyTorch in the following repositories:
+      https://gitlab.maastrichtuniversity.nl/dsri-examples/dsri-tensorflow-workspace
+      https://gitlab.maastrichtuniversity.nl/dsri-examples/dsri-pytorch-workspace
+      
+      🗑️
       Use this command with your application name to delete completely your application
-      and its persistent volumes:noc delete all,pvc,secret,configmaps,serviceaccount,rolebinding
-      --selector app=$APPLICATION_NAME'
+      and its persistent volumes:
+      oc delete all,pvc,secret,configmaps,serviceaccount,rolebinding
+      --selector app=$APPLICATION_NAME
     iconClass: icon-python
     openshift.io/display-name: JupyterLab on GPU
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-on-gpu
@@ -67,8 +78,8 @@ objects:
     resources:
       requests:
         storage: "${STORAGE_SIZE}"
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
+- apiVersion: apps/v1
+  kind: Deployment
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
@@ -76,15 +87,16 @@ objects:
   spec:
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     strategy:
-      type: Rolling
+      type: RollingUpdate
     template:
       metadata:
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         containers:
         - env:
@@ -129,9 +141,6 @@ objects:
         - name: data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
-    test: false
-    triggers:
-    - type: ConfigChange
 - apiVersion: v1
   kind: Service
   metadata:
@@ -150,7 +159,7 @@ objects:
       targetPort: 6006
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:

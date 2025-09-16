@@ -26,7 +26,6 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
-    # template.openshift.io/bindable: 'false'
 labels:
   template: cellprofiler
 message: |-
@@ -84,8 +83,8 @@ objects:
     lookupPolicy:
       local: true
 
-- kind: DeploymentConfig
-  apiVersion: apps.openshift.io/v1
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -93,24 +92,21 @@ objects:
   spec:
     strategy:
       type: Recreate
-    triggers:
-    - type: ConfigChange
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
-        #nodeSelector:
-        # dsri.unimaas.nl/cpu: 'true'
         volumes:
         - name: data
           persistentVolumeClaim:
@@ -132,40 +128,5 @@ objects:
               memory: 4Gi
           volumeMounts:
           - name: data
-            # mountPath: "/data"
             mountPath: "/usr/local/src"
         automountServiceAccountToken: false
-
-# - kind: Service
-#   apiVersion: v1
-#   metadata:
-#     name: "${APPLICATION_NAME}"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   spec:
-#     ports:
-#     - name: 8787-tcp
-#       protocol: TCP
-#       port: 8787
-#       targetPort: 8787
-#     selector:
-#       app: "${APPLICATION_NAME}"
-#       deploymentconfig: "${APPLICATION_NAME}"
-
-# - kind: Route
-#   apiVersion: route.openshift.io/v1
-#   metadata:
-#     name: "${APPLICATION_NAME}"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   spec:
-#     host: ''
-#     to:
-#       kind: Service
-#       name: "${APPLICATION_NAME}"
-#       weight: 100
-#     port:
-#       targetPort: 8787-tcp
-#     tls:
-#       termination: edge
-#       insecureEdgeTerminationPolicy: Redirect

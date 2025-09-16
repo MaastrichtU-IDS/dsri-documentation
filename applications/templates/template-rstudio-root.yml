@@ -99,8 +99,8 @@ objects:
     lookupPolicy:
       local: true
 
-- kind: DeploymentConfig
-  apiVersion: apps.openshift.io/v1
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -108,12 +108,11 @@ objects:
   spec:
     strategy:
       type: Recreate
-    triggers:
-    - type: ConfigChange
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
@@ -121,12 +120,10 @@ objects:
           alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
-        #nodeSelector:
-        #  dsri.unimaas.nl/cpu: 'true'
         volumes:
         - name: data
           persistentVolumeClaim:
@@ -180,7 +177,7 @@ objects:
       targetPort: 8787
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
 
 - kind: Route
   apiVersion: route.openshift.io/v1
@@ -215,7 +212,7 @@ objects:
       targetPort: 3838
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
 
 - kind: Route
   apiVersion: route.openshift.io/v1
