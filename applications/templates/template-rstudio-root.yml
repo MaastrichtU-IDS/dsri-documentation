@@ -31,6 +31,7 @@ metadata:
     # template.openshift.io/bindable: 'false'
 labels:
   template: rstudio-root-dynamic
+
 parameters:
 - name: APPLICATION_IMAGE
   displayName: RStudio Docker image
@@ -56,6 +57,7 @@ parameters:
   description: Restricting the number of thread allocated to OpenBLAS can speed up computations using OpenBLAS (leave empty for default 64)
   value: "1"
   required: false
+
 objects:
 - apiVersion: v1
   kind: Secret
@@ -197,7 +199,7 @@ objects:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
 
-## Shiny server route
+# Shiny server route
 - kind: Service
   apiVersion: v1
   metadata:

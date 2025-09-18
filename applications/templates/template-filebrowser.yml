@@ -24,6 +24,7 @@ metadata:
 labels:
   template: filebrowser
 message: The filebrowser has been deployed with default login/password (admin/admin). Change it in the Filebrowser web UI settings at the first login.
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name

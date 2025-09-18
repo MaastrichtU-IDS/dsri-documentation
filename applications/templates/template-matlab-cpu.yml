@@ -13,7 +13,7 @@ metadata:
       Matlab will be automatically enabled using the UM matlab license server.
       
       You can choose between 2 types of deployment:
-      - Browser: access directly matlab in the browser, only available from r2024a and upn
+      - Browser: access directly matlab in the browser, only available from r2024a and up
       - VNC: access matlab in a Linux desktop in the browser, highly unstable, Matlab devs
       acknowledge themselves it is tricky to use
       
@@ -30,6 +30,7 @@ metadata:
     tags: matlab,cpu,root,persistent
   name: matlab-cpu
   namespace: openshift
+
 objects:
 - apiVersion: v1
   kind: Secret
@@ -41,6 +42,7 @@ objects:
     name: "${APPLICATION_NAME}"
   stringData:
     application-password: "${PASSWORD}"
+
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -53,6 +55,7 @@ objects:
     resources:
       requests:
         storage: "${STORAGE_SIZE}"
+
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
@@ -70,24 +73,26 @@ objects:
       importPolicy:
         scheduled: false
       name: latest
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
+
+- apiVersion: apps/v1
+  kind: Deployment
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
     name: "${APPLICATION_NAME}"
   spec:
     replicas: 1
-    selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
     strategy:
       type: Recreate
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         automountServiceAccountToken: false
         containers:
@@ -101,7 +106,7 @@ objects:
                 name: "${APPLICATION_NAME}"
           - name: MLM_LICENSE_FILE
             value: 27000@matlab.icts.maastrichtuniversity.nl
-          image: "${APPLICATION_NAME}:latest"
+          image: "${APPLICATION_IMAGE}"
           imagePullPolicy: IfNotPresent
           name: matlab-container
           ports:
@@ -122,8 +127,7 @@ objects:
         - emptyDir:
             medium: Memory
           name: dshm
-    triggers:
-    - type: ConfigChange
+
 - apiVersion: v1
   kind: Service
   metadata:
@@ -138,7 +142,7 @@ objects:
       targetPort: 8888
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
@@ -156,9 +160,9 @@ objects:
       kind: Service
       name: "${APPLICATION_NAME}"
       weight: 100
+
 parameters:
-- description: Must be unique in the project. It will be used to generate the application
-    URL.
+- description: Must be unique in the project. It will be used to generate the application URL.
   displayName: Application name
   name: APPLICATION_NAME
   required: true

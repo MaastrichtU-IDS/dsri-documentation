@@ -13,7 +13,7 @@ metadata:
       Checkout https://github.com/MaastrichtU-IDS/jupyterlab to see how our custom image is built, and how to extend it
       For more details on the jupyter docker stack, go to https://github.com/jupyter/docker-stacks
 
-      📥 With our ghcr.io/maastrichtu-ids/jupyterlab image you can provide the URL to a git repository which will be cloned in your workspace at the start of JupyterLab.
+      🔥 With our ghcr.io/maastrichtu-ids/jupyterlab image you can provide the URL to a git repository which will be cloned in your workspace at the start of JupyterLab.
       If this repo contains files with list of packages in the root folder, they will be installed at start:
       - requirements.txt for pip packages
       - packages.txt for apt packages
@@ -32,6 +32,7 @@ metadata:
     openshift.io/provider-display-name: ICT Service Centre, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Name for the application
@@ -42,7 +43,6 @@ parameters:
   displayName: JupyterLab UI Password
   description: The password/token to access the JupyterLab web UI
   required: true
-
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook with Freesurfer Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:freesurfer
@@ -53,7 +53,6 @@ parameters:
   description: Size of the storage allocated to the notebook persistent storage.
   value: 10Gi
   required: true
-
 - name: GIT_URL
   displayName: URL of a git repository to clone in the workspace (optional)
   required: false
@@ -69,21 +68,6 @@ parameters:
   value: default@maastrichtuniversity.nl
   description: Email used to automatically define git config --global user.email
 
-# - name: WORKDIR
-#   displayName: Working directory
-#   description: The working directory in your container (will be stored persistently). This depends on the image, refer to the description on the right, or the image docs.
-#   value: /home/jovyan/work
-#   required: true
-# - name: MEMORY_LIMIT
-#   displayName: Memory limit
-#   description: Maximum RAM memory available for the application.
-#   value: "6Gi"
-#   required: true
-# - name: CPU_LIMIT
-#   displayName: CPU limit
-#   description: Number of CPUs available for the application.
-#   value: "4"
-#   required: true
 objects:
 - kind: "ImageStream"
   apiVersion: image.openshift.io/v1
@@ -120,8 +104,6 @@ objects:
 - apiVersion: v1
   kind: Secret
   metadata:
-    # annotations:
-    #   template.openshift.io/expose-password: "{.data['application-password']}"
     name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
@@ -129,8 +111,8 @@ objects:
   stringData:
     application-password: "${PASSWORD}"
 
-- kind: DeploymentConfig
-  apiVersion: v1
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -140,39 +122,28 @@ objects:
     replicas: 1
     strategy:
       type: Recreate
-      # type: Rolling
-    triggers:
-    - type: ConfigChange
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: "anyuid"
-        # nodeSelector:
-        #   dsri.unimaas.nl/cpu: 'true'
         containers:
         - name: jupyter-notebook
-          image: "${APPLICATION_NAME}:latest"
+          image: "${APPLICATION_IMAGE}"
           imagePullPolicy: IfNotPresent
           workingDir: /home/jovyan/work
-          # command:
-          # - "start-notebook.sh"
-          # - "--no-browser"
-          # - "--ip=0.0.0.0"
-          # - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"
           ports:
-          # - containerPort: ${{PORT}}
           - containerPort: 8888
             protocol: TCP
-          # SPARK UI if all-spark notebook deployed
           - containerPort: 4040
             protocol: TCP
           - containerPort: 4041
@@ -196,11 +167,8 @@ objects:
           volumeMounts:
           - name: data
             mountPath: /home/jovyan/work/persistent
-            # mountPath: "${WORKDIR}"
           - name: dshm
             mountPath: /dev/shm
-          # - name: configs
-          #   mountPath: "/etc/jupyter/openshift"
           readinessProbe:
             tcpSocket:
               port: 8888
@@ -208,16 +176,9 @@ objects:
             initialDelaySeconds: 15
             tcpSocket:
               port: 8888
-          failureThreshold: 40
-          periodSeconds: 10
-          timeoutSeconds: 2
-          # resources:
-          #   requests:
-          #       cpu: "2"
-          #       memory: "4Gi"
-          #     limits:
-          #       cpu: "${CPU_LIMIT}"
-          #       memory: "${MEMORY_LIMIT}"
+            failureThreshold: 40
+            periodSeconds: 10
+            timeoutSeconds: 2
           resources:
             limits:
               cpu: '32'
@@ -237,9 +198,6 @@ objects:
         - name: dshm
           emptyDir:
             medium: Memory
-        # - name: configs
-        #   configMap:
-        #     name: "${APPLICATION_NAME}-cfg"
 
 - kind: Service
   apiVersion: v1
@@ -256,8 +214,9 @@ objects:
       targetPort: 8888
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
     type: ClusterIP
+
 - kind: Route
   apiVersion: v1
   metadata:
@@ -275,86 +234,3 @@ objects:
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
-
-# Service for Spark UI if needed
-# - kind: Service
-#   apiVersion: v1
-#   metadata:
-#     name: "${APPLICATION_NAME}-spark-ui"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#       template: jupyterlab-root
-#   spec:
-#     ports:
-#     - name: 4040-tcp
-#       protocol: TCP
-#       port: 4040
-#       targetPort: 4040
-#     selector:
-#       app: "${APPLICATION_NAME}"
-#       deploymentconfig: "${APPLICATION_NAME}"
-#     type: ClusterIP
-
-
-# - kind: ConfigMap
-#   apiVersion: v1
-#   metadata:
-#     name: "${APPLICATION_NAME}-cfg"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   data:
-#     # Clone git repo, then install requirements.txt and packages.txt
-#     jupyter_notebook_config.py: |
-#       import os
-#       git_url = os.environ.get('GIT_URL')
-#       if git_url:
-#         repo_id = git_url.rsplit('/', 1)[-1].replace('.git', '')
-#         os.system('git clone --quiet --recursive ' + git_url)
-#         os.chdir(repo_id)
-#         if os.path.exists('packages.txt'):
-#           os.system('sudo apt-get update')
-#           os.system('cat packages.txt | xargs sudo apt-get install -y')
-#         if os.path.exists('requirements.txt'):
-#           os.system('pip install -r requirements.txt')
-#         if os.path.exists('extensions.txt'):
-#           os.system('cat extensions.txt | xargs -I {} jupyter {} install --user')
-
-
-# - kind: ConfigMap
-#   apiVersion: v1
-#   metadata:
-#     name: "${APPLICATION_NAME}-cfg"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   data:
-#     entrypoint.sh: |
-#       #!/bin/bash
-
-#       CMD="start-notebook.sh --ip=0.0.0.0 --no-browser"
-#       # CMD="jupyter lab --allow-root --ip=0.0.0.0 --no-browser"
-
-#       if [[ -v GIT_URL ]]; then
-#         git clone $GIT_URL $HOME
-#       fi
-
-#       if [ -f $HOME/packages.txt ]; then
-#         echo "INFO: Found packages.txt file in folder /notebooks. Executing it to install apt packages."
-#         apt-get update
-#         cat packages.txt | xargs apt-get install -y
-#       else
-#         echo "INFO: packages.txt not found in folder /notebooks --> Continuing"
-#       fi
-
-#       if [ -f $HOME/requirements.txt ]; then
-#         echo "INFO: Found requirements.txt file in folder /notebooks. Installing via \"pip install -r requirements.txt\""
-#         pip install -r requirements.txt
-#       else
-#         echo "INFO: requirements.txt not found in folder /notebooks --> Continuing"
-#       fi
-
-#       if [ -f $HOME/extensions.txt ]; then
-#         echo "INFO: Found extensions.txt file in folder /notebooks. Installing via \"jupyter extension install --user\""
-#         cat extensions.txt | xargs -I {} jupyter {} install --user
-#       else
-#         echo "INFO: extensions.txt not found in folder /notebooks --> Continuing"
-#       fi

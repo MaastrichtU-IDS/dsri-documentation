@@ -53,7 +53,6 @@ parameters:
   displayName: JupyterLab UI Password
   description: The password/token to access the JupyterLab web UI
   required: true
-
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook Docker image
   value: ghcr.io/maastrichtu-ids/jupyterlab:latest
@@ -64,7 +63,6 @@ parameters:
   description: Size of the storage allocated to the notebook persistent storage.
   value: 5Gi
   required: true
-
 - name: GIT_URL
   displayName: URL of a git repository to clone in the workspace (optional)
   required: false

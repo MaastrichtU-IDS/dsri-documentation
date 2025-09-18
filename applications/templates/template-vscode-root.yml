@@ -33,9 +33,6 @@ parameters:
 - name: PASSWORD
   displayName: Password
   description: The password to access the VSCode application
-  # value: mypassword
-  # from: "[a-zA-Z0-9]{16}"
-  # generate: expression
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
@@ -52,8 +49,6 @@ objects:
 - apiVersion: v1
   kind: Secret
   metadata:
-    # annotations:
-    #   template.openshift.io/expose-password: "{.data['application-password']}"
     name: "${APPLICATION_NAME}"
     labels:
       app: ${APPLICATION_NAME}
@@ -91,8 +86,8 @@ objects:
     lookupPolicy:
       local: true
 
-- kind: DeploymentConfig
-  apiVersion: apps.openshift.io/v1
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -100,24 +95,21 @@ objects:
   spec:
     strategy:
       type: Recreate
-    triggers:
-    - type: ConfigChange
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
-        #nodeSelector:
-        #  dsri.unimaas.nl/cpu: 'true'
         volumes:
         - name: data
           persistentVolumeClaim:
@@ -127,8 +119,7 @@ objects:
             medium: Memory
         containers:
         - name: vscode-container
-          image: ${APPLICATION_NAME}:latest
-          # image: ${APPLICATION_IMAGE}
+          image: "${APPLICATION_IMAGE}"
           imagePullPolicy: IfNotPresent
           workingDir: /home/coder/project
           ports:
@@ -152,8 +143,6 @@ objects:
               secretKeyRef:
                 key: application-password
                 name: "${APPLICATION_NAME}"
-          # - name: GIT_URL
-          #   value: "${GIT_REPOSITORY_URL}"
         automountServiceAccountToken: false
 
 - kind: Service
@@ -170,7 +159,7 @@ objects:
       targetPort: 8080
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
 
 - kind: Route
   apiVersion: route.openshift.io/v1

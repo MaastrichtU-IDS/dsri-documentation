@@ -22,36 +22,32 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://vemonet.github.io/libre-chat
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Name for the application
   description: Must be without spaces (use -), and unique in the project.
   value: libre-chat
   required: true
-
 - name: APPLICATION_IMAGE
   displayName: Docker image for Libre Chat
   value: ghcr.io/vemonet/libre-chat:main
   required: true
   description: Check the description on the right for more details about available images
-
 - name: LIBRECHAT_CONF_URL
   displayName: Direct URL to the YAML configuration file for the chatbot
   required: true
   value: https://raw.github.com/vemonet/libre-chat/main/config/chat-conversation.yml
   description: Checkout the documentation at https://vemonet.github.io/libre-chat for more details on how to configure your chatbot
-
 - name: LIBRECHAT_WORKERS
   displayName: Number of workers for the API
   required: true
   value: "4"
-
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage allocated to the notebook persistent storage.
   value: 20Gi
   required: true
-
 - name: MEMORY_MIN
   displayName: Memory minimum
   description: Minimum RAM memory available for the application.
@@ -62,7 +58,6 @@ parameters:
   description: Minimum number of CPUs available for the application.
   value: "8"
   required: true
-
 - name: MEMORY_LIMIT
   displayName: Memory limit
   description: Maximum RAM memory available for the application.
@@ -92,7 +87,6 @@ objects:
         scheduled: false
     lookupPolicy:
       local: true
-      # local: false # To make sure the image is updated instead of using cache
 
 - kind: "PersistentVolumeClaim"
   apiVersion: "v1"
@@ -108,8 +102,8 @@ objects:
       requests:
         storage: ${STORAGE_SIZE}
 
-- kind: DeploymentConfig
-  apiVersion: v1
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -119,27 +113,23 @@ objects:
     replicas: 1
     strategy:
       type: Recreate
-      # type: Rolling
-    triggers:
-    - type: ConfigChange
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: "anyuid"
-        # nodeSelector:
-        #   dsri.unimaas.nl/cpu: 'true'
         containers:
         - name: libre-chat-api
-          image: "${APPLICATION_NAME}:latest"
+          image: "${APPLICATION_IMAGE}"
           imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8000
@@ -161,9 +151,9 @@ objects:
             initialDelaySeconds: 15
             tcpSocket:
               port: 8000
-          failureThreshold: 40
-          periodSeconds: 10
-          timeoutSeconds: 2
+            failureThreshold: 40
+            periodSeconds: 10
+            timeoutSeconds: 2
           resources:
             requests:
               cpu: "${CPU_MIN}"
@@ -179,9 +169,6 @@ objects:
         - name: dshm
           emptyDir:
             medium: Memory
-        # - name: configs
-        #   configMap:
-        #     name: "${APPLICATION_NAME}-cfg"
 
 - kind: Service
   apiVersion: v1
@@ -198,8 +185,9 @@ objects:
       targetPort: 8000
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
     type: ClusterIP
+
 - kind: Route
   apiVersion: v1
   metadata:
@@ -217,65 +205,3 @@ objects:
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
-
-
-# - kind: ConfigMap
-#   apiVersion: v1
-#   metadata:
-#     name: "${APPLICATION_NAME}-cfg"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   data:
-#     chat.yml: |
-#       # Config for a generic conversational agent
-#       llm:
-#         model_type: llama
-#         model_path: ./models/llama-2-7b-chat.ggmlv3.q3_K_L.bin # We recommend to predownload the files, but you can provide download URLs that will be used if the files are not present:
-#         model_download: https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/resolve/main/llama-2-7b-chat.ggmlv3.q3_K_L.bin
-#         temperature: 0.01    # Config how creative, but also potentially wrong, the model can be. 0 is safe, 1 is adventurous
-#         max_new_tokens: 1024 # Max number of words the LLM can generate
-
-#       prompt:
-#         # Always use input for the human input variable with a generic agent
-#         variables: [input, history]
-#         template: |
-#           Your are an assistant, please help me
-
-#           {history}
-#           Human: {input}
-#           Assistant:
-
-#       vector:
-#         vector_path: null # Path to the vectorstore to do QA retrieval, e.g. ./vectorstore/db_faiss
-#         # Set to null to deploy a generic conversational agent
-#         vector_download: null
-#         embeddings_path: ./embeddings/all-MiniLM-L6-v2 # Path to embeddings used to generate the vectors, or use directly from HuggingFace: sentence-transformers/all-MiniLM-L6-v2
-#         embeddings_download: https://public.ukp.informatik.tu-darmstadt.de/reimers/sentence-transformers/v0.2/all-MiniLM-L6-v2.zip
-#         documents_path: ./documents # Path to documents to vectorize
-#         chunk_size: 500             # Maximum size of chunks, in terms of number of characters
-#         chunk_overlap: 50           # Overlap in characters between chunks
-#         chain_type: stuff           # Or: map_reduce, reduce, map_rerank. More details: https://docs.langchain.com/docs/components/chains/index_related_chains
-#         # search_type: similarity     # Or: similarity_score_threshold, mmr. More details: https://python.langchain.com/docs/modules/data_connection/retrievers/vectorstore
-#         # return_sources_count: 2     # Number of sources to return when generating an answer
-#         # score_threshold: null       # If using the similarity_score_threshold search type. Between 0 and 1
-#         popo: eee
-
-#       info:
-#         title: "Libre Chat"
-#         version: "0.1.0"
-#         description: |
-#           Open source and free chatbot powered by [LangChain](https://python.langchain.com) and [Llama 2](https://ai.meta.com/llama) [7B](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML)
-#         examples:
-#         - What is the capital of the Netherlands?
-#         - Which drugs are approved by the FDA to mitigate Alzheimer symptoms?
-#         - How can I create a logger with timestamp using python logging?
-#         favicon: https://raw.github.com/vemonet/libre-chat/main/docs/assets/logo.png
-#         repository_url: https://github.com/vemonet/libre-chat
-#         public_url: https://chat.semanticscience.org
-#         contact:
-#           name: Vincent Emonet
-#           email: vincent.emonet@gmail.com
-#         license_info:
-#           name: MIT license
-#           url: https://raw.github.com/vemonet/libre-chat/main/LICENSE.txt
-

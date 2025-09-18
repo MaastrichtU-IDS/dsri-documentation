@@ -34,6 +34,7 @@ message: |-
 
   You can use `oc get pods` to get the pod ID and connect using your local terminal `oc rsh POD_ID`
   Or use the terminal tab in the cellprofiler pod view of the OpenShift web UI
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
