@@ -1,3 +1,4 @@
+---
 apiVersion: template.openshift.io/v1
 kind: Template
 labels:
@@ -17,10 +18,6 @@ metadata:
 
       You will not be able to install system packages after the application has started (e.g. with apt-get or yum)
     iconClass: icon-play
-    #openshift.io/documentation-url: https://github.com/CSCfi/rstudio-openshift
-    #openshift.io/support-url: https://www.csc.fi/contact-info
-    # openshift.io/long-description: 
-    # openshift.io/provider-display-name: CSC
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-rstudio#rstudio-with-shiny-server
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
@@ -41,7 +38,6 @@ objects:
       requests:
         storage: ${STORAGE_SIZE}
 
-# TODO: rename r-secret to "${NAME}"
 - apiVersion: v1
   kind: Secret
   metadata:
@@ -90,7 +86,6 @@ objects:
     annotations:
       template.openshift.io/expose-uri: http://{.spec.host}
   spec:
-    # host: ${NAME}.${APPLICATION_DOMAIN_SUFFIX}
     path: /
     to:
       kind: Service
@@ -108,7 +103,6 @@ objects:
     annotations:
       template.openshift.io/expose-uri: http://{.spec.host}
   spec:
-    # host: ${NAME}-shiny.${APPLICATION_DOMAIN_SUFFIX}
     path: /
     to:
       kind: Service
@@ -135,7 +129,6 @@ objects:
     labels:
       app: "${NAME}"
 
-####################
 - apiVersion: v1
   kind: BuildConfig
   metadata:
@@ -148,8 +141,6 @@ objects:
   spec:
     source:
       dockerfile: "FROM python:3-alpine"
-      # dockerfile: "FROM alpine:latest \n RUN apk --no-cache add python3"
-      # image: python:3-alpine
     strategy:
       type: Docker
     output:
@@ -185,7 +176,6 @@ objects:
             value: ${PASSWORD}
           - name: "NAME"
             value: ${NAME}
-
     output:
       to:
         kind: ImageStreamTag
@@ -198,8 +188,8 @@ objects:
             name: webhooksecret
         type: GitHub
 
-- apiVersion: v1
-  kind: DeploymentConfig
+- apiVersion: apps/v1
+  kind: Deployment
   metadata:
     annotations:
       description: RStudio
@@ -209,36 +199,21 @@ objects:
       app: "${NAME}"
   spec:
     strategy:
-      type: Rolling
-    triggers:
-      - type: ImageChange
-        imageChangeParams:
-          automatic: false
-          containerNames:
-            - ${NAME}
-          from:
-            kind: ImageStreamTag
-            name: ${NAME}:latest
-      - type: ImageChange
-        imageChangeParams:
-          automatic: false
-          containerNames:
-            - shadowjob
-          from:
-            kind: ImageStreamTag
-            name: alpine-python3:latest
-      - type: ConfigChange
+      type: Recreate
     replicas: 1
+    selector:
+      matchLabels:
+        app: rstudio
+        deployment: rstudio
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: rstudio
+          deployment: rstudio
       spec:
         runtimeClassName: selinux
-        #nodeSelector:
-        #  dsri.unimaas.nl/cpu: 'true'
         volumes:
           - name: ${NAME}-secret-vol
             secret:
@@ -272,11 +247,11 @@ objects:
               timeoutSeconds: 15
             resources:
               limits:
-                cpu: '64'
-                memory: 200Gi
+                cpu: '16'
+                memory: 36Gi
               requests:
-                cpu: '2'
-                memory: 4Gi
+                cpu: '200m'
+                memory: 1Gi
             env:
             - name: SHINY_APPS_PATH
               value: "/mnt/${NAME}/shiny-server/"
@@ -288,41 +263,28 @@ objects:
             - name: ${NAME}-vol
               mountPath: /mnt/${NAME}
 
-
-####################
-
 parameters:
-- description: Unique identifier for your application.
+- name: NAME
+  description: Unique identifier for your application.
   displayName: Application Name
-  name: NAME
   required: true
   value: rstudio-shiny
-
-- description: Create a new username for logging into RStudio
+- name: USERNAME
+  description: Create a new username for logging into RStudio
   displayName: Username
-  name: USERNAME
   required: true
   value: rstudio
-
-- description: Create a new password for logging into RStudio
+- name: PASSWORD
+  description: Create a new password for logging into RStudio
   displayName: Password
-  name: PASSWORD
   required: true
-
-- description: Maximum amount of memory the container can use
+- name: MEMORY_LIMIT
+  description: Maximum amount of memory the container can use
   displayName: Memory Limit
-  name: MEMORY_LIMIT
   required: true
   value: 2G
-
-- description: Persistent Storage Size
+- name: STORAGE_SIZE
+  description: Persistent Storage Size
   displayName: Storage Size
-  name: STORAGE_SIZE
   required: true
   value: 10Gi
-
-# - description: The exposed hostname suffix that will be used to create routes for app
-#   displayName: Application Hostname Suffix
-#   name: APPLICATION_DOMAIN_SUFFIX
-#   required: true
-#   value: -ids-projects.app.dsri.unimaas.nl 
