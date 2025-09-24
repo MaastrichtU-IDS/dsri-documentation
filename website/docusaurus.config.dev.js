@@ -118,7 +118,7 @@ module.exports={
       "hideOnScroll": false,
       "title": " Data Science Reasearch Infrastructure",
       "logo": {
-        "src": "img/dsri_.ico"
+        "src": "img/DSRI_beeldmerk_website_size_adjusted.png"
       },
       "items": [
         {
