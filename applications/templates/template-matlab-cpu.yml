@@ -53,6 +53,7 @@ objects:
     resources:
       requests:
         storage: "${STORAGE_SIZE}"
+    storageClassName: ocs-storagecluster-cephfs
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
