@@ -67,6 +67,7 @@ objects:
     resources:
       requests:
         storage: "${STORAGE_SIZE}"
+    storageClassName: ocs-storagecluster-cephfs
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:

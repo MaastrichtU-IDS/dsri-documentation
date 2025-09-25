@@ -40,6 +40,7 @@ objects:
     resources:
       requests:
         storage: ${STORAGE_SIZE}
+    storageClassName: ocs-storagecluster-cephfs
 
 # TODO: rename r-secret to "${NAME}"
 - apiVersion: v1
