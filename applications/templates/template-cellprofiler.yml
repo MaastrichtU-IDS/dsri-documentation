@@ -53,8 +53,8 @@ parameters:
   required: true
 
 objects:
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
   metadata:
     name: ${APPLICATION_NAME}
     labels:

@@ -32,8 +32,8 @@ metadata:
   namespace: openshift
 
 objects:
-- apiVersion: v1
-  kind: Secret
+- kind: Secret
+  apiVersion: v1
   metadata:
     annotations:
       template.openshift.io/expose-password: "{.data['application-password']}"
@@ -43,8 +43,8 @@ objects:
   stringData:
     application-password: "${PASSWORD}"
 
-- apiVersion: v1
-  kind: PersistentVolumeClaim
+- kind: PersistentVolumeClaim
+  apiVersion: v1
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
@@ -56,8 +56,8 @@ objects:
       requests:
         storage: "${STORAGE_SIZE}"
 
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
@@ -74,8 +74,8 @@ objects:
         scheduled: false
       name: latest
 
-- apiVersion: apps/v1
-  kind: Deployment
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
@@ -128,8 +128,8 @@ objects:
             medium: Memory
           name: dshm
 
-- apiVersion: v1
-  kind: Service
+- kind: Service
+  apiVersion: v1
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
@@ -143,8 +143,9 @@ objects:
     selector:
       app: "${APPLICATION_NAME}"
       deployment: "${APPLICATION_NAME}"
-- apiVersion: route.openshift.io/v1
-  kind: Route
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
   metadata:
     labels:
       app: "${APPLICATION_NAME}"

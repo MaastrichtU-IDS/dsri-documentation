@@ -45,8 +45,8 @@ parameters:
   required: true
 
 objects:
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
   metadata:
     name: ${APPLICATION_NAME}
     labels:
@@ -123,19 +123,3 @@ objects:
           - name: data
             mountPath: "/usr/local/src/work"
         automountServiceAccountToken: false
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 8787-tcp
-      protocol: TCP
-      port: 8787
-      targetPort: 8787
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
