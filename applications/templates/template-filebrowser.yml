@@ -36,6 +36,11 @@ parameters:
   description: Provide the password as a hash (default value is browsemeplease) to login with admin in the filebrowser
   value: $$2a$$10$$1q1DVy.Cz3e5566.UPJT8eeexDspJ4sI8qZR6TfyHvA/7NH0beKY.
   required: true
+- name: APPLICATION_IMAGE
+  displayName: Application image
+  description: Filebrowser image.
+  value: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+  required: true
 - name: STORAGE_NAME
   displayName: Storage name
   description: Name of the Persistent Volume Claim that will be exposed by the filebrowser.
@@ -59,7 +64,7 @@ objects:
     - name: latest
       from:
         kind: DockerImage
-        name: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+        name: ${APPLICATION_IMAGE}
       importPolicy:
         scheduled: false
     lookupPolicy:
@@ -95,7 +100,7 @@ objects:
             claimName: "${STORAGE_NAME}"
         containers:
         - name: filebrowser-container
-          image: ${APPLICATION_NAME}:latest
+          image: ${APPLICATION_IMAGE}
           imagePullPolicy: IfNotPresent
           args: ["--password", "${APPLICATION_PASSWORD}"]
           ports:

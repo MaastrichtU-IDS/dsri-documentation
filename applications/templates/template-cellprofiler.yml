@@ -115,7 +115,7 @@ objects:
             claimName: "${APPLICATION_NAME}"
         containers:
         - name: cellprofiler-container
-          image: ${APPLICATION_NAME}:latest
+          image: ${APPLICATION_IMAGE}
           imagePullPolicy: IfNotPresent
           command: [ "tail", "-f", "/dev/null"]
           ports:
