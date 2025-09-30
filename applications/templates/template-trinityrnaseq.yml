@@ -18,7 +18,6 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-genomics
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
-    # template.openshift.io/bindable: 'false'
 labels:
   template: trinityrnaseq
 message: |-
@@ -27,6 +26,7 @@ message: |-
 
   You can use `oc get pods` to get the pod ID and connect using your local terminal `oc rsh POD_ID`
   Or use the terminal tab in the trinityrnaseq pod view of the OpenShift web UI
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
@@ -45,8 +45,8 @@ parameters:
   required: true
 
 objects:
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
   metadata:
     name: ${APPLICATION_NAME}
     labels:
@@ -77,8 +77,8 @@ objects:
     lookupPolicy:
       local: true
 
-- kind: DeploymentConfig
-  apiVersion: apps.openshift.io/v1
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -86,31 +86,28 @@ objects:
   spec:
     strategy:
       type: Recreate
-    triggers:
-    - type: ConfigChange
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
-        #nodeSelector:
-        # dsri.unimaas.nl/cpu: 'true'
         volumes:
         - name: data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
         containers:
         - name: trinityrnaseq-container
-          image: ${APPLICATION_NAME}:latest
+          image: "${APPLICATION_IMAGE}"
           imagePullPolicy: IfNotPresent
           command: [ "tail", "-f", "/dev/null"]
           ports:
@@ -123,49 +120,7 @@ objects:
             requests:
               cpu: '2'
               memory: 4Gi
-          # resources:
-          #   limits:
-          #     cpu: '64'
-          #     memory: 200Gi
-          #   requests:
-          #     cpu: '2'
-          #     memory: 4Gi
           volumeMounts:
           - name: data
-            # mountPath: "/data"
             mountPath: "/usr/local/src/work"
         automountServiceAccountToken: false
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 8787-tcp
-      protocol: TCP
-      port: 8787
-      targetPort: 8787
-    selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
-
-# - kind: Route
-#   apiVersion: route.openshift.io/v1
-#   metadata:
-#     name: "${APPLICATION_NAME}"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   spec:
-#     host: ''
-#     to:
-#       kind: Service
-#       name: "${APPLICATION_NAME}"
-#       weight: 100
-#     port:
-#       targetPort: 8787-tcp
-#     tls:
-#       termination: edge
-#       insecureEdgeTerminationPolicy: Redirect

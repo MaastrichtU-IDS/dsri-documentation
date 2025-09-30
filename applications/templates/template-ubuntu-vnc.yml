@@ -26,7 +26,6 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-utilities#ubuntu
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
-    # template.openshift.io/bindable: 'false'
 labels:
   template: ubuntu-vnc
 message: |-
@@ -35,6 +34,7 @@ message: |-
 
   You can use `oc get pods` to get the pod ID and connect using your local terminal `oc rsh POD_ID`
   Or use the terminal tab in the Ubuntu pod view of the OpenShift web UI
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
@@ -45,11 +45,6 @@ parameters:
   displayName: Ubuntu Password
   description: The password of your user and to access Ubuntu from the web UI
   required: true
-# - name: User
-#   displayName: Ubuntu Username
-#   description: The username in Ubuntu
-#   required: true
-#   value: ubuntu
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage used for the notebook (approximate).
@@ -104,8 +99,8 @@ objects:
   stringData:
     application-password: "${PASSWORD}"
 
-- kind: DeploymentConfig
-  apiVersion: apps.openshift.io/v1
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -113,29 +108,25 @@ objects:
   spec:
     strategy:
       type: Recreate
-    triggers:
-    - type: ConfigChange
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
-        #nodeSelector:
-        # dsri.unimaas.nl/cpu: 'true'
         containers:
         - name: ubuntu-container
-          image: "${APPLICATION_NAME}:latest"
+          image: "${APPLICATION_IMAGE}"
           imagePullPolicy: IfNotPresent
-          # command: [ "tail", "-f", "/dev/null"]
           ports:
           - containerPort: 80
             protocol: TCP
@@ -159,8 +150,6 @@ objects:
               secretKeyRef:
                 key: application-password
                 name: "${APPLICATION_NAME}"
-          # - name: USER
-          #   value: "${USERNAME}"
           resources:
             limits:
               cpu: '32'
@@ -171,7 +160,6 @@ objects:
           volumeMounts:
           - name: data
             mountPath: "/root/persistent"
-            # mountPath: "/root"
           - name: dshm
             mountPath: "/dev/shm"
         volumes:
@@ -197,7 +185,7 @@ objects:
       targetPort: 80
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
 
 - kind: Route
   apiVersion: route.openshift.io/v1

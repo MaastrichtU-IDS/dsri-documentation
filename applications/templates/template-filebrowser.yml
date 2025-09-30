@@ -21,10 +21,10 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-utilities#file-browser
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
-    # template.openshift.io/bindable: 'false'
 labels:
   template: filebrowser
 message: The filebrowser has been deployed with default login/password (admin/admin). Change it in the Filebrowser web UI settings at the first login.
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
@@ -36,12 +36,6 @@ parameters:
   description: Provide the password as a hash (default value is browsemeplease) to login with admin in the filebrowser
   value: $$2a$$10$$1q1DVy.Cz3e5566.UPJT8eeexDspJ4sI8qZR6TfyHvA/7NH0beKY.
   required: true
-# - name: PASSWORD
-#   displayName: File browser password
-#   description: The password of the File browser.
-#   from: "[a-zA-Z0-9]{16}"
-#   generate: expression
-#   required: true
 - name: STORAGE_NAME
   displayName: Storage name
   description: Name of the Persistent Volume Claim that will be exposed by the filebrowser.
@@ -71,8 +65,8 @@ objects:
     lookupPolicy:
       local: true
 
-- kind: DeploymentConfig
-  apiVersion: apps.openshift.io/v1
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -82,15 +76,16 @@ objects:
       type: Recreate
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
@@ -103,8 +98,6 @@ objects:
           image: ${APPLICATION_NAME}:latest
           imagePullPolicy: IfNotPresent
           args: ["--password", "${APPLICATION_PASSWORD}"]
-          # env:
-          #   FB_PASSWORD: "${APPLICATION_PASSWORD}"
           ports:
           - containerPort: 80
             protocol: TCP
@@ -135,7 +128,8 @@ objects:
       targetPort: 80
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
 - kind: Route
   apiVersion: route.openshift.io/v1
   metadata:

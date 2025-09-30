@@ -8,7 +8,7 @@ metadata:
     description: |-
       Start a Ontotext GraphDB triplestore, with a SPARQL endpoint
 
-      🔒 After accessing GraphDB for the first time you can easily enable security, and define a password for the admin user.
+      🔐 After accessing GraphDB for the first time you can easily enable security, and define a password for the admin user.
 
       📂 We use the folder `/opt/graphdb/home` in the container to store the database and import folder in the persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
@@ -27,12 +27,6 @@ parameters:
   description: Must be without spaces (use -), and unique in the project.
   value: graphdb
   required: true
-# - name: PASSWORD
-#   displayName: Triplestore admin password
-#   description: The password of the dba user.
-#   from: "[a-zA-Z0-9]{16}"
-#   generate: expression
-#   required: true
 - name: GRAPHDB_JAVA_MEMORY
   displayName: GraphDB java memory
   description: Maximum memory allocated to java for GraphDB (-xms and -xmx)
@@ -48,24 +42,8 @@ parameters:
   description: The GraphDB image needs to be build manually first and publish in your project
   value: graphdb:latest
   required: true
-# - name: LOG_LEVEL
-#   displayName: Triplestore log level
-#   description: "Amount of log produced: 0 is minimum, 7 is maximum"
-#   value: "0"
-#   required: true
 
 objects:
-# - apiVersion: v1
-#   kind: Secret
-#   metadata:
-#     annotations:
-#       template.openshift.io/expose-password: "{.data['application-password']}"
-#     name: "${APPLICATION_NAME}"
-#     labels:
-#       app: "${APPLICATION_NAME}"
-#   stringData:
-#     application-password: "${PASSWORD}"
-    
 - apiVersion: "v1"
   kind: "PersistentVolumeClaim"
   metadata:
@@ -80,8 +58,8 @@ objects:
         storage: ${STORAGE_SIZE}
     storageClassName: ocs-storagecluster-cephfs
 
-- kind: DeploymentConfig
-  apiVersion: apps.openshift.io/v1
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -89,28 +67,21 @@ objects:
   spec:
     strategy:
       type: Recreate
-    triggers:
-    - type: ConfigChange
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
-        # nodeSelector:
-        #   dsri.unimaas.nl/cpu: 'true'
-        # securityContext:
-        #   runAsUser: 1000
-        #   runAsGroup: 3000
-        #   fsGroup: 2000
         volumes:
         - name: data
           persistentVolumeClaim:
@@ -122,13 +93,6 @@ objects:
           ports:
           - containerPort: 7200
             protocol: TCP
-          # resources:
-          #   limits:
-          #     cpu: '64'
-          #     memory: 200Gi
-          #   requests:
-          #     cpu: '2'
-          #     memory: 4Gi
           volumeMounts:
           - name: data
             mountPath: "/opt/graphdb/home"
@@ -143,12 +107,6 @@ objects:
               -Dentity-pool-implementation=transactional
               -Dgraphdb.append.request.id.headers=true
               -Dreuse.vars.in.subselects=true
-            # -Dgraphdb.global.page.cache=4G
-          # - name: DBA_PASSWORD
-          #   valueFrom:
-          #     secretKeyRef:
-          #       key: application-password
-          #       name: "${APPLICATION_NAME}"
         automountServiceAccountToken: false
 
 - kind: Service
@@ -165,7 +123,8 @@ objects:
       targetPort: 7200
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
 - kind: Route
   apiVersion: route.openshift.io/v1
   metadata:

@@ -24,6 +24,7 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:
   template: virtuoso-triplestore
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
@@ -33,8 +34,6 @@ parameters:
 - name: PASSWORD
   displayName: Triplestore admin password
   description: The password of the dba user.
-  # from: "[a-zA-Z0-9]{16}"
-  # generate: expression
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
@@ -110,8 +109,8 @@ objects:
     lookupPolicy:
       local: true
 
-- kind: DeploymentConfig
-  apiVersion: apps.openshift.io/v1
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -119,31 +118,28 @@ objects:
   spec:
     strategy:
       type: Recreate
-    triggers:
-    - type: ConfigChange
     replicas: 1
     selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
-        # nodeSelector:
-        #   dsri.unimaas.nl/cpu: 'true'
         volumes:
         - name: data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
         containers:
         - name: virtuoso-triplestore
-          image: ${APPLICATION_NAME}:latest
+          image: "${APPLICATION_IMAGE}"
           imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8890
@@ -155,19 +151,11 @@ objects:
               cpu: '32'
               memory: 200Gi
             requests:
-              cpu: '2'
-              memory: 4Gi
-          # resources:
-          #   limits:
-          #     cpu: '64'
-          #     memory: 200Gi
-          #   requests:
-          #     cpu: '2'
-          #     memory: 4Gi
+              cpu: '200m'
+              memory: 1Gi
           volumeMounts:
           - name: data
             mountPath: "/database"
-            # mountPath: "${DATABASE_PATH}"
           env:
           # http://vos.openlinksw.com/owiki/wiki/VOS/VirtRDFPerformanceTuning
           # http://docs.openlinksw.com/virtuoso/rdfperfgeneral/
@@ -223,9 +211,6 @@ objects:
             value: "125000"
           - name: VIRT_URIQA_DefaultHost
             value: "${TRIPLESTORE_URL}"
-            # URL used as base for generated URI (e.g. graph in webDAV)
-          # - name: VIRT_Parameters_DirsAllowed
-          #   value: "., /data, /opt/virtuoso-opensource/vad, /usr/local/virtuoso-opensource/share/virtuoso/vad, /usr/local/virtuoso-opensource/var/lib/virtuoso/db"
         automountServiceAccountToken: false
 
 - kind: Service
@@ -242,7 +227,8 @@ objects:
       targetPort: 8890
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
 - kind: Route
   apiVersion: route.openshift.io/v1
   metadata:

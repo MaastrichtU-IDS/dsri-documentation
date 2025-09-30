@@ -1,7 +1,7 @@
 # How to run it:
 # $ oc new-app -f code-server-openshift-template.yaml -p URL=vscode.example.com -p CODER_PASSWORD=welcome2vscode
 ####### </ Jeffery Bagirimvano >
-
+---
 apiVersion: template.openshift.io/v1
 kind: Template
 labels:
@@ -27,41 +27,24 @@ metadata:
     openshift.io/documentation-url: "https://github.com/jefferyb/code-server-openshift"
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
     template.openshift.io/bindable: "false"
+
 parameters:
   - name: NAME
     description: Name of your application
     value: code-server
     required: true
-  # - name: CONTAINER_HOSTNAME
-  #   description: Hostname of your container
-  #   value: coder
   - name: PASSWORD
     description: Provide your own password, else, it defaults to "coder"
   - name: DOCKER_IMAGE
     description: Docker image to use
     value: jefferyb/code-server:latest
-    # value: chinodesuuu/coder:openshift
     required: true
-  # - name: URL
-  #   description: Name of your application
-  #   required: true
-  #   value: code-server-ids-projects.app.dsri.unimaas.nl
   - name: CODER_ENABLE_AUTH
     description: Enable auth
     value: "true"
   - name: STORAGE_SIZE
     description: Persistent Volume Claim Storage space
     value: 10Gi
-  # - name: MEMORY_LIMIT
-  #   displayName: Memory limit
-  #   description: Maximum RAM available for the VSCode application.
-  #   value: "5Gi"
-  #   required: true
-  # - name: CPU_LIMIT
-  #   displayName: CPU limit
-  #   description: Number of CPUs available for the VSCode application (in millicore, 1 CPU = 1000m).
-  #   value: "2000m"
-  #   required: true
 
 objects:
   - apiVersion: image.openshift.io/v1
@@ -99,8 +82,8 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  - apiVersion: apps.openshift.io/v1
-    kind: DeploymentConfig
+  - apiVersion: apps/v1
+    kind: Deployment
     metadata:
       name: ${NAME}
       labels:
@@ -108,24 +91,29 @@ objects:
     spec:
       replicas: 1
       selector:
-        app: ${NAME}
-        deploymentconfig: ${NAME}
+        matchLabels:
+          app: ${NAME}
+          deployment: ${NAME}
       template:
         metadata:
           annotations:
             io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
           labels:
             app: ${NAME}
-            deploymentconfig: ${NAME}
+            deployment: ${NAME}
         spec:
           runtimeClassName: selinux
-          #nodeSelector:
-           # dsri.unimaas.nl/cpu: 'true'
-          # hostname: ${CONTAINER_HOSTNAME}
           containers:
             - name: ${NAME}
-              image: ' '
+              image: ${DOCKER_IMAGE}
               imagePullPolicy: IfNotPresent
+              resources:
+                limits:
+                  cpu: '16'
+                  memory: 36Gi
+                requests:
+                  cpu: '200m'
+                  memory: 1Gi
               env:
                 - name: CODER_ENABLE_AUTH
                   value: "${CODER_ENABLE_AUTH}"
@@ -134,13 +122,6 @@ objects:
               ports:
                 - containerPort: 9000
                   protocol: TCP
-              # resources:
-              #   requests: 
-              #     cpu: "${CPU_LIMIT}"
-              #     memory: "${MEMORY_LIMIT}"
-              #   limits:
-              #     cpu: "128"
-              #     memory: "300Gi"
               volumeMounts:
                 - mountPath: /home/coder/certs
                   name: ${NAME}-certs
@@ -155,9 +136,6 @@ objects:
             - name: ${NAME}-projects
               persistentVolumeClaim:
                 claimName: ${NAME}-projects
-      test: false
-      triggers:
-        - type: ConfigChange
 
   - apiVersion: v1
     kind: Service
@@ -173,7 +151,7 @@ objects:
           targetPort: 9000
       selector:
         app: ${NAME}
-        deploymentconfig: ${NAME}
+        deployment: ${NAME}
       type: ClusterIP
 
   - apiVersion: route.openshift.io/v1
@@ -183,7 +161,6 @@ objects:
       labels:
         app: ${NAME}
     spec:
-      # host: ${URL}
       port:
         targetPort: 9000-tcp
       tls:

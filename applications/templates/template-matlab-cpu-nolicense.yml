@@ -14,7 +14,7 @@ metadata:
       
       📂 Use the `/root/persistent` folder to store your data in the
       persistent storage automatically created.
-      You can find the persistent storage in the DSRI web UI, go to Administrator view u003e Storage u003e Persistent
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent
       Volume Claims
       
       🐳 Visit https://hub.docker.com/r/mathworks/matlab for more details about the image
@@ -26,9 +26,10 @@ metadata:
     tags: matlab,cpu,root,persistent
   name: matlab-cpu-nolicense
   namespace: openshift
+
 objects:
-- apiVersion: v1
-  kind: Secret
+- kind: Secret
+  apiVersion: v1
   metadata:
     annotations:
       template.openshift.io/expose-password: "{.data['application-password']}"
@@ -37,8 +38,9 @@ objects:
     name: "${APPLICATION_NAME}"
   stringData:
     application-password: "${PASSWORD}"
-- apiVersion: v1
-  kind: PersistentVolumeClaim
+
+- kind: PersistentVolumeClaim
+  apiVersion: v1
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
@@ -50,8 +52,9 @@ objects:
       requests:
         storage: "${STORAGE_SIZE}"
     storageClassName: ocs-storagecluster-cephfs
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
+
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
@@ -67,24 +70,26 @@ objects:
       importPolicy:
         scheduled: false
       name: latest
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
+
+- kind: Deployment
+  apiVersion: apps/v1
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
     name: "${APPLICATION_NAME}"
   spec:
     replicas: 1
-    selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
     strategy:
       type: Recreate
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         labels:
           app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
       spec:
         automountServiceAccountToken: false
         containers:
@@ -96,7 +101,7 @@ objects:
               secretKeyRef:
                 key: application-password
                 name: "${APPLICATION_NAME}"
-          image: "${APPLICATION_NAME}:latest"
+          image: "${APPLICATION_IMAGE}"
           imagePullPolicy: IfNotPresent
           name: matlab-container
           ports:
@@ -117,10 +122,9 @@ objects:
         - emptyDir:
             medium: Memory
           name: dshm
-    triggers:
-    - type: ConfigChange
-- apiVersion: v1
-  kind: Service
+
+- kind: Service
+  apiVersion: v1
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
@@ -133,9 +137,10 @@ objects:
       targetPort: 8888
     selector:
       app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
-- apiVersion: route.openshift.io/v1
-  kind: Route
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
   metadata:
     labels:
       app: "${APPLICATION_NAME}"
@@ -151,6 +156,7 @@ objects:
       kind: Service
       name: "${APPLICATION_NAME}"
       weight: 100
+
 parameters:
 - description: Must be unique in the project. It will be used to generate the application
     URL.
@@ -177,4 +183,3 @@ parameters:
   name: DEPLOYMENT_TYPE
   required: true
   value: "-browser"
-
