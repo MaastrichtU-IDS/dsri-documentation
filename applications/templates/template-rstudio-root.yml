@@ -28,7 +28,6 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-rstudio
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
-    # template.openshift.io/bindable: 'false'
 labels:
   template: rstudio-root
 parameters:
@@ -58,8 +57,8 @@ parameters:
   required: false
 
 objects:
-- apiVersion: v1
-  kind: Secret
+- kind: Secret 
+  apiVersion: v1
   metadata:
     annotations:
       template.openshift.io/expose-password: "{.data['application-password']}"
@@ -69,15 +68,15 @@ objects:
   stringData:
     application-password: "${PASSWORD}"
 
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
+- kind: PersistentVolumeClaim
+  apiVersion: v1
   metadata:
     name: ${APPLICATION_NAME}
     labels:
       app: "${APPLICATION_NAME}"
   spec:
     accessModes:
-      - "ReadWriteMany"
+      - ReadWriteMany
     resources:
       requests:
         storage: ${STORAGE_SIZE}
