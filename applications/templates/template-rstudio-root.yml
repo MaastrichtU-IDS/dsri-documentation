@@ -21,7 +21,7 @@ metadata:
       Images based on rocker can be deployed: https://hub.docker.com/r/rocker/rstudio/
       Visit https://github.com/MaastrichtU-IDS/rstudio for more details to build and customize the image
 
-      📂 Use the /home/rstudio folder (workspace of the RStudio UI) to store your data in a persistent storage automatically created.
+      📂 Use the /root/persistent folder to store your data in a persistent storage automatically created.
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
     iconClass: icon-play
     tags: R,rstudio,root,persistent
@@ -30,8 +30,7 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
     # template.openshift.io/bindable: 'false'
 labels:
-  template: rstudio-root-dynamic
-
+  template: rstudio-root
 parameters:
 - name: APPLICATION_IMAGE
   displayName: RStudio Docker image
@@ -82,6 +81,7 @@ objects:
     resources:
       requests:
         storage: ${STORAGE_SIZE}
+    storageClassName: ocs-storagecluster-cephfs
 
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
@@ -89,7 +89,7 @@ objects:
     name: ${APPLICATION_NAME}
     labels:
       app: "${APPLICATION_NAME}"
-      template: rstudio-root-dynamic
+      template: rstudio-root
   spec:
     tags:
     - name: latest
@@ -148,7 +148,7 @@ objects:
               memory: 256Mi
           volumeMounts:
           - name: data
-            mountPath: "/home/rstudio/persistent"
+            mountPath: "/root/persistent"
           env:
           - name: USER
             value: "rstudio"

@@ -356,15 +356,16 @@ function Home() {
               to={useBaseUrl('docs/')}>
               Get Informed
             </Link>&nbsp;&nbsp;&nbsp;&nbsp;
-            <Link
+            <a
               className={clsx(
                 'button button--outline button--secondary button--lg',
                 styles.getStarted,
               )}
-              to={useBaseUrl('register/')}>
-              {/* href="https://forms.gle/QiXzWCnTMWDiS55u7"> */}
+              href={"https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=09acae9cdf454968bc94ad125b1f8e76&from=436967a9-738c-4112-b3f6-240a9847118e&openedFromService=true"}
+              target="_blank"
+              rel="noopener noreferrer">
               Get Access
-            </Link>
+            </a>
           </div>
         </div>
       </header>

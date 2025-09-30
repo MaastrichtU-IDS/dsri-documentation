@@ -80,6 +80,7 @@ objects:
       resources:
         requests:
           storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
 
   - apiVersion: apps/v1
     kind: Deployment

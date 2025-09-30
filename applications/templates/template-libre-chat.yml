@@ -101,6 +101,7 @@ objects:
     resources:
       requests:
         storage: ${STORAGE_SIZE}
+    storageClassName: ocs-storagecluster-cephfs
 
 - kind: Deployment
   apiVersion: apps/v1

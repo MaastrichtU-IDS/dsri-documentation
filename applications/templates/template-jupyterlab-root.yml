@@ -110,6 +110,7 @@ objects:
     resources:
       requests:
         storage: ${STORAGE_SIZE}
+    storageClassName: ocs-storagecluster-cephfs
 
 - apiVersion: v1
   kind: Secret

@@ -114,3 +114,8 @@ html[data-theme='dark'] .header-github-link:before {
   font-size: 14px;
   margin: 5px 0;
 }
+
+/* Make navbar logo fit nicely */
+.navbar__logo {
+  max-height: 2.5rem;     
+}
