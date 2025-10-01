@@ -125,7 +125,7 @@ objects:
         serviceAccountName: "anyuid"
         containers:
         - name: custom-app
-          image: "${APPLICATION_NAME}:latest"
+          image: "${APPLICATION_IMAGE}"
           imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8888
