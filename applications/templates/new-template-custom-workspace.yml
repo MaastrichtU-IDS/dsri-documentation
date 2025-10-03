@@ -1,0 +1,202 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: custom-workspace
+  annotations:
+    openshift.io/display-name: Custom workspace
+    description: |-
+      Use this template to start a custom Docker image, and easily run your code through a web UI exposed on port 8888, such as JupyterLab or VSCode
+
+      📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
+
+      📂 Use the workspace of the web UI (/root usually) to store your data in the persistent storage automatically created
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+      
+      🐳 Docker images, see https://github.com/MaastrichtU-IDS/jupyterlab for more details
+      - Ricopili package:
+      ghcr.io/maastrichtu-ids/jupyterlab:ricopili
+      - JupyterLab with python2.7:
+      ghcr.io/maastrichtu-ids/jupyterlab:python2.7
+
+      Should work with most basic Docker image if the web UI is exposed on port 8888
+    iconClass: icon-beaker
+    tags: custom,interface,root
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: custom-workspace
+
+parameters:
+  - name: APPLICATION_NAME
+    displayName: Name for the application
+    description: Must be without spaces (use -), and unique in the project.
+    value: custom-workspace
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Docker image
+    description: Docker image of your application in a public registry
+    value: ghcr.io/maastrichtu-ids/jupyterlab:ricopili
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage allocated to the notebook persistent storage.
+    value: 5Gi
+    required: true
+  - name: PASSWORD
+    displayName: Web UI Password
+    description: The password to access the web UI
+    required: true
+
+# Custom parameters
+  - name: WORKDIR
+    displayName: Working directory
+    description: The working directory in your container (will be stored persistently). This depends on the image, refer to the description on the right, or the image docs.
+    value: /root
+    required: true
+
+objects:
+  # 1. ImageStream
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: latest
+          from:
+            kind: DockerImage
+            name: ${APPLICATION_IMAGE}
+          importPolicy:
+            scheduled: false
+
+  # 2. Persistent Volume Claim
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  # 3. Service
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}"
+      ports:
+        - name: "8888-tcp"
+          protocol: TCP
+          port: 8888
+          targetPort: 8888
+
+  # 4. Route
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: "8888-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  # 5. Secret
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    stringData:
+      application-password: "${PASSWORD}"
+
+  # 6. Deployment
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: "anyuid"
+          automountServiceAccountToken: false
+          volumes:
+            - name: data-volume 
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+            - name: dshm
+              emptyDir:
+                medium: Memory
+          containers:
+            - name: custom-app
+              image: "${APPLICATION_IMAGE}"
+              imagePullPolicy: IfNotPresent
+              ports:
+                - containerPort: 8888
+                  protocol: TCP
+              volumeMounts:
+                - name: data-volume
+                  mountPath: "${WORKDIR}"
+                - name: dshm
+                  mountPath: /dev/shm
+              env:
+                - name: JUPYTER_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: "${APPLICATION_NAME}"
+                      key: application-password
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: "${APPLICATION_NAME}"
+                      key: application-password
+              resources:
+                requests:
+                  cpu: '2'
+                  memory: 4Gi
+                limits:
+                  cpu: '32'
+                  memory: 200Gi

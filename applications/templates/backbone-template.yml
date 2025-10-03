@@ -1,0 +1,173 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: backbone-template
+  annotations:
+    openshift.io/display-name: Backbone Application Template
+    description: A standardized backbone template for deploying applications with persistent storage. All other templates should be based on this structure.
+    tags: backbone,template
+labels:
+  template: backbone-template
+
+parameters:
+  # Standard Parameters
+  - name: APPLICATION_NAME
+    displayName: Application Name
+    description: Must be without spaces (use -), and unique in the project.
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Docker image for the application
+    description: The full name of the Docker image to be deployed (e.g., repo/image:tag)
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage Size
+    description: Size of the storage used for the application (e.g. 5Gi, 10Gi)
+    value: 5Gi
+    required: true
+  - name: PASSWORD
+    displayName: Application Password
+    description: The password to access the VSCode application
+    required: true
+
+  # Custom Parameters (Add application-specific variables below)
+  - name: CUSTOM_VARIABLE
+    displayName: Custom Variable
+  #   description: Must be without spaces (use -), and unique in the project
+  #   value: default-value
+  #   required: false
+
+objects:
+  # 1. ImageStream to manage the application image
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: latest
+          from:
+            kind: DockerImage
+            name: ${APPLICATION_IMAGE}
+          importPolicy:
+            scheduled: false
+
+  # 2. Persistent Volume Claim for data storage
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+      
+
+  # 3. Service to expose the application internally
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}"
+      ports:
+        #  Reference example ports.
+        # Make sure port and targetPort match the containerPort
+        - name: "8080-tcp"
+          protocol: TCP
+          port: 8080
+          targetPort: 8080
+
+  # 4. Route to expose the Service to external traffic
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+        # Reference example ports
+      port:
+        targetPort: "8080-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  # 5. Secret for storing sensitive data like passwords
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    # annotations:
+    #  template.openshift.io/expose-password: "{.data['application-password']}"
+    stringData:
+      # The key here is 'password'. Access it in the deployment with a secretKeyRef.
+      application-password: "${PASSWORD}"
+
+  # 6. Deployment to run the application container
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          labels:
+            app: "${APPLICATION_NAME}"
+        spec:
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+          containers:
+            - name: "${APPLICATION_NAME}-container"
+              image: "${APPLICATION_IMAGE}"
+              imagePullPolicy: IfNotPresent
+              ports:
+                # Reference example ports
+                # The container port for your application
+                - containerPort: 8080
+                  protocol: TCP
+              volumeMounts:
+                # The mount path inside the container
+                - name: data
+                  mountPath: "/data"
+              env:
+                # Add or modify environment variables as needed
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: "${APPLICATION_NAME}"
+                      key: application-password
+              resources:
+                # Adjust CPU and memory requests/limits
+                requests:
+                  cpu: "200m"
+                  memory: "256Mi"
+                limits:
+                  cpu: "1"
+                  memory: "2Gi"
