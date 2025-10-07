@@ -8,16 +8,18 @@ metadata:
   annotations:
     openshift.io/display-name: JupyterLab Ricopili
     description: |-
-      Start JupyterLab image with ricopoli tools installed as the `jovyan` user.
+      Start JupyterLab image with R-kernel and Ricopoli tools installed as the `root` user.
 
-      📂 Use the workspace (/home/jovyan/persistent) of the web UI to store your data in the persistent storage automatically created
+      🔥 Ricopili tools are installed and can be found in /root/ricopili. Fopr more information see https://sites.google.com/a/broadinstitute.org/ricopili/.
+
+      📂 Use the workspace (/root/persistent) of the web UI to store your data in the persistent storage automatically created
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
       
-      🐳 Docker images, see https://github.com/MaastrichtU-IDS/jupyterlab/tree/main/ricopili & https://github.com/MaastrichtU-Library/rcs-docker-ricopili for more details
+      🐳 Docker images, see https://github.com/MaastrichtU-IDS/jupyterlab/tree/main/ricopili & https://github.com/MaastrichtU-Library/rcs-docker-ricopili for more details.
       - Ricopili package:
       ghcr.io/maastrichtu-ids/jupyterlab:ricopili
-    iconClass: icon-beaker
-    tags: custom,interface,root
+    iconClass: icon-python
+    tags: ricopili,jupyter,notebook,R
     openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
@@ -132,7 +134,7 @@ objects:
                 name: ${APPLICATION_NAME}
           volumeMounts:
           - name: data
-            mountPath: /home/jovyan/persistent
+            mountPath: /root/persistent
           - name: dshm
             mountPath: /dev/shm
           resources:
