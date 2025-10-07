@@ -2,29 +2,25 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 labels:
-  template: custom-workspace
+  template: jupyterlab-ricopili
 metadata:
-  name: custom-workspace
+  name: jupyterlab-ricopili
   annotations:
-    openshift.io/display-name: Custom workspace
+    openshift.io/display-name: JupyterLab Ricopili
     description: |-
-      Use this template to start a custom Docker image, and easily run your code through a web UI exposed on port 8888, such as JupyterLab or VSCode
+      Start JupyterLab image with R-kernel and Ricopoli tools installed as the `root` user.
 
-      📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
+      🔥 Ricopili tools are installed and can be found in /root/ricopili. Fopr more information see https://sites.google.com/a/broadinstitute.org/ricopili/.
 
-      📂 Use the workspace of the web UI (/root usually) to store your data in the persistent storage automatically created
+      📂 Use the workspace (/root/persistent) of the web UI to store your data in the persistent storage automatically created
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
       
-      🐳 Docker images, see https://github.com/MaastrichtU-IDS/jupyterlab for more details
+      🐳 Docker images, see https://github.com/MaastrichtU-IDS/jupyterlab/tree/main/ricopili & https://github.com/MaastrichtU-Library/rcs-docker-ricopili for more details.
       - Ricopili package:
       ghcr.io/maastrichtu-ids/jupyterlab:ricopili
-      - JupyterLab with python2.7:
-      ghcr.io/maastrichtu-ids/jupyterlab:python2.7
-
-      Should work with most basic Docker image if the web UI is exposed on port 8888
-    iconClass: icon-beaker
-    tags: custom,interface,root
-    openshift.io/provider-display-name: Institute of Data Science, UM
+    iconClass: icon-python
+    tags: ricopili,jupyter,notebook,R
+    openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 
@@ -32,7 +28,7 @@ parameters:
 - name: APPLICATION_NAME
   displayName: Name for the application
   description: Must be without spaces (use -), and unique in the project.
-  value: custom-workspace
+  value: jupyterlab-ricopili
   required: true
 - name: PASSWORD
   displayName: Web UI Password
@@ -46,16 +42,11 @@ parameters:
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage allocated to the notebook persistent storage.
-  value: 5Gi
-  required: true
-- name: WORKDIR
-  displayName: Working directory
-  description: The working directory in your container (will be stored persistently). This depends on the image, refer to the description on the right, or the image docs.
-  value: /root
+  value: 10Gi
   required: true
 
 objects:
-- kind: "ImageStream"
+- kind: ImageStream
   apiVersion: image.openshift.io/v1
   metadata:
     name: ${APPLICATION_NAME}
@@ -73,37 +64,37 @@ objects:
     lookupPolicy:
       local: true
 
-- kind: "PersistentVolumeClaim"
-  apiVersion: "v1"
+- kind: PersistentVolumeClaim
+  apiVersion: v1
   metadata:
     name: ${APPLICATION_NAME}
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
       template: custom-workspace
   spec:
     accessModes:
-      - "ReadWriteMany"
+      - ReadWriteMany
     resources:
       requests:
         storage: ${STORAGE_SIZE}
     storageClassName: ocs-storagecluster-cephfs
 
-- apiVersion: v1
-  kind: Secret
+- kind: Secret
+  apiVersion: v1
   metadata:
-    name: "${APPLICATION_NAME}"
+    name: ${APPLICATION_NAME}
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
       template: custom-workspace
   stringData:
-    application-password: "${PASSWORD}"
+    application-password: ${PASSWORD}
 
 - kind: Deployment
   apiVersion: apps/v1
   metadata:
-    name: "${APPLICATION_NAME}"
+    name: ${APPLICATION_NAME}
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
       template: custom-workspace
   spec:
     replicas: 1
@@ -111,21 +102,21 @@ objects:
       type: Recreate
     selector:
       matchLabels:
-        app: "${APPLICATION_NAME}"
-        deployment: "${APPLICATION_NAME}"
+        app: ${APPLICATION_NAME}
+        deployment: ${APPLICATION_NAME}
     template:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
-          app: "${APPLICATION_NAME}"
-          deployment: "${APPLICATION_NAME}"
+          app: ${APPLICATION_NAME}
+          deployment: ${APPLICATION_NAME}
       spec:
         runtimeClassName: selinux
-        serviceAccountName: "anyuid"
+        serviceAccountName: anyuid
         containers:
         - name: custom-app
-          image: "${APPLICATION_IMAGE}"
+          image: ${APPLICATION_IMAGE}
           imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8888
@@ -135,15 +126,15 @@ objects:
             valueFrom:
               secretKeyRef:
                 key: application-password
-                name: "${APPLICATION_NAME}"
+                name: ${APPLICATION_NAME}
           - name: PASSWORD
             valueFrom:
               secretKeyRef:
                 key: application-password
-                name: "${APPLICATION_NAME}"
+                name: ${APPLICATION_NAME}
           volumeMounts:
           - name: data
-            mountPath: "${WORKDIR}"
+            mountPath: /root/persistent
           - name: dshm
             mountPath: /dev/shm
           resources:
@@ -151,13 +142,13 @@ objects:
               cpu: '32'
               memory: 200Gi
             requests:
-              cpu: '2'
-              memory: 4Gi
+              cpu: 200m
+              memory: 2Gi
         automountServiceAccountToken: false
         volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
+            claimName: ${APPLICATION_NAME}
         - name: dshm
           emptyDir:
             medium: Memory
@@ -165,9 +156,9 @@ objects:
 - kind: Service
   apiVersion: v1
   metadata:
-    name: "${APPLICATION_NAME}"
+    name: ${APPLICATION_NAME}
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
       template: custom-workspace
   spec:
     ports:
@@ -176,22 +167,22 @@ objects:
       port: 8888
       targetPort: 8888
     selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
+      deployment: ${APPLICATION_NAME}
     type: ClusterIP
 
 - kind: Route
   apiVersion: v1
   metadata:
-    name: "${APPLICATION_NAME}"
+    name: ${APPLICATION_NAME}
     labels:
-      app: "${APPLICATION_NAME}"
+      app: ${APPLICATION_NAME}
       template: custom-workspace
   spec:
     host: ''
     to:
       kind: Service
-      name: "${APPLICATION_NAME}"
+      name: ${APPLICATION_NAME}
       weight: 100
     port:
       targetPort: 8888-tcp
