@@ -8,7 +8,7 @@ metadata:
   annotations:
     openshift.io/display-name: JupyterLab on existing storage
     description: |-
-      Start JupyterLab on an existing Persistent Volume Claim (PVC). It is usually the same as the name of the deployment. Find the list of PVC in Search > Resources > Persistent Volume Claim.
+      Start JupyterLab with an already existing Persistent Volume Claim (PVC). Find the list of PVC in Search > Resources > Persistent Volume Claim.
       
       Images based on the official Docker stack, using the `jovyan` user, with sudo privileges to install anything you need.
 
@@ -59,7 +59,7 @@ parameters:
   required: true
 - name: PERSISTENT_VOLUME_CLAIM
   displayName: Persistent Volume Claim
-  description: The name of the Persistent Volume Claim to mount to this notebook. It is usually the same as the name of the deployment. Find the list in Search > Resources > Persistent Volume Claim.
+  description: The name of the already existing Persistent Volume Claim to mount to this notebook. Find the list in Search > Resources > Persistent Volume Claim.
   required: true
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook Docker image
