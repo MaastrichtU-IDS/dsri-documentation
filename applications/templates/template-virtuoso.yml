@@ -140,7 +140,7 @@ objects:
         containers:
         - name: virtuoso-triplestore
           image: "${APPLICATION_IMAGE}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: 8890
             protocol: TCP

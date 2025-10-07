@@ -131,7 +131,7 @@ objects:
         containers:
         - name: libre-chat-api
           image: "${APPLICATION_IMAGE}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: 8000
             protocol: TCP

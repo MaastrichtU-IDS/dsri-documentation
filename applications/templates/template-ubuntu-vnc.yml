@@ -126,7 +126,7 @@ objects:
         containers:
         - name: ubuntu-container
           image: "${APPLICATION_IMAGE}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: 80
             protocol: TCP

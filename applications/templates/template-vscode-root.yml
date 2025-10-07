@@ -120,7 +120,7 @@ objects:
         containers:
         - name: vscode-container
           image: "${APPLICATION_IMAGE}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           workingDir: /home/coder/project
           ports:
           - containerPort: 8080

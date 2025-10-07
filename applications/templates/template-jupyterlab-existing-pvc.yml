@@ -138,7 +138,7 @@ objects:
         containers:
         - name: jupyter-notebook
           image: "${APPLICATION_IMAGE}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           workingDir: /home/jovyan/work
           ports:
           - containerPort: 8888

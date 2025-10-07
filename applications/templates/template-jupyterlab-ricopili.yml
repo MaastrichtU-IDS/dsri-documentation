@@ -117,7 +117,7 @@ objects:
         containers:
         - name: custom-app
           image: ${APPLICATION_IMAGE}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
           - containerPort: 8888
             protocol: TCP

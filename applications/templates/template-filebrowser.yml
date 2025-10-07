@@ -101,7 +101,7 @@ objects:
         containers:
         - name: filebrowser-container
           image: ${APPLICATION_IMAGE}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           args: ["--password", "${APPLICATION_PASSWORD}"]
           ports:
           - containerPort: 80

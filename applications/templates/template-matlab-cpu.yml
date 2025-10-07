@@ -108,7 +108,7 @@ objects:
           - name: MLM_LICENSE_FILE
             value: 27000@matlab.icts.maastrichtuniversity.nl
           image: "${APPLICATION_IMAGE}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: matlab-container
           ports:
           - containerPort: 8888

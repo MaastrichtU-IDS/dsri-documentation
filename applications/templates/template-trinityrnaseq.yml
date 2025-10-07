@@ -108,7 +108,7 @@ objects:
         containers:
         - name: trinityrnaseq-container
           image: "${APPLICATION_IMAGE}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           command: [ "tail", "-f", "/dev/null"]
           ports:
           - containerPort: 8787
