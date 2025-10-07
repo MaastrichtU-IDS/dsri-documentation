@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: rstudio-root-existing-pvc
   annotations:
-    openshift.io/display-name: RStudio
+    openshift.io/display-name: RStudio existing PVC
     description: |-
       Start RStudio with the 'root' as username which has root permissions (sudo), and with an existing Persistent Volume Claim (PVC). Find the list of PVC in Search > Resources > Persistent Volume Claim.
 
