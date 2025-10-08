@@ -1,7 +1,3 @@
-# How to run it:
-# $ oc new-app -f code-server-openshift-template.yaml -p URL=vscode.example.com -p CODER_PASSWORD=welcome2vscode
-####### </ Jeffery Bagirimvano >
----
 apiVersion: template.openshift.io/v1
 kind: Template
 labels:
@@ -47,6 +43,7 @@ parameters:
     value: 10Gi
 
 objects:
+  # 1. ImageStream
   - apiVersion: image.openshift.io/v1
     kind: ImageStream
     metadata:
@@ -68,6 +65,7 @@ objects:
         referencePolicy:
           type: Source
 
+  # 2. Persistent Volume Claim
   - apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -82,6 +80,46 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
+  # 3. Service
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: ${NAME}
+      labels:
+        app: ${NAME}
+    spec:
+      ports:
+        - name: 9000-tcp
+          port: 9000
+          protocol: TCP
+          targetPort: 9000
+      selector:
+        app: ${NAME}
+        deployment: ${NAME}
+      type: ClusterIP
+
+  # 4. Route
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      name: ${NAME}
+      labels:
+        app: ${NAME}
+    spec:
+      port:
+        targetPort: 9000-tcp
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
+      to:
+        kind: Service
+        name: ${NAME}
+        weight: 100
+      wildcardPolicy: None
+
+  # Secret - SKIPPED
+
+  # 6. Deployment
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -136,38 +174,3 @@ objects:
             - name: ${NAME}-projects
               persistentVolumeClaim:
                 claimName: ${NAME}-projects
-
-  - apiVersion: v1
-    kind: Service
-    metadata:
-      name: ${NAME}
-      labels:
-        app: ${NAME}
-    spec:
-      ports:
-        - name: 9000-tcp
-          port: 9000
-          protocol: TCP
-          targetPort: 9000
-      selector:
-        app: ${NAME}
-        deployment: ${NAME}
-      type: ClusterIP
-
-  - apiVersion: route.openshift.io/v1
-    kind: Route
-    metadata:
-      name: ${NAME}
-      labels:
-        app: ${NAME}
-    spec:
-      port:
-        targetPort: 9000-tcp
-      tls:
-        insecureEdgeTerminationPolicy: Redirect
-        termination: edge
-      to:
-        kind: Service
-        name: ${NAME}
-        weight: 100
-      wildcardPolicy: None

@@ -70,7 +70,6 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
       
-
   # 3. Service to expose the application internally
   - kind: Service
     apiVersion: v1
@@ -82,7 +81,7 @@ objects:
       selector:
         app: "${APPLICATION_NAME}"
       ports:
-        #  Reference example ports.
+        # Reference example ports.
         # Make sure port and targetPort match the containerPort
         - name: "8080-tcp"
           protocol: TCP

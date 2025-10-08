@@ -1,4 +1,3 @@
----
 apiVersion: template.openshift.io/v1
 kind: Template
 labels:
@@ -6,6 +5,7 @@ labels:
 metadata:
   annotations:
     description: |-
+      TEST
       Start JupyterLab to run CUDA, Tensorflow, or PyTorch using GPUs
       with the root user.
       
@@ -56,166 +56,172 @@ metadata:
   name: gpu-jupyterlab
   namespace: openshift
 
+parameters:
+  - name: APPLICATION_NAME
+    description: Must be unique in the project. It will be used to generate the application URL.
+    displayName: Application name
+    required: true
+    value: jupyterlab-gpu
+  - name: IMAGE_NAME
+    description: Check the description on the right for more details about available images
+    displayName: Docker image used
+    required: true
+    value: ghcr.io/maastrichtu-ids/jupyterlab:tensorflow
+  - name: JUPYTER_TOKEN
+    description: The password, aka. token, to access the notebook
+    displayName: Notebook password
+    required: true
+  - name: STORAGE_SIZE
+    description: Size of the storage allocated to the notebook persistent storage in `/workspace/persistent`.
+    displayName: Storage size
+    required: true
+    value: 20Gi
+  - name: GIT_NAME
+    description: Email used to automatically define git config --global user.name
+    displayName: Git name
+    required: true
+    value: default
+  - name: GIT_EMAIL
+    description: Email used to automatically define git config --global user.email
+    displayName: Git email
+    required: true
+    value: default@maastrichtuniversity.nl
+  - name: IMAGE_PULL_POLICY
+    description: Use Always to make sure the new image is pulled when you update it
+    displayName: Image pull policy
+    required: true
+    value: IfNotPresent
+
 objects:
-- apiVersion: v1
-  kind: Secret
-  metadata:
-    annotations:
-      template.openshift.io/expose-password: "{.data['application-password']}"
-    labels:
-      app: "${APPLICATION_NAME}"
-    name: "${APPLICATION_NAME}"
-  stringData:
-    application-password: "${JUPYTER_TOKEN}"
 
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    labels:
-      app: "${APPLICATION_NAME}"
-    name: "${APPLICATION_NAME}"
-  spec:
-    accessModes:
-    - ReadWriteMany
-    resources:
-      requests:
-        storage: "${STORAGE_SIZE}"
-    storageClassName: ocs-storagecluster-cephfs
+  # 1. Persistent Volume Claim
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      labels:
+        app: "${APPLICATION_NAME}"
+      name: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+      - ReadWriteMany
+      resources:
+        requests:
+          storage: "${STORAGE_SIZE}"
+      storageClassName: ocs-storagecluster-cephfs
 
-- apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    labels:
-      app: "${APPLICATION_NAME}"
-    name: "${APPLICATION_NAME}"
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
+  # 2. Service
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: "${APPLICATION_NAME}"
+      name: "${APPLICATION_NAME}"
+    spec:
+      ports:
+      - name: 8888-tcp
+        port: 8888
+        protocol: TCP
+        targetPort: 8888
+      - name: 6006-tcp
+        port: 6006
+        protocol: TCP
+        targetPort: 6006
+      selector:
         app: "${APPLICATION_NAME}"
         deployment: "${APPLICATION_NAME}"
-    strategy:
-      type: RollingUpdate
-    template:
-      metadata:
-        labels:
+
+  # 3. Route
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      labels:
+        app: "${APPLICATION_NAME}"
+      name: "${APPLICATION_NAME}"
+    spec:
+      host: ''
+      port:
+        targetPort: 8888-tcp
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+        weight: 100
+
+  # 5. Secret
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      annotations:
+        template.openshift.io/expose-password: "{.data['application-password']}"
+      labels:
+        app: "${APPLICATION_NAME}"
+      name: "${APPLICATION_NAME}"
+    stringData:
+      application-password: "${JUPYTER_TOKEN}"
+
+  # 6. Deployment
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: "${APPLICATION_NAME}"
+      name: "${APPLICATION_NAME}"
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
           app: "${APPLICATION_NAME}"
           deployment: "${APPLICATION_NAME}"
-      spec:
-        containers:
-        - env:
-          - name: JUPYTER_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: application-password
-                name: "${APPLICATION_NAME}"
-          - name: GIT_NAME
-            value: "${GIT_NAME}"
-          - name: GIT_EMAIL
-            value: "${GIT_EMAIL}"
-          - name: WORKSPACE
-            value: "/workspace"
-          - name: PERSISTENT_FOLDER
-            value: "/workspace/persistent"
-          image: "${IMAGE_NAME}"
-          imagePullPolicy: "${IMAGE_PULL_POLICY}"
-          name: "${APPLICATION_NAME}"
-          ports:
-          - containerPort: 8888
-            protocol: TCP
-          - containerPort: 6006
-            protocol: TCP
-          resources:
-            limits:
-              cpu: '64'
-              memory: 256Gi
-            requests:
-              cpu: 200m
-              memory: 256Mi
-          volumeMounts:
-          - mountPath: "/dev/shm"
+      strategy:
+        type: RollingUpdate
+      template:
+        metadata:
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          containers:
+          - env:
+            - name: JUPYTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            - name: GIT_NAME
+              value: "${GIT_NAME}"
+            - name: GIT_EMAIL
+              value: "${GIT_EMAIL}"
+            - name: WORKSPACE
+              value: "/workspace"
+            - name: PERSISTENT_FOLDER
+              value: "/workspace/persistent"
+            image: "${IMAGE_NAME}"
+            imagePullPolicy: "${IMAGE_PULL_POLICY}"
+            name: "${APPLICATION_NAME}"
+            ports:
+            - containerPort: 8888
+              protocol: TCP
+            - containerPort: 6006
+              protocol: TCP
+            resources:
+              limits:
+                cpu: '64'
+                memory: 256Gi
+              requests:
+                cpu: 200m
+                memory: 256Mi
+            volumeMounts:
+            - mountPath: "/dev/shm"
+              name: dshm
+            - mountPath: "/workspace/persistent"
+              name: data
+          serviceAccountName: anyuid
+          volumes:
+          - emptyDir:
+              medium: Memory
             name: dshm
-          - mountPath: "/workspace/persistent"
-            name: data
-        serviceAccountName: anyuid
-        volumes:
-        - emptyDir:
-            medium: Memory
-          name: dshm
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
-
-- apiVersion: v1
-  kind: Service
-  metadata:
-    labels:
-      app: "${APPLICATION_NAME}"
-    name: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 8888-tcp
-      port: 8888
-      protocol: TCP
-      targetPort: 8888
-    - name: 6006-tcp
-      port: 6006
-      protocol: TCP
-      targetPort: 6006
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-
-- apiVersion: route.openshift.io/v1
-  kind: Route
-  metadata:
-    labels:
-      app: "${APPLICATION_NAME}"
-    name: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    port:
-      targetPort: 8888-tcp
-    tls:
-      insecureEdgeTerminationPolicy: Redirect
-      termination: edge
-    to:
-      kind: Service
-      name: "${APPLICATION_NAME}"
-      weight: 100
-
-parameters:
-- name: APPLICATION_NAME
-  description: Must be unique in the project. It will be used to generate the application URL.
-  displayName: Application name
-  required: true
-  value: jupyterlab-gpu
-- name: IMAGE_NAME
-  description: Check the description on the right for more details about available images
-  displayName: Docker image used
-  required: true
-  value: ghcr.io/maastrichtu-ids/jupyterlab:tensorflow
-- name: JUPYTER_TOKEN
-  description: The password, aka. token, to access the notebook
-  displayName: Notebook password
-  required: true
-- name: STORAGE_SIZE
-  description: Size of the storage allocated to the notebook persistent storage in `/workspace/persistent`.
-  displayName: Storage size
-  required: true
-  value: 20Gi
-- name: GIT_NAME
-  description: Email used to automatically define git config --global user.name
-  displayName: Git name
-  required: true
-  value: default
-- name: GIT_EMAIL
-  description: Email used to automatically define git config --global user.email
-  displayName: Git email
-  required: true
-  value: default@maastrichtuniversity.nl
-- name: IMAGE_PULL_POLICY
-  description: Use Always to make sure the new image is pulled when you update it
-  displayName: Image pull policy
-  required: true
-  value: IfNotPresent
+          - name: data
+            persistentVolumeClaim:
+              claimName: "${APPLICATION_NAME}"

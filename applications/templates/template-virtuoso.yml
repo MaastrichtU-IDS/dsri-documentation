@@ -1,6 +1,5 @@
----
-kind: Template
 apiVersion: template.openshift.io/v1
+kind: Template
 metadata:
   name: virtuoso-triplestore
   annotations:
@@ -26,103 +25,145 @@ labels:
   template: virtuoso-triplestore
 
 parameters:
-- name: APPLICATION_NAME
-  displayName: Application name
-  description: Must be without spaces (use -), and unique in the project.
-  value: virtuoso
-  required: true
-- name: PASSWORD
-  displayName: Triplestore admin password
-  description: The password of the dba user.
-  required: true
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage used for the notebook (approximate).
-  value: 10Gi
-  required: true
-- name: APPLICATION_IMAGE
-  displayName: Application Docker image
-  description: Docker image to deploy the Virtuoso triplestore
-  value: openlink/virtuoso-opensource-7:latest
-  required: true
-- name: DATABASE_PATH
-  displayName: The database storage path
-  description: Change it to /data for the tenforce/virtuoso image
-  value: /database
-  required: true
-- name: DEFAULT_GRAPH
-  displayName: Triplestore default graph
-  description: The default graph used by the Virtuoso triplestore
-  value: https://w3id.org/um/graph
-  required: true
-- name: TRIPLESTORE_URL
-  displayName: URL where the triplestore will be publicly deployed
-  description: Only used to define the URL of data added via the DAV Linked Data Platform
-  value: https://w3id.org/um/data/
-  required: true
-- name: LOG_LEVEL
-  displayName: Triplestore log level
-  description: "Amount of log produced: 0 is minimum, 7 is maximum"
-  value: "0"
-  required: true
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be without spaces (use -), and unique in the project.
+    value: virtuoso
+    required: true
+  - name: PASSWORD
+    displayName: Triplestore admin password
+    description: The password of the dba user.
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage used for the notebook (approximate).
+    value: 10Gi
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Application Docker image
+    description: Docker image to deploy the Virtuoso triplestore
+    value: openlink/virtuoso-opensource-7:latest
+    required: true
+
+  # Custom parameters
+  - name: DATABASE_PATH
+    displayName: The database storage path
+    description: Change it to /data for the tenforce/virtuoso image
+    value: /database
+    required: true
+  - name: DEFAULT_GRAPH
+    displayName: Triplestore default graph
+    description: The default graph used by the Virtuoso triplestore
+    value: https://w3id.org/um/graph
+    required: true
+  - name: TRIPLESTORE_URL
+    displayName: URL where the triplestore will be publicly deployed
+    description: Only used to define the URL of data added via the DAV Linked Data Platform
+    value: https://w3id.org/um/data/
+    required: true
+  - name: LOG_LEVEL
+    displayName: Triplestore log level
+    description: "Amount of log produced: 0 is minimum, 7 is maximum"
+    value: "0"
+    required: true
 
 objects:
-- apiVersion: v1
-  kind: Secret
-  metadata:
-    annotations:
-      template.openshift.io/expose-password: "{.data['application-password']}"
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  stringData:
-    application-password: "${PASSWORD}"
-    
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-    storageClassName: ocs-storagecluster-cephfs
+  # 1. ImageStream
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: ${APPLICATION_NAME}
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      tags:
+      - name: latest
+        from:
+          kind: DockerImage
+          name: ${APPLICATION_IMAGE}
+        importPolicy:
+          scheduled: false
+      lookupPolicy:
+        local: true
 
-- kind: ImageStream
-  apiVersion: image.openshift.io/v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    tags:
-    - name: latest
-      from:
-        kind: DockerImage
-        name: ${APPLICATION_IMAGE}
-      importPolicy:
-        scheduled: false
-    lookupPolicy:
-      local: true
+  # 2. Persistent Volume Claim
+  - apiVersion: "v1"
+    kind: "PersistentVolumeClaim"
+    metadata:
+      name: ${APPLICATION_NAME}
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - "ReadWriteMany"
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
 
-- kind: Deployment
-  apiVersion: apps/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    strategy:
-      type: Recreate
-    replicas: 1
-    selector:
-      matchLabels:
+  # 3. Service
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      ports:
+      - name: 8890-tcp
+        protocol: TCP
+        port: 8890
+        targetPort: 8890
+      selector:
         app: "${APPLICATION_NAME}"
         deployment: "${APPLICATION_NAME}"
+
+  # 4. Route
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      host: ''
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+        weight: 100
+      port:
+        targetPort: 8890-tcp
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  # 5. Secret
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      annotations:
+        template.openshift.io/expose-password: "{.data['application-password']}"
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    stringData:
+      application-password: "${PASSWORD}"
+
+  # 6. Deployment
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      strategy:
+        type: Recreate
+      replicas: 1
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
@@ -157,9 +198,6 @@ objects:
           - name: data
             mountPath: "/database"
           env:
-          # http://vos.openlinksw.com/owiki/wiki/VOS/VirtRDFPerformanceTuning
-          # http://docs.openlinksw.com/virtuoso/rdfperfgeneral/
-          # https://github.com/tenforce/docker-virtuoso/blob/master/virtuoso.ini
           - name: DBA_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -202,7 +240,6 @@ objects:
             value: "5000000000"
           - name: VIRT_Parameters_NumberOfBuffers
             value: "493674"
-            # To use up to 4G of RAM according to documentation
           - name: VIRT_Parameters_TempDBSize
             value: "100000000"
           - name: VIRT_Database_MaxCheckpointRemap
@@ -212,37 +249,3 @@ objects:
           - name: VIRT_URIQA_DefaultHost
             value: "${TRIPLESTORE_URL}"
         automountServiceAccountToken: false
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 8890-tcp
-      protocol: TCP
-      port: 8890
-      targetPort: 8890
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-
-- kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
-      name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 8890-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect

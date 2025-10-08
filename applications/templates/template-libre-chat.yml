@@ -1,8 +1,5 @@
----
-kind: Template
 apiVersion: template.openshift.io/v1
-labels:
-  template: libre-chat
+kind: Template
 metadata:
   name: libre-chat
   annotations:
@@ -22,187 +19,195 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://vemonet.github.io/libre-chat
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: libre-chat
 
 parameters:
-- name: APPLICATION_NAME
-  displayName: Name for the application
-  description: Must be without spaces (use -), and unique in the project.
-  value: libre-chat
-  required: true
-- name: APPLICATION_IMAGE
-  displayName: Docker image for Libre Chat
-  value: ghcr.io/vemonet/libre-chat:main
-  required: true
-  description: Check the description on the right for more details about available images
-- name: LIBRECHAT_CONF_URL
-  displayName: Direct URL to the YAML configuration file for the chatbot
-  required: true
-  value: https://raw.github.com/vemonet/libre-chat/main/config/chat-conversation.yml
-  description: Checkout the documentation at https://vemonet.github.io/libre-chat for more details on how to configure your chatbot
-- name: LIBRECHAT_WORKERS
-  displayName: Number of workers for the API
-  required: true
-  value: "4"
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage allocated to the notebook persistent storage.
-  value: 20Gi
-  required: true
-- name: MEMORY_MIN
-  displayName: Memory minimum
-  description: Minimum RAM memory available for the application.
-  value: "16Gi"
-  required: true
-- name: CPU_MIN
-  displayName: CPU minimum
-  description: Minimum number of CPUs available for the application.
-  value: "8"
-  required: true
-- name: MEMORY_LIMIT
-  displayName: Memory limit
-  description: Maximum RAM memory available for the application.
-  value: "32Gi"
-  required: true
-- name: CPU_LIMIT
-  displayName: CPU limit
-  description: Max number of CPUs available for the application.
-  value: "16"
-  required: true
+  - name: APPLICATION_NAME
+    displayName: Name for the application
+    description: Must be without spaces (use -), and unique in the project.
+    value: libre-chat
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Docker image for Libre Chat
+    description: Check the description on the right for more details about available images
+    value: ghcr.io/vemonet/libre-chat:main
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage allocated to the notebook persistent storage.
+    value: 20Gi
+    required: true
+
+  # Custom Parameters
+  - name: LIBRECHAT_CONF_URL
+    displayName: Direct URL to the YAML configuration file for the chatbot
+    description: Checkout the documentation at https://vemonet.github.io/libre-chat for more details on how to configure your chatbot
+    value: https://raw.github.com/vemonet/libre-chat/main/config/chat-conversation.yml
+    required: true
+  - name: LIBRECHAT_WORKERS
+    displayName: Number of workers for the API
+    value: "4"
+    required: true
+  - name: CPU_MIN
+    displayName: CPU minimum
+    description: Minimum number of CPUs available for the application.
+    value: "8"
+    required: true
+  - name: MEMORY_MIN
+    displayName: Memory minimum
+    description: Minimum RAM memory available for the application.
+    value: "16Gi"
+    required: true
+  - name: CPU_LIMIT
+    displayName: CPU limit
+    description: Max number of CPUs available for the application.
+    value: "16"
+    required: true
+  - name: MEMORY_LIMIT
+    displayName: Memory limit
+    description: Maximum RAM memory available for the application.
+    value: "32Gi"
+    required: true
 
 objects:
-- kind: "ImageStream"
-  apiVersion: image.openshift.io/v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-      template: libre-chat
-  spec:
-    tags:
-    - name: latest
-      from:
-        kind: DockerImage
-        name: ${APPLICATION_IMAGE}
-      importPolicy:
-        scheduled: false
-    lookupPolicy:
-      local: true
-
-- kind: "PersistentVolumeClaim"
-  apiVersion: "v1"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: libre-chat
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-    storageClassName: ocs-storagecluster-cephfs
-
-- kind: Deployment
-  apiVersion: apps/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: libre-chat
-  spec:
-    replicas: 1
-    strategy:
-      type: Recreate
-    selector:
-      matchLabels:
-        app: "${APPLICATION_NAME}"
-        deployment: "${APPLICATION_NAME}"
-    template:
-      metadata:
-        annotations:
-          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
-        labels:
-          app: "${APPLICATION_NAME}"
-          deployment: "${APPLICATION_NAME}"
-      spec:
-        runtimeClassName: selinux
-        serviceAccountName: "anyuid"
-        containers:
-        - name: libre-chat-api
-          image: "${APPLICATION_IMAGE}"
-          imagePullPolicy: IfNotPresent
-          ports:
-          - containerPort: 8000
-            protocol: TCP
-          env:
-          - name: LIBRECHAT_CONF_URL
-            value: "${LIBRECHAT_CONF_URL}"
-          - name: LIBRECHAT_WORKERS
-            value: "${LIBRECHAT_WORKERS}"
-          volumeMounts:
-          - name: data
-            mountPath: /data
-          - name: dshm
-            mountPath: /dev/shm
-          readinessProbe:
-            tcpSocket:
-              port: 8000
-          livenessProbe:
-            initialDelaySeconds: 15
-            tcpSocket:
-              port: 8000
-            failureThreshold: 40
-            periodSeconds: 10
-            timeoutSeconds: 2
-          resources:
-            requests:
-              cpu: "${CPU_MIN}"
-              memory: "${MEMORY_MIN}"
-            limits:
-              cpu: "${CPU_LIMIT}"
-              memory: "${MEMORY_LIMIT}"
-        automountServiceAccountToken: false
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
-        - name: dshm
-          emptyDir:
-            medium: Memory
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: libre-chat
-  spec:
-    ports:
-    - name: 8000-tcp
-      protocol: TCP
-      port: 8000
-      targetPort: 8000
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-    type: ClusterIP
-
-- kind: Route
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
+  # 1. ImageStream
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
       name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 8000-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: libre-chat
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: latest
+          from:
+            kind: DockerImage
+            name: ${APPLICATION_IMAGE}
+          importPolicy:
+            scheduled: false
+
+  # 2. Persistent Volume Claim
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: libre-chat
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  # 3. Service
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: libre-chat
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}"
+      ports:
+        - name: "8000-tcp"
+          protocol: TCP
+          port: 8000
+          targetPort: 8000
+      type: ClusterIP
+
+  # 4. Route
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: libre-chat
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: "8000-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  # 5. Secret - SKIPPED (Not needed for this template)
+
+  # 6. Deployment
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: libre-chat
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: "anyuid"
+          automountServiceAccountToken: false
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+            - name: dshm
+              emptyDir:
+                medium: Memory
+          containers:
+            - name: libre-chat-api
+              image: "${APPLICATION_IMAGE}"
+              imagePullPolicy: IfNotPresent
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+                - name: dshm
+                  mountPath: /dev/shm
+              env:
+                - name: LIBRECHAT_CONF_URL
+                  value: "${LIBRECHAT_CONF_URL}"
+                - name: LIBRECHAT_WORKERS
+                  value: "${LIBRECHAT_WORKERS}"
+              readinessProbe:
+                tcpSocket:
+                  port: 8000
+              livenessProbe:
+                initialDelaySeconds: 15
+                tcpSocket:
+                  port: 8000
+                failureThreshold: 40
+                periodSeconds: 10
+                timeoutSeconds: 2
+              resources:
+                requests:
+                  cpu: "${CPU_MIN}"
+                  memory: "${MEMORY_MIN}"
+                limits:
+                  cpu: "${CPU_LIMIT}"
+                  memory: "${MEMORY_LIMIT}"

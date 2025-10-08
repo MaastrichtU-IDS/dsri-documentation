@@ -1,18 +1,16 @@
----
-kind: Template
 apiVersion: template.openshift.io/v1
+kind: Template
 metadata:
   name: ubuntu-root
   annotations:
     openshift.io/display-name: Ubuntu
     description: |-
+      TEST
       Start Ubuntu Linux (Debian-based) with the 'root' user which has sudo permissions to install anything.
       Some basic packages for development have been installed: gfortran, git, build-essentials, curl, wget, python3
-
       📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
       🔗 We enabled the port 8080 in the Ubuntu container if you need to deploy applications
-      
       Image based on official ubuntu image, hosted in the GitHub Container Registry.
       Visit https://github.com/MaastrichtU-IDS/ubuntu for more details on the image
       Visit original Ubuntu image at https://hub.docker.com/_/ubuntu
@@ -26,74 +24,76 @@ labels:
 message: |-
   A Ubuntu pod has been scheduled for creation in your project, and should be soon available.
   Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
-
   You can use `oc get pods` to get the pod ID and connect using your local terminal `oc rsh POD_ID`
   Or use the terminal tab in the Ubuntu pod view of the OpenShift web UI
 
 parameters:
-- name: APPLICATION_NAME
-  displayName: Application name
-  description: Must be without spaces (use -), and unique in the project.
-  value: ubuntu
-  required: true
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage used for the notebook (approximate).
-  value: 10Gi
-  required: true
-- name: APPLICATION_IMAGE
-  displayName: Application Docker image
-  description: See https://github.com/MaastrichtU-IDS/ubuntu for more details on the image
-  value: ghcr.io/maastrichtu-ids/ubuntu:latest
-  required: true
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be without spaces (use -), and unique in the project.
+    value: ubuntu
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage used for the notebook (approximate).
+    value: 10Gi
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Application Docker image
+    description: See https://github.com/MaastrichtU-IDS/ubuntu for more details on the image
+    value: ghcr.io/maastrichtu-ids/ubuntu:latest
+    required: true
 
 objects:
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-    storageClassName: ocs-storagecluster-cephfs
+  # 1. ImageStream
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: ${APPLICATION_NAME}
+      labels:
+        app: ${APPLICATION_NAME}
+        template: ubuntu-root-dynamic
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+      - name: latest
+        from:
+          kind: DockerImage
+          name: ${APPLICATION_IMAGE}
+        importPolicy:
+          scheduled: false
 
-- kind: ImageStream
-  apiVersion: image.openshift.io/v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-      template: ubuntu-root-dynamic
-  spec:
-    tags:
-    - name: latest
-      from:
-        kind: DockerImage
-        name: ${APPLICATION_IMAGE}
-      importPolicy:
-        scheduled: false
-    lookupPolicy:
-      local: true
-
-- kind: Deployment
-  apiVersion: apps/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    strategy:
-      type: Recreate
-    replicas: 1
-    selector:
-      matchLabels:
+  # 2. Persistent Volume Claim
+  - kind: "PersistentVolumeClaim"
+    apiVersion: "v1"
+    metadata:
+      name: ${APPLICATION_NAME}
+      labels:
         app: "${APPLICATION_NAME}"
-        deployment: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - "ReadWriteMany"
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  # 6. Deployment
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      strategy:
+        type: Recreate
+      replicas: 1
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:

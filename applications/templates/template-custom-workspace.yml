@@ -1,8 +1,5 @@
----
-kind: Template
 apiVersion: template.openshift.io/v1
-labels:
-  template: custom-workspace
+kind: Template
 metadata:
   name: custom-workspace
   annotations:
@@ -27,174 +24,179 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: custom-workspace
 
 parameters:
-- name: APPLICATION_NAME
-  displayName: Name for the application
-  description: Must be without spaces (use -), and unique in the project.
-  value: custom-workspace
-  required: true
-- name: PASSWORD
-  displayName: Web UI Password
-  description: The password to access the web UI
-  required: true
-- name: APPLICATION_IMAGE
-  displayName: Docker image
-  value: ghcr.io/maastrichtu-ids/jupyterlab:ricopili
-  required: true
-  description: Docker image of your application in a public registry
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage allocated to the notebook persistent storage.
-  value: 5Gi
-  required: true
-- name: WORKDIR
-  displayName: Working directory
-  description: The working directory in your container (will be stored persistently). This depends on the image, refer to the description on the right, or the image docs.
-  value: /root
-  required: true
+  - name: APPLICATION_NAME
+    displayName: Name for the application
+    description: Must be without spaces (use -), and unique in the project.
+    value: custom-workspace
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Docker image
+    description: Docker image of your application in a public registry
+    value: ghcr.io/maastrichtu-ids/jupyterlab:ricopili
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage allocated to the notebook persistent storage.
+    value: 5Gi
+    required: true
+  - name: PASSWORD
+    displayName: Web UI Password
+    description: The password to access the web UI
+    required: true
+
+  # Custom Parameters
+  - name: WORKDIR
+    displayName: Working directory
+    description: The working directory in your container (will be stored persistently). This depends on the image, refer to the description on the right, or the image docs.
+    value: /root
+    required: true
 
 objects:
-- kind: "ImageStream"
-  apiVersion: image.openshift.io/v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-      template: custom-workspace
-  spec:
-    tags:
-    - name: latest
-      from:
-        kind: DockerImage
-        name: ${APPLICATION_IMAGE}
-      importPolicy:
-        scheduled: false
-    lookupPolicy:
-      local: true
-
-- kind: "PersistentVolumeClaim"
-  apiVersion: "v1"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: custom-workspace
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-    storageClassName: ocs-storagecluster-cephfs
-
-- apiVersion: v1
-  kind: Secret
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: custom-workspace
-  stringData:
-    application-password: "${PASSWORD}"
-
-- kind: Deployment
-  apiVersion: apps/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: custom-workspace
-  spec:
-    replicas: 1
-    strategy:
-      type: Recreate
-    selector:
-      matchLabels:
-        app: "${APPLICATION_NAME}"
-        deployment: "${APPLICATION_NAME}"
-    template:
-      metadata:
-        annotations:
-          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
-        labels:
-          app: "${APPLICATION_NAME}"
-          deployment: "${APPLICATION_NAME}"
-      spec:
-        runtimeClassName: selinux
-        serviceAccountName: "anyuid"
-        containers:
-        - name: custom-app
-          image: "${APPLICATION_NAME}:latest"
-          imagePullPolicy: IfNotPresent
-          ports:
-          - containerPort: 8888
-            protocol: TCP
-          env:
-          - name: JUPYTER_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: application-password
-                name: "${APPLICATION_NAME}"
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: application-password
-                name: "${APPLICATION_NAME}"
-          volumeMounts:
-          - name: data
-            mountPath: "${WORKDIR}"
-          - name: dshm
-            mountPath: /dev/shm
-          resources:
-            limits:
-              cpu: '32'
-              memory: 200Gi
-            requests:
-              cpu: '2'
-              memory: 4Gi
-        automountServiceAccountToken: false
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
-        - name: dshm
-          emptyDir:
-            medium: Memory
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: custom-workspace
-  spec:
-    ports:
-    - name: 8888-tcp
-      protocol: TCP
-      port: 8888
-      targetPort: 8888
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-    type: ClusterIP
-
-- kind: Route
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: custom-workspace
-  spec:
-    host: ''
-    to:
-      kind: Service
+  # 1. ImageStream
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
       name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 8888-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: latest
+          from:
+            kind: DockerImage
+            name: ${APPLICATION_IMAGE}
+          importPolicy:
+            scheduled: false
+
+  # 2. Persistent Volume Claim
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  # 3. Service 
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}"
+      ports:
+        - name: "8888-tcp"
+          protocol: TCP
+          port: 8888
+          targetPort: 8888
+      type: ClusterIP
+
+  # 4. Route
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: "8888-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  # 5. Secret
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    stringData:
+      application-password: "${PASSWORD}"
+
+  # 6. Deployment
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: custom-workspace
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: "anyuid"
+          automountServiceAccountToken: false
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+            - name: dshm
+              emptyDir:
+                medium: Memory
+          containers:
+            - name: custom-app
+              image: "${APPLICATION_IMAGE}"
+              imagePullPolicy: IfNotPresent
+              ports:
+                - containerPort: 8888
+                  protocol: TCP
+              volumeMounts:
+                - name: data
+                  mountPath: "${WORKDIR}"
+                - name: dshm 
+                  mountPath: /dev/shm
+              env:
+                - name: JUPYTER_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      key: application-password
+                      name: "${APPLICATION_NAME}"
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: application-password
+                      name: "${APPLICATION_NAME}"
+              resources:
+                requests:
+                  cpu: '2'
+                  memory: 4Gi
+                limits:
+                  cpu: '32'
+                  memory: 200Gi

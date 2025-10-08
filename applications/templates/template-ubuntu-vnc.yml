@@ -1,11 +1,11 @@
----
-kind: Template
 apiVersion: template.openshift.io/v1
+kind: Template
 metadata:
   name: ubuntu-vnc
   annotations:
     openshift.io/display-name: Ubuntu with desktop interface
     description: |-
+      TEST
       Start a Ubuntu Linux workspace with a regular desktop interface accessible in the browser
 
       You can use this template to deploy various desktop environments:
@@ -36,83 +36,123 @@ message: |-
   Or use the terminal tab in the Ubuntu pod view of the OpenShift web UI
 
 parameters:
-- name: APPLICATION_NAME
-  displayName: Application name
-  description: Must be without spaces (use -), and unique in the project.
-  value: ubuntu
-  required: true
-- name: PASSWORD
-  displayName: Ubuntu Password
-  description: The password of your user and to access Ubuntu from the web UI
-  required: true
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage used for the notebook (approximate).
-  value: 10Gi
-  required: true
-- name: APPLICATION_IMAGE
-  displayName: Application Docker image
-  description: The docker image used to start the container (e.g. Ubuntu or NeuroDesk)
-  value: ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest
-  required: true
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be without spaces (use -), and unique in the project.
+    value: ubuntu
+    required: true
+  - name: PASSWORD
+    displayName: Ubuntu Password
+    description: The password of your user and to access Ubuntu from the web UI
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage used for the notebook (approximate).
+    value: 10Gi
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Application Docker image
+    description: The docker image used to start the container (e.g. Ubuntu or NeuroDesk)
+    value: ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest
+    required: true
 
 objects:
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-    storageClassName: ocs-storagecluster-cephfs
+  # 1. ImageStream
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: ${APPLICATION_NAME}
+      labels:
+        app: ${APPLICATION_NAME}
+        template: ubuntu-vnc
+    spec:
+      tags:
+      - name: latest
+        from:
+          kind: DockerImage
+          name: ${APPLICATION_IMAGE}
+        importPolicy:
+          scheduled: false
+      lookupPolicy:
+        local: true
 
-- kind: ImageStream
-  apiVersion: image.openshift.io/v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-      template: ubuntu-vnc
-  spec:
-    tags:
-    - name: latest
-      from:
-        kind: DockerImage
-        name: ${APPLICATION_IMAGE}
-      importPolicy:
-        scheduled: false
-    lookupPolicy:
-      local: true
+  # 2. Persistent Volume Claim
+  - apiVersion: "v1"
+    kind: "PersistentVolumeClaim"
+    metadata:
+      name: ${APPLICATION_NAME}
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - "ReadWriteMany"
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
 
-- apiVersion: v1
-  kind: Secret
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: ubuntu-vnc
-  stringData:
-    application-password: "${PASSWORD}"
-
-- kind: Deployment
-  apiVersion: apps/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    strategy:
-      type: Recreate
-    replicas: 1
-    selector:
-      matchLabels:
+  # 3. Service
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      ports:
+      - name: 6080-tcp
+        protocol: TCP
+        port: 6080
+        targetPort: 80
+      selector:
         app: "${APPLICATION_NAME}"
         deployment: "${APPLICATION_NAME}"
+
+  # 4. Route
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      host: ''
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+        weight: 100
+      port:
+        targetPort: 6080-tcp
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  # 5. Secret
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: ubuntu-vnc
+    stringData:
+      application-password: "${PASSWORD}"
+
+  # 6. Deployment
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      strategy:
+        type: Recreate
+      replicas: 1
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
     template:
       metadata:
         annotations:
@@ -170,37 +210,3 @@ objects:
           emptyDir:
             medium: Memory
         automountServiceAccountToken: false
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 6080-tcp
-      protocol: TCP
-      port: 6080
-      targetPort: 80
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-
-- kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
-      name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 6080-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect

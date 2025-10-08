@@ -1,6 +1,5 @@
----
-kind: Template
 apiVersion: template.openshift.io/v1
+kind: Template
 metadata:
   name: rstudio-root
   annotations:
@@ -30,205 +29,207 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:
   template: rstudio-root
+
 parameters:
-- name: APPLICATION_IMAGE
-  displayName: RStudio Docker image
-  description: Check on the right to see which images can be used to start RStudio
-  value: ghcr.io/maastrichtu-ids/rstudio:latest
-  required: true
-- name: PASSWORD
-  displayName: RStudio password
-  description: The password of the RStudio user. 
-  required: true
-- name: APPLICATION_NAME
-  displayName: Application name
-  description: Must be without spaces (use -), and unique in the project.
-  value: rstudio
-  required: true
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage used for the notebook (approximate).
-  value: 10Gi
-  required: true
-- name: OPENBLAS_NUM_THREADS
-  displayName: Number of threads for OpenBLAS
-  description: Restricting the number of thread allocated to OpenBLAS can speed up computations using OpenBLAS (leave empty for default 64)
-  value: "1"
-  required: false
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be without spaces (use -), and unique in the project.
+    value: rstudio
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: RStudio Docker image
+    description: Check on the right to see which images can be used to start RStudio
+    value: ghcr.io/maastrichtu-ids/rstudio:latest
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage used for the notebook (approximate).
+    value: 10Gi
+    required: true
+  - name: PASSWORD
+    displayName: RStudio password
+    description: The password of the RStudio user.
+    required: true
+
+  # Custom Parameters 
+  - name: OPENBLAS_NUM_THREADS
+    displayName: Number of threads for OpenBLAS
+    description: Restricting the number of thread allocated to OpenBLAS can speed up computations using OpenBLAS (leave empty for default 64)
+    value: "1"
+    required: false
 
 objects:
-- kind: Secret 
-  apiVersion: v1
-  metadata:
-    annotations:
-      template.openshift.io/expose-password: "{.data['application-password']}"
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  stringData:
-    application-password: "${PASSWORD}"
-
-- kind: PersistentVolumeClaim
-  apiVersion: v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    accessModes:
-      - ReadWriteMany
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-    storageClassName: ocs-storagecluster-cephfs
-
-- kind: ImageStream
-  apiVersion: image.openshift.io/v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: rstudio-root
-  spec:
-    tags:
-    - name: latest
-      from:
-        kind: DockerImage
-        name: ${APPLICATION_IMAGE}
-      importPolicy:
-        scheduled: false
-    lookupPolicy:
-      local: true
-
-- kind: Deployment
-  apiVersion: apps/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    strategy:
-      type: Recreate
-    replicas: 1
-    selector:
-      matchLabels:
-        app: "${APPLICATION_NAME}"
-        deployment: "${APPLICATION_NAME}"
-    template:
-      metadata:
-        annotations:
-          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
-          alpha.image.policy.openshift.io/resolve-names: "*"
-        labels:
-          app: "${APPLICATION_NAME}"
-          deployment: "${APPLICATION_NAME}"
-      spec:
-        runtimeClassName: selinux
-        serviceAccountName: anyuid
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
-        containers:
-        - name: rstudio-container
-          image: ${APPLICATION_IMAGE}
-          imagePullPolicy: IfNotPresent
-          ports:
-          - containerPort: 8787
-            protocol: TCP
-          - containerPort: 3838
-            protocol: TCP
-          resources:
-            limits:
-              cpu: '32'
-              memory: 200Gi
-            requests:
-              cpu: 200m
-              memory: 256Mi
-          volumeMounts:
-          - name: data
-            mountPath: "/root/persistent"
-          env:
-          - name: USER
-            value: "rstudio"
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: application-password
-                name: "${APPLICATION_NAME}"
-          - name: ROOT
-            value: "TRUE"
-          - name: RUNROOTLESS
-            value: 'true'
-          - name: OPENBLAS_NUM_THREADS
-            value: "${OPENBLAS_NUM_THREADS}"
-        automountServiceAccountToken: false
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 8787-tcp
-      protocol: TCP
-      port: 8787
-      targetPort: 8787
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-
-- kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
+  # 1. ImageStream
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
       name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 8787-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: rstudio-root
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: latest
+          from:
+            kind: DockerImage
+            name: ${APPLICATION_IMAGE}
+          importPolicy:
+            scheduled: false
 
-# Shiny server route
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}-shiny"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 3838-tcp
-      protocol: TCP
-      port: 3838
-      targetPort: 3838
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
+  # 2. Persistent Volume Claim
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
 
-- kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    name: "${APPLICATION_NAME}-shiny"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
+  # 3. Service
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}"
+      ports:
+        - name: "8787-tcp"
+          protocol: TCP
+          port: 8787
+          targetPort: 8787
+
+  # 4. Route
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: "8787-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  # 5. Secret
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+      annotations:
+        template.openshift.io/expose-password: "{.data['application-password']}"
+    stringData:
+      application-password: "${PASSWORD}"
+
+  # 6. Deployment
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+            alpha.image.policy.openshift.io/resolve-names: "*"
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+          containers:
+            - name: rstudio-container
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              imagePullPolicy: IfNotPresent
+              ports:
+                - containerPort: 8787
+                  protocol: TCP
+                - containerPort: 3838
+                  protocol: TCP
+              volumeMounts:
+                - name: data
+                  mountPath: "/root/persistent"
+              env:
+                - name: USER
+                  value: "rstudio"
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: application-password
+                      name: "${APPLICATION_NAME}"
+                - name: ROOT
+                  value: "TRUE"
+                - name: RUNROOTLESS
+                  value: 'true'
+                - name: OPENBLAS_NUM_THREADS
+                  value: "${OPENBLAS_NUM_THREADS}"
+              resources:
+                requests:
+                  cpu: 200m
+                  memory: 256Mi
+                limits:
+                  cpu: '32'
+                  memory: 200Gi
+
+  #  Added Objects: Specific to RStudio for Shiny Server
+  - kind: Service
+    apiVersion: v1
+    metadata:
       name: "${APPLICATION_NAME}-shiny"
-      weight: 100
-    port:
-      targetPort: 3838-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      ports:
+      - name: 3838-tcp
+        protocol: TCP
+        port: 3838
+        targetPort: 3838
+      selector:
+        app: "${APPLICATION_NAME}"
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}-shiny"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}-shiny"
+      port:
+        targetPort: 3838-tcp
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
