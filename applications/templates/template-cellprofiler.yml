@@ -49,7 +49,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
   description: See https://hub.docker.com/r/cellprofiler/cellprofiler for more details on the image
-  value: ghcr.io/maastrichtu-library/cellprofiler:latest
+  value: cr.icts.unimaas.nl/dsri_ghcr.io/maastrichtu-library/cellprofiler:latest
   required: true
 
 objects:
@@ -109,6 +109,8 @@ objects:
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
+        imagePullSecrets:
+          - name: harbor-ghcr-pull-secret
         volumes:
         - name: data
           persistentVolumeClaim:

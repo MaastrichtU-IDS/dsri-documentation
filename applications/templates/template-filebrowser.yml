@@ -39,7 +39,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: Application image
   description: Filebrowser image.
-  value: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+  value: cr.icts.unimaas.nl/dsri_ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
   required: true
 - name: STORAGE_NAME
   displayName: Storage name
@@ -94,6 +94,8 @@ objects:
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
+        imagePullSecrets:
+          - name: harbor-ghcr-pull-secret
         volumes:
         - name: data
           persistentVolumeClaim:

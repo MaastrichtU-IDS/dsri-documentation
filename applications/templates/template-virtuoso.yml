@@ -43,7 +43,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
   description: Docker image to deploy the Virtuoso triplestore
-  value: openlink/virtuoso-opensource-7:latest
+  value: cr.icts.unimaas.nl/dsri_dockerhub/openlink/virtuoso-opensource-7:latest
   required: true
 - name: DATABASE_PATH
   displayName: The database storage path
@@ -133,6 +133,8 @@ objects:
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
+        imagePullSecrets:
+          - name: harbor-docker-pull-secret
         volumes:
         - name: data
           persistentVolumeClaim:

@@ -55,7 +55,7 @@ parameters:
   required: true
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook Docker image
-  value: ghcr.io/maastrichtu-ids/jupyterlab:latest
+  value: cr.icts.unimaas.nl/dsri_ghcr.io/maastrichtu-ids/jupyterlab:latest
   required: true
   description: Check the description on the right for more details about available images
 - name: STORAGE_SIZE
@@ -147,6 +147,8 @@ objects:
       spec:
         runtimeClassName: selinux
         serviceAccountName: "anyuid"
+        imagePullSecrets:
+          - name: harbor-ghcr-pull-secret
         containers:
         - name: jupyter-notebook
           image: "${APPLICATION_IMAGE}"

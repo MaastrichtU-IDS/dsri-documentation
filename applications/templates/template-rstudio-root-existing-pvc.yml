@@ -34,7 +34,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: RStudio Docker image
   description: Check on the right to see which images can be used to start RStudio
-  value: ghcr.io/maastrichtu-ids/rstudio:latest
+  value: cr.icts.unimaas.nl/dsri_ghcr.io/maastrichtu-ids/rstudio:latest
   required: true
 - name: PASSWORD
   displayName: RStudio password
@@ -110,6 +110,8 @@ objects:
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
+        imagePullSecrets:
+          - name: harbor-ghcr-pull-secret
         volumes:
         - name: data
           persistentVolumeClaim:

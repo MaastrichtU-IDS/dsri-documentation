@@ -36,7 +36,7 @@ parameters:
   required: true
 - name: APPLICATION_IMAGE
   displayName: Docker image
-  value: ghcr.io/maastrichtu-ids/jupyterlab:ricopili
+  value: cr.icts.unimaas.nl/dsri_ghcr.io/maastrichtu-ids/jupyterlab:ricopili
   required: true
   description: Docker image of your application in a public registry
 - name: STORAGE_SIZE
@@ -114,6 +114,8 @@ objects:
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
+        imagePullSecrets:
+          - name: harbor-ghcr-pull-secret
         containers:
         - name: custom-app
           image: ${APPLICATION_IMAGE}
