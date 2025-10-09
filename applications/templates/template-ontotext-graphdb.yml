@@ -40,7 +40,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: Application Docker image name 
   description: The GraphDB image needs to be build manually first and publish in your project
-  value: graphdb:latest
+  value: ontotext/graphdb:10.8.11
   required: true
 
 objects:
