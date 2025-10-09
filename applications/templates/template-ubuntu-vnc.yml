@@ -53,7 +53,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
   description: The docker image used to start the container (e.g. Ubuntu or NeuroDesk)
-  value: ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest
+  value: cr.icts.unimaas.nl/dsri_ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest
   required: true
 
 objects:
@@ -123,6 +123,8 @@ objects:
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
+        imagePullSecrets:
+          - name: harbor-ghcr-pull-secret
         containers:
         - name: ubuntu-container
           image: "${APPLICATION_IMAGE}"

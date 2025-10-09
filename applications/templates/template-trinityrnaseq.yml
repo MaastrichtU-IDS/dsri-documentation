@@ -41,7 +41,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
   description: See https://github.com/orgs/MaastrichtU-IDS/packages/container/package/trinityrnaseq for more details on the image
-  value: ghcr.io/maastrichtu-ids/trinityrnaseq
+  value: cr.icts.unimaas.nl/dsri_ghcr.io/maastrichtu-ids/trinityrnaseq:latest
   required: true
 
 objects:
@@ -101,6 +101,8 @@ objects:
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
+        imagePullSecrets:
+          - name: harbor-ghcr-pull-secret
         volumes:
         - name: data
           persistentVolumeClaim:

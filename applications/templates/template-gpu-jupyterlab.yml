@@ -138,6 +138,8 @@ objects:
           - mountPath: "/workspace/persistent"
             name: data
         serviceAccountName: anyuid
+        imagePullSecrets:
+          - name: harbor-ghcr-pull-secret
         volumes:
         - emptyDir:
             medium: Memory
@@ -194,7 +196,7 @@ parameters:
   description: Check the description on the right for more details about available images
   displayName: Docker image used
   required: true
-  value: ghcr.io/maastrichtu-ids/jupyterlab:tensorflow
+  value: cr.icts.unimaas.nl/dsri_ghcr.io/maastrichtu-ids/jupyterlab:tensorflow
 - name: JUPYTER_TOKEN
   description: The password, aka. token, to access the notebook
   displayName: Notebook password

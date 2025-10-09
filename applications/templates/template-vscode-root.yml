@@ -42,7 +42,7 @@ parameters:
 - name: APPLICATION_IMAGE
   displayName: Docker image for the application
   description: See https://github.com/MaastrichtU-IDS/code-server for more details and to customize the image
-  value: ghcr.io/maastrichtu-ids/code-server
+  value: cr.icts.unimaas.nl/dsri_ghcr.io/maastrichtu-ids/code-server
   required: true
 
 objects:
@@ -111,6 +111,8 @@ objects:
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
+        imagePullSecrets:
+          - name: harbor-ghcr-pull-secret
         volumes:
         - name: data
           persistentVolumeClaim:

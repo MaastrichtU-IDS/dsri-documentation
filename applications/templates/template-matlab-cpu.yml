@@ -121,6 +121,8 @@ objects:
         securityContext:
           runAsUser: 0
         serviceAccountName: anyuid
+        imagePullSecrets:
+          - name: harbor-docker-pull-secret
         volumes:
         - name: data
           persistentVolumeClaim:
@@ -177,7 +179,7 @@ parameters:
   displayName: Application Docker image
   name: APPLICATION_IMAGE
   required: true
-  value: mathworks/matlab:r2024b
+  value: cr.icts.unimaas.nl/dsri_dockerhub/mathworks/matlab:r2024b
 - description: Size of the storage used for Matlab (approximate).
   displayName: Storage size
   name: STORAGE_SIZE
