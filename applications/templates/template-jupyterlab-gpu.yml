@@ -2,7 +2,7 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 labels:
-  template: gpu-jupyterlab
+  template: jupyterlab-gpu
 metadata:
   annotations:
     description: |-
@@ -53,7 +53,7 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
     tags: python,jupyter,gpu
-  name: gpu-jupyterlab
+  name: jupyterlab-gpu
   namespace: openshift
 
 objects:
