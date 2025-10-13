@@ -1,5 +1,6 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
+apiVersion: template.openshift.io/v1
 metadata:
   name: filebrowser
   annotations:
@@ -46,7 +47,7 @@ parameters:
     required: false
 
 objects:
-  # 1. ImageStream
+
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -65,9 +66,7 @@ objects:
           importPolicy:
             scheduled: false
 
-  # 2. Persistent Volume Claim - SKIPPED (Filebrowser mounts an existing one)
 
-  # 3. Service
   - kind: Service
     apiVersion: v1
     metadata:
@@ -83,7 +82,6 @@ objects:
           port: 80
           targetPort: 80
 
-  # 4. Route
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
@@ -100,9 +98,7 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-  # 5. Secret - SKIPPED (Not needed for this template)
-  
-  # 6. Deployment
+
   - kind: Deployment
     apiVersion: apps/v1
     metadata:

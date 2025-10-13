@@ -1,10 +1,12 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
+apiVersion: template.openshift.io/v1
 metadata:
   name: cellprofiler
   annotations:
     openshift.io/display-name: CellProfiler
     description: |-
+      test
       Start the CellProfiler with the 'root' user which has sudo permissions to install anything.
 
       📂 Use the `/usr/local/src` folder to store your data in the existing persistent storage
@@ -52,7 +54,7 @@ parameters:
     required: true
 
 objects:
-  # 1. ImageStream
+
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -71,7 +73,7 @@ objects:
           importPolicy:
             scheduled: false
 
-  # 2. Persistent Volume Claim
+
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -86,13 +88,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 3. Service - SKIPPED (Not needed for this template)
-
-  # 4. Route - SKIPPED (Not needed for this template)
-
-  # 5. Secret - SKIPPED (Not needed for this template)
-
-  # 6. Deployment
+  
   - kind: Deployment
     apiVersion: apps/v1
     metadata:
