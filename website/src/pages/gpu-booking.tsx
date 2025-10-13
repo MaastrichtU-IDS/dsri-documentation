@@ -462,7 +462,7 @@ function GpuBooking() {
             </Box>
 
             <p style={{marginTop: '10px'}}>
-              ⚠️ As of 14-08-2025 booking a GPU is not possible until further notice! Apologies for any inconveniences. ⚠️
+              ⚠️ GPU bookings will open on <strong>20 October 2025</strong>. ⚠️
             </p>
 
             <p style={{marginTop: '10px'}}>
