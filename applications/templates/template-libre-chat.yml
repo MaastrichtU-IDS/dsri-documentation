@@ -1,5 +1,6 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
+apiVersion: template.openshift.io/v1
 metadata:
   name: libre-chat
   annotations:
@@ -38,8 +39,6 @@ parameters:
     description: Size of the storage allocated to the notebook persistent storage.
     value: 20Gi
     required: true
-
-  # Custom Parameters
   - name: LIBRECHAT_CONF_URL
     displayName: Direct URL to the YAML configuration file for the chatbot
     description: Checkout the documentation at https://vemonet.github.io/libre-chat for more details on how to configure your chatbot
@@ -71,7 +70,7 @@ parameters:
     required: true
 
 objects:
-  # 1. ImageStream
+
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -90,7 +89,7 @@ objects:
           importPolicy:
             scheduled: false
 
-  # 2. Persistent Volume Claim
+
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -106,7 +105,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 3. Service
+
   - kind: Service
     apiVersion: v1
     metadata:
@@ -124,7 +123,7 @@ objects:
           targetPort: 8000
       type: ClusterIP
 
-  # 4. Route
+
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
@@ -142,9 +141,7 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-  # 5. Secret - SKIPPED (Not needed for this template)
 
-  # 6. Deployment
   - kind: Deployment
     apiVersion: apps/v1
     metadata:

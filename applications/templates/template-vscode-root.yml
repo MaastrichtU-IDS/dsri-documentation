@@ -1,5 +1,6 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
+apiVersion: template.openshift.io/v1
 metadata:
   name: vscode-root
   annotations:
@@ -45,7 +46,7 @@ parameters:
     required: true
 
 objects:
-  # 1. Image Stream 
+
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -64,7 +65,6 @@ objects:
           importPolicy:
             scheduled: false
 
-  # 2. Persistent Volume Claim 
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -79,7 +79,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 3. Service 
+
   - kind: Service
     apiVersion: v1
     metadata:
@@ -95,7 +95,7 @@ objects:
           port: 8080
           targetPort: 8080
 
-  # 4. Route 
+
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
@@ -112,7 +112,7 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-  # 5. Secret 
+
   - kind: Secret
     apiVersion: v1
     metadata:
@@ -122,7 +122,7 @@ objects:
     stringData:
       application-password: "${PASSWORD}" 
 
-  # 6. Deployment 
+
   - kind: Deployment
     apiVersion: apps/v1
     metadata:

@@ -1,5 +1,6 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
+apiVersion: template.openshift.io/v1
 metadata:
   name: jupyterlab-root-freesurfer
   annotations:
@@ -52,8 +53,6 @@ parameters:
     displayName: JupyterLab UI Password
     description: The password/token to access the JupyterLab web UI
     required: true
-
-  # Custom Parameters
   - name: GIT_URL
     displayName: URL of a git repository to clone in the workspace (optional)
     description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents. Only works for images based on the official images
@@ -70,7 +69,7 @@ parameters:
     required: true
 
 objects:
-  # 1. ImageStream
+
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -89,7 +88,7 @@ objects:
           importPolicy:
             scheduled: false
 
-  # 2. Persistent Volume Claim
+
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -105,7 +104,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 3. Service
+
   - kind: Service
     apiVersion: v1
     metadata:
@@ -123,7 +122,7 @@ objects:
           targetPort: 8888
       type: ClusterIP
 
-  # 4. Route
+
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
@@ -141,7 +140,7 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-  # 5. Secret
+
   - kind: Secret
     apiVersion: v1
     metadata:
@@ -152,7 +151,7 @@ objects:
     stringData:
       application-password: "${PASSWORD}"
 
-  # 6. Deployment
+
   - kind: Deployment
     apiVersion: apps/v1
     metadata:

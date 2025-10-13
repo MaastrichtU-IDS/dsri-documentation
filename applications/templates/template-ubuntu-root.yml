@@ -1,11 +1,11 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
+apiVersion: template.openshift.io/v1
 metadata:
   name: ubuntu-root
   annotations:
     openshift.io/display-name: Ubuntu
     description: |-
-      TEST
       Start Ubuntu Linux (Debian-based) with the 'root' user which has sudo permissions to install anything.
       Some basic packages for development have been installed: gfortran, git, build-essentials, curl, wget, python3
       📂 Use the `/root` folder (home of the root user) to store your data in the existing persistent storage
@@ -45,7 +45,7 @@ parameters:
     required: true
 
 objects:
-  # 1. ImageStream
+
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -64,7 +64,7 @@ objects:
         importPolicy:
           scheduled: false
 
-  # 2. Persistent Volume Claim
+
   - kind: "PersistentVolumeClaim"
     apiVersion: "v1"
     metadata:
@@ -79,7 +79,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 6. Deployment
+
   - kind: Deployment
     apiVersion: apps/v1
     metadata:
@@ -131,4 +131,4 @@ objects:
             mountPath: "/root"
           - name: dshm
             mountPath: /dev/shm
-        automountServiceAccountToken: false
+          automountServiceAccountToken: false

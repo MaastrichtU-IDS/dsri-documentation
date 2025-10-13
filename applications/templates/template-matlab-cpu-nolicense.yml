@@ -1,5 +1,6 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
+apiVersion: template.openshift.io/v1
 metadata:
   name: matlab-cpu-nolicense
   annotations:
@@ -46,8 +47,6 @@ parameters:
     displayName: Matlab UI password
     description: The password to access the Matlab web UI
     required: true
-
-  # Custom Parameters 
   - name: DEPLOYMENT_TYPE
     displayName: Type of deployment
     description: "-vnc or -browser"
@@ -55,7 +54,7 @@ parameters:
     required: true
 
 objects:
-  # 1. ImageStream
+
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -74,7 +73,7 @@ objects:
           importPolicy:
             scheduled: false
 
-  # 2. Persistent Volume Claim
+
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -89,7 +88,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 3. Service
+
   - kind: Service
     apiVersion: v1
     metadata:
@@ -105,7 +104,7 @@ objects:
           port: 8888
           targetPort: 8888
 
-  # 4. Route
+
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
@@ -122,7 +121,7 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-  # 5. Secret
+
   - kind: Secret
     apiVersion: v1
     metadata:
@@ -134,7 +133,7 @@ objects:
     stringData:
       application-password: "${PASSWORD}"
 
-  # 6. Deployment
+
   - kind: Deployment
     apiVersion: apps/v1
     metadata:

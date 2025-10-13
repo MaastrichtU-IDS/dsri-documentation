@@ -1,5 +1,6 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
+apiVersion: template.openshift.io/v1
 metadata:
   name: virtuoso-triplestore
   annotations:
@@ -45,7 +46,7 @@ parameters:
     value: openlink/virtuoso-opensource-7:latest
     required: true
 
-  # Custom parameters
+
   - name: DATABASE_PATH
     displayName: The database storage path
     description: Change it to /data for the tenforce/virtuoso image
@@ -68,7 +69,7 @@ parameters:
     required: true
 
 objects:
-  # 1. ImageStream
+
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -86,9 +87,9 @@ objects:
       lookupPolicy:
         local: true
 
-  # 2. Persistent Volume Claim
-  - apiVersion: "v1"
-    kind: "PersistentVolumeClaim"
+
+  - kind: "PersistentVolumeClaim"
+    apiVersion: "v1"
     metadata:
       name: ${APPLICATION_NAME}
       labels:
@@ -101,7 +102,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 3. Service
+
   - kind: Service
     apiVersion: v1
     metadata:
@@ -118,7 +119,7 @@ objects:
         app: "${APPLICATION_NAME}"
         deployment: "${APPLICATION_NAME}"
 
-  # 4. Route
+
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
@@ -137,9 +138,9 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-  # 5. Secret
-  - apiVersion: v1
-    kind: Secret
+
+  - kind: Secret
+    apiVersion: v1   
     metadata:
       annotations:
         template.openshift.io/expose-password: "{.data['application-password']}"
@@ -149,7 +150,7 @@ objects:
     stringData:
       application-password: "${PASSWORD}"
 
-  # 6. Deployment
+
   - kind: Deployment
     apiVersion: apps/v1
     metadata:
@@ -249,3 +250,4 @@ objects:
           - name: VIRT_URIQA_DefaultHost
             value: "${TRIPLESTORE_URL}"
         automountServiceAccountToken: false
+

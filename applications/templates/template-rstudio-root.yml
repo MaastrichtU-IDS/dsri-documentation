@@ -1,5 +1,5 @@
-apiVersion: template.openshift.io/v1
 kind: Template
+apiVersion: template.openshift.io/v1
 metadata:
   name: rstudio-root
   annotations:
@@ -50,8 +50,6 @@ parameters:
     displayName: RStudio password
     description: The password of the RStudio user.
     required: true
-
-  # Custom Parameters 
   - name: OPENBLAS_NUM_THREADS
     displayName: Number of threads for OpenBLAS
     description: Restricting the number of thread allocated to OpenBLAS can speed up computations using OpenBLAS (leave empty for default 64)
@@ -59,7 +57,7 @@ parameters:
     required: false
 
 objects:
-  # 1. ImageStream
+
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -78,7 +76,7 @@ objects:
           importPolicy:
             scheduled: false
 
-  # 2. Persistent Volume Claim
+
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -93,7 +91,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 3. Service
+
   - kind: Service
     apiVersion: v1
     metadata:
@@ -109,7 +107,7 @@ objects:
           port: 8787
           targetPort: 8787
 
-  # 4. Route
+
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
@@ -126,7 +124,7 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-  # 5. Secret
+
   - kind: Secret
     apiVersion: v1
     metadata:
@@ -138,7 +136,7 @@ objects:
     stringData:
       application-password: "${PASSWORD}"
 
-  # 6. Deployment
+
   - kind: Deployment
     apiVersion: apps/v1
     metadata:
