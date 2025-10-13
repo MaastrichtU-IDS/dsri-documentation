@@ -12,7 +12,7 @@ from sqlmodel import Field, Session, SQLModel, select
 
 
 NUMBER_OF_GPUS = 7
-MAX_BOOK_DAYS = 7
+MAX_BOOK_DAYS = 4
 
 router = APIRouter()
 

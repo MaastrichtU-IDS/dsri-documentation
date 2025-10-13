@@ -1,0 +1,15 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+labels:
+  template: ubuntu-deprecated
+metadata:
+  name: ubuntu-deprecated
+  annotations:
+    openshift.io/display-name: Ubuntu (Deprecated)
+    description: |-
+      Ubuntu desktop on the DSRI is deprecated. Are you looking to deploy an Ubuntu desktop, please let us know via rcs-ub@maastrichtuniversity.nl!
+    iconClass: icon-ubuntu
+    tags: ubuntu,deprecated
+    openshift.io/provider-display-name: Research Computing Support, UM
+    openshift.io/support-url: mailto:rcs-ub@maastrichtuniversity.nl?subject=Ubuntu%20Desktop%20on%20DSRI

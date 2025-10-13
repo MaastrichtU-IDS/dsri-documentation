@@ -280,8 +280,8 @@ function GpuBooking() {
   // }
   const getGpuColor: any = (gpuCount: any) => {
     let color = 'success' // Green
-    if (gpuCount > 5) color = 'warning' // Orange
-    if (gpuCount > 7) color = 'error' // Red
+    // if (gpuCount > 5) color = 'warning' // Orange
+    if (gpuCount > 4) color = 'error' // Red
     return color
   }
   
@@ -459,10 +459,11 @@ function GpuBooking() {
 
             <p style={{marginTop: '10px'}}>
               ⚠️ You can book a GPU for a maximum of <strong>4 days per calendar month</strong>. We will monitor bookings to ensure fair usage, and consecutive or excessive bookings may be adjusted if necessary. ⚠️
+              If you would need more GPU time, please [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392), and we can look into how we could potentailly help you! 
             </p>
 
             <p style={{marginTop: '10px'}}>
-              ⚠️ If you don't see any colored number on the calendar please reload the page, sometimes ReactJS fails to initialize the page
+              ⚠️ If you don't see any colored number on the calendar please reload the page, sometimes ReactJS fails to initialize the page ⚠️
             </p>
 
             <button type="submit" style={{margin: '30px 0px'}} className={clsx(
@@ -474,7 +475,7 @@ function GpuBooking() {
             🔎 You can see a more detailed view of the GPU schedule <a href="https://calendar.dsri.maastrichtuniversity.nl" target="_blank">here</a>
           </p>
           <p>
-            ❌ If you want to cancel your reservation, please send an email to <a href="mailto:DSRI-SUPPORT-L@maastrichtuniversity.nl" target="_blank">DSRI-SUPPORT-L@maastrichtuniversity.nl</a>
+            ❌ If you want to cancel your reservation, please [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392)!
           </p>
 
         </FormControl>
@@ -485,4 +486,3 @@ function GpuBooking() {
 }
 
 export default GpuBooking;
-
