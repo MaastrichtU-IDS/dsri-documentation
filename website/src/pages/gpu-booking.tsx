@@ -459,7 +459,7 @@ function GpuBooking() {
 
             <p style={{marginTop: '10px'}}>
               ⚠️ You can book a GPU for a maximum of <strong>4 days per calendar month</strong>. We will monitor bookings to ensure fair usage, and consecutive or excessive bookings may be adjusted if necessary. ⚠️
-              If you would need more GPU time, please [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392), and we can look into how we could potentailly help you! 
+              If you would need more GPU time, please please <a href="https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392" target="_blank">Submit a ticket</a>, and we can look into how we could potentailly help you! 
             </p>
 
             <p style={{marginTop: '10px'}}>
@@ -475,7 +475,7 @@ function GpuBooking() {
             🔎 You can see a more detailed view of the GPU schedule <a href="https://calendar.dsri.maastrichtuniversity.nl" target="_blank">here</a>
           </p>
           <p>
-            ❌ If you want to cancel your reservation, please [submit a ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392)!
+            ❌ If you want to cancel your reservation, please <a href="https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392" target="_blank">Submit a ticket!</a>
           </p>
 
         </FormControl>
