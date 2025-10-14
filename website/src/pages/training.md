@@ -1,10 +1,20 @@
 ---
-title: training
+title: Courses & Trainings
 description: educational activities of the DSRI 
 hide_table_of_contents: true
 ---
 
-# 📚 Training
+# 🧑‍🏫 Courses
+ 
+If you are an **UM employee** and wish to use the DSRI as part of a course, our team can help you set up an environment for your course.
+
+## Submit a Course Request
+
+You can submit a request for a course setup through our [**Topdesk form**](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=dfa8697cb7d1430ea11dd5cd458458f8).
+The DSRI team will review the information provided and arrange the necessary access and resources.
+
+
+# 📚 Trainings
 
 The DSRI offers a range of curated training courses to UM students, researchers and support staff at every career level.
 
@@ -14,19 +24,14 @@ The DSRI offers a range of curated training courses to UM students, researchers 
 We organize training to cover essential data science skills needed to start using the DSRI. These include get access to the DSRI web UI, create a new data science application, write reproducible code and learn good programming practices. We also offer more advanced training such as GPU Programming, Parallel Programming and Deep Learning. 
 
 
-## Our instrutors
+## Our instructors
 
-All trainings are taught by Research Software Engineers and Data Scientist from the DSRI, in-house experts with in-depth technical skills, and extensive teaching experience. DSRI instructors are certified Carpentries Instructors, and members of the international Carpentries community.
+All trainings are taught by members of the **Research Computing Support** team, in-house experts with in-depth technical skills, and extensive teaching experience. DSRI instructors are certified Carpentries Instructors, and members of the international Carpentries community.
 
-## Training materials
-
-All training [materials](https://maastrichtu-ids.github.io/dsri-workshop-start-app/) are collaboratively developed with the research community and are freely available.
-
----
 
 ## Upcoming training
 
-**Do you want to get started with the DSRI?** Contact us at [dsri-support-l@maastrichtuniversity.nl]([mailto:dsri-support-l@maastrichtuniversity.nl]) to start preparing a training for your department.
+**Do you want to get started with the DSRI?** Please use the [**Topdesk Key User Support form**](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=072e82c05082423db8a406c52145194b) to start preparing a training for your department.
 
 
 [ ## Past training]: #
