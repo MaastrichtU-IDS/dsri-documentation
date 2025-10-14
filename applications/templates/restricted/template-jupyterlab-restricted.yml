@@ -1,8 +1,6 @@
 ---
 kind: Template
 apiVersion: template.openshift.io/v1
-labels:
-  template: jupyterlab-restricted
 metadata:
   name: jupyterlab-restricted
   annotations:
@@ -30,6 +28,8 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+  labels:
+    template: jupyterlab-restricted
 
 parameters:
   - name: APPLICATION_NAME
@@ -50,8 +50,8 @@ parameters:
 
 objects:
 
-  - apiVersion: "v1"
-    kind: "PersistentVolumeClaim"
+  - kind: "PersistentVolumeClaim"
+    apiVersion: "v1"
     metadata:
       name: ${APPLICATION_NAME}
       labels:

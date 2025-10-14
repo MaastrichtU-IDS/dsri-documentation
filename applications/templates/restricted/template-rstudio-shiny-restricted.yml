@@ -35,6 +35,11 @@ parameters:
     displayName: Username
     required: true
     value: rstudio
+  - name: STORAGE_SIZE
+    description: Persistent Storage Size
+    displayName: Storage Size
+    required: true
+    value: 10Gi
   - name: PASSWORD
     description: Create a new password for logging into RStudio
     displayName: Password
@@ -44,24 +49,20 @@ parameters:
     displayName: Memory Limit
     required: true
     value: 2G
-  - name: STORAGE_SIZE
-    description: Persistent Storage Size
-    displayName: Storage Size
-    required: true
-    value: 10Gi
 
 objects:
 
-  - apiVersion: v1
-    kind: ImageStream
+  - kind: ImageStream
+    apiVersion: v1
     metadata:
       annotations:
         description: Keeps track of changes in the application image
       name: ${NAME}
       labels:
         app: "${NAME}"
-  - apiVersion: v1
-    kind: ImageStream
+        
+  - kind: ImageStream
+    apiVersion: v1
     metadata:
       annotations:
         description: Keeps track of changes in the appliation image
@@ -70,8 +71,8 @@ objects:
         app: "${NAME}"
 
 
-  - apiVersion: "v1"
-    kind: "PersistentVolumeClaim"
+  - kind: "PersistentVolumeClaim"
+    apiVersion: "v1"
     metadata:
       name: ${NAME}
       labels:
@@ -85,8 +86,8 @@ objects:
       storageClassName: ocs-storagecluster-cephfs
 
 
-  - apiVersion: v1
-    kind: Service
+  - kind: Service
+    apiVersion: v1
     metadata:
       name: ${NAME}
       labels:
@@ -98,8 +99,9 @@ objects:
         name: ${NAME}-service
       selector:
         app: rstudio
-  - apiVersion: v1
-    kind: Service
+
+  - kind: Service
+    apiVersion: v1
     metadata:
       name: ${NAME}-shiny
       labels:
@@ -113,8 +115,8 @@ objects:
         app: rstudio
 
 
-  - apiVersion: v1
-    kind: Route
+  - kind: Route
+    apiVersion: v1
     metadata:
       name: ${NAME}
       labels:
@@ -129,8 +131,9 @@ objects:
       tls:
         insecureEdgeTerminationPolicy: Redirect
         termination: edge
-  - apiVersion: v1
-    kind: Route
+
+  - kind: Route
+    apiVersion: v1
     metadata:
       name: ${NAME}-shiny
       labels:
@@ -147,8 +150,8 @@ objects:
         termination: edge
 
 
-  - apiVersion: v1
-    kind: Secret
+  - kind: Secret
+    apiVersion: v1
     metadata:
       name: ${NAME}
       labels:
@@ -159,65 +162,8 @@ objects:
         export PASSWORD=${PASSWORD}
 
 
-  - apiVersion: v1
-    kind: BuildConfig
-    metadata:
-      name: alpine-python3
-      annotations:
-        description: Defines how to build the application
-        template.alpha.openshift.io/wait-for-ready: "true"
-      labels:
-        app: "${NAME}"
-    spec:
-      source:
-        dockerfile: "FROM python:3-alpine"
-      strategy:
-        type: Docker
-      output:
-        to:
-          kind: ImageStreamTag
-          name: alpine-python3:latest
-      triggers:
-        - type: ImageChange
-        - type: ConfigChange
-  - apiVersion: v1
-    kind: BuildConfig
-    metadata:
-      name: rstudio
-      annotations:
-        description: Defines how to build the application
-        template.alpha.openshift.io/wait-for-ready: "true"
-      labels:
-        app: "${NAME}"
-    spec:
-      source:
-        type: Git
-        git:
-          uri: https://github.com/CSCfi/rstudio-openshift.git
-          ref: dev
-        contextDir: server
-      strategy:
-        dockerStrategy:
-          env:
-            - name: "USERNAME"
-              value: ${USERNAME}
-            - name: "PASSWORD"
-              value: ${PASSWORD}
-            - name: "NAME"
-              value: ${NAME}
-      output:
-        to:
-          kind: ImageStreamTag
-          name: ${NAME}:latest
-      triggers:
-        - type: ImageChange
-        - type: ConfigChange
-        - github:
-            secretReference:
-              name: webhooksecret
-          type: GitHub
-  - apiVersion: apps/v1
-    kind: Deployment
+  - kind: Deployment
+    apiVersion: apps/v1
     metadata:
       annotations:
         description: RStudio
@@ -289,4 +235,64 @@ objects:
               - name: r-shadow-vol
                 mountPath: "/tmp/shadow"
               - name: ${NAME}-vol
-                mountPath: /mnt/${NAME}
+                mountPath: /mnt/${NAME} 
+
+
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: alpine-python3
+      annotations:
+        description: Defines how to build the application
+        template.alpha.openshift.io/wait-for-ready: "true"
+      labels:
+        app: "${NAME}"
+    spec:
+      source:
+        dockerfile: "FROM python:3-alpine"
+      strategy:
+        type: Docker
+      output:
+        to:
+          kind: ImageStreamTag
+          name: alpine-python3:latest
+      triggers:
+        - type: ImageChange
+        - type: ConfigChange
+
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: rstudio
+      annotations:
+        description: Defines how to build the application
+        template.alpha.openshift.io/wait-for-ready: "true"
+      labels:
+        app: "${NAME}"
+    spec:
+      source:
+        type: Git
+        git:
+          uri: https://github.com/CSCfi/rstudio-openshift.git
+          ref: dev
+        contextDir: server
+      strategy:
+        dockerStrategy:
+          env:
+            - name: "USERNAME"
+              value: ${USERNAME}
+            - name: "PASSWORD"
+              value: ${PASSWORD}
+            - name: "NAME"
+              value: ${NAME}
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${NAME}:latest
+      triggers:
+        - type: ImageChange
+        - type: ConfigChange
+        - github:
+            secretReference:
+              name: webhooksecret
+          type: GitHub
