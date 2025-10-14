@@ -1,6 +1,6 @@
 ---
-apiVersion: template.openshift.io/v1
 kind: Template
+apiVersion: template.openshift.io/v1
 labels:
   template: jupyterlab-restricted
 metadata:
@@ -49,9 +49,7 @@ parameters:
     required: true
 
 objects:
-  # 1. ImageStream - SKIPPED
 
-  # 2. Persistent Volume Claim
   - apiVersion: "v1"
     kind: "PersistentVolumeClaim"
     metadata:
@@ -66,7 +64,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 3. Service
+
   - kind: Service
     apiVersion: v1
     metadata:
@@ -84,7 +82,7 @@ objects:
         deployment: "${APPLICATION_NAME}"
       type: ClusterIP
 
-  # 4. Route
+
   - kind: Route
     apiVersion: v1
     metadata:
@@ -103,9 +101,7 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-  # Secret - SKIPPED 
 
-  # 6. Deployment
   - kind: Deployment
     apiVersion: apps/v1
     metadata:

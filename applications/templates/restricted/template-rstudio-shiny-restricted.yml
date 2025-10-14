@@ -1,10 +1,6 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
-labels:
-  template: rstudio-shiny
-message: |-
-  RStudio Server has been scheduled for creation in your project, and should be soon available at: https://${NAME}.${APPLICATION_DOMAIN_SUFFIX}
-  Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
+apiVersion: template.openshift.io/v1
 metadata:
   name: rstudio-shiny
   annotations:
@@ -22,6 +18,11 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
     tags: R,rstudio,shiny,dynamic
     template.openshift.io/bindable: "false"
+  labels:
+    template: rstudio-shiny
+  message: |-
+    RStudio Server has been scheduled for creation in your project, and should be soon available at: https://${NAME}.${APPLICATION_DOMAIN_SUFFIX}
+    Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
 
 parameters:
   - name: NAME
@@ -50,7 +51,7 @@ parameters:
     value: 10Gi
 
 objects:
-  # 1. ImageStream 
+
   - apiVersion: v1
     kind: ImageStream
     metadata:
@@ -68,7 +69,7 @@ objects:
       labels:
         app: "${NAME}"
 
-  # 2. Persistent Volume Claim
+
   - apiVersion: "v1"
     kind: "PersistentVolumeClaim"
     metadata:
@@ -83,7 +84,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 3. Service
+
   - apiVersion: v1
     kind: Service
     metadata:
@@ -111,7 +112,7 @@ objects:
       selector:
         app: rstudio
 
-  # 4. Route
+
   - apiVersion: v1
     kind: Route
     metadata:
@@ -145,7 +146,7 @@ objects:
         insecureEdgeTerminationPolicy: Redirect
         termination: edge
 
-  # 5. Secret
+
   - apiVersion: v1
     kind: Secret
     metadata:
@@ -157,7 +158,7 @@ objects:
       secret.env: |-
         export PASSWORD=${PASSWORD}
 
-  # 6. Deployment
+
   - apiVersion: v1
     kind: BuildConfig
     metadata:

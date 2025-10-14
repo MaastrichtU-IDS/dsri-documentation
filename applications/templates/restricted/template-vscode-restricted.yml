@@ -1,7 +1,6 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
-labels:
-  template: "vscode-dynamic"
+apiVersion: template.openshift.io/v1
 metadata:
   name: vscode-dynamic
   annotations:
@@ -23,6 +22,8 @@ metadata:
     openshift.io/documentation-url: "https://github.com/jefferyb/code-server-openshift"
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
     template.openshift.io/bindable: "false"
+  labels:
+    template: "vscode-dynamic"
 
 parameters:
   - name: NAME
@@ -43,9 +44,9 @@ parameters:
     value: 10Gi
 
 objects:
-  # 1. ImageStream
-  - apiVersion: image.openshift.io/v1
-    kind: ImageStream
+
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
     metadata:
       name: ${NAME}
       labels:
@@ -65,9 +66,9 @@ objects:
         referencePolicy:
           type: Source
 
-  # 2. Persistent Volume Claim
-  - apiVersion: v1
-    kind: PersistentVolumeClaim
+
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
     metadata:
       name: ${NAME}-projects
       labels:
@@ -80,9 +81,9 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # 3. Service
-  - apiVersion: v1
-    kind: Service
+
+  - kind: Service
+    apiVersion: v1
     metadata:
       name: ${NAME}
       labels:
@@ -98,9 +99,9 @@ objects:
         deployment: ${NAME}
       type: ClusterIP
 
-  # 4. Route
-  - apiVersion: route.openshift.io/v1
-    kind: Route
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
     metadata:
       name: ${NAME}
       labels:
@@ -117,11 +118,9 @@ objects:
         weight: 100
       wildcardPolicy: None
 
-  # Secret - SKIPPED
 
-  # 6. Deployment
-  - apiVersion: apps/v1
-    kind: Deployment
+  - kind: Deployment
+    apiVersion: apps/v1
     metadata:
       name: ${NAME}
       labels:
