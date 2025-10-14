@@ -1,5 +1,6 @@
-apiVersion: template.openshift.io/v1
+---
 kind: Template
+apiVersion: template.openshift.io/v1
 metadata:
   name: backbone-template
   annotations:
@@ -8,6 +9,8 @@ metadata:
     tags: backbone,template
 labels:
   template: backbone-template
+message: |-
+  "Your text message"
 
 parameters:
   # Standard Parameters

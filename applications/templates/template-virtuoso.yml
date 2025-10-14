@@ -45,8 +45,6 @@ parameters:
     description: Docker image to deploy the Virtuoso triplestore
     value: openlink/virtuoso-opensource-7:latest
     required: true
-
-
   - name: DATABASE_PATH
     displayName: The database storage path
     description: Change it to /data for the tenforce/virtuoso image
