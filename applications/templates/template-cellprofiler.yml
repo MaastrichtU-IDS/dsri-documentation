@@ -6,7 +6,6 @@ metadata:
   annotations:
     openshift.io/display-name: CellProfiler
     description: |-
-      test
       Start the CellProfiler with the 'root' user which has sudo permissions to install anything.
 
       📂 Use the `/usr/local/src` folder to store your data in the existing persistent storage
