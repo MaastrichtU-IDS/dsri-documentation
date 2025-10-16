@@ -142,8 +142,8 @@ module.exports={
           "position": "left"
         },
         {
-          "to": "/training",
-          "label": "Training",
+          "to": "/courses-trainings",
+          "label": "Courses & Trainings",
           "position": "left"
         },
          {
