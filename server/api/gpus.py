@@ -13,6 +13,9 @@ from sqlmodel import Field, Session, SQLModel, select
 
 NUMBER_OF_GPUS = 7
 MAX_BOOK_DAYS = 4
+MAX_DAYS_IN_ROLLING_WINDOW = 7
+ROLLING_WINDOW_WEEKS = 4
+MAX_ADVANCE_BOOKING_WEEKS = 5
 
 router = APIRouter()
 
@@ -85,6 +88,37 @@ def get_gpu_booked_days() -> dict:
     return JSONResponse(booked_days)
 
 
+# Calculate total days booked by a user within a rolling window
+def get_user_booked_days_in_window(user_email: str, window_start: datetime, window_end: datetime) -> int:
+    """
+    Calculate the total number of days a user has booked within a given time window.
+
+    Args:
+        user_email: The email of the user
+        window_start: Start of the rolling window
+        window_end: End of the rolling window
+
+    Returns:
+        Total number of days booked by the user in the window
+    """
+    with Session(engine) as session:
+        statement = select(GpuBooking).where(GpuBooking.user_email == user_email)
+        user_bookings = session.exec(statement).all()
+
+        total_days = 0
+        for booking in user_bookings:
+            # Check if booking overlaps with the window
+            booking_start = max(booking.starting_date, window_start)
+            booking_end = min(booking.ending_date, window_end)
+
+            # If there's an overlap, count the days
+            if booking_start <= booking_end:
+                delta = booking_end - booking_start
+                total_days += delta.days + 1
+
+        return total_days
+
+
 @router.post("/request", name="Request a DSRI GPU for a period",
     description="Request a DSRI GPU for a period, this will check if any GPU are available for the requested period",
     response_model=dict,
@@ -101,6 +135,36 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     delta = schedule.ending_date - schedule.starting_date
     if delta.days + 1 > MAX_BOOK_DAYS:
         return JSONResponse({'errorMessage': f'You can book a GPU for a maximum of {str(MAX_BOOK_DAYS)} days'})
+
+    # Check that booking is not too far in advance (max 5 weeks)
+    max_advance_date = datetime.now() + timedelta(weeks=MAX_ADVANCE_BOOKING_WEEKS)
+    if schedule.starting_date > max_advance_date:
+        return JSONResponse({
+            'errorMessage': f'You can only book GPUs up to {MAX_ADVANCE_BOOKING_WEEKS} weeks in advance. '
+                          f'The earliest date you can book for this request is {max_advance_date.date()}.'
+        })
+
+    # Check rolling window constraint: max 7 days in any 4-week period
+    # Look back 4 weeks from the END of the new booking
+    requested_days = delta.days + 1
+    window_end = schedule.ending_date
+    window_start = window_end - timedelta(weeks=ROLLING_WINDOW_WEEKS)
+
+    # Get existing bookings in this window for the user
+    existing_days_in_window = get_user_booked_days_in_window(schedule.user_email, window_start, window_end)
+
+    # Calculate total days including the new request
+    # Note: Since MAX_BOOK_DAYS is 4 and the window is 4 weeks (28 days),
+    # the new booking will always fall entirely within the window
+    total_days_in_window = existing_days_in_window + requested_days
+
+    if total_days_in_window > MAX_DAYS_IN_ROLLING_WINDOW:
+        days_available = MAX_DAYS_IN_ROLLING_WINDOW - existing_days_in_window
+        return JSONResponse({
+            'errorMessage': f'You can only book a maximum of {MAX_DAYS_IN_ROLLING_WINDOW} days within a {ROLLING_WINDOW_WEEKS}-week rolling window. '
+                          f'You currently have {existing_days_in_window} day(s) booked in this period, so you can only book {max(0, days_available)} more day(s). '
+                          f'Please choose a shorter period or wait until some of your existing reservations expire.'
+        })
 
     for i in range(delta.days + 1):
         day_time = schedule.starting_date + timedelta(days=i)
