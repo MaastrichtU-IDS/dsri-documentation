@@ -13,23 +13,46 @@ A secure nginx-based WebDAV server for the DSRI platform. This provides WebDAV p
 
 ## Building the Docker Image
 
-Build the image locally:
+### Building Locally
+
+Build the image locally for testing:
 
 ```bash
 docker build -t webdav:latest .
 ```
 
-Or build and push to GitHub Container Registry:
+### Pushing to GitHub Container Registry
 
-```bash
-# Build for your platform
-docker build -t ghcr.io/maastrichtu-ids/webdav:latest .
+To push the image to GitHub Container Registry (ghcr.io), follow these steps:
 
-# Push to registry
-docker push ghcr.io/maastrichtu-ids/webdav:latest
-```
+1. **Create a GitHub Personal Access Token**
+   - Go to GitHub Settings → Developer Settings → Personal Access Tokens → Tokens (classic)
+   - Click "Generate new token (classic)"
+   - Select at least the `write:packages` scope
+   - Copy the generated token
 
-For multi-platform builds:
+2. **Login to GitHub Container Registry**
+   ```bash
+   docker login ghcr.io
+   # Username: your-github-username
+   # Password: your-personal-access-token
+   ```
+
+3. **Build the image for linux/amd64 platform**
+   ```bash
+   docker build --platform linux/amd64 -t ghcr.io/maastrichtu-ids/webdav:latest .
+   ```
+
+   Note: Use `--platform linux/amd64` to ensure compatibility with OpenShift/Kubernetes clusters running on AMD64 architecture.
+
+4. **Push the image to the registry**
+   ```bash
+   docker push ghcr.io/maastrichtu-ids/webdav:latest
+   ```
+
+### Multi-platform builds (optional)
+
+For building images that work on multiple architectures:
 
 ```bash
 docker buildx create --use
@@ -232,4 +255,4 @@ Replace `webdav` with your APPLICATION_NAME if different.
 
 ## License
 
-This is part of the DSRI documentation and templates maintained by the Institute of Data Science at Maastricht University.
+This is part of the DSRI documentation and templates maintained by the University Library at Maastricht University.
