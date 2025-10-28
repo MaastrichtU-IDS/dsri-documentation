@@ -132,6 +132,9 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     # Fix issue where the date provided by the calendar are -1 day
     schedule.starting_date += timedelta(days=1)
     schedule.ending_date += timedelta(days=1)
+    # Strip timezone info to match naive datetime.now()
+    schedule.starting_date = schedule.starting_date.replace(tzinfo=None)
+    schedule.ending_date = schedule.ending_date.replace(tzinfo=None)
     delta = schedule.ending_date - schedule.starting_date
     if delta.days + 1 > MAX_BOOK_DAYS:
         return JSONResponse({'errorMessage': f'You can book a GPU for a maximum of {str(MAX_BOOK_DAYS)} days'})
