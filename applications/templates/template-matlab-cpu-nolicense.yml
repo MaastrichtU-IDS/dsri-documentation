@@ -6,7 +6,6 @@ metadata:
   annotations:
     openshift.io/display-name: Matlab with your license
     description: |-
-      TEST
       Start Matlab with a desktop UI, and use your own license to enable
       Matlab (this can be useful when the UM license server does not support the latest
       Matlab release).
