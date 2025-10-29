@@ -169,8 +169,8 @@ objects:
                 claimName: "${APPLICATION_NAME}"
           containers:
             - name: rstudio-container
-              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
-              imagePullPolicy: IfNotPresent
+              image: ${APPLICATION_IMAGE}
+              imagePullPolicy: Always
               ports:
                 - containerPort: 8787
                   protocol: TCP
