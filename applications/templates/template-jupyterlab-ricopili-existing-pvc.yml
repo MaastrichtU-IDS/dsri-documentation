@@ -1,0 +1,176 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: jupyterlab-ricopili-existing-pvc
+  annotations:
+    openshift.io/display-name: JupyterLab Ricopili on existing storage
+    description: |-
+      Start a JupyterLab image with an R-kernel and Ricopoli tools installed as the `root` user, with an already existing Persistent Volume Claim (PVC). Find the list of PVC in Search > Resources > Persistent Volume Claim.
+
+      🔥 Ricopili tools are installed and can be found in /root/ricopili. Fopr more information see https://sites.google.com/a/broadinstitute.org/ricopili/.
+
+      📂 Use the workspace (/root/persistent) of the web UI to store your data in the persistent storage automatically created
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+      
+      🐳 Docker images, see https://github.com/MaastrichtU-IDS/jupyterlab/tree/main/ricopili & https://github.com/MaastrichtU-Library/rcs-docker-ricopili for more details.
+      - Ricopili package:
+      ghcr.io/maastrichtu-ids/jupyterlab:ricopili
+    iconClass: icon-python
+    tags: ricopili,jupyter,notebook,R
+    openshift.io/provider-display-name: Research Computing Support, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: jupyterlab-ricopili-existing-pvc
+
+parameters:
+- name: APPLICATION_NAME
+  displayName: Name for the application
+  description: Must be without spaces (use -), and unique in the project.
+  value: jupyterlab-ricopili
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: Docker image
+  value: ghcr.io/maastrichtu-ids/jupyterlab:ricopili
+  required: true
+  description: Docker image of your application in a public registry
+- name: PERSISTENT_VOLUME_CLAIM
+  displayName: Persistent Volume Claim
+  description: The name of the already existing Persistent Volume Claim to mount to this pod. Find the list in Search > Resources > Persistent Volume Claim.
+  required: true
+- name: PASSWORD
+  displayName: Web UI Password
+  description: The password to access the web UI
+  required: true
+
+objects:
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: custom-workspace
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      importPolicy:
+        scheduled: false
+    lookupPolicy:
+      local: true
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: custom-workspace
+  spec:
+    ports:
+    - name: 8888-tcp
+      protocol: TCP
+      port: 8888
+      targetPort: 8888
+    selector:
+      app: ${APPLICATION_NAME}
+      deployment: ${APPLICATION_NAME}
+    type: ClusterIP
+
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: custom-workspace
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+    port:
+      targetPort: 8888-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Secret
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: custom-workspace
+  stringData:
+    application-password: ${PASSWORD}
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: custom-workspace
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: ${APPLICATION_NAME}
+        deployment: ${APPLICATION_NAME}
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:
+          app: ${APPLICATION_NAME}
+          deployment: ${APPLICATION_NAME}
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        containers:
+        - name: custom-app
+          image: ${APPLICATION_IMAGE}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8888
+            protocol: TCP
+          env:
+          - name: JUPYTER_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: ${APPLICATION_NAME}
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: ${APPLICATION_NAME}
+          volumeMounts:
+          - name: data
+            mountPath: /root/persistent
+          - name: dshm
+            mountPath: /dev/shm
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+            requests:
+              cpu: 200m
+              memory: 2Gi
+        automountServiceAccountToken: false
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: ${PERSISTENT_VOLUME_CLAIM}
+        - name: dshm
+          emptyDir:
+            medium: Memory
+

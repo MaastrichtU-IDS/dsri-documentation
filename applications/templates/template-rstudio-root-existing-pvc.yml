@@ -1,0 +1,223 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: rstudio-root-existing-pvc
+  annotations:
+    openshift.io/display-name: RStudio on existing storage
+    description: |-
+      Start RStudio with the 'root' as username which has root permissions (sudo), and with an existing Persistent Volume Claim (PVC). Find the list of PVC in Search > Resources > Persistent Volume Claim.
+
+      🔑 Default credentials are
+      - login: root
+      - password: $user_password
+
+      🐳 Available images with this template:
+      bioconductor/bioconductor_docker:devel
+      rocker/rstudio
+      rocker/tidyverse
+      ghcr.io/maastrichtu-ids/rstudio
+
+      Images based on rocker can be deployed: https://hub.docker.com/r/rocker/rstudio/
+      Visit https://github.com/MaastrichtU-IDS/rstudio for more details to build and customize the image
+
+      📂 Use the /root/persistent folder to store your data in a persistent storage automatically created.
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+    iconClass: icon-play
+    tags: R,rstudio,root,persistent
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-rstudio
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: rstudio-root-existing-pvc
+
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be without spaces (use -), and unique in the project.
+  value: rstudio
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: RStudio Docker image
+  description: Check on the right to see which images can be used to start RStudio
+  value: ghcr.io/maastrichtu-ids/rstudio:latest
+  required: true
+- name: PERSISTENT_VOLUME_CLAIM
+  displayName: Persistent Volume Claim
+  description: The name of the already existing Persistent Volume Claim to mount to this notebook. Find the list in Search > Resources > Persistent Volume Claim.
+  required: true
+- name: PASSWORD
+  displayName: RStudio password
+  description: The password of the RStudio user. 
+  required: true
+
+- name: OPENBLAS_NUM_THREADS
+  displayName: Number of threads for OpenBLAS
+  description: Restricting the number of thread allocated to OpenBLAS can speed up computations using OpenBLAS (leave empty for default 64)
+  value: "1"
+  required: false
+
+objects:
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+      template: rstudio-root-existing-pvc
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      importPolicy:
+        scheduled: false
+    lookupPolicy:
+      local: true
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8787-tcp
+      protocol: TCP
+      port: 8787
+      targetPort: 8787
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8787-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+# Shiny server route
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-shiny"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 3838-tcp
+      protocol: TCP
+      port: 3838
+      targetPort: 3838
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-shiny"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-shiny"
+      weight: 100
+    port:
+      targetPort: 3838-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Secret 
+  apiVersion: v1
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    replicas: 1
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          alpha.image.policy.openshift.io/resolve-names: "*"
+        labels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${PERSISTENT_VOLUME_CLAIM}"
+        containers:
+        - name: rstudio-container
+          image: ${APPLICATION_IMAGE}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8787
+            protocol: TCP
+          - containerPort: 3838
+            protocol: TCP
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+          - name: data
+            mountPath: "/root/persistent"
+          env:
+          - name: USER
+            value: "rstudio"
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: ROOT
+            value: "TRUE"
+          - name: RUNROOTLESS
+            value: 'true'
+          - name: OPENBLAS_NUM_THREADS
+            value: "${OPENBLAS_NUM_THREADS}"
+        automountServiceAccountToken: false
+
+
