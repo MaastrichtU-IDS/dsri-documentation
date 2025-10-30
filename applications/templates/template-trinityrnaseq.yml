@@ -33,32 +33,19 @@ parameters:
   description: Must be without spaces (use -), and unique in the project.
   value: trinityrnaseq
   required: true
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage used for the notebook (approximate).
-  value: 10Gi
-  required: true
 - name: APPLICATION_IMAGE
   displayName: Application Docker image
   description: See https://github.com/orgs/MaastrichtU-IDS/packages/container/package/trinityrnaseq for more details on the image
   value: ghcr.io/maastrichtu-ids/trinityrnaseq
   required: true
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage used for the notebook (approximate).
+  value: 10Gi
+  required: true
+
 
 objects:
-- kind: "PersistentVolumeClaim"
-  apiVersion: "v1"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-    storageClassName: ocs-storagecluster-cephfs
-
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
   metadata:
@@ -76,6 +63,20 @@ objects:
         scheduled: false
     lookupPolicy:
       local: true
+
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+    storageClassName: ocs-storagecluster-cephfs
 
 - kind: Deployment
   apiVersion: apps/v1

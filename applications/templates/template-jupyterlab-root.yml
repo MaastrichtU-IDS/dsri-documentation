@@ -65,6 +65,8 @@ parameters:
     displayName: JupyterLab UI Password
     description: The password/token to access the JupyterLab web UI
     required: true
+
+  #Custom parameters  
   - name: GIT_URL
     displayName: URL of a git repository to clone in the workspace (optional)
     description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents. Only works for images based on the official images
