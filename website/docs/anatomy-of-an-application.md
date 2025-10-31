@@ -3,599 +3,558 @@ id: anatomy-of-an-application
 title: Anatomy of a DSRI application
 ---
 
-This page will present you how an applications is typically built using an **OpenShift template**. This will also help you understand more in general the different objects that needs to be defined when **deploying an application on a Kubernetes cluster**. Even if OpenShift templates can only be deployed to OpenShift, the objects they define are the same as in Kubernetes (apart from the Route which becomes Ingress).
+:::info Check out existing templates
+Browse the RCS team's ready-to-use templates at [https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/applications/templates](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/applications/templates)
+:::
 
-There are other ways to describe applications on OpenShift cluster (here the DSRI), such as Helm or Operators. But OpenShift templates are the easiest and quickest way to build an application that can be deployed from the DSRI web UI catalog in a few clicks, and by providing a few parameters.
+This page shows you how applications are built using **OpenShift templates** and helps you understand the different objects needed when deploying an application on a Kubernetes cluster. While OpenShift templates can only be deployed to OpenShift, the objects they define are the same as in Kubernetes (apart from Route which becomes Ingress).
 
-It is better to have a basic understanding of what a docker container is to fully understand this walkthrough, but it should already gives a good idea of the different objects deployed with each DSRI application.
-
-We will use the template used to deploy JupyterLab as example, and we will describe the goal, importance and caveats of each parts of the application definition. But the same template and instructions can be easily reused for other applications with a web UI to access.
-
-Checkout the [complete JupyterLab template here](https://github.com/MaastrichtU-IDS/dsri-documentation/blob/master/applications/templates/template-jupyterlab-root.yml) (it will be slightly different with a bit more comments, but there are globally the same)
-
-You will see that deploying on Kubernetes (and by extension, here OpenShift), is just about defining objects in a YAML file, like a complex `docker-compose.yml` file. 
+OpenShift templates are the easiest way to build an application that can be deployed from the DSRI web UI catalog in a few clicks by providing a few parameters. We'll use the VSCode template as an example, but the same structure applies to all DSRI applications.
 
 :::info Do you got what it takes?
+The amount of objects might seem overwhelming at first, but this is what it takes to automatically deploy a complex application on a large cluster, available through a generated URL with `HTTPS` encryption!
+:::
 
-The amount of objects might seems a bit overwhelming at first, but this is what it takes to automatically deploy a complex application on a large cluster, automatically available through a generated URL, with `HTTPS` encryption to protect your passwords when you log to a web UI!
+
+## The Backbone Template Structure
+
+All DSRI application templates follow a standardized **backbone structure** with these essential components:
+
+1. **ImageStream** - Docker image management
+2. **PersistentVolumeClaim** - Data storage
+3. **Service** - Internal network exposure
+4. **Route** - External HTTPS access
+5. **Secret** - Secure password storage
+6. **Deployment** - Container orchestration
+
+This structure makes it easy to create new templates by starting with the backbone and customizing only what's needed.
 
 :::
 
-## Application walkthrough
+## Template Components
 
-First, you need to create your **Template** objects, this will be the main object we will create here as all other objects defined will be deployed by this template. 
+### Template Metadata
 
-In this part we mainly just provide the description and information that will be shown to users when deploying the application from the DSRI web UI catalog.
+The Template object contains all components and provides the description shown in the DSRI web UI catalog:
 
 ```yaml
----
 kind: Template
 apiVersion: template.openshift.io/v1
-labels:
-  template: jupyterlab-root
 metadata:
-  name: jupyterlab-root
+  name: vscode-root
   annotations:
-    openshift.io/display-name: JupyterLab
+    openshift.io/display-name: VisualStudio Code server
     description: |-
-      Start JupyterLab images as the `jovyan` user, with sudo privileges to install anything you need. 
-      📂 Use the `/home/jovyan` folder (workspace of the JupyterLab UI) to store your data in the persistent storage automatically created
-      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
-      You can use any image based on the official Jupyter docker stack https://github.com/jupyter/docker-stacks
-      - jupyter/tensorflow-notebook
-      - jupyter/r-notebook
-      - jupyter/all-spark-notebook
-      - ghcr.io/maastrichtu-ids/jupyterlab (with Java and SPARQL kernels)
-      Or build your own! Checkout https://github.com/MaastrichtU-IDS/jupyterlab for an example of custom image
-      Once JupyterLab is deployed you can install any pip packages, JupyterLab extensions, and apt packages.
-    iconClass: icon-python
-    tags: python,jupyter,notebook
-    openshift.io/provider-display-name: Institute of Data Science, UM
-    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
-    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+      Start VisualStudio Code server with the coder user which has sudo permissions
+      📂 Use the /home/coder/project folder to store your data in persistent storage
+    iconClass: icon-kubevirt
+    tags: visualstudio,vscode,root,persistent
+labels:
+  template: vscode-root
 ```
 
 ### Parameters
 
-Then define the **parameters** the user will be able to define in the DSRI catalog web UI when instantiating the application.  `APPLICATION_NAME` is the most important as it will be used everywhere to create the objects and identify the application.
+Define user-configurable values. The backbone provides four standard parameters:
 
 ```yaml
 parameters:
-- name: APPLICATION_NAME
-  displayName: Name for the application
-  description: Must be without spaces (use -), and unique in the project.
-  value: jupyterlab
-  required: true
-- name: PASSWORD
-  displayName: JupyterLab UI Password
-  description: The password/token to access the JupyterLab web UI
-  required: true
-- name: APPLICATION_IMAGE
-  displayName: Jupyter notebook Docker image
-  value: ghcr.io/maastrichtu-ids/jupyterlab:latest
-  required: true
-  description: You can use any image based on https://github.com/jupyter/docker-stacks
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
-  value: 5Gi
-  required: true
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be without spaces (use -), and unique in the project.
+    value: vscode
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Docker image for the application
+    value: ghcr.io/maastrichtu-ids/code-server
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    value: 10Gi
+    required: true
+  - name: PASSWORD
+    displayName: Password
+    required: true
 ```
 
-We can then refer to those parameters value (filled by the users of the template) in the rest of the template using this syntax: `${APPLICATION_NAME}`
+Reference parameters using `${APPLICATION_NAME}` syntax throughout the template.
 
-We will now **describe all objects deployed** when we instantiate this template (to start an application). 
+You can add custom parameters specific to your application below these standard ones.
 
-### Image
+**Objects deployed when instantiate this template (to start an application):**
 
-First we define the **ImageStream** object to import the Docker image(s) of your application(s) on the DSRI cluster
+### 1. ImageStream
 
-Setting the `importPolicy: scheduled` to `true` will have the DSRI to automatically check for new version of this image, which can be useful if you want to always have the latest published version of an applications. Visit the [OpenShift ImageStreams documentation](https://docs.openshift.com/container-platform/4.6/openshift_images/image-streams-manage.html) for more details. Be careful as enabling this feature without real need will cause the DSRI to query DockerHub more, which might require you to login to DockerHub to increase your pull request quota.
+Imports and manages the Docker image. Setting `importPolicy: scheduled: true` auto-checks for new versions (use cautiously to avoid DockerHub rate limits):
 
 ```yaml
 objects:
-- kind: "ImageStream"
-  apiVersion: image.openshift.io/v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-  spec:
-    tags:
-    - name: latest
-      from:
-        kind: DockerImage
-        name: ${APPLICATION_IMAGE}
-    lookupPolicy:
-      local: true
-```
-
-### Create storage
-
-Then we define the **PersistentVolumeClaim**, which is a persistent storage on which we will mount the `/home/jovyan` folder to avoid loosing data if our application is restarted.
-
-Any file outside of a persistent volume can be lost at any moment if the pod restart, usually it only consists in temporary file if you are properly working in the persistent volume folder. This can be useful also if your application is crashing, stopping and restarting your pod (application) might fix it.
-
-```yaml
-- kind: "PersistentVolumeClaim"
-  apiVersion: "v1"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-```
-
-### Secret
-
-Then the **Secret** to store the password
-
-```yaml
-- kind: "Secret"
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: ${APPLICATION_NAME}
-  stringData:
-    application-password: "${PASSWORD}"
-```
-
-### Deployment
-
-Then the **DeploymentConfig** (aka. Deployment) define how to deploy the JupyterLab image, if you want to deploy another application alongside JupyterLab you can do it by adding as many deployments as you want! (and use the same, or different, persistent volume claims for storage). Checkout the [OpenShift Deployments documentation](https://docs.openshift.com/container-platform/4.6/applications/deployments/what-deployments-are.html) for more details.
-
-In this first block we will define the strategy to update and recreate our applications if you change the YAML configuration, or when a new latest docker image is updated, allowing your service to always use the latest up-to-date version of a software without any intervention from you. 
-
-We chose the `Recreate` release option to make sure the container is properly recreated and avoid unnecessary resources consumption, but you can also use `Rolling` to have a downtime free transition between deployments.
-
-```yaml
-- kind: "DeploymentConfig"
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    replicas: 1
-    strategy:
-      type: "Recreate"
-    triggers:
-    - type: "ConfigChange"
-    selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
-```
-
-### Pod spec
-
-Then we define the spec of the **pod** that will be deployed by this DeploymentConfig.
-
-Setting the `serviceAccountName: anyuid` is required for most Docker containers as it allows to run a container using any user ID (e.g. root). Otherwise OpenShift expect to use a random user ID, which is require to build the Docker image especially to work with random user IDs.
-
-We then create the `containers:` array which is where we will define the containers deployed in the pod. It is recommended to deploy 1 container per pod, as it enables a better separation and management of the applications, apart if you know what you are doing. You can also provide the command to run at the start of the container to overwrite the default one, and define the exposed ports (here 8080).
-
-```yaml
-    template:
-      metadata:
-        labels:
-          app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
-      spec:
-        serviceAccountName: "anyuid"
-        containers:
-        - name: "jupyter-notebook"
-          image: "${APPLICATION_NAME}:latest"
-          command:
-          - "start-notebook.sh"
-          - "--no-browser"
-          - "--ip=0.0.0.0"
-          ports:
-          - containerPort: 8888
-            protocol: TCP
-```
-
-### Environment variables in the container
-
-Then define the **environment variables** used in your container, usually the password and most parameters are set here, such as enabling `sudo` in the container.
-
-```yaml
-          env:
-          - name: JUPYTER_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: "application-password"
-                name: "${APPLICATION_NAME}"
-          - name: JUPYTER_ENABLE_LAB
-            value: "yes"
-          - name: GRANT_SUDO
-            value: "yes"
-```
-
-### Mount storage
-
-Then we need to mount the previously created **PersistentVolume** on `/home/jovyan` , the workspace of JupyterLab. Be careful: `volumeMounts` is in the `containers:` object, and `volumes` is defined in the `spec:` object
-
-```yaml
-          volumeMounts:
-          - name: data
-            mountPath: "/home/jovyan"
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
-```
-
-### Security context
-
-Then we define the **securityContext** to allow JupyterLab to run as root, this is **not required for most applications**, just a specificity of the official Jupyter images to run with root privileges.
-
-```yaml
-        securityContext:
-          runAsUser: 0
-          supplementalGroups:
-          - 100
-        automountServiceAccountToken: false
-```
-
-### Service
-
-Then we create the **Service** to expose the port 8888 of our JupyterLab container on the project network. This means that the JupyterLab web UI will reachable by all other application deployed in your project using its application name as hostname (e.g. `jupyterlab`)
-
-```yaml
-- kind: "Service"
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: ${APPLICATION_NAME}
-  spec:
-    ports:
-    - name: 8888-tcp
-      protocol: TCP
-      port: 8888
-      targetPort: 8888
-    selector:
-      app: ${APPLICATION_NAME}
-      deploymentconfig: "${APPLICATION_NAME}"
-    type: ClusterIP
-```
-
-### Route
-
-Finally, we define the **Route** which will automatically generate a URL for the service of your application based following this template: `APPLICATION_NAME-PROJECT_ID-DSRI_URL`
-
-```yaml
-- kind: "Route"
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: ${APPLICATION_NAME}
-  spec:
-    host: ''
-    to:
-      kind: Service
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
       name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 8888-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: latest
+          from:
+            kind: DockerImage
+            name: ${APPLICATION_IMAGE}
+          importPolicy:
+            scheduled: false
+```
+
+### 2. PersistentVolumeClaim
+
+Creates persistent storage to preserve data across restarts. Files outside persistent volumes are lost when pods restart.
+
+The backbone uses `ocs-storagecluster-cephfs` as the storage class.
+
+```yaml
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+```
+
+### 3. Service
+
+Exposes the application port on the project network. **Important:** Ensure `port` and `targetPort` match the `containerPort` in your Deployment.
+
+```yaml
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}" 
+      ports:
+        - name: "8080-tcp"
+          protocol: TCP
+          port: 8080
+          targetPort: 8080
+```
+
+### 4. Route
+
+Generates a public URL (`APPLICATION_NAME-PROJECT_ID.dsri.maastrichtuniversity.nl`) with automatic HTTPS.
+
+```yaml
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: "8080-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+```
+
+### 5. Secret
+
+Stores sensitive data like passwords.
+
+```yaml
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    stringData:
+      application-password: "${PASSWORD}"
+```
+
+### 6. Deployment
+
+Defines how to run the application. Uses `Recreate` strategy to properly restart containers (or `RollingUpdate` for zero-downtime updates).
+
+```yaml
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+```
+
+#### Pod Template Spec
+
+The pod template defines the actual container that will run your application.
+
+```yaml
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+```
+
+Setting `serviceAccountName: anyuid` is required for most Docker containers as it allows running a container using any user ID (e.g., root). Otherwise OpenShift expects to use a random user ID, which requires building the Docker image especially to work with random user IDs.
+
+#### Volumes
+
+Define the volumes that will be available to the pod. The `data` volume references our PersistentVolumeClaim, and `dshm` provides shared memory.
+
+```yaml
+          volumes:
+            - name: data 
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+            - name: dshm 
+              emptyDir:
+                medium: Memory
+```
+
+#### Container Definition
+
+Define the container(s) that will run in the pod. It's recommended to deploy 1 container per pod for better separation and management.
+
+```yaml
+          containers:
+            - name: vscode-container 
+              image: "${APPLICATION_IMAGE}" 
+              imagePullPolicy: IfNotPresent
+              workingDir: /home/coder/project
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+```
+
+#### Volume Mounts
+
+Mount the volumes into the container filesystem. The `data` volume is mounted at the application's workspace path.
+
+```yaml
+              volumeMounts:
+                - name: data 
+                  mountPath: "/home/coder/project" 
+                - name: dshm 
+                  mountPath: /dev/shm
+```
+
+#### Environment Variables
+
+Define environment variables for the container. Here we inject the password from the Secret.
+
+```yaml
+              env:
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: "${APPLICATION_NAME}"
+                      key: application-password
+```
+
+#### Resource Limits
+
+Define resource requests and limits. Requests are the minimum resources guaranteed to the container, while limits are the maximum it can use.
+
+```yaml
+              resources:
+                requests:
+                  cpu: "200m"
+                  memory: "256Mi"
+                limits:
+                  cpu: '32'
+                  memory: "200Gi"
 ```
 
 ## The complete application
 
-Here is a complete file to describe the JupyterLab deployment template, you can add it to your project catalog by going to **+Add** in the DSRI web UI, then click on the option to add a **YAML** file content, and copy paste the template YAML.
+<details>
+<summary>Click to expand full template</summary>
 
 ```yaml
 ---
 kind: Template
 apiVersion: template.openshift.io/v1
-labels:
-  template: jupyterlab-root
 metadata:
-  name: jupyterlab-root
+  name: vscode-root
   annotations:
-    openshift.io/display-name: JupyterLab
+    openshift.io/display-name: VisualStudio Code server
     description: |-
-      Start JupyterLab images as the `jovyan` user, with sudo privileges to install anything you need. 
-      📂 Use the `/home/jovyan` folder (workspace of the JupyterLab UI) to store your data in the persistent storage automatically created
+      Start VisualStudio Code server with the coder user which has sudo permissions
+
+      📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
+
+      📂 Use the /home/coder/project folder (workspace of the VSCode UI) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
-      You can use any image based on the official Jupyter docker stack https://github.com/jupyter/docker-stacks
-      - jupyter/tensorflow-notebook
-      - jupyter/r-notebook
-      - jupyter/all-spark-notebook
-      - ghcr.io/maastrichtu-ids/jupyterlab (with Java and SPARQL kernels)
-      Or build your own! Checkout https://github.com/MaastrichtU-IDS/jupyterlab for an example of custom image
-      Once JupyterLab is deployed you can install any pip packages, JupyterLab extensions, and apt packages.
-    iconClass: icon-python
-    tags: python,jupyter,notebook
+      
+      Python 3 and Java 11 already installed. You can install packages with 'apt-get' after starting the server.
+
+      Visit https://github.com/MaastrichtU-IDS/code-server for more details and to customize the image
+    iconClass: icon-kubevirt
+    tags: visualstudio,vscode,root,persistent
     openshift.io/provider-display-name: Institute of Data Science, UM
-    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-vscode
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
-    
+labels:
+  template: vscode-root
+
 parameters:
-- name: APPLICATION_NAME
-  displayName: Name for the application
-  description: Must be without spaces (use -), and unique in the project.
-  value: jupyterlab
-  required: true
-- name: PASSWORD
-  displayName: JupyterLab UI Password
-  description: The password/token to access the JupyterLab web UI
-  required: true
-- name: APPLICATION_IMAGE
-  displayName: Jupyter notebook Docker image
-  value: ghcr.io/maastrichtu-ids/jupyterlab:latest
-  required: true
-  description: You can use any image based on https://github.com/jupyter/docker-stacks
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage allocated to the notebook persistent storage in `/home/jovyan`.
-  value: 5Gi
-  required: true
-    
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be without spaces (use -), and unique in the project.
+    value: vscode
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Docker image for the application
+    description: See https://github.com/MaastrichtU-IDS/code-server for more details and to customize the image
+    value: ghcr.io/maastrichtu-ids/code-server
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage used for the notebook workspace.
+    value: 10Gi
+    required: true
+  - name: PASSWORD
+    displayName: Password
+    description: The password to access the VSCode application
+    required: true
+
 objects:
-- kind: "ImageStream"
-  apiVersion: image.openshift.io/v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-  spec:
-    tags:
-    - name: latest
-      from:
-        kind: DockerImage
-        name: ${APPLICATION_IMAGE}
-    lookupPolicy:
-      local: true
 
-- kind: "PersistentVolumeClaim"
-  apiVersion: "v1"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-
-- kind: "Secret"
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: ${APPLICATION_NAME}
-  stringData:
-    application-password: "${PASSWORD}"
-
-- kind: "DeploymentConfig"
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    replicas: 1
-    strategy:
-      type: Recreate
-    triggers:
-    - type: ConfigChange
-    selector:
-      app: "${APPLICATION_NAME}"
-      deploymentconfig: "${APPLICATION_NAME}"
-
-    template:
-      metadata:
-        labels:
-          app: "${APPLICATION_NAME}"
-          deploymentconfig: "${APPLICATION_NAME}"
-      spec:
-        serviceAccountName: "anyuid"
-        containers:
-        - name: jupyter-notebook
-          image: "${APPLICATION_NAME}:latest"
-          command:
-          - "start-notebook.sh"
-          - "--no-browser"
-          - "--ip=0.0.0.0"
-          ports:
-          - containerPort: 8888
-            protocol: TCP
-
-          env:
-          - name: "JUPYTER_TOKEN"
-            valueFrom:
-              secretKeyRef:
-                key: application-password
-                name: "${APPLICATION_NAME}"
-          - name: JUPYTER_ENABLE_LAB
-            value: "yes"
-          - name: GRANT_SUDO
-            value: "yes"
-
-          volumeMounts:
-          - name: data
-            mountPath: "/home/jovyan"
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
-
-        securityContext:
-          runAsUser: 0
-          supplementalGroups:
-          - 100
-        automountServiceAccountToken: false
-
-- kind: "Service"
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: ${APPLICATION_NAME}
-  spec:
-    ports:
-    - name: 8888-tcp
-      protocol: TCP
-      port: 8888
-      targetPort: 8888
-    selector:
-      app: ${APPLICATION_NAME}
-      deploymentconfig: "${APPLICATION_NAME}"
-    type: ClusterIP
-
-- kind: "Route"
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: ${APPLICATION_NAME}
-  spec:
-    host: ''
-    to:
-      kind: Service
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
       name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 8888-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
-```
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: vscode-root-dynamic
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: latest
+          from:
+            kind: DockerImage
+            name: ${APPLICATION_IMAGE}
+          importPolicy:
+            scheduled: false
 
-## Add a configuration file
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
 
-This practice is more advanced, and is not required for most deployments, but you can easily create a **ConfigMap** object to define any file to be provided at runtime to the application.
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}" 
+      ports:
+        - name: "8080-tcp"
+          protocol: TCP
+          port: 8080
+          targetPort: 8080
 
-For example here we are going to define a python script that will be run when starting JupyterLab (`jupyter_notebook_config.py`). It will clone the git repository URL, provided by the user when creating the template, at the start of JupyterLab in the workspace. If this repo contains files with list of packages in the root folder (`requirements.txt` and `packages.txt`), they will be installed at start
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: "8080-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
 
-```yaml
-- kind: ConfigMap
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}-cfg"
-    labels:
-      app: "${APPLICATION_NAME}"
-  data:
-    # Clone git repo, then install requirements.txt and packages.txt
-    jupyter_notebook_config.py: |
-      import os
-      git_url = os.environ.get('GIT_URL')
-      home_dir = os.environ.get('HOME')
-      os.chdir(home_dir)
-      if git_url:
-        repo_id = git_url.rsplit('/', 1)[-1]
-        os.system('git clone --quiet --recursive ' + git_url)
-        os.chdir(repo_id)
-        if os.path.exists('packages.txt'):
-          os.system('sudo apt-get update')
-          os.system('cat packages.txt | xargs sudo apt-get install -y')
-        if os.path.exists('requirements.txt'):
-          os.system('pip install -r requirements.txt')
-        os.chdir(home_dir)
-```
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    stringData:
+      application-password: "${PASSWORD}" 
 
-We will then need to mount this config file like a persistent volume in the path we want it to be (here `/etc/jupyter/openshift`), change the **volumes** and **volumeMounts** of your **DeploymentConfig**:
-
-```yaml
-          volumeMounts:
-          - name: data
-            mountPath: "/home/jovyan"
-          - name: configs
-            mountPath: "/etc/jupyter/openshift"
-        automountServiceAccountToken: false
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
-        - name: configs
-          configMap:
-            name: "${APPLICATION_NAME}-cfg"
-```
-
-Then change the `jupyter-notebook` container start command to include this config file:
-
-```yaml
-          command:
-          - "start-notebook.sh"
-          - "--no-browser"
-          - "--ip=0.0.0.0"
-          - "--config=/etc/jupyter/openshift/jupyter_notebook_config.py"
-```
-
-Add the **optional parameter** to get the git URL to clone when the user create the template:
-
-```yaml
-parameters:
-- name: GIT_URL
-  displayName: URL of the git repository to clone (optional)
-  required: false
-  description: Source code will be automatically cloned, then requirements.txt and packages.txt content will be automatically installed if presents
-```
-
-Finally, add the git URL parameter provided by the user as **environment variable** of the container, so that it is picked up by the config script when running at the start of JupyterLab:
-
-```yaml
-          env:
-          - name: GIT_URL
-            value: "${GIT_URL}"
-```
-
-## Add automated health checks
-
-You can add **readiness and liveness probes** to a container to automatically check if the web application is up and ready. This will allow to wait for the JupyterLab web UI to be accessible before showing the application as ready in the Topology. Useful if you are cloning a repository and installing packages, which will take more time to start JupyterLab.
-
-```yaml
-        containers:
-        - name: jupyter-notebook
-          readinessProbe: 
-            tcpSocket:
-              port: 8888
-          livenessProbe: 
-            initialDelaySeconds: 15 
-            tcpSocket:  
-              port: 8888 
-          failureThreshold: 40
-          periodSeconds: 10
-          timeoutSeconds: 2
-```
-
-Checkout the [OpenShift Application health documentation](https://docs.openshift.com/container-platform/4.6/applications/application-health.html) for more details.
-
-## Define resource limits
-
-You can also define resources request and limits for each **DeploymentConfig**, in `spec:`
-
-```yaml
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}" 
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
         spec:
-          resources:
-            requests: 
-              cpu: "1"
-              memory: "2Gi"
-            limits:
-              cpu: "128"
-              memory: "300Gi"
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          volumes:
+            - name: data 
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+            - name: dshm 
+              emptyDir:
+                medium: Memory
+          containers:
+            - name: vscode-container 
+              image: "${APPLICATION_IMAGE}" 
+              imagePullPolicy: IfNotPresent
+              workingDir: /home/coder/project
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+              volumeMounts:
+                - name: data 
+                  mountPath: "/home/coder/project" 
+                - name: dshm 
+                  mountPath: /dev/shm
+              env:
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: "${APPLICATION_NAME}"
+                      key: application-password 
+              resources:
+                requests:
+                  cpu: "200m"
+                  memory: "256Mi"
+                limits:
+                  cpu: '32'
+                  memory: "200Gi"
+```
+</details>
+
+You can add this to your project catalog via **+Add** > **YAML** in the DSRI web UI.
+
+## Build Your Own Template
+
+To create a template for a new application:
+
+1. **Start with the backbone template** from the repository
+2. **Update metadata**: Change `name`, `display-name`, `description`, `iconClass`, and `tags`
+3. **Adjust port numbers**: Replace `8080` with your application's port in Service, Route, and Deployment
+4. **Update volume mounts**: Change `mountPath` and `workingDir` to match your application's workspace
+5. **Add custom parameters**: Include any application-specific variables
+6. **Customize environment variables**: Add any additional env vars your application needs
+7. **Set resource limits**: Adjust CPU and memory based on your application's requirements
+
+### Quick Customization Checklist
+
+- [ ] Template name and display name
+- [ ] Port number (containerPort, port, targetPort)
+- [ ] Mount path for persistent storage
+- [ ] Default parameter values
+- [ ] Application-specific environment variables
+- [ ] Resource requests and limits
+- [ ] Remove unused components (e.g., `dshm` volume if not needed)
+
+## Advanced Features
+
+### Health Checks
+
+Add probes to verify application readiness:
+
+```yaml
+containers:
+  - name: vscode-container
+    readinessProbe: 
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 10
+    livenessProbe: 
+      tcpSocket:  
+        port: 8080
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 3
 ```
 
-## Build your own application template
+See [OpenShift Application Health docs](https://docs.openshift.com/container-platform/4.6/applications/application-health.html) for details.
 
-The easiest way to build a template for a new application is to start from this JupyterLab template:
+### Configuration Files
 
-* Replace `jupyterlab-root` by your application name
-* Replace `8888` by your application
-* Change the template and parameters descriptions to match your application
-* Remove the `securityContext` part, and other objects you do not need
+Use ConfigMaps to add configuration files or scripts:
 
-If you need to start multiple containers, copy/paste the objects you need to create and edit them
+```yaml
+  - kind: ConfigMap
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}-config"
+      labels:
+        app: "${APPLICATION_NAME}"
+    data:
+      startup.sh: |
+        #!/bin/bash
+        echo "Custom startup script"
+```
+
+Mount in deployment:
+
+```yaml
+volumeMounts:
+  - name: config
+    mountPath: "/etc/config"
+volumes:
+  - name: config
+    configMap:
+      name: "${APPLICATION_NAME}-config"
+```
