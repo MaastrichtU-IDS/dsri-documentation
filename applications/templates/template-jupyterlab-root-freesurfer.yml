@@ -41,7 +41,7 @@ parameters:
   required: true
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook with Freesurfer Docker image
-  value: ghcr.io/maastrichtu-ids/jupyterlab:freesurfer
+  value: ghcr.io/maastrichtu-ids/jupyterlab:freesurfer-dev
   required: true
   description: Check the description on the right for more details about available images
 - name: STORAGE_SIZE
