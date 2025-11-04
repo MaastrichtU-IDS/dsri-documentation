@@ -6,9 +6,9 @@ labels:
 metadata:
   name: jupyterlab-root-freesurfer
   annotations:
-    openshift.io/display-name: Freesurfer JupyterLab
+    openshift.io/display-name: Freesurfer JupyterLab (v8.1.0)
     description: |-
-      Start JupyterLab images with Neuroscience Freesurfer pre-installed based on the official Docker stack, as the `jovyan` user, with sudo privileges to install anything you need.
+      Start JupyterLab images with Neuroscience Freesurfer 8.1.0 pre-installed based on the official Docker stack, as the `jovyan` user, with sudo privileges to install anything you need.
 
       Checkout https://github.com/MaastrichtU-IDS/jupyterlab to see how our custom image is built, and how to extend it
       For more details on the jupyter docker stack, go to https://github.com/jupyter/docker-stacks
@@ -39,13 +39,9 @@ parameters:
   description: Must be without spaces (use -), and unique in the project.
   value: jupyterlab-freesurfer
   required: true
-- name: PASSWORD
-  displayName: JupyterLab UI Password
-  description: The password/token to access the JupyterLab web UI
-  required: true
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook with Freesurfer Docker image
-  value: ghcr.io/maastrichtu-ids/jupyterlab:freesurfer
+  value: ghcr.io/maastrichtu-ids/jupyterlab:freesurfer-8.1.0
   required: true
   description: Check the description on the right for more details about available images
 - name: STORAGE_SIZE
@@ -53,6 +49,12 @@ parameters:
   description: Size of the storage allocated to the notebook persistent storage.
   value: 10Gi
   required: true
+- name: PASSWORD
+  displayName: JupyterLab UI Password
+  description: The password/token to access the JupyterLab web UI
+  required: true
+
+ #Custom parameters 
 - name: GIT_URL
   displayName: URL of a git repository to clone in the workspace (optional)
   required: false
@@ -102,8 +104,44 @@ objects:
         storage: ${STORAGE_SIZE}
     storageClassName: ocs-storagecluster-cephfs
 
-- apiVersion: v1
-  kind: Secret
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+      template: jupyterlab-root-freesurfer
+  spec:
+    ports:
+    - name: 8888-tcp
+      protocol: TCP
+      port: 8888
+      targetPort: 8888
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+    type: ClusterIP
+
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8888-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Secret
+  apiVersion: v1
   metadata:
     name: "${APPLICATION_NAME}"
     labels:
@@ -200,38 +238,3 @@ objects:
           emptyDir:
             medium: Memory
 
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: jupyterlab-root-freesurfer
-  spec:
-    ports:
-    - name: 8888-tcp
-      protocol: TCP
-      port: 8888
-      targetPort: 8888
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-    type: ClusterIP
-
-- kind: Route
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
-      name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 8888-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
