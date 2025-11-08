@@ -17,10 +17,10 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
     logs = ''
 
     try:
-        # Turn down the DeploymentConfig to 0 replicas
-        dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='DeploymentConfig')
+        # Turn down the Deployment to 0 replicas
+        dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='Deployment')
         body = {
-            'kind': 'DeploymentConfig',
+            'kind': 'Deployment',
             'apiVersion': settings.CLUSTER_API_VERSION,
             'metadata': {'name': app_id},
             'spec': {
@@ -34,10 +34,10 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
         logs = logs + f'⚠️  Error stopping the workspace *{app_id}* in *{project_id}*: {str(err)[:21]}\n'
 
     try:
-        # Patch DeploymentConfig GPU limits
-        dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='DeploymentConfig')
+        # Patch Deployment GPU limits
+        dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='Deployment')
         body = {
-            'kind': 'DeploymentConfig',
+            'kind': 'Deployment',
             'apiVersion': settings.CLUSTER_API_VERSION,
             'metadata': {'name': app_id},
             'spec': {
@@ -117,10 +117,10 @@ def enable_gpu(project_id, app_id, dyn_client):
         email = email + f'The GPU was successfully enabled in your project <b>{project_id}</b><br/><br/>'
 
         try:
-            # Patch DeploymentConfig
-            dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='DeploymentConfig')
+            # Patch Deployment
+            dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='Deployment')
             body = {
-                'kind': 'DeploymentConfig',
+                'kind': 'Deployment',
                 'apiVersion': settings.CLUSTER_API_VERSION,
                 'metadata': {'name': app_id},
                 'spec': {
@@ -144,7 +144,7 @@ def enable_gpu(project_id, app_id, dyn_client):
             email = email + f'The GPU was successfully enabled for your workspace <b>{app_id}</b> in your project <b>{project_id}</b>. You can restart the workspace if needed, and start using the GPU.<br/><br/>'
 
         except Exception as err:
-            # Error when editing DeploymentConfig
+            # Error when editing Deployment
             logs = logs + f'⚠️  Could not change the GPU limits for *{app_id}* in *{project_id}*. Error: {str(err)[:21]}'
             email = email + f'The workspace provided <b>{app_id}</b> was not found in the project <b>{project_id}</b>, hence the GPU could not be enabled automatically. You will need to enable it by yourself.'
 
