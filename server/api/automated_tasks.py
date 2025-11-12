@@ -18,10 +18,10 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
 
     try:
         # Turn down the Deployment to 0 replicas
-        dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='Deployment')
+        dyn_dc = dyn_client.resources.get(api_version='apps/v1', kind='Deployment')
         body = {
             'kind': 'Deployment',
-            'apiVersion': settings.CLUSTER_API_VERSION,
+            'apiVersion': 'apps/v1',
             'metadata': {'name': app_id},
             'spec': {
                 'replicas': 0,
@@ -35,10 +35,10 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
 
     try:
         # Patch Deployment GPU limits
-        dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='Deployment')
+        dyn_dc = dyn_client.resources.get(api_version='apps/v1', kind='Deployment')
         body = {
             'kind': 'Deployment',
-            'apiVersion': settings.CLUSTER_API_VERSION,
+            'apiVersion': 'apps/v1',
             'metadata': {'name': app_id},
             'spec': {
                 'template': {
@@ -118,10 +118,10 @@ def enable_gpu(project_id, app_id, dyn_client):
 
         try:
             # Patch Deployment
-            dyn_dc = dyn_client.resources.get(api_version=settings.CLUSTER_API_VERSION, kind='Deployment')
+            dyn_dc = dyn_client.resources.get(api_version='apps/v1', kind='Deployment')
             body = {
                 'kind': 'Deployment',
-                'apiVersion': settings.CLUSTER_API_VERSION,
+                'apiVersion': 'apps/v1',
                 'metadata': {'name': app_id},
                 'spec': {
                     'template': {
