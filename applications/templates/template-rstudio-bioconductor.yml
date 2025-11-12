@@ -1,0 +1,195 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: bioconductor-rstudio
+  annotations:
+    openshift.io/display-name: Bioconductor with RStudio
+    description: |-
+      Bioconductor Docker image with RStudio IDE for R-based bioinformatics analysis.
+      
+      This template provides the Bioconductor 3.21 suite with R 4.5.2, suitable for genomics workflows including single-cell RNA sequencing analysis.
+      You can install packages like Seurat as needed.
+
+      🔑 Default credentials are
+      - login: root
+      - password: $user_password
+
+      🐳 Available images with this template:
+      bioconductor/bioconductor_docker:devel
+      rocker/rstudio
+      rocker/tidyverse
+      ghcr.io/maastrichtu-ids/rstudio
+
+      📂 Use the /root/persistent folder to store your data in a persistent storage automatically created.
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume
+
+      📖 Documentation: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-rstudio
+
+    iconClass: icon-play
+    tags: bioconductor,R,rstudio,root,persistent
+    openshift.io/provider-display-name: Research Computing Support
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: Bioconductor-RStudio
+
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be without spaces (use -), and unique in the project.
+  value: bioconductor-rstudio
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: Bioconductor Docker image
+  description: Check on the right to see which images can be used to start RStudio
+  value: bioconductor/bioconductor_docker:3.21-R-4.5.2
+  required: true
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage used for the notebook (approximate).
+  value: 10Gi
+  required: true
+- name: PASSWORD
+  displayName: RStudio password
+  description: The password of the RStudio user. 
+  required: true
+
+
+objects:
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+      template: bioconductor-docker
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      importPolicy:
+        scheduled: false
+    lookupPolicy:
+      local: true
+
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+    storageClassName: ocs-storagecluster-cephfs
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8787-tcp
+      protocol: TCP
+      port: 8787
+      targetPort: 8787
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8787-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Secret 
+  apiVersion: v1
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    replicas: 1
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          alpha.image.policy.openshift.io/resolve-names: "*"
+        labels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
+        containers:
+        - name: rstudio-container
+          image: ${APPLICATION_IMAGE}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8787
+            protocol: TCP
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+          - name: data
+            mountPath: "/root/persistent"
+          env:
+          - name: USER
+            value: "rstudio"
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: ROOT
+            value: "TRUE"
+          - name: RUNROOTLESS
+            value: 'true'
+        automountServiceAccountToken: false
+
