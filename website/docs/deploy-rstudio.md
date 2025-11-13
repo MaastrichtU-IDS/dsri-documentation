@@ -19,6 +19,8 @@ Provide a few parameters, and Instantiate the template. The **username** will be
 
 See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
 
+If you need Bioconductor packages for genomics or single-cell RNA sequencing analysis, use the **Bioconductor with RStudio** template. It includes Bioconductor 3.21 with R 4.5.2 pre-installed. Everything else works the same way (persistent storage, root access, Git integration).
+
 :::
 
 ## Use Git in RStudio
