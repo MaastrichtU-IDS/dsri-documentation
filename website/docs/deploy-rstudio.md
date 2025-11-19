@@ -21,6 +21,8 @@ See the [official Docker image documentation](https://github.com/rocker-org/rock
 
 :::
 
+If you need Bioconductor packages for genomics or single-cell RNA sequencing analysis, use the **Bioconductor with RStudio** template. It includes Bioconductor 3.21 with R 4.5.2 pre-installed. Everything else works the same way (persistent storage, root access, Git integration).
+
 ## Use Git in RStudio
 
 The fastest way to get started is to use `git` from the terminal, for example to clone a git repository use `git clone`

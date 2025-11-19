@@ -194,6 +194,3 @@ objects:
         - emptyDir:
             medium: Memory
           name: dshm
-
-
-

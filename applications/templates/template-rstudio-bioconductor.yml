@@ -2,11 +2,14 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: rstudio-root-existing-pvc
+  name: bioconductor-rstudio
   annotations:
-    openshift.io/display-name: RStudio on existing storage
+    openshift.io/display-name: Bioconductor with RStudio
     description: |-
-      Start RStudio with the 'root' as username which has root permissions (sudo), and with an existing Persistent Volume Claim (PVC). Find the list of PVC in Search > Resources > Persistent Volume Claim.
+      Bioconductor Docker image with RStudio IDE for R-based bioinformatics analysis.
+      
+      This template provides the Bioconductor 3.21 suite with R 4.5.2, suitable for genomics workflows including single-cell RNA sequencing analysis.
+      You can install packages like Seurat as needed.
 
       🔑 Default credentials are
       - login: root
@@ -18,44 +21,39 @@ metadata:
       rocker/tidyverse
       ghcr.io/maastrichtu-ids/rstudio
 
-      Images based on rocker can be deployed: https://hub.docker.com/r/rocker/rstudio/
-      Visit https://github.com/MaastrichtU-IDS/rstudio for more details to build and customize the image
-
       📂 Use the /root/persistent folder to store your data in a persistent storage automatically created.
-      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume
+
+      📖 Documentation: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-rstudio
+
     iconClass: icon-play
-    tags: R,rstudio,root,persistent
-    openshift.io/provider-display-name: Institute of Data Science, UM
-    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-rstudio
+    tags: bioconductor,R,rstudio,root,persistent
+    openshift.io/provider-display-name: Research Computing Support
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:
-  template: rstudio-root-existing-pvc
+  template: Bioconductor-RStudio
 
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
   description: Must be without spaces (use -), and unique in the project.
-  value: rstudio
+  value: bioconductor-rstudio
   required: true
 - name: APPLICATION_IMAGE
-  displayName: RStudio Docker image
+  displayName: Bioconductor Docker image
   description: Check on the right to see which images can be used to start RStudio
-  value: ghcr.io/maastrichtu-ids/rstudio:latest
+  value: bioconductor/bioconductor_docker:3.21-R-4.5.2
   required: true
-- name: PERSISTENT_VOLUME_CLAIM
-  displayName: Persistent Volume Claim
-  description: The name of the already existing Persistent Volume Claim to mount to this notebook. Find the list in Search > Resources > Persistent Volume Claim.
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage used for the notebook (approximate).
+  value: 10Gi
   required: true
 - name: PASSWORD
   displayName: RStudio password
   description: The password of the RStudio user. 
   required: true
 
-- name: OPENBLAS_NUM_THREADS
-  displayName: Number of threads for OpenBLAS
-  description: Restricting the number of thread allocated to OpenBLAS can speed up computations using OpenBLAS (leave empty for default 64)
-  value: "1"
-  required: false
 
 objects:
 - kind: ImageStream
@@ -64,7 +62,7 @@ objects:
     name: ${APPLICATION_NAME}
     labels:
       app: "${APPLICATION_NAME}"
-      template: rstudio-root-existing-pvc
+      template: bioconductor-docker
   spec:
     tags:
     - name: latest
@@ -75,6 +73,20 @@ objects:
         scheduled: false
     lookupPolicy:
       local: true
+
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+    storageClassName: ocs-storagecluster-cephfs
 
 - kind: Service
   apiVersion: v1
@@ -106,41 +118,6 @@ objects:
       weight: 100
     port:
       targetPort: 8787-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
-
-# Shiny server route
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}-shiny"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 3838-tcp
-      protocol: TCP
-      port: 3838
-      targetPort: 3838
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-
-- kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    name: "${APPLICATION_NAME}-shiny"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
-      name: "${APPLICATION_NAME}-shiny"
-      weight: 100
-    port:
-      targetPort: 3838-tcp
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
@@ -184,15 +161,13 @@ objects:
         volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: "${PERSISTENT_VOLUME_CLAIM}"
+            claimName: "${APPLICATION_NAME}"
         containers:
         - name: rstudio-container
           image: ${APPLICATION_IMAGE}
           imagePullPolicy: Always
           ports:
           - containerPort: 8787
-            protocol: TCP
-          - containerPort: 3838
             protocol: TCP
           resources:
             limits:
@@ -216,6 +191,5 @@ objects:
             value: "TRUE"
           - name: RUNROOTLESS
             value: 'true'
-          - name: OPENBLAS_NUM_THREADS
-            value: "${OPENBLAS_NUM_THREADS}"
         automountServiceAccountToken: false
+

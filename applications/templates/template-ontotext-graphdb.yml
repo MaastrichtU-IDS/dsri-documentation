@@ -143,4 +143,3 @@ objects:
               -Dgraphdb.append.request.id.headers=true
               -Dreuse.vars.in.subselects=true
         automountServiceAccountToken: false
-

@@ -210,4 +210,3 @@ objects:
           emptyDir:
             medium: Memory
         automountServiceAccountToken: false
-

@@ -12,6 +12,8 @@ If you are planning to present or publish your work which was made possible by u
 
 # Citations
 
+* **AudioToolAgent: An Agentic Framework for Audio-Language Models**, *Gijs Wijngaard, Elia Formisano, Michel Dumontier*, [https://arxiv.org/pdf/2510.02995](https://arxiv.org/pdf/2510.02995), 2025.
+
 * **Audio-Language Datasets of Scenes and Events: A Survey**, *Gijs Wijngaard, Elia Formisano, Michele Esposito and Michel Dumontier*, [https://arxiv.org/pdf/2407.06947](https://arxiv.org/pdf/2407.06947), 2024.
 
 * **Actionability of Synthetic Data in a Heterogeneous and Rare Healthcare Demographic; Adolescents and Young Adults (AYAs) with Cancer**, *J. (Joshi) Hogenboom, A. (Aiara) Lobo Gomes, A.L.A.J. (Andre) Dekker, W.T.A. (Winette) Van Der Graaf, O. (Olga) Husson, L.Y.L. (Leonard) Wee*, [https://www.medrxiv.org/content/10.1101/2024.03.04.24303526v1.full.pdf](https://www.medrxiv.org/content/10.1101/2024.03.04.24303526v1.full.pdf), 2024.

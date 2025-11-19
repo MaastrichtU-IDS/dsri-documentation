@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 kind: Template
 apiVersion: template.openshift.io/v1
@@ -248,4 +249,3 @@ objects:
           - name: VIRT_URIQA_DefaultHost
             value: "${TRIPLESTORE_URL}"
         automountServiceAccountToken: false
-

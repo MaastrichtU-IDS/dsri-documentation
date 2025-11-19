@@ -280,8 +280,8 @@ function GpuBooking() {
   // }
   const getGpuColor: any = (gpuCount: any) => {
     let color = 'success' // Green
-    if (gpuCount > 5) color = 'warning' // Orange
-    if (gpuCount > 7) color = 'error' // Red
+    // if (gpuCount > 5) color = 'warning' // Orange
+    if (gpuCount > 4) color = 'error' // Red
     return color
   }
   
@@ -332,11 +332,7 @@ function GpuBooking() {
           </h1>
 
           <p style={{marginTop: '10px'}}>
-            ⚠️ As of 14-08-2025 booking a GPU is not possible until further notice! Apologies for any inconveniences. ⚠️
-          </p>
-
-          <p style={{marginTop: '10px'}}>
-            Once you booked a GPU, you will receive an email with more information, and the GPU will be enabled in your DSRI project for the period requested. You can book a GPU for a maximum of 7 days. Multiple consecutive 7-day bookings will be monitored, and any deemed unnecessary will be cancelled.
+            Once you booked a GPU, you will receive an email with more information, and the GPU will be enabled in your DSRI project for the period requested. You can book a GPU for a maximum of <strong>4 days per calendar month</strong>. We will monitor bookings to ensure fair usage, and consecutive or excessive bookings may be adjusted if necessary.
           </p>
           <p style={{marginBottom: '40px'}}>
             The DSRI has 7 GPUs, the number in the badge on a date indicates the number of GPUs already booked this day, and greyed out days are already fully booked.
@@ -462,14 +458,15 @@ function GpuBooking() {
             </Box>
 
             <p style={{marginTop: '10px'}}>
-              ⚠️ As of 14-08-2025 booking a GPU is not possible until further notice! Apologies for any inconveniences. ⚠️
+              ⚠️ You can book a GPU for a maximum of <strong>4 days per calendar month</strong>. We will monitor bookings to ensure fair usage, and consecutive or excessive bookings may be adjusted if necessary. ⚠️
+              If you would need more GPU time, please please <a href="https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392" target="_blank">Submit a ticket</a>, and we can look into how we could potentailly help you! 
             </p>
 
             <p style={{marginTop: '10px'}}>
-              ⚠️ If you don't see any colored number on the calendar please reload the page, sometimes ReactJS fails to initialize the page
+              ⚠️ If you don't see any colored number on the calendar please reload the page, sometimes ReactJS fails to initialize the page ⚠️
             </p>
 
-            <button type="submit" disabled={true} style={{margin: '30px 0px', cursor: 'not-allowed'}} className={clsx(
+            <button type="submit" style={{margin: '30px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
               )}>Request a GPU for the selected period</button> 
           </form>
@@ -478,7 +475,7 @@ function GpuBooking() {
             🔎 You can see a more detailed view of the GPU schedule <a href="https://calendar.dsri.maastrichtuniversity.nl" target="_blank">here</a>
           </p>
           <p>
-            ❌ If you want to cancel your reservation, please send an email to <a href="mailto:DSRI-SUPPORT-L@maastrichtuniversity.nl" target="_blank">DSRI-SUPPORT-L@maastrichtuniversity.nl</a>
+            ❌ If you want to cancel your reservation, please <a href="https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392" target="_blank">Submit a ticket!</a>
           </p>
 
         </FormControl>
@@ -489,4 +486,3 @@ function GpuBooking() {
 }
 
 export default GpuBooking;
-

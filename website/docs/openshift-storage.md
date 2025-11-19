@@ -5,7 +5,7 @@ title: Data storage
 
 Different storages can be used when running services on the DSRI:
 
-🦋 **Ephemeral storage**: storage is bound to the pod, data will be lost when the pod is deleted (but this deployment does not require to request the creation of a persistent storage, and is faster to test code).
+🦋 **Ephemeral storage**: storage is bound to the pod, data will be lost when the pod is restarted or deleted (but this deployment does not require to request the creation of a persistent storage, and is faster to test code).
 
 ⚡ **Dynamic storage**:  automatically create a persistent storage when starting an application. Can also be created in the OpenShift web UI, using the `dynamic-maprfs` Storage Class.
 
@@ -31,11 +31,13 @@ A storage (aka. Persistent Volume Claim) is only accessible in the project where
 
    then you will redirect the wizard of Create Persistent Volume Claim 
 
-6. Provide the unique **Persistent Volume Claim Name** start with ` pvc-` 
+6. Choose the right storageClass! The default is `ocs-storagecluster-ceph-rbd`, which is block storage and can be useful in some usecases. However, to be sure change this to `ocs-storagecluster-cephfs`! Especially if you'd like to bind multiple pods to the PVC you are creating.
+
+7. Provide the unique **Persistent Volume Claim Name** start with ` pvc-` 
 
    example: ` pvc-filebrowser`
 
-7. Select the **Access Mode** **` RWX`**and **Storage Size**
+8. Select the **Access Mode** **` RWX`**and **Storage Size**
 
    | Access Mode   | CLI abbreviation | Description                                               |
    | :------------ | :--------------- | :-------------------------------------------------------- |
@@ -43,7 +45,7 @@ A storage (aka. Persistent Volume Claim) is only accessible in the project where
    | ReadOnlyMany  | `ROX`            | The volume can be mounted as read-only by many nodes.     |
    | ReadWriteMany | `RWX`            | The volume can be mounted as read-write by many nodes.    |
 
-8. Click **Create**
+9. Click **Create**
 
 <img src="/img/screenshot_pvc_storage.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
@@ -53,7 +55,7 @@ A storage (aka. Persistent Volume Claim) is only accessible in the project where
 
 :::info 
 
-The DSRI using the [**Openshift Container Stroage**](https://www.openshift.com/products/container-storage/) (` OCS`)  which is based on [**CEPH**](https://ceph.io/ceph-storage/) offers `ReadWriteOnce` access mode. 
+The DSRI using the [**Openshift Container Storage**](https://www.openshift.com/products/container-storage/) (`OCS`)  which is based on [**CEPH**](https://ceph.io/ceph-storage/) offers `ReadWriteOnce` access mode. 
 
 * `ReadWriteOnce` ([**RWO**](https://docs.openshift.com/container-platform/4.6/storage/understanding-persistent-storage.html)) volumes cannot be mounted on multiple nodes. Use the `ReadWriteMany` ([**RWX**](https://docs.openshift.com/container-platform/4.6/storage/understanding-persistent-storage.html)) access mode when possible. If a node fails, the system does not allow the attached RWO volume to be mounted on a new node because it is already assigned to the failed node. If you encounter a multi-attach error message as a result, force delete the pod on a shut down or crashed node. 
 
@@ -116,7 +118,7 @@ Dynamic **persistent** volumes can be created automatically by an application te
 Dynamic storage can also be created manually, go to **Storage** on the left sidebar in a project:
 
 1. Click **Create Storage** top right of the Storage page.
-2. Storage class: **ceph-fs**
+2. Storage class: **ocs-storagecluster-cephfs**
 3. Access Mode:
    * **Single User (RWO)**: only the user who created this volume can read/write to this volume.
    * **Shared Access (RWX)**: all users with access to the projects can read/write this volume.

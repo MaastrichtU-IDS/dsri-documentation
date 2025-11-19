@@ -519,7 +519,7 @@ singleuser:
       pvcNameTemplate: 'claim-{username}{servername}'
       storageAccessModes:
         - ReadWriteOnce
-      storageClass: null
+      storageClass: ocs-storagecluster-cephfs
       volumeNameTemplate: 'volume-{username}{servername}'
     extraLabels: {}
     extraVolumeMounts: []
