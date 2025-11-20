@@ -51,7 +51,6 @@ parameters:
     value: 2G
 
 objects:
-
   - kind: ImageStream
     apiVersion: v1
     metadata:
@@ -70,7 +69,6 @@ objects:
       labels:
         app: "${NAME}"
 
-
   - kind: "PersistentVolumeClaim"
     apiVersion: "v1"
     metadata:
@@ -84,7 +82,6 @@ objects:
         requests:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
-
 
   - kind: Service
     apiVersion: v1
@@ -113,7 +110,6 @@ objects:
         name: ${NAME}-shiny-service
       selector:
         app: rstudio
-
 
   - kind: Route
     apiVersion: v1
@@ -149,7 +145,6 @@ objects:
         insecureEdgeTerminationPolicy: Redirect
         termination: edge
 
-
   - kind: Secret
     apiVersion: v1
     metadata:
@@ -160,7 +155,6 @@ objects:
     stringData:
       secret.env: |-
         export PASSWORD=${PASSWORD}
-
 
   - kind: Deployment
     apiVersion: apps/v1
@@ -236,7 +230,6 @@ objects:
                 mountPath: "/tmp/shadow"
               - name: ${NAME}-vol
                 mountPath: /mnt/${NAME} 
-
 
   - kind: BuildConfig
     apiVersion: v1

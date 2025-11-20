@@ -45,7 +45,6 @@ parameters:
     required: true
 
 objects:
-
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -64,7 +63,6 @@ objects:
         importPolicy:
           scheduled: false
 
-
   - kind: "PersistentVolumeClaim"
     apiVersion: "v1"
     metadata:
@@ -78,7 +76,6 @@ objects:
         requests:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
-
 
   - kind: Deployment
     apiVersion: apps/v1

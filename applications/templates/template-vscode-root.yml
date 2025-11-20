@@ -46,7 +46,6 @@ parameters:
     required: true
 
 objects:
-
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -79,7 +78,6 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-
   - kind: Service
     apiVersion: v1
     metadata:
@@ -94,7 +92,6 @@ objects:
           protocol: TCP
           port: 8080
           targetPort: 8080
-
 
   - kind: Route
     apiVersion: route.openshift.io/v1
@@ -112,7 +109,6 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-
   - kind: Secret
     apiVersion: v1
     metadata:
@@ -121,7 +117,6 @@ objects:
         app: "${APPLICATION_NAME}"
     stringData:
       application-password: "${PASSWORD}" 
-
 
   - kind: Deployment
     apiVersion: apps/v1

@@ -54,7 +54,6 @@ parameters:
   description: The password of the RStudio user. 
   required: true
 
-
 objects:
 - kind: ImageStream
   apiVersion: image.openshift.io/v1

@@ -45,7 +45,6 @@ parameters:
   description: The password to access the web UI
   required: true
 
-
 objects:
 - kind: ImageStream
   apiVersion: image.openshift.io/v1

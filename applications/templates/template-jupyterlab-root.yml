@@ -83,7 +83,6 @@ parameters:
     required: true
 
 objects:
- 
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -102,7 +101,6 @@ objects:
           importPolicy:
             scheduled: false
 
-
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -117,7 +115,6 @@ objects:
         requests:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
-
 
   - kind: Service
     apiVersion: v1
@@ -136,7 +133,6 @@ objects:
           targetPort: 8888
       type: ClusterIP
 
-
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
@@ -154,7 +150,6 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-
   - kind: Secret
     apiVersion: v1
     metadata:
@@ -164,7 +159,6 @@ objects:
         template: jupyterlab-root
     stringData:
       application-password: "${PASSWORD}"
-
 
   - kind: Deployment
     apiVersion: apps/v1

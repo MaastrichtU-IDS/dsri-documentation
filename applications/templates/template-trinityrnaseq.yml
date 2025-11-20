@@ -44,7 +44,6 @@ parameters:
   value: 10Gi
   required: true
 
-
 objects:
 - kind: ImageStream
   apiVersion: image.openshift.io/v1

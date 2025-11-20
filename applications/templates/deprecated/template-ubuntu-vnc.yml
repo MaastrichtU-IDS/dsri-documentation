@@ -57,7 +57,6 @@ parameters:
     required: true
 
 objects:
-
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -76,7 +75,6 @@ objects:
       lookupPolicy:
         local: true
 
-
   - apiVersion: "v1"
     kind: "PersistentVolumeClaim"
     metadata:
@@ -90,7 +88,6 @@ objects:
         requests:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
-
 
   - kind: Service
     apiVersion: v1
@@ -107,7 +104,6 @@ objects:
       selector:
         app: "${APPLICATION_NAME}"
         deployment: "${APPLICATION_NAME}"
-
 
   - kind: Route
     apiVersion: route.openshift.io/v1
@@ -127,7 +123,6 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-
   - apiVersion: v1
     kind: Secret
     metadata:
@@ -137,7 +132,6 @@ objects:
         template: ubuntu-vnc
     stringData:
       application-password: "${PASSWORD}"
-
 
   - kind: Deployment
     apiVersion: apps/v1

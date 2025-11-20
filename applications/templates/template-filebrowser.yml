@@ -47,7 +47,6 @@ parameters:
     required: false
 
 objects:
-
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
@@ -65,7 +64,6 @@ objects:
             name: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
           importPolicy:
             scheduled: false
-
 
   - kind: Service
     apiVersion: v1
@@ -97,7 +95,6 @@ objects:
       tls:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
-
 
   - kind: Deployment
     apiVersion: apps/v1
