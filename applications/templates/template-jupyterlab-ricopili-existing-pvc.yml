@@ -1,8 +1,6 @@
 ---
 kind: Template
 apiVersion: template.openshift.io/v1
-labels:
-  template: jupyterlab-ricopili-existing-pvc
 metadata:
   name: jupyterlab-ricopili-existing-pvc
   annotations:
@@ -23,16 +21,14 @@ metadata:
     openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: jupyterlab-ricopili-existing-pvc
 
 parameters:
 - name: APPLICATION_NAME
   displayName: Name for the application
   description: Must be without spaces (use -), and unique in the project.
   value: jupyterlab-ricopili
-  required: true
-- name: PASSWORD
-  displayName: Web UI Password
-  description: The password to access the web UI
   required: true
 - name: APPLICATION_IMAGE
   displayName: Docker image
@@ -42,6 +38,10 @@ parameters:
 - name: PERSISTENT_VOLUME_CLAIM
   displayName: Persistent Volume Claim
   description: The name of the already existing Persistent Volume Claim to mount to this pod. Find the list in Search > Resources > Persistent Volume Claim.
+  required: true
+- name: PASSWORD
+  displayName: Web UI Password
+  description: The password to access the web UI
   required: true
 
 objects:
@@ -62,6 +62,43 @@ objects:
         scheduled: false
     lookupPolicy:
       local: true
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: custom-workspace
+  spec:
+    ports:
+    - name: 8888-tcp
+      protocol: TCP
+      port: 8888
+      targetPort: 8888
+    selector:
+      app: ${APPLICATION_NAME}
+      deployment: ${APPLICATION_NAME}
+    type: ClusterIP
+
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: custom-workspace
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+    port:
+      targetPort: 8888-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
 
 - kind: Secret
   apiVersion: v1
@@ -136,40 +173,3 @@ objects:
         - name: dshm
           emptyDir:
             medium: Memory
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-      template: custom-workspace
-  spec:
-    ports:
-    - name: 8888-tcp
-      protocol: TCP
-      port: 8888
-      targetPort: 8888
-    selector:
-      app: ${APPLICATION_NAME}
-      deployment: ${APPLICATION_NAME}
-    type: ClusterIP
-
-- kind: Route
-  apiVersion: v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-      template: custom-workspace
-  spec:
-    host: ''
-    to:
-      kind: Service
-      name: ${APPLICATION_NAME}
-      weight: 100
-    port:
-      targetPort: 8888-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect

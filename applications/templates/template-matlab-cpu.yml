@@ -1,8 +1,6 @@
 ---
-apiVersion: template.openshift.io/v1
 kind: Template
-labels:
-  template: matlab-cpu
+apiVersion: template.openshift.io/v1
 metadata:
   annotations:
     description: |- 
@@ -30,33 +28,42 @@ metadata:
     tags: matlab,cpu,root,persistent
   name: matlab-cpu
   namespace: openshift
+labels:
+  template: matlab-cpu
+
+parameters:
+- description: Must be unique in the project. It will be used to generate the application URL.
+  displayName: Application name
+  name: APPLICATION_NAME
+  required: true
+  value: matlab
+- description: See https://hub.docker.com/r/mathworks/matlab for more details
+  displayName: Application Docker image
+  name: APPLICATION_IMAGE
+  required: true
+  value: mathworks/matlab:r2024b
+- description: Size of the storage used for Matlab (approximate).
+  displayName: Storage size
+  name: STORAGE_SIZE
+  required: true
+  value: 10Gi
+- description: The password to access the Matlab web UI
+  displayName: Matlab UI password
+  name: PASSWORD
+  required: true
+
+- description: Path to the persistent folder in the container
+  displayName: Persistent folder
+  name: PERSISTENT_FOLDER
+  required: true
+  value: "/home/matlab/persistent"
+- description: "-browser or -vnc (virtual desktop)"
+  displayName: Type of deployment
+  name: DEPLOYMENT_TYPE
+  required: true
+  value: "-browser"
 
 objects:
-- kind: Secret
-  apiVersion: v1
-  metadata:
-    annotations:
-      template.openshift.io/expose-password: "{.data['application-password']}"
-    labels:
-      app: "${APPLICATION_NAME}"
-    name: "${APPLICATION_NAME}"
-  stringData:
-    application-password: "${PASSWORD}"
-
-- kind: PersistentVolumeClaim
-  apiVersion: v1
-  metadata:
-    labels:
-      app: "${APPLICATION_NAME}"
-    name: "${APPLICATION_NAME}"
-  spec:
-    accessModes:
-    - ReadWriteMany
-    resources:
-      requests:
-        storage: "${STORAGE_SIZE}"
-    storageClassName: ocs-storagecluster-cephfs
-
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
   metadata:
@@ -74,6 +81,65 @@ objects:
       importPolicy:
         scheduled: false
       name: latest
+
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    labels:
+      app: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: "${STORAGE_SIZE}"
+    storageClassName: ocs-storagecluster-cephfs
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    labels:
+      app: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8888-tcp
+      port: 8888
+      protocol: TCP
+      targetPort: 8888
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    labels:
+      app: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    port:
+      targetPort: 8888-tcp
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+
+- kind: Secret
+  apiVersion: v1
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    labels:
+      app: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
 
 - kind: Deployment
   apiVersion: apps/v1
@@ -128,68 +194,3 @@ objects:
         - emptyDir:
             medium: Memory
           name: dshm
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    labels:
-      app: "${APPLICATION_NAME}"
-    name: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 8888-tcp
-      port: 8888
-      protocol: TCP
-      targetPort: 8888
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-
-- kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    labels:
-      app: "${APPLICATION_NAME}"
-    name: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    port:
-      targetPort: 8888-tcp
-    tls:
-      insecureEdgeTerminationPolicy: Redirect
-      termination: edge
-    to:
-      kind: Service
-      name: "${APPLICATION_NAME}"
-      weight: 100
-
-parameters:
-- description: Must be unique in the project. It will be used to generate the application URL.
-  displayName: Application name
-  name: APPLICATION_NAME
-  required: true
-  value: matlab
-- description: The password to access the Matlab web UI
-  displayName: Matlab UI password
-  name: PASSWORD
-  required: true
-- description: See https://hub.docker.com/r/mathworks/matlab for more details
-  displayName: Application Docker image
-  name: APPLICATION_IMAGE
-  required: true
-  value: mathworks/matlab:r2024b
-- description: Size of the storage used for Matlab (approximate).
-  displayName: Storage size
-  name: STORAGE_SIZE
-  required: true
-  value: 10Gi
-- description: Path to the persistent folder in the container
-  displayName: Persistent folder
-  name: PERSISTENT_FOLDER
-  required: true
-  value: "/home/matlab/persistent"
-- description: "-browser or -vnc (virtual desktop)"
-  displayName: Type of deployment
-  name: DEPLOYMENT_TYPE
-  required: true
-  value: "-browser"

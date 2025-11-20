@@ -6,9 +6,9 @@ labels:
 metadata:
   name: jupyterlab-root-freesurfer
   annotations:
-    openshift.io/display-name: Freesurfer JupyterLab (v8.1.0)
+    openshift.io/display-name: Freesurfer JupyterLab
     description: |-
-      Start JupyterLab images with Neuroscience Freesurfer 8.1.0 pre-installed based on the official Docker stack, as the `jovyan` user, with sudo privileges to install anything you need.
+      Start JupyterLab images with Neuroscience Freesurfer pre-installed based on the official Docker stack, as the `jovyan` user, with sudo privileges to install anything you need.
 
       Checkout https://github.com/MaastrichtU-IDS/jupyterlab to see how our custom image is built, and how to extend it
       For more details on the jupyter docker stack, go to https://github.com/jupyter/docker-stacks
@@ -41,7 +41,7 @@ parameters:
   required: true
 - name: APPLICATION_IMAGE
   displayName: Jupyter notebook with Freesurfer Docker image
-  value: ghcr.io/maastrichtu-ids/jupyterlab:freesurfer-8.1.0
+  value: ghcr.io/maastrichtu-ids/jupyterlab:freesurfer
   required: true
   description: Check the description on the right for more details about available images
 - name: STORAGE_SIZE
@@ -237,4 +237,3 @@ objects:
         - name: dshm
           emptyDir:
             medium: Memory
-

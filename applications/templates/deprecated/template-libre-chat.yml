@@ -1,8 +1,6 @@
 ---
 kind: Template
 apiVersion: template.openshift.io/v1
-labels:
-  template: libre-chat
 metadata:
   name: libre-chat
   annotations:
@@ -22,6 +20,8 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://vemonet.github.io/libre-chat
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+  labels:
+    template: libre-chat
 
 parameters:
 - name: APPLICATION_NAME
@@ -34,6 +34,13 @@ parameters:
   value: ghcr.io/vemonet/libre-chat:main
   required: true
   description: Check the description on the right for more details about available images
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage allocated to the notebook persistent storage.
+  value: 20Gi
+  required: true
+
+#Custom parameters
 - name: LIBRECHAT_CONF_URL
   displayName: Direct URL to the YAML configuration file for the chatbot
   required: true
@@ -43,11 +50,6 @@ parameters:
   displayName: Number of workers for the API
   required: true
   value: "4"
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage allocated to the notebook persistent storage.
-  value: 20Gi
-  required: true
 - name: MEMORY_MIN
   displayName: Memory minimum
   description: Minimum RAM memory available for the application.
@@ -102,6 +104,42 @@ objects:
       requests:
         storage: ${STORAGE_SIZE}
     storageClassName: ocs-storagecluster-cephfs
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+      template: libre-chat
+  spec:
+    ports:
+    - name: 8000-tcp
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+    type: ClusterIP
+
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8000-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
 
 - kind: Deployment
   apiVersion: apps/v1
@@ -170,39 +208,3 @@ objects:
         - name: dshm
           emptyDir:
             medium: Memory
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: libre-chat
-  spec:
-    ports:
-    - name: 8000-tcp
-      protocol: TCP
-      port: 8000
-      targetPort: 8000
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-    type: ClusterIP
-
-- kind: Route
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
-      name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 8000-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect

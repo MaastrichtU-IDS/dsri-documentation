@@ -30,25 +30,27 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:
   template: rstudio-root-existing-pvc
+
 parameters:
-- name: APPLICATION_IMAGE
-  displayName: RStudio Docker image
-  description: Check on the right to see which images can be used to start RStudio
-  value: ghcr.io/maastrichtu-ids/rstudio:latest
-  required: true
-- name: PASSWORD
-  displayName: RStudio password
-  description: The password of the RStudio user. 
-  required: true
 - name: APPLICATION_NAME
   displayName: Application name
   description: Must be without spaces (use -), and unique in the project.
   value: rstudio
   required: true
+- name: APPLICATION_IMAGE
+  displayName: RStudio Docker image
+  description: Check on the right to see which images can be used to start RStudio
+  value: ghcr.io/maastrichtu-ids/rstudio:latest
+  required: true
 - name: PERSISTENT_VOLUME_CLAIM
   displayName: Persistent Volume Claim
   description: The name of the already existing Persistent Volume Claim to mount to this notebook. Find the list in Search > Resources > Persistent Volume Claim.
   required: true
+- name: PASSWORD
+  displayName: RStudio password
+  description: The password of the RStudio user. 
+  required: true
+
 - name: OPENBLAS_NUM_THREADS
   displayName: Number of threads for OpenBLAS
   description: Restricting the number of thread allocated to OpenBLAS can speed up computations using OpenBLAS (leave empty for default 64)
@@ -56,17 +58,6 @@ parameters:
   required: false
 
 objects:
-- kind: Secret 
-  apiVersion: v1
-  metadata:
-    annotations:
-      template.openshift.io/expose-password: "{.data['application-password']}"
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  stringData:
-    application-password: "${PASSWORD}"
-
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
   metadata:
@@ -84,70 +75,6 @@ objects:
         scheduled: false
     lookupPolicy:
       local: true
-
-- kind: Deployment
-  apiVersion: apps/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    strategy:
-      type: Recreate
-    replicas: 1
-    selector:
-      matchLabels:
-        app: "${APPLICATION_NAME}"
-        deployment: "${APPLICATION_NAME}"
-    template:
-      metadata:
-        annotations:
-          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
-          alpha.image.policy.openshift.io/resolve-names: "*"
-        labels:
-          app: "${APPLICATION_NAME}"
-          deployment: "${APPLICATION_NAME}"
-      spec:
-        runtimeClassName: selinux
-        serviceAccountName: anyuid
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${PERSISTENT_VOLUME_CLAIM}"
-        containers:
-        - name: rstudio-container
-          image: ${APPLICATION_IMAGE}
-          imagePullPolicy: Always
-          ports:
-          - containerPort: 8787
-            protocol: TCP
-          - containerPort: 3838
-            protocol: TCP
-          resources:
-            limits:
-              cpu: '32'
-              memory: 200Gi
-            requests:
-              cpu: 200m
-              memory: 256Mi
-          volumeMounts:
-          - name: data
-            mountPath: "/root/persistent"
-          env:
-          - name: USER
-            value: "rstudio"
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: application-password
-                name: "${APPLICATION_NAME}"
-          - name: ROOT
-            value: "TRUE"
-          - name: RUNROOTLESS
-            value: 'true'
-          - name: OPENBLAS_NUM_THREADS
-            value: "${OPENBLAS_NUM_THREADS}"
-        automountServiceAccountToken: false
 
 - kind: Service
   apiVersion: v1
@@ -217,3 +144,78 @@ objects:
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
+
+- kind: Secret 
+  apiVersion: v1
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    replicas: 1
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          alpha.image.policy.openshift.io/resolve-names: "*"
+        labels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${PERSISTENT_VOLUME_CLAIM}"
+        containers:
+        - name: rstudio-container
+          image: ${APPLICATION_IMAGE}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8787
+            protocol: TCP
+          - containerPort: 3838
+            protocol: TCP
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+          - name: data
+            mountPath: "/root/persistent"
+          env:
+          - name: USER
+            value: "rstudio"
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: ROOT
+            value: "TRUE"
+          - name: RUNROOTLESS
+            value: 'true'
+          - name: OPENBLAS_NUM_THREADS
+            value: "${OPENBLAS_NUM_THREADS}"
+        automountServiceAccountToken: false

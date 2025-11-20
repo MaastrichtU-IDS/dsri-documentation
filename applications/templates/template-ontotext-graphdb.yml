@@ -21,31 +21,32 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:
   template: ontotext-graphdb
+
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
   description: Must be without spaces (use -), and unique in the project.
   value: graphdb
   required: true
-- name: GRAPHDB_JAVA_MEMORY
-  displayName: GraphDB java memory
-  description: Maximum memory allocated to java for GraphDB (-xms and -xmx)
-  value: 8g
+- name: APPLICATION_IMAGE
+  displayName: Application Docker image name 
+  description: The GraphDB image needs to be build manually first and publish in your project
+  value: ontotext/graphdb:10.8.11
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage used for the application.
   value: 20Gi
   required: true
-- name: APPLICATION_IMAGE
-  displayName: Application Docker image name 
-  description: The GraphDB image needs to be build manually first and publish in your project
-  value: ontotext/graphdb:10.8.11
+- name: GRAPHDB_JAVA_MEMORY
+  displayName: GraphDB java memory
+  description: Maximum memory allocated to java for GraphDB (-xms and -xmx)
+  value: 8g
   required: true
 
 objects:
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1" 
   metadata:
     name: ${APPLICATION_NAME}
     labels:
@@ -57,6 +58,40 @@ objects:
       requests:
         storage: ${STORAGE_SIZE}
     storageClassName: ocs-storagecluster-cephfs
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 7200-tcp
+      protocol: TCP
+      port: 7200
+      targetPort: 7200
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 7200-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
 
 - kind: Deployment
   apiVersion: apps/v1
@@ -108,37 +143,3 @@ objects:
               -Dgraphdb.append.request.id.headers=true
               -Dreuse.vars.in.subselects=true
         automountServiceAccountToken: false
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 7200-tcp
-      protocol: TCP
-      port: 7200
-      targetPort: 7200
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-
-- kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
-      name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 7200-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect

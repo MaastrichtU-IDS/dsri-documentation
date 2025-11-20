@@ -1,0 +1,206 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: ubuntu-vnc
+  annotations:
+    openshift.io/display-name: Ubuntu with desktop interface
+    description: |-
+      Start a Ubuntu Linux workspace with a regular desktop interface accessible in the browser
+
+      You can use this template to deploy various desktop environments:
+      - Ubuntu 20.04 with LXDE desktop (cf. https://github.com/vemonet/docker-ubuntu-vnc-desktop):
+      ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest
+      - NeuroDesk (cf. https://github.com/NeuroDesk/vnm)
+      docker.pkg.github.com/neurodesk/neurodesk/vnm2:20210113
+
+      Visit https://github.com/vemonet/docker-ubuntu-vnc-desktop for more details on the image
+      Please create issues if you are experiencing problem with the workspace.
+
+      👤 You will be the `root` user inside the container.
+
+      📂 Use the `/root/persistent` folder (in the home of your user) and its subfolders to store your data in the existing persistent storage
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+    iconClass: icon-ubuntu
+    tags: ubuntu,ui,vnc,root,persistent
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-utilities#ubuntu
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: ubuntu-vnc
+message: |-
+  A Ubuntu pod has been scheduled for creation in your project, and should be soon available.
+  Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
+
+  You can use `oc get pods` to get the pod ID and connect using your local terminal `oc rsh POD_ID`
+  Or use the terminal tab in the Ubuntu pod view of the OpenShift web UI
+
+parameters:
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be without spaces (use -), and unique in the project.
+    value: ubuntu
+    required: true
+  - name: PASSWORD
+    displayName: Ubuntu Password
+    description: The password of your user and to access Ubuntu from the web UI
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage used for the notebook (approximate).
+    value: 10Gi
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Application Docker image
+    description: The docker image used to start the container (e.g. Ubuntu or NeuroDesk)
+    value: ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest
+    required: true
+
+objects:
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: ${APPLICATION_NAME}
+      labels:
+        app: ${APPLICATION_NAME}
+        template: ubuntu-vnc
+    spec:
+      tags:
+      - name: latest
+        from:
+          kind: DockerImage
+          name: ${APPLICATION_IMAGE}
+        importPolicy:
+          scheduled: false
+      lookupPolicy:
+        local: true
+
+  - apiVersion: "v1"
+    kind: "PersistentVolumeClaim"
+    metadata:
+      name: ${APPLICATION_NAME}
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - "ReadWriteMany"
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      ports:
+      - name: 6080-tcp
+        protocol: TCP
+        port: 6080
+        targetPort: 80
+      selector:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      host: ''
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+        weight: 100
+      port:
+        targetPort: 6080-tcp
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: ubuntu-vnc
+    stringData:
+      application-password: "${PASSWORD}"
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      strategy:
+        type: Recreate
+      replicas: 1
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        containers:
+        - name: ubuntu-container
+          image: "${APPLICATION_IMAGE}"
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          - containerPort: 5900
+            protocol: TCP
+          env:
+          - name: MOZ_DISABLE_CONTENT_SANDBOX
+            value: "1"
+          - name: HTTP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: VNC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+          - name: data
+            mountPath: "/root/persistent"
+          - name: dshm
+            mountPath: "/dev/shm"
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
+        - name: dshm
+          emptyDir:
+            medium: Memory
+        automountServiceAccountToken: false

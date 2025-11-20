@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 kind: Template
 apiVersion: template.openshift.io/v1
@@ -31,20 +32,22 @@ parameters:
   description: Must be without spaces (use -), and unique in the project.
   value: virtuoso
   required: true
-- name: PASSWORD
-  displayName: Triplestore admin password
-  description: The password of the dba user.
+- name: APPLICATION_IMAGE
+  displayName: Application Docker image
+  description: Docker image to deploy the Virtuoso triplestore
+  value: openlink/virtuoso-opensource-7:latest
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
   description: Size of the storage used for the notebook (approximate).
   value: 10Gi
   required: true
-- name: APPLICATION_IMAGE
-  displayName: Application Docker image
-  description: Docker image to deploy the Virtuoso triplestore
-  value: openlink/virtuoso-opensource-7:latest
+- name: PASSWORD
+  displayName: Triplestore admin password
+  description: The password of the dba user.
   required: true
+
+#Custom parameters
 - name: DATABASE_PATH
   displayName: The database storage path
   description: Change it to /data for the tenforce/virtuoso image
@@ -67,31 +70,6 @@ parameters:
   required: true
 
 objects:
-- apiVersion: v1
-  kind: Secret
-  metadata:
-    annotations:
-      template.openshift.io/expose-password: "{.data['application-password']}"
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  stringData:
-    application-password: "${PASSWORD}"
-    
-- apiVersion: "v1"
-  kind: "PersistentVolumeClaim"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-    storageClassName: ocs-storagecluster-cephfs
-
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
   metadata:
@@ -109,6 +87,65 @@ objects:
     lookupPolicy:
       local: true
 
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+    storageClassName: ocs-storagecluster-cephfs
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8890-tcp
+      protocol: TCP
+      port: 8890
+      targetPort: 8890
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8890-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Secret
+  apiVersion: v1
+  metadata:
+    annotations:
+      template.openshift.io/expose-password: "{.data['application-password']}"
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
+    
 - kind: Deployment
   apiVersion: apps/v1
   metadata:
@@ -212,37 +249,3 @@ objects:
           - name: VIRT_URIQA_DefaultHost
             value: "${TRIPLESTORE_URL}"
         automountServiceAccountToken: false
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    ports:
-    - name: 8890-tcp
-      protocol: TCP
-      port: 8890
-      targetPort: 8890
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-
-- kind: Route
-  apiVersion: route.openshift.io/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
-      name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 8890-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect

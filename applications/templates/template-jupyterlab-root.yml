@@ -1,7 +1,6 @@
+---
 kind: Template
 apiVersion: template.openshift.io/v1
-labels:
-  template: jupyterlab-root
 metadata:
   name: jupyterlab-root
   annotations:
@@ -43,205 +42,207 @@ metadata:
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: jupyterlab-root
+
 parameters:
-- name: APPLICATION_NAME
-  displayName: Name for the application
-  description: Must be without spaces (use -), and unique in the project.
-  value: jupyterlab
-  required: true
-- name: PASSWORD
-  displayName: JupyterLab UI Password
-  description: The password/token to access the JupyterLab web UI
-  required: true
-- name: APPLICATION_IMAGE
-  displayName: Jupyter notebook Docker image
-  value: ghcr.io/maastrichtu-ids/jupyterlab:latest
-  required: true
-  description: Check the description on the right for more details about available images
-- name: STORAGE_SIZE
-  displayName: Storage size
-  description: Size of the storage allocated to the notebook persistent storage.
-  value: 5Gi
-  required: true
-- name: GIT_URL
-  displayName: URL of a git repository to clone in the workspace (optional)
-  required: false
-  description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents. Only works for images based on the official images
-- name: GIT_NAME
-  displayName: Git name
-  required: true
-  value: default
-  description: Email used to automatically define git config --global user.name
-- name: GIT_EMAIL
-  displayName: Git email
-  required: true
-  value: default@maastrichtuniversity.nl
-  description: Email used to automatically define git config --global user.email
+  - name: APPLICATION_NAME
+    displayName: Name for the application
+    description: Must be without spaces (use -), and unique in the project.
+    value: jupyterlab
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Jupyter notebook Docker image
+    description: Check the description on the right for more details about available images
+    value: ghcr.io/maastrichtu-ids/jupyterlab:latest
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage allocated to the notebook persistent storage.
+    value: 5Gi
+    required: true
+  - name: PASSWORD
+    displayName: JupyterLab UI Password
+    description: The password/token to access the JupyterLab web UI
+    required: true
+
+  #Custom parameters  
+  - name: GIT_URL
+    displayName: URL of a git repository to clone in the workspace (optional)
+    description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents. Only works for images based on the official images
+    required: false
+  - name: GIT_NAME
+    displayName: Git name
+    description: Email used to automatically define git config --global user.name
+    value: default
+    required: true
+  - name: GIT_EMAIL
+    displayName: Git email
+    description: Email used to automatically define git config --global user.email
+    value: default@maastrichtuniversity.nl
+    required: true
 
 objects:
-- kind: "ImageStream"
-  apiVersion: image.openshift.io/v1
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: ${APPLICATION_NAME}
-      template: jupyterlab-root
-  spec:
-    tags:
-    - name: latest
-      from:
-        kind: DockerImage
-        name: ${APPLICATION_IMAGE}
-      importPolicy:
-        scheduled: false
-    lookupPolicy:
-      local: true
-
-- kind: "PersistentVolumeClaim"
-  apiVersion: "v1"
-  metadata:
-    name: ${APPLICATION_NAME}
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: jupyterlab-root
-  spec:
-    accessModes:
-      - "ReadWriteMany"
-    resources:
-      requests:
-        storage: ${STORAGE_SIZE}
-    storageClassName: ocs-storagecluster-cephfs
-
-- apiVersion: v1
-  kind: Secret
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: jupyterlab-root
-  stringData:
-    application-password: "${PASSWORD}"
-
-- kind: Deployment
-  apiVersion: apps/v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: jupyterlab-root
-  spec:
-    replicas: 1
-    strategy:
-      type: Recreate
-    selector:
-      matchLabels:
-        app: "${APPLICATION_NAME}"
-        deployment: "${APPLICATION_NAME}"
-    template:
-      metadata:
-        annotations:
-          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
-        labels:
-          app: "${APPLICATION_NAME}"
-          deployment: "${APPLICATION_NAME}"
-      spec:
-        runtimeClassName: selinux
-        serviceAccountName: "anyuid"
-        containers:
-        - name: jupyter-notebook
-          image: "${APPLICATION_IMAGE}"
-          imagePullPolicy: Always
-          workingDir: /home/jovyan/work
-          ports:
-          - containerPort: 8888
-            protocol: TCP
-          - containerPort: 4040 
-            protocol: TCP
-          - containerPort: 4041
-            protocol: TCP
-          env:
-          - name: JUPYTER_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: application-password
-                name: "${APPLICATION_NAME}"
-          - name: JUPYTER_ENABLE_LAB
-            value: "yes"
-          - name: GRANT_SUDO
-            value: "yes"
-          - name: GIT_URL
-            value: "${GIT_URL}"
-          - name: GIT_NAME
-            value: "${GIT_NAME}"
-          - name: GIT_EMAIL
-            value: "${GIT_EMAIL}"
-          volumeMounts:
-          - name: data
-            mountPath: /home/jovyan/work/persistent
-          - name: dshm
-            mountPath: /dev/shm
-          readinessProbe:
-            tcpSocket:
-              port: 8888
-          livenessProbe:
-            initialDelaySeconds: 15
-            tcpSocket:
-              port: 8888
-            failureThreshold: 40
-            periodSeconds: 10
-            timeoutSeconds: 2
-          resources:
-            limits:
-              cpu: '32'
-              memory: 200Gi
-            requests:
-              cpu: 200m
-              memory: 256Mi
-        automountServiceAccountToken: false
-        securityContext:
-          runAsUser: 0
-          supplementalGroups:
-          - 100
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
-        - name: dshm
-          emptyDir:
-            medium: Memory
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: jupyterlab-root
-  spec:
-    ports:
-    - name: 8888-tcp
-      protocol: TCP
-      port: 8888
-      targetPort: 8888
-    selector:
-      app: "${APPLICATION_NAME}"
-      deployment: "${APPLICATION_NAME}"
-    type: ClusterIP
-
-- kind: Route
-  apiVersion: v1
-  metadata:
-    name: "${APPLICATION_NAME}"
-    labels:
-      app: "${APPLICATION_NAME}"
-  spec:
-    host: ''
-    to:
-      kind: Service
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
       name: "${APPLICATION_NAME}"
-      weight: 100
-    port:
-      targetPort: 8888-tcp
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-root
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: latest
+          from:
+            kind: DockerImage
+            name: ${APPLICATION_IMAGE}
+          importPolicy:
+            scheduled: false
+
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-root
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-root
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}"
+      ports:
+        - name: "8888-tcp"
+          protocol: TCP
+          port: 8888
+          targetPort: 8888
+      type: ClusterIP
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-root
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: "8888-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-root
+    stringData:
+      application-password: "${PASSWORD}"
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-root
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: "anyuid"
+          automountServiceAccountToken: false
+          securityContext:
+            runAsUser: 0
+            supplementalGroups:
+            - 100
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+            - name: dshm
+              emptyDir:
+                medium: Memory
+          containers:
+            - name: jupyter-notebook
+              image: "${APPLICATION_IMAGE}"
+              imagePullPolicy: IfNotPresent
+              workingDir: /home/jovyan/work
+              ports:
+                - containerPort: 8888
+                  protocol: TCP
+                - containerPort: 4040
+                  protocol: TCP
+                - containerPort: 4041
+                  protocol: TCP
+              volumeMounts:
+                - name: data
+                  mountPath: /home/jovyan/work/persistent
+                - name: dshm
+                  mountPath: /dev/shm
+              env:
+                - name: JUPYTER_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      key: application-password
+                      name: "${APPLICATION_NAME}"
+                - name: JUPYTER_ENABLE_LAB
+                  value: "yes"
+                - name: GRANT_SUDO
+                  value: "yes"
+                - name: GIT_URL
+                  value: "${GIT_URL}"
+                - name: GIT_NAME
+                  value: "${GIT_NAME}"
+                - name: GIT_EMAIL
+                  value: "${GIT_EMAIL}"
+              readinessProbe:
+                tcpSocket:
+                  port: 8888
+              livenessProbe:
+                initialDelaySeconds: 15
+                tcpSocket:
+                  port: 8888
+                failureThreshold: 40
+                periodSeconds: 10
+                timeoutSeconds: 2
+              resources:
+                requests:
+                  cpu: 200m
+                  memory: 256Mi
+                limits:
+                  cpu: '32'
+                  memory: 200Gi
