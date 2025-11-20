@@ -29,7 +29,6 @@ All DSRI application templates follow a standardized **backbone structure** with
 
 This structure makes it easy to create new templates by starting with the backbone and customizing only what's needed.
 
-:::
 
 ## Template Components
 
