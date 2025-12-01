@@ -1,0 +1,18 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: jupyterlab-root-freesurfer-deprecated
+  annotations:
+    openshift.io/display-name: Freesurfer JupyterLab (Deprecated)
+    description: |-
+      This Freesurfer JupyterLab template is deprecated and no longer maintained.
+
+      Are you looking to deploy a Freesurfer environment on the DSRI?
+      Please contact us at rcs-ub@maastrichtuniversity.nl!
+    iconClass: icon-python
+    tags: python,jupyter,freesurfer,deprecated
+    openshift.io/provider-display-name: Research Computing Support, UM
+    openshift.io/support-url: mailto:rcs-ub@maastrichtuniversity.nl?subject=Freesurfer%20Template%20Deprecated
+labels:
+  template: jupyterlab-root-freesurfer-deprecated
