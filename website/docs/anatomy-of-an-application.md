@@ -1,6 +1,6 @@
 ---
 id: anatomy-of-an-application
-title: Anatomy of a DSRI application
+title: Anatomy of a DSRI Application
 ---
 
 :::info Check out existing templates

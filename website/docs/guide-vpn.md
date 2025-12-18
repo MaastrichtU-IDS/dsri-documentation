@@ -1,6 +1,6 @@
 ---
 id: guide-vpn
-title: Install UM VPN
+title: Installing the UM VPN
 ---
 
 ## Request an account

@@ -1,6 +1,6 @@
 ---
 id: start-workspace
-title: Start your workspace
+title: Starting Your Workspace
 ---
 
 This page will help you to start a workspace to run your code and experiments on the DSRI in a container. 

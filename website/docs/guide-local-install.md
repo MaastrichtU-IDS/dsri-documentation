@@ -1,6 +1,6 @@
 ---
 id: guide-local-install
-title: Install local OpenShift
+title: Installing OpenShift Locally
 ---
 
 OpenShift and Kubernetes can be installed locally on a single machine for test purpose. The installation requires knowledge of your OS administration, and can be quite complex. We recommend to install it locally only if really required. Otherwise we recommend you to simply use Docker to test images, then deploy them on the DSRI.

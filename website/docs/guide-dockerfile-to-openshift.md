@@ -1,6 +1,6 @@
 ---
 id: guide-dockerfile-to-openshift
-title: Deploy from a Dockerfile
+title: Deploying From a Dockerfile
 ---
 
 ## Build from local Dockerfile

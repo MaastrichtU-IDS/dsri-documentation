@@ -1,6 +1,6 @@
 ---
 id: operators
-title: Install from Operators
+title: Installing from Operators
 ---
 
 The [Operator Framework](https://operatorframework.io/)  is an open source toolkit to manage Kubernetes native applications, called Operators, in an effective, automated, and scalable way.

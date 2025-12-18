@@ -1,6 +1,6 @@
 ---
 id: sensible-data
-title: Working with sensible data
+title: Working with Sensible Data
 ---
 
 ### Reminder: DSRI restrictions

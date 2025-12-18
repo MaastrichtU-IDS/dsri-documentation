@@ -1,6 +1,6 @@
 ---
 id: jupyterhub-workspace
-title: JupyterHub workspace
+title: JupyterHub Workspace
 ---
 
 ## 🪐 Start your workspace

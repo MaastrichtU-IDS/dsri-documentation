@@ -1,6 +1,6 @@
 ---
 id: workflows-introduction
-title: Introduction to workflows
+title: Introduction to Workflows
 ---
 
 :::warning Work in progress

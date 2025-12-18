@@ -3,8 +3,6 @@ id: openshift-commands
 title: Command Line Tips
 ---
 
-
-
 ## Overview
 
 Here is an overview of common `oc` commands:

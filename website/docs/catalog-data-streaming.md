@@ -1,6 +1,6 @@
 ---
 id: catalog-data-streaming
-title: Data streaming
+title: Data Streaming
 ---
 
 ## Apache Flink

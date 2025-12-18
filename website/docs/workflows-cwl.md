@@ -1,6 +1,6 @@
 ---
 id: workflows-cwl
-title: Run CWL workflows
+title: Run CWL Workflows
 ---
 
 The [Common Workflow Language](https://www.commonwl.org/) (CWL) is an open standard for describing analysis workflows and tools in a way that makes them portable and scalable across a variety of software and hardware environments.

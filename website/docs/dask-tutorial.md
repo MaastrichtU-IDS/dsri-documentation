@@ -1,6 +1,6 @@
 ---
 id: dask-tutorial
-title: Parallelization using Dask
+title: Parallelization Using Dask
 ---
 
 ## 🧊 Installation

@@ -3,7 +3,6 @@ id: deploy-jupyter
 title: Jupyter Notebooks
 ---
 
-
 ## 🪐 Start JupyterLab
 
 Start a JupyterLab container based on the [official Jupyter docker stacks](https://github.com/jupyter/docker-stacks) (debian), with `sudo` privileges to install anything you need (e.g. pip or apt packages)

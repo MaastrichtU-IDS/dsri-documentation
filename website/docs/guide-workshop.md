@@ -1,6 +1,6 @@
 ---
 id: guide-workshop
-title: Prepare a workshop
+title: Preparing a Workshop
 ---
 
 The DSRI is a good platform to run a training or class within Maastricht University.

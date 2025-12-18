@@ -1,14 +1,7 @@
 ---
-id: access-dsri
-title: Requesting an Account
+id: access-and-use-dsri
+title: Accessing and Using the DSRI
 ---
-
-## Request an account
-
-1. You will need to have an account at Maastricht University with an email ending with `@maastrichtuniversity.nl` or `@student.maastrichtuniversity.nl`.
-
-2. Request access to the DSRI for your account Please fill this [TopDesk form 📬](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=09acae9cdf454968bc94ad125b1f8e76&from=436967a9-738c-4112-b3f6-240a9847118e&openedFromService=true) to provide us some information on what you plan to do with the DSRI. Once you've filled in the form, you will receive a reply with detailed instructions on how to log in.
-
 
 ## Connect to the UM network
 
@@ -34,7 +27,7 @@ Use your general UM password.
 
 :::
 
-If you do not have access to the DSRI [contact us](mailto:dsri-support-l@maastrichtuniversity.nl).
+If you do not have access to the DSRI while you think you should, [please contact us](mailto:rcs-ub@maastrichtuniversity.nl).
 
 You will be able to login at **[https://console-openshift-console.apps.dsri2.unimaas.nl](https://console-openshift-console.apps.dsri2.unimaas.nl)** using the standard maastricht portal upon clicking the login button:
 
@@ -52,13 +45,13 @@ We recommend you to install the `oc` command line interface to perform additiona
 
 In the DSRI OpenShift web UI, applications are deployed in projects.
 
-1. Create a new project with a meaningful name describing what you are doing, such as `workspace-yourname`.
+1. A project is made for you upon providing you access to the DSRI.
 
 2. Go to your project (applications are deployed in a project).
 
 :::caution Reuse your project
 
-Only create new projects when it is necessary (for a new project). You can easily [clean up your current project](https://maastrichtu-ids.github.io/dsri-documentation/docs/project-management#delete-a-project-using-the-web-ui) instead of creating a new one every time you want to try something.
+You can request a new project when it is necessary. However, you can easily [clean up your current project](https://maastrichtu-ids.github.io/dsri-documentation/docs/project-management#delete-a-project-using-the-web-ui) instead of requesting a new one every time you want to change something.
 
 :::
 

@@ -1,6 +1,6 @@
 ---
 id: guide-monitoring
-title: Monitor your applications
+title: Monitoring Your Applications
 ---
 
 ## Monitor your application resources use

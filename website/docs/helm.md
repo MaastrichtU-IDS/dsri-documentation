@@ -1,6 +1,6 @@
 ---
 id: helm
-title: Install from Helm charts
+title: Installing from Helm Charts
 ---
 
 [Helm](https://helm.sh/) is a popular package manager for [Kubernetes](https://kubernetes.io/). A Helm chart is a bundle of parameterizable YAML resources for Kubernetes/OpenShift.

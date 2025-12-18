@@ -1,7 +1,8 @@
 ---
 id: enabling-vpn-wsl
-title: Enabling VPN access in WSL2
+title: Enabling VPN Access in WSL2
 ---
+
 ## Follow these steps in the WSL2 environment:
  
 Create a file in /etc/wsl.conf:

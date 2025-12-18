@@ -1,6 +1,6 @@
 ---
 id: manage-app
-title: Manage Running Application
+title: Managing Running Application
 ---
 
 ## Stop your application
