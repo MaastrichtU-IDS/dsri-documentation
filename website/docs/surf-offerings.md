@@ -1,16 +1,17 @@
 ---
 id: surf-offerings
-title: SURF Offerings
+title: SURF offerings
 ---
+
 ## SURF's Digital Services for Research and Development
 
-## What is SURF?
+### What is SURF?
 
 SURF is the ICT cooperative for Dutch education and research institutions. As a collaborative organization, SURF’s members—its owners—work together to deliver top-tier digital services, address complex innovation challenges, and exchange valuable knowledge.
 
 Computing and storage infrastructure are essential for cutting-edge research. SURF supports researchers with a diverse range of computing and storage services. But before diving into these services, let’s briefly explore what a cluster computer is.
 
-## What is a cluster computer?
+### What is a cluster computer?
 
 A cluster computer is essentially a group of interconnected computers, called nodes, working together as a unified system. Each node has its own CPU, memory, and disk space, along with access to a shared file system. Imagine these nodes connected by network cables, like those in your home or office.
 
@@ -18,10 +19,7 @@ Cluster computers are designed for high-performance workloads, allowing users to
 
 <img src="/img/screenshot_cluster.png" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-
-
-
-## Different types of Services provided by SURF:
+### Different types of Services provided by SURF:
 
 Some of the computing and storage solution provided by SURF are:
 
@@ -50,9 +48,7 @@ These hosted workspaces aka virtual machines can be used for conducting research
    4.4) Object Store : Object storage is ideal for storing unstructured data that can grow without bound. Object storage does not have a directory-type structure like a normal file system has 
  but it organises its data in so-called containers that contain objects. There is no tree-like structure with files and directories. There are only containers with objects in them. SURF Object Store service is based on Ceph RGW and provides access using the S3 protocol, which is the defacto standard for addressing object storage.
 
-
-
-## How to Get Started with SURF Services?
+### How to Get Started with SURF Services?
 
 The RCS team is here to help you navigate SURF’s services, including:
 
@@ -67,7 +63,7 @@ The RCS team is here to help you navigate SURF’s services, including:
 3) Use Case Analysis:  
    We assess whether your research project is a good fit for SURF’s services.
    
-## External Resources and references
+### External Resources and references
 
 * SURF: https://www.surf.nl/en
 * Deep Learning Tutorials by UvA: https://uvadlc-notebooks.readthedocs.io/en/latest/index.html

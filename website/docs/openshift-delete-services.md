@@ -3,8 +3,6 @@ id: openshift-delete-services
 title: Delete an application
 ---
 
-
-
 It is recommend to use the `oc` tool to delete an application, as it will allow to properly delete all objects related to the application deployment.
 
 :::caution Project

@@ -5,7 +5,6 @@ title: JupyterHub with Spark
 
 JupyterHub is ideal to enable multiple users easily start predefined workspaces in the same project. The complimentary Apache Spark cluster can be used from the workspaces to perform distributed processing.
 
-
 ## 🧊 Install kfctl
 
 You will need to have the usual `oc` tool installed, and to install `kfctl` on your machine, a tool to deploy Kubeflow applications, download the [latest version for your OS 📥️](https://github.com/kubeflow/kfctl/releases) 

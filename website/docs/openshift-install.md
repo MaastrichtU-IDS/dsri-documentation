@@ -3,7 +3,6 @@ id: openshift-install
 title: Install the client
 ---
 
-
 Install the **OpenShift Command Line Interface (CLI)**: `oc` to access the DSRI from your computer's terminal. 
 
 The `oc` CLI enables to perform operations on your applications deployed on the DSRI, such as:

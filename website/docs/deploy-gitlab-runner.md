@@ -7,7 +7,6 @@ Make sure you choose the "certified" GitLab Runner (v1.4.0) The community runner
 
 Install in a specific namespace on the cluster. Choose your namespace in the dropdown.
 
-
 Create registration token secret:
 
 ```yaml
@@ -29,7 +28,6 @@ Although, this should also work:
 ```
 oc create secret generic gitlab-runner-secret --from-literal=runner-registration-token=<insert your registration token>
 ```
-
 
 Add the following to the ConfigMap of the GitLab Runner operator:
 ``` yaml
@@ -59,8 +57,6 @@ spec:
  config: custom-config-toml
  tags: openshift
 ```
-
-
 
 ```yaml
 --- other stuff dont use!

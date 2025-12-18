@@ -1,6 +1,6 @@
 ---
 id: openshift-load-data
-title: Upload data
+title: Uploading data
 ---
 
 ## In RStudio, JupyterLab and VSCode
