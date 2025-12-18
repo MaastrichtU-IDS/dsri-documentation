@@ -1,6 +1,6 @@
 ---
 id: contribute
-title: Contribute
+title: Contributing
 ---
 
 # Contribute

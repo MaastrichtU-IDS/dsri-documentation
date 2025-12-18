@@ -1,6 +1,6 @@
 ---
 id: surf-offerings
-title: SURF offerings
+title: SURF's Offerings
 ---
 
 ## SURF's Digital Services for Research and Development

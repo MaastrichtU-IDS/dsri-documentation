@@ -1,6 +1,6 @@
 ---
 id: deploy-on-gpu
-title: GPU applications
+title: GPU Applications
 ---
 
 GPUs on the DSRI can only be used by one workspace at a time, and there is a limited number of GPUs (8).

@@ -1,6 +1,6 @@
 ---
 id: manage-access-project
-title: Manage access to your project
+title: Managing Access to Your Project
 ---
 
 ## Access permissions for other users to your project

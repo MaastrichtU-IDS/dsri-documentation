@@ -1,6 +1,6 @@
 ---
 id: increase-process-speed
-title: Increase your processes speed
+title: Increasing Your Processes' Speed
 ---
 
 DSRI provides a lot of computing resources, but there are a few things to know if you want to increase the speed of your processes.

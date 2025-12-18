@@ -1,6 +1,6 @@
 ---
 id: guide-publish-image
-title: Publish a Docker image
+title: Publishing a Docker Image
 ---
 
 :::warning DockerHub pull rates limitations

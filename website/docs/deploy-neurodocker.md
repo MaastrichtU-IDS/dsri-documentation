@@ -1,6 +1,6 @@
 ---
 id: neuroscience
-title: Neuroscience research
+title: Neuroscience Research
 ---
 
 :::tip Feedbacks welcome

@@ -1,6 +1,6 @@
 ---
 id: access-um-servers
-title: Access UM servers
+title: Accessing UM Servers
 ---
 
 ## Request access to internal UM servers

@@ -1,6 +1,6 @@
 ---
 id: delete-a-project
-title: Deleting a project
+title: Deleting a Project
 ---
 
 ## Delete a project using the web UI

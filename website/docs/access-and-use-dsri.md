@@ -1,6 +1,6 @@
 ---
 id: access-and-use-dsri
-title: Accessing and using the DSRI
+title: Accessing and Using the DSRI
 ---
 
 ## Connect to the UM network

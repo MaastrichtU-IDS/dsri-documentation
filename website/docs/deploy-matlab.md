@@ -1,6 +1,6 @@
 ---
 id: deploy-matlab
-title: Matlab
+title: MATLAB
 ---
 
 Note that we are not expert in Matlab: feel free to contact Mathworks support directly if you are having any issues with their official Docker image. Because since it's closed source we cannot fix it ourselves.

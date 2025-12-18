@@ -1,6 +1,6 @@
 ---
 id: catalog-imaging
-title: Imaging softwares
+title: Imaging Software
 ---
 
 Feel free to propose new services using [pull requests](https://github.com/MaastrichtU-IDS/dsri-documentation/pulls), or to request them by creating [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues).

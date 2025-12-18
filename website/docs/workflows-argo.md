@@ -1,6 +1,6 @@
 ---
 id: workflows-argo
-title: Run Argo workflows
+title: Run Argo Workflows
 ---
 
 :::warning Install in your project

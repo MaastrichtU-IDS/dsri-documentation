@@ -1,6 +1,6 @@
 ---
 id: login-docker-registry
-title: Login to Docker registries
+title: Logging into Docker Registries
 ---
 
 Login to an external container registry can be helpful to pull private images, or increase the DockerHub pull limitations.

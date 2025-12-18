@@ -1,6 +1,6 @@
 ---
 id: openshift-delete-objects
-title: Delete objects (advanced)
+title: Deleting Objects (Advanced)
 ---
 
 :::warning Be careful

@@ -118,13 +118,12 @@
     },
     {
       "type": "doc",
-      "id": "surf-offerings",
-      "label": "SURF Offerings"
+      "id": "surf-offerings"
     },
     {
       "type": "doc",
       "id": "contribute",
-      "label": "Contributing to DSRI"
+      "label": "Contributing to the DSRI"
     },
     {
       "type": "doc",
