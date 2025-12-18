@@ -10,7 +10,8 @@
       "label": "Getting started",
       "items": [
         "introduction",
-        "access-dsri",
+        "request-an-account",
+        "access-and-use-dsri",
         {
           "type": "category",
           "label": "Connecting to the UM Network",
@@ -18,9 +19,10 @@
           "items": ["guide-vpn", "enabling-vpn-wsl"]
         },
         "openshift-install",
-        "project-management",
+        "manage-access-project",
         "start-workspace",
-        "manage-app"
+        "manage-app",
+        "delete-a-project"
       ]
     },
     {
