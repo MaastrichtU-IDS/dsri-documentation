@@ -1,5 +1,5 @@
 ---
-id: deleting-a-project
+id: delete-a-project
 title: Deleting a project
 ---
 
