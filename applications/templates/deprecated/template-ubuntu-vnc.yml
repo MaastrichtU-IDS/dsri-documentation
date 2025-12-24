@@ -147,60 +147,60 @@ objects:
         matchLabels:
           app: "${APPLICATION_NAME}"
           deployment: "${APPLICATION_NAME}"
-    template:
-      metadata:
-        annotations:
-          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
-        labels:
-          app: "${APPLICATION_NAME}"
-          deployment: "${APPLICATION_NAME}"
-      spec:
-        runtimeClassName: selinux
-        serviceAccountName: anyuid
-        containers:
-        - name: ubuntu-container
-          image: "${APPLICATION_IMAGE}"
-          imagePullPolicy: IfNotPresent
-          ports:
-          - containerPort: 80
-            protocol: TCP
-          - containerPort: 5900
-            protocol: TCP
-          env:
-          - name: MOZ_DISABLE_CONTENT_SANDBOX
-            value: "1"
-          - name: HTTP_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: application-password
-                name: "${APPLICATION_NAME}"
-          - name: VNC_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: application-password
-                name: "${APPLICATION_NAME}"
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: application-password
-                name: "${APPLICATION_NAME}"
-          resources:
-            limits:
-              cpu: '32'
-              memory: 200Gi
-            requests:
-              cpu: 200m
-              memory: 256Mi
-          volumeMounts:
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          containers:
+          - name: ubuntu-container
+            image: "${APPLICATION_IMAGE}"
+            imagePullPolicy: IfNotPresent
+            ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 5900
+              protocol: TCP
+            env:
+            - name: MOZ_DISABLE_CONTENT_SANDBOX
+              value: "1"
+            - name: HTTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            - name: VNC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            resources:
+              limits:
+                cpu: '32'
+                memory: 200Gi
+              requests:
+                cpu: 200m
+                memory: 256Mi
+            volumeMounts:
+            - name: data
+              mountPath: "/root/persistent"
+            - name: dshm
+              mountPath: "/dev/shm"
+          volumes:
           - name: data
-            mountPath: "/root/persistent"
+            persistentVolumeClaim:
+              claimName: "${APPLICATION_NAME}"
           - name: dshm
-            mountPath: "/dev/shm"
-        volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "${APPLICATION_NAME}"
-        - name: dshm
-          emptyDir:
-            medium: Memory
-        automountServiceAccountToken: false
+            emptyDir:
+              medium: Memory
