@@ -72,7 +72,7 @@ You will receive an email when the GPU has been enabled in your project. You can
 We use `jupyterlab-gpu` as deployment name is  in the example, change it to yours if it is different.
 
 ```bash
-oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
+oc patch deployment/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
 ```
 
 * Or **through the web UI**
@@ -113,7 +113,7 @@ The GPU allocated to your workspace will be automatically disabled the after you
 You can also manually disable the GPU from your app, the pod will be restarted automatically on a CPU node:
 
 ```bash
-oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {}}]'
+oc patch deployment/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {}}]'
 ```
 
 <!--
@@ -148,7 +148,7 @@ From the **Topology** view click on your application:
 You can also do it using the command line, make sure to stop the pod first, and replace `jupyterlab-gpu` by your app name in this command:
 
 ```bash
-oc patch dc/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 2}, "limits": {"nvidia.com/gpu": 2}}}]'
+oc patch deployment/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 2}, "limits": {"nvidia.com/gpu": 2}}}]'
 ```
 
 3. Restart the pod for your application (the same way you stopped it)
