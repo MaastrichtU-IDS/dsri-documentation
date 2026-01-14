@@ -16,6 +16,7 @@ metadata:
       - password: $user_password
 
       🐳 Available images with this template:
+      ghcr.io/maastrichtu-ids/bioconductor-rstudio:3.21
       bioconductor/bioconductor_docker:devel
       rocker/rstudio
       rocker/tidyverse
