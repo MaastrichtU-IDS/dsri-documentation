@@ -65,7 +65,7 @@ objects:
       template: bioconductor-docker
   spec:
     tags:
-    - name: latest
+    - name: "3.21"
       from:
         kind: DockerImage
         name: ${APPLICATION_IMAGE}
@@ -151,7 +151,6 @@ objects:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
-          alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
           app: "${APPLICATION_NAME}"
           deployment: "${APPLICATION_NAME}"
