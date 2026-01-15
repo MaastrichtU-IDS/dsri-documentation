@@ -16,6 +16,7 @@ metadata:
       - password: $user_password
 
       🐳 Available images with this template:
+      ghcr.io/maastrichtu-ids/bioconductor-rstudio:3.21
       bioconductor/bioconductor_docker:devel
       rocker/rstudio
       rocker/tidyverse
@@ -41,8 +42,8 @@ parameters:
   required: true
 - name: APPLICATION_IMAGE
   displayName: Bioconductor Docker image
-  description: Check on the right to see which images can be used to start RStudio
-  value: bioconductor/bioconductor_docker:3.21-R-4.5.2
+  description: Internal mirror to avoid Docker Hub rate limits
+  value: ghcr.io/maastrichtu-ids/bioconductor-rstudio:3.21
   required: true
 - name: STORAGE_SIZE
   displayName: Storage size
@@ -64,7 +65,7 @@ objects:
       template: bioconductor-docker
   spec:
     tags:
-    - name: latest
+    - name: "3.21"
       from:
         kind: DockerImage
         name: ${APPLICATION_IMAGE}
@@ -150,7 +151,6 @@ objects:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
-          alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
           app: "${APPLICATION_NAME}"
           deployment: "${APPLICATION_NAME}"
@@ -180,7 +180,7 @@ objects:
             mountPath: "/root/persistent"
           env:
           - name: USER
-            value: "rstudio"
+            value: "root"
           - name: PASSWORD
             valueFrom:
               secretKeyRef:
