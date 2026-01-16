@@ -12,6 +12,8 @@ If you are planning to present or publish your work which was made possible by u
 
 # Citations
 
+* **Ultra-high-field (9.4 T) ex vivo diffusion MRI tractography reveals microstructural differences in Parkinson's disease motor subtypes**, *Jackson Boonstra, Stijn Michielse, Yasin Temel, Ali Jahanshahi, Alard Roebroeck*, [Neurobiology of Disease](https://www.sciencedirect.com/science/article/pii/S0969996126000100), 2026.
+
 * **AudioToolAgent: An Agentic Framework for Audio-Language Models**, *Gijs Wijngaard, Elia Formisano, Michel Dumontier*, [https://arxiv.org/pdf/2510.02995](https://arxiv.org/pdf/2510.02995), 2025.
 
 * **Audio-Language Datasets of Scenes and Events: A Survey**, *Gijs Wijngaard, Elia Formisano, Michele Esposito and Michel Dumontier*, [https://arxiv.org/pdf/2407.06947](https://arxiv.org/pdf/2407.06947), 2024.
