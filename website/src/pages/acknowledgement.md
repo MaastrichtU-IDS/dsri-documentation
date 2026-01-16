@@ -12,7 +12,11 @@ If you are planning to present or publish your work which was made possible by u
 
 # Citations
 
+<<<<<<< HEAD
 * **Ultra-high-field (9.4 T) ex vivo diffusion MRI tractography reveals microstructural differences in Parkinson's disease motor subtypes**, *Jackson Boonstra, Stijn Michielse, Yasin Temel, Ali Jahanshahi, Alard Roebroeck*, [Neurobiology of Disease](https://www.sciencedirect.com/science/article/pii/S0969996126000100), 2026.
+=======
+* **Ultra-high-field (9.4 T) ex vivo diffusion MRI tractography reveals microstructural differences in Parkinson's disease motor subtypes**, *Jackson Boonstra, Stijn Michielse, Yasin Temel, Ali Jahanshahi, Alard Roebroeck*, [Neurobiology of Disease, Volume 219, February 2026, 107266](https://www.sciencedirect.com/science/article/pii/S0969996126000100), 2026.
+>>>>>>> a19a224eb (Added the new citation to the test website [RCS-800])
 
 * **AudioToolAgent: An Agentic Framework for Audio-Language Models**, *Gijs Wijngaard, Elia Formisano, Michel Dumontier*, [https://arxiv.org/pdf/2510.02995](https://arxiv.org/pdf/2510.02995), 2025.
 
