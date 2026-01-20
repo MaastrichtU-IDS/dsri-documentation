@@ -18,7 +18,7 @@ DSRI works best when you work with code, scripts to run, and web applications. E
 Here is a non-exhaustive list of some of the applications that can easily be deployed on the DSRI:
 
 * Multiple flavors of [JupyterLab](https://github.com/jupyter/docker-stacks) (scipy, tensorflow, all-spark, and more)
-* JupyterHub with GitHub authentication
+* JupyterHub with various authentication methods such as GitHub authentication
 * RStudio, with a complementary Shiny server
 * VisualStudio [Code server](https://github.com/cdr/code-server)
 * Tensorflow or PyTorch on Nvidia GPU (with JupyterLab or VisualStudio Code)
@@ -26,8 +26,6 @@ Here is a non-exhaustive list of some of the applications that can easily be dep
 * SQL databases (MariaDB, MySQL, PostgreSQL)
 * NoSQL databases (MongoDB, Redis)
 * Graph databases (GraphDB, Blazegraph, Virtuoso)
-* Apache Flink cluster for streaming applications
-* Apache Spark cluster for distributed computing
 * Or any program installed in a Docker image!
 
 ### Hardware
@@ -42,15 +40,16 @@ Here is a non-exhaustive list of some of the applications that can easily be dep
 
 #
 
-* 5 GPU nodes
+* 5 GPU nodes - Note that we currently only allow one GPU being booked at the same time per user. Please refer to the [GPU Booker](https://dsri.maastrichtuniversity.nl/gpu-booking/) for more information. Additionally, the L40S GPUs cannot be booked as they are dedicated to certain research departments. Please contact us if you would like to know more about possibilities for co-investing in the DSRI to have your own hardware!
 
-|                      | GPU                | CPU                              | Cores                     | RAM                  | Type                     |
-| -------------------- | ------------------ | -------------------------------- | ------------------------- | -------------------- | ------------------------ |
-| 2x GPU node capacity | 2 NVIDIA H100 80GB | 2x AMD EPYC 7763 64-Core 3.5GHz  | 128 cores (256 threads)   | 512 GB DDR4 3200MHz  | Dell EMC PowerEdge R7525 |
-| 1x GPU node capacity | 2 NVIDIA A100 80GB | 2x AMD EPYC 7763 64-Core 3.5GHz  | 128 cores (256 threads)   | 512 GB DDR4 3200MHz  | Dell EMC PowerEdge R7525 |
-| 1x GPU node capacity | 1 NVIDIA A100 80GB | 2x AMD EPYC 7763 64-Core 3.5GHz  | 128 cores (256 threads)   | 512 GB DDR4 3200MHz  | Dell EMC PowerEdge R7525 |
-| 1x GPU node capacity | 4 NVIDIA L40S 48GB | 2x AMD EPYC 9554 64-Core 3.75GHz | 128 cores (256 threads)   | 1512 GB DDR5 4800MHz | HPE ProLiant DL385 Gen11 |
-| Total capacity       | 11 GPUs            | 10 CPUs                          | 640 cores (1 280 threads) | 8 192 GB             | -                        |
+
+|                      | GPU                | CPU                              | Cores                     | RAM                  | Type                     | Can be booked
+| -------------------- | ------------------ | -------------------------------- | ------------------------- | -------------------- | ------------------------ | ------------- |
+| 2x GPU node capacity | 2 NVIDIA H100 80GB | 2x AMD EPYC 7763 64-Core 3.5GHz  | 128 cores (256 threads)   | 512 GB DDR4 3200MHz  | Dell EMC PowerEdge R7525 | Yes           |       
+| 1x GPU node capacity | 2 NVIDIA A100 80GB | 2x AMD EPYC 7763 64-Core 3.5GHz  | 128 cores (256 threads)   | 512 GB DDR4 3200MHz  | Dell EMC PowerEdge R7525 | Yes           |
+| 1x GPU node capacity | 1 NVIDIA A100 80GB | 2x AMD EPYC 7763 64-Core 3.5GHz  | 128 cores (256 threads)   | 512 GB DDR4 3200MHz  | Dell EMC PowerEdge R7525 | Yes           |
+| 1x GPU node capacity | 4 NVIDIA L40S 48GB | 2x AMD EPYC 9554 64-Core 3.75GHz | 128 cores (256 threads)   | 1512 GB DDR5 4800MHz | HPE ProLiant DL385 Gen11 | No            |
+| Total capacity       | 11 GPUs            | 10 CPUs                          | 640 cores (1 280 threads) | 8 192 GB             | -                        |               |
 
 
 <img src="/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure" style={{maxWidth: '100%', maxHeight: '100%'}} />
