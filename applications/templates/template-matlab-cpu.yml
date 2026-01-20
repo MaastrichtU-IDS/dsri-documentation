@@ -41,7 +41,7 @@ parameters:
   displayName: Application Docker image
   name: APPLICATION_IMAGE
   required: true
-  value: mathworks/matlab:r2024b
+  value: mathworks/matlab:r2025a
 - description: Size of the storage used for Matlab (approximate).
   displayName: Storage size
   name: STORAGE_SIZE
