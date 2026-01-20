@@ -21,6 +21,7 @@ Once Matlab start you can access it through 2 routes (URL), which can be accesse
 * The main `matlab` route to access Matlab desktop UI directly in your web browser. It is recommended to use this route.
 * The `matlab-vnc` route can be used to access Matlab using a VNC client (you will need to use the full URL to your Matlab VNC route). Only use it if you know what you're doing.
 
+<!--
 ## Use a stable Matlab image
 
 The official Matlab image is infamous for showing a black screening after a few hours of use, making it a bit cumbersome to be used trustfully.
@@ -47,9 +48,10 @@ You will then be prompted the Matlab installation process:
 *  ⚠️ Fill in the username as used in the Ubuntu environment, in your case it will most probably be **root**  (Matlab gives a license error if this is not correct, check with `whoami` in the terminal when in doubt)
 *  Select every Matlab modules you want to be installed
 *  Check "symbolic link" and "Improve……"
+-->
 
 ## Use Matlab in Jupyter
-**For running Matlab in Jupyter, you need to first install the matlab on your Jupyter pod. if you need assistance [ask the DSRI admins](/help)** 
+**For running Matlab in Jupyter, you need to first install the matlab on your Jupyter pod. if you need assistance [ask the DSRI admins](/contact)** 
 <!--
 If you need to run matlab in Jupyter 
 
