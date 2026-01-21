@@ -158,7 +158,7 @@ objects:
               emptyDir:
                 medium: Memory
           containers:
-            - name: matlab-container
+            - name: "${APPLICATION_NAME}"
               image: "${APPLICATION_IMAGE}"
               imagePullPolicy: IfNotPresent
               args:

@@ -114,7 +114,7 @@ objects:
               persistentVolumeClaim:
                 claimName: "${APPLICATION_NAME}"
           containers:
-            - name: cellprofiler-container
+            - name: "${APPLICATION_NAME}"
               image: "${APPLICATION_IMAGE}"
               imagePullPolicy: IfNotPresent
               command: [ "tail", "-f", "/dev/null"]

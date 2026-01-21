@@ -186,7 +186,7 @@ objects:
           persistentVolumeClaim:
             claimName: "${PERSISTENT_VOLUME_CLAIM}"
         containers:
-        - name: rstudio-container
+        - name: "${APPLICATION_NAME}"
           image: ${APPLICATION_IMAGE}
           imagePullPolicy: Always
           ports:

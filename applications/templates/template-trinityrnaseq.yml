@@ -106,7 +106,7 @@ objects:
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
         containers:
-        - name: trinityrnaseq-container
+        - name: "${APPLICATION_NAME}"
           image: "${APPLICATION_IMAGE}"
           imagePullPolicy: Always
           command: [ "tail", "-f", "/dev/null"]
