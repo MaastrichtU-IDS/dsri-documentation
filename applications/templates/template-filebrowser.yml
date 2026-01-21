@@ -125,7 +125,7 @@ objects:
               persistentVolumeClaim:
                 claimName: "${STORAGE_NAME}"
           containers:
-            - name: filebrowser-container
+            - name: "${APPLICATION_NAME}"
               image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
               imagePullPolicy: IfNotPresent
               args: ["--password", "${APPLICATION_PASSWORD}"]

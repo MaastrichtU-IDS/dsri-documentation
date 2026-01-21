@@ -136,7 +136,7 @@ objects:
         runtimeClassName: selinux
         serviceAccountName: anyuid
         containers:
-        - name: custom-app
+        - name: ${APPLICATION_NAME}
           image: ${APPLICATION_IMAGE}
           imagePullPolicy: Always
           ports:

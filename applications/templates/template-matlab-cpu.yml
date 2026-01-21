@@ -175,7 +175,7 @@ objects:
             value: 27000@matlab.icts.maastrichtuniversity.nl
           image: "${APPLICATION_IMAGE}"
           imagePullPolicy: Always
-          name: matlab-container
+          name: "${APPLICATION_NAME}"
           ports:
           - containerPort: 8888
             protocol: TCP

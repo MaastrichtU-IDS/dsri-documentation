@@ -150,7 +150,7 @@ objects:
               emptyDir:
                 medium: Memory
           containers:
-            - name: vscode-container 
+            - name: "${APPLICATION_NAME}" 
               image: "${APPLICATION_IMAGE}" 
               imagePullPolicy: IfNotPresent
               workingDir: /home/coder/project

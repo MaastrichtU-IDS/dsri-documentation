@@ -111,6 +111,8 @@ objects:
       name: "${APPLICATION_NAME}"
       labels:
         app: "${APPLICATION_NAME}"
+      annotations:
+        haproxy.router.openshift.io/timeout: 10m
     spec:
       to:
         kind: Service
@@ -161,8 +163,14 @@ objects:
             - name: data
               persistentVolumeClaim:
                 claimName: "${APPLICATION_NAME}"
+            - name: rserver-config
+              configMap: 
+                name: "${APPLICATION_NAME}-config"
+                items:
+                - key: rserver.conf
+                  path: rserver.conf
           containers:
-            - name: rstudio-container
+            - name: ${APPLICATION_NAME}
               image: ${APPLICATION_IMAGE}
               imagePullPolicy: Always
               ports:
@@ -173,6 +181,9 @@ objects:
               volumeMounts:
                 - name: data
                   mountPath: "/root/persistent"
+                - mountPath: /etc/rstudio/rserver.conf 
+                  subPath: rserver.conf
+                  name: rserver-config 
               env:
                 - name: USER
                   value: "rstudio"
@@ -194,6 +205,22 @@ objects:
                 limits:
                   cpu: '32'
                   memory: 200Gi
+
+  # Added Objects: ConfigMap to increase the RStudio servers session timeout to 5 mins (300s)
+  - kind: ConfigMap 
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}-config"
+      labels:
+        app: "${APPLICATION_NAME}"
+    data:
+      rserver.conf: |
+        # Existing content:
+        rsession-which-r=/usr/local/bin/R
+        auth-minimum-user-id=0
+
+        # New content to fix the timeout issue (300s)
+        rsession-proxy-max-wait-secs=300
 
   #  Added Objects: Specific to RStudio for Shiny Server
   - kind: Service
@@ -217,6 +244,8 @@ objects:
       name: "${APPLICATION_NAME}-shiny"
       labels:
         app: "${APPLICATION_NAME}"
+      annotations:
+        haproxy.router.openshift.io/timeout: 10m 
     spec:
       to:
         kind: Service

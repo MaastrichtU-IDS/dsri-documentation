@@ -175,7 +175,7 @@ objects:
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
         containers:
-        - name: virtuoso-triplestore
+        - name: "${APPLICATION_NAME}"
           image: "${APPLICATION_IMAGE}"
           imagePullPolicy: Always
           ports:

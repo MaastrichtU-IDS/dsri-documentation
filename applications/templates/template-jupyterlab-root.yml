@@ -197,7 +197,7 @@ objects:
               emptyDir:
                 medium: Memory
           containers:
-            - name: jupyter-notebook
+            - name: "${APPLICATION_NAME}"
               image: "${APPLICATION_IMAGE}"
               imagePullPolicy: IfNotPresent
               workingDir: /home/jovyan/work
