@@ -46,7 +46,18 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
                         'containers': [
                             {
                                 "name": app_id,
-                                "resources": {}
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "32",
+                                        "memory": "192Gi",
+                                        "nvidia.com/gpu": None
+                                    },
+                                    "requests": {
+                                        "cpu": "200m",
+                                        "memory": "512Mi",
+                                        "nvidia.com/gpu": None
+                                    }
+                                }
                             }
                         ]
                     }
@@ -54,7 +65,7 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
             }
         }
         dyn_dc.patch(body=body, namespace=project_id)
-        logs = logs + f'✅ GPU limits disabled for the pod *{app_id}* in *{project_id}\n'
+        logs = logs + f'✅ GPU limits disabled for the pod *{app_id}* in *{project_id}*\n'
 
     except Exception as err:
         logs = logs + f'⚠️  Error disabling GPU limits for the pod *{app_id}* in *{project_id}*: {str(err)[:21]}\n'
@@ -130,8 +141,16 @@ def enable_gpu(project_id, app_id, dyn_client):
                                 {
                                     "name": app_id,
                                     "resources": {
-                                        "requests": {"nvidia.com/gpu": 1},
-                                        "limits": {"nvidia.com/gpu": 1}
+                                        "limits": {
+                                            "cpu": "64",
+                                            "memory": "256Gi",
+                                            "nvidia.com/gpu": "1"
+                                        },
+                                        "requests": {
+                                            "cpu": "200m",
+                                            "memory": "512Mi",
+                                            "nvidia.com/gpu": "1"
+                                        }
                                     }
                                 }
                             ]
