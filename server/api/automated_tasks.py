@@ -48,12 +48,14 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
                                 "name": app_id,
                                 "resources": {
                                     "limits": {
-                                        "cpu": "64",
-                                        "memory": "256Gi"
+                                        "cpu": "32",
+                                        "memory": "192Gi",
+                                        "nvidia.com/gpu": None
                                     },
                                     "requests": {
                                         "cpu": "200m",
-                                        "memory": "512Mi"
+                                        "memory": "512Mi",
+                                        "nvidia.com/gpu": None
                                     }
                                 }
                             }
