@@ -6,7 +6,7 @@ metadata:
   annotations:
     openshift.io/display-name: VisualStudio Code server
     description: |-
-      Start VisualStudio Code server with TensorFlow installed, and set up to be used with a GPU.
+      Start VisualStudio Code server with PyTorch installed, and set up to be used with a GPU.
 
       📂 Use the /home/coder/project folder (workspace of the VSCode UI) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
