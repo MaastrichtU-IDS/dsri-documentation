@@ -205,15 +205,10 @@ objects:
               cpu: 200m
               memory: 256Mi
           volumeMounts:
-          - mountPath: "/dev/shm"
-            name: dshm
           - mountPath: "/workspace/persistent"
             name: data
         serviceAccountName: anyuid
         volumes:
-        - emptyDir:
-            medium: Memory
-          name: dshm
         - name: data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"

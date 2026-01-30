@@ -195,12 +195,7 @@ objects:
             volumeMounts:
             - name: data
               mountPath: "/root/persistent"
-            - name: dshm
-              mountPath: "/dev/shm"
           volumes:
           - name: data
             persistentVolumeClaim:
               claimName: "${APPLICATION_NAME}"
-          - name: dshm
-            emptyDir:
-              medium: Memory
