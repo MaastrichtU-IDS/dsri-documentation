@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: vscode-gpu-tensorflow
   annotations:
-    openshift.io/display-name: VisualStudio Code server
+    openshift.io/display-name: VisualStudio Code server (TensorFlow)
     description: |-
       Start VisualStudio Code server with TensorFlow installed, and set up to be used with a GPU.
 
