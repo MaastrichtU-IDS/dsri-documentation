@@ -142,9 +142,6 @@ objects:
             - name: data 
               persistentVolumeClaim:
                 claimName: "${APPLICATION_NAME}"
-            - name: dshm 
-              emptyDir:
-                medium: Memory
           containers:
             - name: "${APPLICATION_NAME}" 
               image: "${APPLICATION_IMAGE}" 
@@ -156,8 +153,6 @@ objects:
               volumeMounts:
                 - name: data 
                   mountPath: "/home/coder/project" 
-                - name: dshm 
-                  mountPath: /dev/shm
               env:
                 - name: PASSWORD
                   valueFrom:
