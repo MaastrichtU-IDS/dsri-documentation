@@ -84,10 +84,10 @@ objects:
       selector:
         app: "${APPLICATION_NAME}" 
       ports:
-        - name: "8080-tcp"
+        - name: "8081-tcp"
           protocol: TCP
-          port: 8080
-          targetPort: 8080
+          port: 8081
+          targetPort: 8081
 
   - kind: Route
     apiVersion: route.openshift.io/v1
@@ -100,7 +100,7 @@ objects:
         kind: Service
         name: "${APPLICATION_NAME}"
       port:
-        targetPort: "8080-tcp"
+        targetPort: "8081-tcp"
       tls:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
@@ -148,7 +148,7 @@ objects:
               imagePullPolicy: IfNotPresent
               workingDir: /home/coder/project
               ports:
-                - containerPort: 8080
+                - containerPort: 8081
                   protocol: TCP
               volumeMounts:
                 - name: data 
