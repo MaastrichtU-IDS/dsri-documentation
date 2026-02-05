@@ -129,6 +129,6 @@ Visit the [Kubeflow documentation to create a MPI job](https://www.kubeflow.org/
 
 :::info Contact us
 
-Feel free to contact us on  the DSRI Slack **#helpdesk** channel to discuss the use of MPI on the DSRI.
+Feel free to contact us using [Topdesk Form ](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) to discuss the use of MPI on the DSRI.
 
 :::

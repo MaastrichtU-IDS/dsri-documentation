@@ -49,4 +49,4 @@ A solution could be to:
 * Read/write data mostly from this folder on the ephemeral storage, avoid using the data in the  persistent volume folder as much as possible
 * Copy the important result  files or temporary files you don't want to lose from the folder on the  ephemeral storage to the folder on the persistent storage
 
-Let us know how it works for you on the Slack **#general** channel, and if you have suggestions to improve the workspaces.
+Let us know how it works for you on the [Topdesk Form ](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392), and if you have suggestions to improve the workspaces.

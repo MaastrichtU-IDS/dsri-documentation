@@ -52,7 +52,7 @@ oc get events
 If you cannot figure out the issue by yourself:
 
 1. **Gather relevant information to help the RCS team** to solve your issue: URL to the faulty application, which error was shown in the **Events** tab? Or in the **Logs** tab?
-2. Seek help on the `#helpdesk` DSRI Slack channel
+2. Seek help using the [Topdesk Form ](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392)
 3. Checkout if an issue have already been created for this problem, or create a new one: [https://github.com/MaastrichtU-IDS/dsri-documentation/issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues)
 
 :::
