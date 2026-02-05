@@ -15,7 +15,7 @@ You can explore published Operators at https://operatorhub.io
 
 :::info Contact us
 
-Contact us on the DSRI Slack **#helpdesk** channel, if you want to install a new Operator on the DSRI.
+Contact us using the [Topdesk Form ](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392), if you want to install a new Operator on the DSRI.
 
 :::
 

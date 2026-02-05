@@ -72,7 +72,7 @@ This template uses the Docker image defined at https://github.com/fcwu/docker-ub
 
 :::caution Less stable than the official image
 
-This image might be less stable than the original Ubuntu image. Let us know on Slack if you have any problem!
+This image might be less stable than the original Ubuntu image. Let us know on the [Topdesk Form ](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) if you have any problem!
 
 :::
 

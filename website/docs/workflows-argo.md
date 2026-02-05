@@ -69,7 +69,7 @@ helm install my-argo argo/argo --version 0.15.2
 
 ### ArgoCD Operator
 
-Ask on the DSRI Slack **#helpdesk** channel to have the [ArgoCD Operator](https://artifacthub.io/packages/olm/community-operators/argocd-operator) installed in your project.
+Ask on the [Topdesk Form ](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) to have the [ArgoCD Operator](https://artifacthub.io/packages/olm/community-operators/argocd-operator) installed in your project.
 
 ### Uninstall `argo`
 

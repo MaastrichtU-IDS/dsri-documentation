@@ -129,7 +129,7 @@ helm uninstall actions-runner
 
 :::warning Experimental
 
-Experimental: this deployment workflow is still experimental, let us know on Slack if you are interested in using it.
+Experimental: this deployment workflow is still experimental, let us know on the [Topdesk Form ](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) or e-mail, if you are interested in using it.
 
 :::
 
