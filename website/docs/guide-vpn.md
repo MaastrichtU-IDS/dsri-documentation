@@ -75,14 +75,13 @@ Provide your UM username and password.
 * Connect to **UMnet** or **eduroam** WiFi at Maastricht University
 
 * For **Linux**, use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
-
-  ```bash
+```bash
   sudo apt install openconnect
-# Employees:
-sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.USER --authgroup=01 vpn.maastrichtuniversity.nl
-# Students:
-sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.STUDENT.NUMBER --authgroup=06 vpn.maastrichtuniversity.nl
-  ```
+  # Employees:
+  sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.USER --authgroup=01 vpn.maastrichtuniversity.nl
+  # Students:
+  sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.STUDENT.NUMBER --authgroup=06 vpn.maastrichtuniversity.nl
+```
 
   > Provide your UM password when prompted.
 
