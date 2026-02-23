@@ -7,7 +7,7 @@ title: Installing the UM VPN
 
 1. You will need to have an account at Maastricht University with an email ending with `@maastrichtuniversity.nl` or `@student.maastrichtuniversity.nl`.
 
-2. Request access to the DSRI for your account Please fill this [form 📬](/register). to provide us some information on what you plan to do with the DSRI.
+2. Request access to the DSRI for your account. Please fill this [form 📬](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=09acae9cdf454968bc94ad125b1f8e76&from=436967a9-738c-4112-b3f6-240a9847118e&openedFromService=true) to provide us some information on what you plan to do with the DSRI.
 
 
 ## Connect to the UM network
@@ -21,18 +21,18 @@ You need to be connected to the UM network to access the DSRI.
   Log in to that using your UM username and password.
 
 :::info Students
-
-By default the UM VPN is only available to employees. As a student you can access UM resources from any location via [Student Desktop Anywhere](https://athenadesktop.maastrichtuniversity.nl). However, if VPN access is absolutely necessary you can request access via your course coordinator. 
+If you have been granted access to the DSRI, VPN access is **automatically included**.
+Students must log in with their **student number** (e.g. `I6000000`) and select the **`06-AssignedStudents`** group in the Cisco Secure Client. Do **not** select `01-Employees` as this will cause the connection to fail.
 
 :::
 
 
 
-  * Your **UM account** e.g. `Firstname.Lastname` or `F.Lastname`r your **employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`
+* **Employees:** Use your UM account e.g. `Firstname.Lastname` or your **employee number** (a.k.a. P number), e.g. `P7000000`, and select the **`01-Employees`** VPN group.
+
+* **Students:** Use your **student number**, e.g. `I6000000`, and select the **`06-AssignedStudents`** VPN group.
 
     <img src="/img/vpn-login.png" alt="VPN Log in View" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-  * Students need to use their **student number** and choose the **06-AssignedStudents** VPN group.
 
     After logging in, you will see below page to download the **AnyConnect Secure Mobility Client**
 
@@ -62,7 +62,9 @@ Then after you will get the bellow wizard and click connect
 
 <img src="/img/vpnsetup5.png" alt="Log in to the VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-Provide your UM username and password. (**employee number** at Maastricht University (a.k.a. P number), e.g. `P7000000`)
+Provide your UM username and password.
+- **Employees:** use your P number, e.g. `P7000000`, and select `01-Employees`
+- **Students:** use your student number, e.g. `I6000000`, and select `06-AssignedStudents`
 
 <img src="/img/vpnsetup6.png" alt="Log in to the VPN" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
@@ -76,7 +78,10 @@ Provide your UM username and password. (**employee number** at Maastricht Univer
 
   ```bash
   sudo apt install openconnect
-  sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.USER --authgroup=01 vpn.maastrichtuniversity.nl
+# Employees:
+sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.USER --authgroup=01 vpn.maastrichtuniversity.nl
+# Students:
+sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.STUDENT.NUMBER --authgroup=06 vpn.maastrichtuniversity.nl
   ```
 
   > Provide your UM password when prompted.
