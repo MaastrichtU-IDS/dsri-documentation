@@ -72,7 +72,7 @@ You will receive an email when the GPU has been enabled in your project. You can
 We use `jupyterlab-gpu` as deployment name is  in the example, change it to yours if it is different.
 
 ```bash
-oc patch deployment/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
+oc patch deployment/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"limits": {"cpu": "64", "memory": "256Gi", "nvidia.com/gpu": 1}, "requests": {"cpu": "200m", "memory": "256Mi", "nvidia.com/gpu": 1}}}]'
 ```
 
 * Or **through the web UI**
@@ -84,8 +84,12 @@ In the Deployment Config text editor, hit `ctrl + f` to search for "**resources*
 ```yaml
         - resources:
             requests:
+              cpu: 200m
+              memory: 256Mi
               nvidia.com/gpu: 1
             limits:
+              cpu: '64'
+              memory: 256Gi
               nvidia.com/gpu: 1
 ```
 
@@ -127,31 +131,6 @@ Follow the usual process to run tensorboard: https://www.tensorflow.org/tensorbo
 2. Then start Tensorboard in the terminal with `tensorboard --logdir logs` (change the directory depending on where the logs of your runs are stored), it should tell you that tensorboard as been started on port 6006
 3. At this point you should be able to open the Tensorboard view from the JupyterLab welcome page
 -->
-
-## Increase the number of GPUs
-
-If you have been granted a 2nd GPU to speed up your experiment you can easily upgrade the number of GPU used by your workspace:
-
-From the **Topology** view click on your application:
-
-1. Stop the application, by decreasing the number of pod to 0 (in the **Details** tab)
-2. Click on **Options** > **Edit Deployment** > in the YAML of the deployment search for `limits` and change the number of GPU assigned to your deployment to 2:
-
-```yaml
-          resources:
-            limits:
-              nvidia.com/gpu: '2'
-            requests:
-              nvidia.com/gpu: '2'
-```
-
-You can also do it using the command line, make sure to stop the pod first, and replace `jupyterlab-gpu` by your app name in this command:
-
-```bash
-oc patch deployment/jupyterlab-gpu --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 2}, "limits": {"nvidia.com/gpu": 2}}}]'
-```
-
-3. Restart the pod for your application (the same way you stopped it)
 
 ## Install GPU drivers in any image
 
