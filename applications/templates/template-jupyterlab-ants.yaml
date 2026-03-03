@@ -163,7 +163,7 @@ objects:
                 - name: JUPYTER_ENABLE_LAB
                   value: "yes"
                 - name: ANTSPATH
-                  value: "/opt/ants/bin"
+                  value: "/usr/local/ants/bin"
               resources:
                 requests:
                   cpu: 500m
