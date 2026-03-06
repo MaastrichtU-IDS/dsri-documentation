@@ -151,7 +151,7 @@ objects:
           serviceAccountName: anyuid
           automountServiceAccountToken: false
           containers:
-          - name: ubuntu-container
+          - name: "${APPLICATION_NAME}"
             image: "${APPLICATION_IMAGE}"
             imagePullPolicy: IfNotPresent
             ports:
