@@ -6,21 +6,13 @@ metadata:
   annotations:
     openshift.io/display-name: Ubuntu with desktop interface
     description: |-
-      Start a Ubuntu Linux workspace with a regular desktop interface accessible in the browser
+      Start a minimal Ubuntu 22.04 Linux workspace with an LXDE desktop interface accessible directly in your browser.
 
-      You can use this template to deploy various desktop environments:
-      - Ubuntu 20.04 with LXDE desktop (cf. https://github.com/vemonet/docker-ubuntu-vnc-desktop):
-      ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest
-      - NeuroDesk (cf. https://github.com/NeuroDesk/vnm)
-      docker.pkg.github.com/neurodesk/neurodesk/vnm2:20210113
+      You will be the `root` user inside the container.
 
-      Visit https://github.com/vemonet/docker-ubuntu-vnc-desktop for more details on the image
-      Please create issues if you are experiencing problem with the workspace.
+      Use the `/root/persistent` folder to store your data. Files kept in this directory are stored in persistent storage and will survive pod restarts.
 
-      👤 You will be the `root` user inside the container.
-
-      📂 Use the `/root/persistent` folder (in the home of your user) and its subfolders to store your data in the existing persistent storage
-      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+      Source code: https://github.com/MaastrichtU-Library/ubuntu-vnc
     iconClass: icon-ubuntu
     tags: ubuntu,ui,vnc,root,persistent
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -39,7 +31,7 @@ parameters:
   - name: APPLICATION_NAME
     displayName: Application name
     description: Must be without spaces (use -), and unique in the project.
-    value: ubuntu
+    value: ubuntu-vnc
     required: true
   - name: PASSWORD
     displayName: Ubuntu Password
@@ -52,8 +44,8 @@ parameters:
     required: true
   - name: APPLICATION_IMAGE
     displayName: Application Docker image
-    description: The docker image used to start the container (e.g. Ubuntu or NeuroDesk)
-    value: ghcr.io/vemonet/docker-ubuntu-vnc-desktop:latest
+    description: The Docker image for the Ubuntu VNC desktop.
+    value: ghcr.io/maastrichtu-library/ubuntu-vnc:22.04
     required: true
 
 objects:
@@ -159,7 +151,7 @@ objects:
           serviceAccountName: anyuid
           automountServiceAccountToken: false
           containers:
-          - name: ubuntu-container
+          - name: "${APPLICATION_NAME}"
             image: "${APPLICATION_IMAGE}"
             imagePullPolicy: IfNotPresent
             ports:
