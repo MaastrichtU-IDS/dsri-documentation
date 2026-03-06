@@ -31,7 +31,7 @@ parameters:
   - name: APPLICATION_NAME
     displayName: Application name
     description: Must be without spaces (use -), and unique in the project.
-    value: ubuntu
+    value: ubuntu-vnc
     required: true
   - name: PASSWORD
     displayName: Ubuntu Password
