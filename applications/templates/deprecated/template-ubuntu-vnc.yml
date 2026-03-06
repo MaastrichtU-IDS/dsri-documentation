@@ -45,7 +45,7 @@ parameters:
   - name: APPLICATION_IMAGE
     displayName: Application Docker image
     description: The Docker image for the Ubuntu VNC desktop.
-    value: ghcr.io/maastrichtu-library/ubuntu-vnc:dev
+    value: ghcr.io/maastrichtu-library/ubuntu-vnc:22.04
     required: true
 
 objects:
