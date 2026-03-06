@@ -26,7 +26,7 @@ labels:
 parameters:
   - name: APPLICATION_NAME
     displayName: Application Name
-    value: ants-jupyter
+    value: ants-jupyterlab
     required: true
   - name: APPLICATION_IMAGE
     displayName: ANTs Docker Image
