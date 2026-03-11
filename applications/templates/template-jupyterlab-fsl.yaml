@@ -8,14 +8,15 @@ metadata:
     description: |-
       FSL (FMRIB Software Library) 6.0.7 pre-loaded in a JupyterLab workspace. 
       This image is optimized for fMRI preprocessing workflows and includes full Python integration for neuroimaging research.
+     
+      **Note:** This image is for Command Line (CLI) use only. It does not support Graphical Interfaces (GUIs). For visual tools, use the "Ubuntu VNC fMRI" template.
+     
+      **Features:**
+      - FSL 6.0.7 
+      - JupyterLab with Python 3.12
 
-      🐳 **Features:**
-      - FSL 6.0.7 (Full installation)
-      - JupyterLab interface with Python/Conda support
-      - Pre-configured environment variables (FSLDIR, PATH)
-
-      📂 **Persistence:**
-      Use the `/home/jovyan/work/persistent` folder to store your data and notebooks. 
+      **Persistence:**
+      Use the `/home/jovyan/work/persistent` folder to store your data.
       Any data stored outside this folder will be lost when the pod restarts.
 
     iconClass: icon-python
