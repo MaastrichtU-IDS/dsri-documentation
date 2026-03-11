@@ -7,15 +7,7 @@ title: Run Nextflow Workflows
 
 Nextflow has been developed by the genomic research scientific community and is built to run bioinformatics pipeline.
 
-Define your workflow in a Bash script fashion, providing input, output and the command to run. Without the need to create and use Docker container for Conda pipelines
-
-## Install Nextflow
-
-Install the `nextflow` client on your computer:
-
-```shell
-wget -qO- https://get.nextflow.io | bash
-```
+Define your workflow in a Bash script fashion, providing input, output and the command to run. Without the need to create and use Docker container for pipelines.
 
 :::info Official documentation
 
@@ -23,16 +15,45 @@ See the [Nextflow documentation](https://www.nextflow.io/docs/latest/getstarted.
 
 :::
 
-## Run workflow
+## Install Nextflow
 
-Try the hello world workflow from Nextflow using an existing storage:
+Install the `nextflow` client on your local device:
 
 ```shell
-nextflow kuberun https://github.com/nextflow-io/hello -v pvc-mapr-projects-showcase:/data
+wget -qO- https://get.nextflow.io | bash
 ```
 
-:::tip Use Conda environments
+## Log into the DSRI with OC CLI
 
-You can easily [define Conda environments and workflows](https://www.nextflow.io/docs/latest/conda.html) with Nextflow.
+See our [CLI documentation](https://dsri.maastrichtuniversity.nl/docs/openshift-install) to read about how to install the CLI and log into the DSRI with it.
 
-:::
+## Create the correct Persistent Volume Claim
+
+To use Nexflow, you will need a Persistent Volume Claim (PVC) with ReadWriteMany (RWX) permisions set in your namespace you are going to use with Nextflow. To read more about how to set up an PVC on the DSRI, please refer to our (documentation)[https://dsri.maastrichtuniversity.nl/docs/openshift-storage#create-the-persistent-storage]. Make sure when creating AN PVC with RWX permissions to use the storageClass `ocs-storagecluster-cephfs`! This storageClass is needed to be able to set the RWX permissions.
+
+## Create Nextflow configuration file
+
+In the directory where you have installed Nextflow on your local computer, you will need to create a file named `nextflow.config`.
+
+In this fill you will need to set the correct serviceaccount which Nextflow will use, and the namespace you want to run your Nextflow pipeline in.
+
+```bash
+k8s {
+    serviceAccount = 'deployer'
+    namespace      = 'namespace-name'
+}
+```
+
+Make sure to set the serviceaccount to `deployer`, as this is the corect serviceaccount you will need! Change the namespace-name accordingly to match the namespace you want to run your Nextflow workflow in.
+
+## Run workflow
+
+Try the hello world workflow from Nextflow:
+
+```shell
+nextflow kuberun https://github.com/nextflow-io/hello -v pvc-name:/data
+```
+
+This will map the `/data` directory in your Nextflow workflow pods to the PVC you have created for this workflow.
+
+To read more about how to use Nextflow on a Kubernetes cluster please refer to their [documentation](https://www.nextflow.io/docs/latest/kubernetes.html).
