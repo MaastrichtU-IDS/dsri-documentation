@@ -30,7 +30,7 @@ parameters:
   - name: APPLICATION_NAME
     displayName: Application Name
     description: Must be unique in the project (e.g., fsl-researcher-name).
-    value: fsl-jupyter
+    value: fsl-jupyterlab
     required: true
   - name: APPLICATION_IMAGE
     displayName: FSL Docker Image
