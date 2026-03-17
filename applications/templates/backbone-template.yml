@@ -116,8 +116,6 @@ objects:
       name: "${APPLICATION_NAME}"
       labels:
         app: "${APPLICATION_NAME}"
-    # annotations:
-    #  template.openshift.io/expose-password: "{.data['application-password']}"
     stringData:
       # The key here is 'password'. Access it in the deployment with a secretKeyRef.
       application-password: "${PASSWORD}"

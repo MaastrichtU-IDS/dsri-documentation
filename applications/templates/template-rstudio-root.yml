@@ -129,8 +129,6 @@ objects:
       name: "${APPLICATION_NAME}"
       labels:
         app: "${APPLICATION_NAME}"
-      annotations:
-        template.openshift.io/expose-password: "{.data['application-password']}"
     stringData:
       application-password: "${PASSWORD}"
 
