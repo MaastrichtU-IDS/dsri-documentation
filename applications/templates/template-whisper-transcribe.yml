@@ -1,0 +1,175 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  annotations:
+    description: |-
+      
+      By default the GPU will not be enabled, so you can start
+      this workspace to prepare your code and data. Once your the GPU has been enabled
+      in your project, you can enable the GPU in your workspace with this command
+      (replace whisper-transcribe with the name of your deployment)
+      
+      oc patch deployment/whisper-transcribe
+      --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources",
+      "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]'
+      
+      📂 Use the `/persistent` folder (workspace of the JupyterLab UI) to store your data in the persistent
+      storage
+    
+      🗑️
+      Use this command with your application name to delete completely your application
+      and its persistent volumes:
+      oc delete all,pvc,secret,configmaps,serviceaccount,rolebinding
+      --selector app=$APPLICATION_NAME
+    iconClass: icon-python
+    openshift.io/display-name: Whisper Transcribe
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-on-gpu
+    openshift.io/provider-display-name: Research Computing Support, UM
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    tags: whisper,transcribe
+  name: whisper-transcribe
+  labels:
+    template: whisper-transcribe
+
+parameters:
+- name: APPLICATION_NAME
+  description: Must be unique in the project. It will be used to generate the application URL.
+  displayName: Application name
+  required: true
+  value: whisper-transcribe
+- name: IMAGE_NAME
+  displayName: Docker image used
+  required: true
+  value: ghcr.io/maastrichtu-library/whisper-transcribe-dev:latest
+- name: STORAGE_SIZE
+  description: Size of the storage allocated to the persistent storage in `/persistent`.
+  displayName: Storage size
+  required: true
+  value: 5Gi
+
+# Custom parameters 
+- name: WHISPER_TOKEN
+  description: The password, aka. token, to access the notebook
+  displayName: UI password
+  required: true
+- name: IMAGE_PULL_POLICY
+  description: Use Always to make sure the new image is pulled when you update it
+  displayName: Image pull policy
+  required: true
+  value: IfNotPresent
+
+objects:
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    labels:
+      app: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: "${STORAGE_SIZE}"
+    storageClassName: ocs-storagecluster-cephfs
+    
+- kind: Service
+  apiVersion: v1
+  metadata:
+    labels:
+      app: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 5000-tcp
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
+    - name: 8501-tcp
+      port: 8501
+      protocol: TCP
+      targetPort: 8501
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    labels:
+      app: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    port:
+      targetPort: 8501-tcp
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+
+- kind: Secret
+  apiVersion: v1
+  metadata:
+    labels:
+      app: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${WHISPER_TOKEN}"
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    labels:
+      app: "${APPLICATION_NAME}"
+    name: "${APPLICATION_NAME}"
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+    strategy:
+      type: RollingUpdate
+    template:
+      metadata:
+        labels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      spec:
+        containers:
+        - env:
+          - name: WHISPER_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: PERSISTENT_FOLDER
+            value: "/persistent"
+          image: "${IMAGE_NAME}"
+          imagePullPolicy: "${IMAGE_PULL_POLICY}"
+          name: "${APPLICATION_NAME}"
+          ports:
+          - containerPort: 8501
+            protocol: TCP
+          - containerPort: 5000
+            protocol: TCP
+          resources:
+            limits:
+              cpu: '64'
+              memory: 256Gi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+          - mountPath: "/persistent"
+            name: data
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
