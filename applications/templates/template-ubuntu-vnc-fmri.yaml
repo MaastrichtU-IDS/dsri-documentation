@@ -1,0 +1,203 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: ubuntu-vnc-fmri
+  annotations:
+    openshift.io/display-name: Ubuntu VNC for fMRI Preprocessing
+    description: |-
+      A complete Ubuntu 22.04 workstation pre-loaded with FSL, ANTs, and Jupyterlab. 
+      Optimized for fMRI preprocessing workflows.
+
+      **Interfaces:**
+      - **VNC Desktop:** Accessible at the root URL (/). Use the Desktop icon to open JupyterLab inside the VNC.
+      - **Direct JupyterLab:** Accessible at /jupyterlab for a lightweight coding experience.
+
+      **Pre-loaded Tools:**
+      - FSL 6.0.7
+      - ANTs 2.6.4
+
+      👤 You will be the `root` user.
+      📂 Use the `/root/persistent` folder to store your data and scripts.
+    iconClass: icon-ubuntu
+    tags: ubuntu,vnc,fsl,ants,fmri,neuro,jupyter
+    openshift.io/provider-display-name: Research Computing Support, UM
+labels:
+  template: ubuntu-vnc-fmri
+
+parameters:
+  - name: APPLICATION_NAME
+    displayName: Application Name
+    description: Unique name for this workspace.
+    value: ubuntu-vnc-fmri
+    required: true
+  - name: PASSWORD
+    displayName: Password
+    description: Password for both the VNC Desktop and JupyterLab.
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage Size
+    description: Size of the storage for MRI data 
+    value: 20Gi
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Docker Image
+    description: The optimized integrated fMRI image.
+    value: default-route-openshift-image-registry.apps.dsri2.unimaas.nl/adelina-test2/ubuntu-vnc-fmri
+    required: true
+
+objects:
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: dev
+          from:
+            kind: DockerImage
+            name: ${APPLICATION_IMAGE}
+          importPolicy:
+            scheduled: false
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      ports:
+      - name: http-tcp
+        protocol: TCP
+        port: 80
+        targetPort: 80
+      selector:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: http-tcp
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    stringData:
+      application-password: "${PASSWORD}"
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      strategy:
+        type: Recreate
+      replicas: 1
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          securityContext:
+            runAsUser: 0
+          containers:
+          - name: "${APPLICATION_NAME}"
+            image: "${APPLICATION_IMAGE}"
+            imagePullPolicy: Always
+            ports:
+            - containerPort: 80
+              protocol: TCP
+            env:
+            - name: MOZ_DISABLE_CONTENT_SANDBOX
+              value: "1"
+            # VNC/Dashboard Passwords
+            - name: HTTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            - name: VNC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            # Jupyter Token (Uses same password for simplicity)
+            - name: JUPYTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            # Neuro-Tool Paths
+            - name: FSLDIR
+              value: "/usr/local/fsl"
+            - name: ANTSPATH
+              value: "/usr/local/ants/bin"
+            resources:
+              limits:
+                cpu: '8'
+                memory: 16Gi
+              requests:
+                cpu: 500m
+                memory: 4Gi
+            volumeMounts:
+            - name: data
+              mountPath: "/root/persistent"
+            - name: dshm
+              mountPath: "/dev/shm" 
+          volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: "${APPLICATION_NAME}"
+          - name: dshm
+            emptyDir:
+              medium: Memory
+              sizeLimit: 2Gi    
