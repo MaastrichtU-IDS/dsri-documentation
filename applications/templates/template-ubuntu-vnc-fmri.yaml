@@ -37,7 +37,7 @@ parameters:
     required: true
   - name: STORAGE_SIZE
     displayName: Storage Size
-    description: Size of the storage for MRI data (e.g., 10Gi, 50Gi).
+    description: Size of the storage for MRI data 
     value: 20Gi
     required: true
   - name: APPLICATION_IMAGE
@@ -57,7 +57,7 @@ objects:
       lookupPolicy:
         local: true
       tags:
-        - name: latest
+        - name: dev
           from:
             kind: DockerImage
             name: ${APPLICATION_IMAGE}
