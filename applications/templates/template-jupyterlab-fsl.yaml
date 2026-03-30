@@ -35,7 +35,7 @@ parameters:
   - name: APPLICATION_IMAGE
     displayName: FSL Docker Image
     description: The Docker image for the FSL workspace. Defaults to the FSL 6.0.7 image with JupyterLab pre-installed.
-    value: ghcr.io/maastrichtu-library/fsl:6.0.7
+    value: default-route-openshift-image-registry.apps.dsri2.unimaas.nl/openshift/fsl:6.0.7
     required: true
   - name: STORAGE_SIZE
     displayName: Storage Size
