@@ -6,6 +6,7 @@ metadata:
   annotations:
     openshift.io/display-name: ANTs with JupyterLab
     description: |-
+      Test the local image
       Advanced Normalization Tools (ANTs) 2.6.4 pre-loaded in a JupyterLab workspace. 
 
       🐳 **Features:**
@@ -31,7 +32,7 @@ parameters:
   - name: APPLICATION_IMAGE
     displayName: ANTs Docker Image
     description: Optimized ANTs 2.6.4 image with JupyterLab.
-    value: ghcr.io/maastrichtu-library/ants:dev
+    value: default-route-openshift-image-registry.apps.dsri2.unimaas.nl/openshift/ants:2.6.4
     required: true
   - name: STORAGE_SIZE
     displayName: Storage Size
