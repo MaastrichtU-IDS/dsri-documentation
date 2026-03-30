@@ -43,7 +43,7 @@ parameters:
   - name: APPLICATION_IMAGE
     displayName: Docker Image
     description: The optimized integrated fMRI image.
-    value: default-route-openshift-image-registry.apps.dsri2.unimaas.nl/adelina-test2/ubuntu-vnc-fmri
+    value: default-route-openshift-image-registry.apps.dsri2.unimaas.nl/adelina-test2/ubuntu-vnc-fmri:dev
     required: true
 
 objects:
@@ -152,6 +152,10 @@ objects:
             - containerPort: 80
               protocol: TCP
             env:
+            - name: USER
+              value: "root"
+            - name: DISPLAY
+              value: ":1"
             - name: MOZ_DISABLE_CONTENT_SANDBOX
               value: "1"
             # VNC/Dashboard Passwords
