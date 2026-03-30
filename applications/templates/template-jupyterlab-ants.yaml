@@ -6,7 +6,6 @@ metadata:
   annotations:
     openshift.io/display-name: ANTs with JupyterLab
     description: |-
-      Test the local image
       Advanced Normalization Tools (ANTs) 2.6.4 pre-loaded in a JupyterLab workspace. 
 
       🐳 **Features:**
