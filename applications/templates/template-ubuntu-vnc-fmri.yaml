@@ -43,7 +43,7 @@ parameters:
   - name: APPLICATION_IMAGE
     displayName: Docker Image
     description: The optimized integrated fMRI image.
-    value: default-route-openshift-image-registry.apps.dsri2.unimaas.nl/adelina-test2/ubuntu-vnc-fmri:dev
+    value: default-route-openshift-image-registry.apps.dsri2.unimaas.nl/openshift/ubuntu-vnc-fmri:latest
     required: true
 
 objects:

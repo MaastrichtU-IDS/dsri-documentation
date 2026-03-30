@@ -32,7 +32,7 @@ parameters:
   - name: APPLICATION_IMAGE
     displayName: ANTs Docker Image
     description: Optimized ANTs 2.6.4 image with JupyterLab.
-    value: default-route-openshift-image-registry.apps.dsri2.unimaas.nl/adelina-test2/ants:2.6.4
+    value: default-route-openshift-image-registry.apps.dsri2.unimaas.nl/openshift/ants:2.6.4
     required: true
   - name: STORAGE_SIZE
     displayName: Storage Size
