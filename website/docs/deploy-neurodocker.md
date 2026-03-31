@@ -65,7 +65,7 @@ You can also link your git repository to the project for automatic deployment se
 
 ### Firefox in VNC Desktop with the fMRI tools
 
-Firefox inside the Ubuntu VNC environment is configured with sandboxing disabled for compatibility with DSRI's security model. You may see a security warning in the browser - this can be safely ignored as your pod is already isolated at the Kubernetes level.
+Firefox inside the Ubuntu VNC environment is configured with sandboxing disabled for compatibility with DSRI's security model. You may see a security warning in the browser, this can be safely ignored as your pod is already isolated at the Kubernetes level.
 
 ### GPU Support
 
