@@ -1,6 +1,6 @@
 ---
 id: neuroscience
-title: Neuroimaging and Neuroscience Research
+title: Neuroimaging
 ---
 
 :::tip Feedbacks welcome
@@ -12,8 +12,6 @@ We are not experts in Neuroscience ourselves, please contact us if you see any i
 # Neuroimaging and Neuroscience Research on DSRI
 
 We provide specialized environments on the DSRI optimized for neuroimaging analysis. These images include standard tools like **FSL**, **ANTs**, and **FreeSurfer**, aavailable as integrated graphical workstations or standalone environments.
-
----
 
 ## Ubuntu VNC for fMRI Preprocessing
 
@@ -29,8 +27,7 @@ A complete **Ubuntu 22.04 LTS** desktop environment pre-loaded with FSL, ANTs, a
 1. **Submit a ticket**: [ICTS Self-Service Portal](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392)
 2. **Email us**: [rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl)
 
-
----
+:::
 
 ## Standalone Workspaces
 For workflows that don't require a full desktop, we provide lightweight JupyterLab environments.
@@ -48,8 +45,6 @@ Standalone FSL environment for command-line workflows.
 ### JupyterLab with ANTs
 Standalone ANTs environment optimized for registration and segmentation.
 - **Version:** 2.6.4
-
----
 
 ## Technical Configuration
 
@@ -75,4 +70,3 @@ Firefox inside the Ubuntu VNC environment is configured with sandboxing disabled
 ### GPU Support
 
 GPU acceleration is available for supported tools. For FSL GPU usage, see: [FSL GPU Documentation](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/GPU)
-
