@@ -4,7 +4,7 @@ title: Installing the UM VPN
 ---
 
 :::danger **Important Note:**
-We do not grant access to the UM VPN. We only have documentation on how to use and set up the VPN when you already have access. If you would need access to the UM VPN please reach out to your information manager!
+We do not grant access to the UM VPN. We only have documentation on how to use and set up the VPN when you already have access. If you would need access to the UM VPN, please reach out to your information manager!
 :::
 
 ## Request an account
