@@ -3,6 +3,10 @@ id: guide-vpn
 title: Installing the UM VPN
 ---
 
+:::danger
+**Note:** We do not grant access to the UM VPN. We only have documentation on how to use and set up the VPN when you already have access. If you would need access to the UM VPN please reach out to your information manager!
+:::
+
 ## Request an account
 
 1. You will need to have an account at Maastricht University with an email ending with `@maastrichtuniversity.nl` or `@student.maastrichtuniversity.nl`.
