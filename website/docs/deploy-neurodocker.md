@@ -22,10 +22,13 @@ A complete **Ubuntu 22.04 LTS** desktop environment pre-loaded with FSL, ANTs, a
 - **ANTs 2.6.4** - Advanced normalization tools
 - **JupyterLab** - Pre-installed and accessible via a desktop icon
 
-:::info How to Access
+:::warning Accessing Neuroimaging Tools
 
-1. **Submit a ticket**: [ICTS Self-Service Portal](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392)
-2. **Email us**: [rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl)
+Please note that these specialized neuroimaging templates are **not activated by default** in the DSRI catalog.
+
+If you require access to the **Integrated Ubuntu fMRI Workstation**, **Freesurfer**, **FSL**, or **ANTs** images, please contact the Research Computing Support team to have them enabled for your specific project:
+
+**Email us directly**: [rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl)
 
 :::
 
@@ -58,15 +61,9 @@ When instantiating the template you can provide a few parameters similar to the 
 
 The DSRI will automatically create a persistent volume to store data you will put in the `/home/jovyan/work` folder (the folder used by the notebook interface). You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**
 
-<img src="/img/screenshot-freesurfer.png" alt="Deploy Freesurfer" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
 You can also link your git repository to the project for automatic deployment see [using git in JupyterLab](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyter#-use-git-in-jupyterlab)
 
 
 ### Firefox in VNC Desktop with the fMRI tools
 
 Firefox inside the Ubuntu VNC environment is configured with sandboxing disabled for compatibility with DSRI's security model. You may see a security warning in the browser, this can be safely ignored as your pod is already isolated at the Kubernetes level.
-
-### GPU Support
-
-GPU acceleration is available for supported tools. For FSL GPU usage, see: [FSL GPU Documentation](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/GPU)
