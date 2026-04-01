@@ -2,13 +2,6 @@
 id: neuroscience
 title: Neuroimaging
 ---
-
-:::tip Feedbacks welcome
-
-We are not experts in Neuroscience ourselves, please contact us if you see any improvements that could be made to this page, or if you need any help to get it working.
-
-:::
-
 # Neuroimaging and Neuroscience Research on DSRI
 
 We provide specialized environments on the DSRI optimized for neuroimaging analysis. These images include standard tools like **FSL**, **ANTs**, and **FreeSurfer**, aavailable as integrated graphical workstations or standalone environments.
