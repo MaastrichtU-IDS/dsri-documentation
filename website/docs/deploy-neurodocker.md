@@ -13,15 +13,6 @@ We are not experts in Neuroscience ourselves, please contact us if you see any i
 
 We provide specialized environments on the DSRI optimized for neuroimaging analysis. These images include standard tools like **FSL**, **ANTs**, and **FreeSurfer**, aavailable as integrated graphical workstations or standalone environments.
 
-## Ubuntu VNC for fMRI Preprocessing
-
-A complete **Ubuntu 22.04 LTS** desktop environment pre-loaded with FSL, ANTs, and JupyterLab. Perfect for interactive fMRI preprocessing workflows that require both scripting and visualization.
-
-### What's Included
-- **FSL 6.0.7** - Full suite including FSLeyes for visualization
-- **ANTs 2.6.4** - Advanced normalization tools
-- **JupyterLab** - Pre-installed and accessible via a desktop icon
-
 :::warning Accessing Neuroimaging Tools
 
 Please note that these specialized neuroimaging templates are **not activated by default** in the DSRI catalog.
@@ -32,18 +23,24 @@ If you require access to the **Integrated Ubuntu fMRI Workstation**, **Freesurfe
 
 :::
 
+## Ubuntu VNC for fMRI Preprocessing
+A complete **Ubuntu 22.04 LTS** desktop environment pre-loaded with FSL, ANTs, and JupyterLab. Perfect for interactive fMRI preprocessing workflows that require both scripting and visualization.
+
+### What's Included
+- **FSL 6.0.7** - Full suite including FSLeyes for visualization
+- **ANTs 2.6.4** - Advanced normalization tools
+- **JupyterLab** - Pre-installed and accessible via a desktop icon
+
 ## Standalone Workspaces
-For workflows that don't require a full desktop, we provide lightweight JupyterLab environments.
+For workflows that don't require a full desktop, we provide lightweight JupyterLab environments:
 
 ### JupyterLab with FreeSurfer
-
 - **Version:** 8.1.0
 
 ### JupyterLab with FSL
 Standalone FSL environment for command-line workflows.
 - **Version:** 6.0.7
-
-**Note:** This is a CLI-only image. For FSL GUI tools like FSLeyes, use the Ubuntu VNC fMRI environment.
+- **Note:** This is a CLI-only image. For FSL GUI tools like FSLeyes, use the Ubuntu VNC fMRI environment.
 
 ### JupyterLab with ANTs
 Standalone ANTs environment optimized for registration and segmentation.
@@ -62,7 +59,6 @@ When instantiating the template you can provide a few parameters similar to the 
 The DSRI will automatically create a persistent volume to store data you will put in the `/home/jovyan/work` folder (the folder used by the notebook interface). You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**
 
 You can also link your git repository to the project for automatic deployment see [using git in JupyterLab](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyter#-use-git-in-jupyterlab)
-
 
 ### Firefox in VNC Desktop with the fMRI tools
 
