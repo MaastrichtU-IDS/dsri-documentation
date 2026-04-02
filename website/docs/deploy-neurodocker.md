@@ -20,8 +20,8 @@ If you require access to the **Integrated Ubuntu fMRI Workstation**, **Freesurfe
 A complete **Ubuntu 22.04 LTS** desktop environment pre-loaded with FSL, ANTs, and JupyterLab. Perfect for interactive fMRI preprocessing workflows that require both scripting and visualization.
 
 ### What's Included
-- **FSL 6.0.7** - Full suite including FSLeyes for visualization
-- **ANTs 2.6.4** - Advanced normalization tools
+- **FSL** 6.0.7 - Full suite including FSLeyes for visualization
+- **ANTs** 2.6.4 - Advanced normalization tools
 - **JupyterLab** - Pre-installed and accessible via a desktop icon
 
 ## Standalone Workspaces
