@@ -5,7 +5,7 @@ title: Ubuntu VNC Desktop
 
 Start an optimized Ubuntu 22.04 LTS workspace with a regular desktop interface (LXDE) accessible directly in your web browser.
 
-:::warning Accessing Neuroimaging Tools
+:::warning Accessing the template
 
 Please note that this template is **not activated by default** in the DSRI catalog.
 
