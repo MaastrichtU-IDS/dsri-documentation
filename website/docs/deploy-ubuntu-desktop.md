@@ -21,6 +21,10 @@ Username: **root**
 
 Password: **Template creation password**
 
+:::
+
+:::info Persistent Storage
+
 Use the `/root/persistent` folder to store your data. Files kept in this directory are stored in persistent storage and will survive pod restarts.
 
 :::
