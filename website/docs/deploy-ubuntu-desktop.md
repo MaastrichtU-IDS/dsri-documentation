@@ -13,6 +13,8 @@ If you require access to the **Ubuntu with a Graphical Interface** image please 
 
 **Email us directly**: [rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl)
 
+:::
+
 :::info Login Credentials
 
 Username: **root**
