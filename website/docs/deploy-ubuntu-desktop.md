@@ -3,15 +3,13 @@ id: deploy-ubuntu-desktop
 title: Ubuntu VNC Desktop
 ---
 
-### Ubuntu with a Graphical Interface (VNC)
-
 Start an optimized Ubuntu 22.04 LTS workspace with a regular desktop interface (LXDE) accessible directly in your web browser.
 
 :::warning Accessing Neuroimaging Tools
 
-Please note that these specialized neuroimaging templates are **not activated by default** in the DSRI catalog.
+Please note that this template is **not activated by default** in the DSRI catalog.
 
-If you require access to the **Integrated Ubuntu fMRI Workstation**, **Freesurfer**, **FSL**, or **ANTs** images, please contact the Research Computing Support team to have them enabled for your specific project:
+If you require access to the **Ubuntu with a Graphical Interface** image please contact the Research Computing Support team to have it enabled for your specific project:
 
 **Email us directly**: [rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl)
 
