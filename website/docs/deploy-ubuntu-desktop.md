@@ -29,5 +29,4 @@ Use the `/root/persistent` folder to store your data. Files kept in this directo
 
 :::
 
-This template uses the Docker image defined at https://github.com/MaastrichtU-Library/ubuntu-vnc
 
