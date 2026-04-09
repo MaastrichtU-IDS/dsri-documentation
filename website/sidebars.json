@@ -67,7 +67,8 @@
         "neuroscience",
         "catalog-genomics",
         "catalog-imaging",
-        "catalog-utilities"
+        "deploy-ubuntu-desktop",
+        "deploy-filebrowser"
       ]
     },
     {
