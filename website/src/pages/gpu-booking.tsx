@@ -244,23 +244,29 @@ function GpuBooking() {
     const color = gpuCount > 4 ? 'error' : 'success';
 
     return (
-      <div style={{ position: 'relative', display: 'inline-block' }}>
-        <Badge
-          badgeContent={gpuCount > 0 ? gpuCount : null}
-          color={color}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          sx={{ '& .MuiBadge-badge': { fontSize: '9px', height: '16px', minWidth: '16px', top: -4, right: -4 } }}
-        >
-          <div style={{ cursor: booking['fullyBooked'] ? 'not-allowed' : 'pointer', padding: '0 2px' }}>
-            <span style={{
-              color: booking['fullyBooked'] ? '#b0bec5' : 'inherit',
-              fontWeight: booking['fullyBooked'] ? 300 : 400
-            }}>
-              {format(day, "d")}
-            </span>
-          </div>
-        </Badge>
-      </div>
+      <Badge
+        badgeContent={gpuCount > 0 ? gpuCount : null}
+        color={color}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          '& .MuiBadge-badge': {
+            fontSize: '9px',
+            height: '15px',
+            minWidth: '15px',
+            top: 2,
+            right: -2,
+            pointerEvents: 'none',
+          }
+        }}
+      >
+        <span style={{
+          color: booking['fullyBooked'] ? '#b0bec5' : 'inherit',
+          fontWeight: booking['fullyBooked'] ? 300 : 400,
+          cursor: booking['fullyBooked'] ? 'not-allowed' : 'pointer',
+        }}>
+          {format(day, "d")}
+        </span>
+      </Badge>
     );
   }
 
@@ -282,6 +288,8 @@ function GpuBooking() {
   .rdrMonth { overflow: visible !important; }
   .rdrDays { overflow: visible !important; }
   .rdrDay { overflow: visible !important; }
+  .rdrDayNumber { overflow: visible !important; }
+  .rdrDayNumber span { position: relative; }
   `}</style>
 
         <FormControl fullWidth style={{textAlign: 'center', marginTop: '30px'}}>
@@ -393,7 +401,6 @@ function GpuBooking() {
 
               {/* FIX 2: removed calendarFocus prop, added centering */}
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
-                <div style={{ overflow: 'visible' }}>
                 <DateRange
                   ranges={[state.selection1]}
                   onChange={(item: any) => updateState({ ...state, ...item })}
@@ -406,12 +413,11 @@ function GpuBooking() {
                   direction={state.windowSize <= 760 ? 'vertical' : 'horizontal'}
                   preventSnapRefocus={true}
                 />
-                </div>
               </Grid>
 
             </Grid>
 
-            <Box style={{ textAlign: 'center', marginTop: '10px'}}>
+            <Box style={{ textAlign: 'center', marginTop: '0px'}}>
               {state.loading &&
                 <CircularProgress style={{marginTop: '20px'}} />
               }
