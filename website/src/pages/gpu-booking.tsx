@@ -278,6 +278,10 @@ function GpuBooking() {
   .footer-link-item { font-size: 1.1rem; margin: 15px 0; font-weight: bold; }
   .footer-link-item a { color: #000000 !important; text-decoration: none; }
   .footer-link-item a:hover { text-decoration: underline; }
+  .rdrCalendarWrapper { overflow: visible !important; }
+  .rdrMonth { overflow: visible !important; }
+  .rdrDays { overflow: visible !important; }
+  .rdrDay { overflow: visible !important; }
   `}</style>
 
         <FormControl fullWidth style={{textAlign: 'center', marginTop: '30px'}}>
@@ -317,7 +321,7 @@ function GpuBooking() {
           </div>
 
           <form onSubmit={handleSubmit}>
-            <p style={{ maxWidth: '600px', margin: '0 auto 20px', fontSize: '0.9rem', color: '#374151', fontWeight: 500 }}>
+            <p style={{ margin: '0 auto 20px', fontSize: '0.9rem', color: '#374151', textAlign: 'center' }}>
               To book a GPU, fill in your details below, select your dates on the calendar, and click <em>Request a GPU</em>. You will receive a confirmation email once your booking is confirmed.
             </p>
 
@@ -384,11 +388,12 @@ function GpuBooking() {
               </Grid>
 
               {state.windowSize > 760 &&
-                <Grid item xs={1} style={{textAlign: 'center', margin: '20px 0px'}}></Grid>
+                <Grid item xs={1} style={{textAlign: 'center', margin: '0px'}}></Grid>
               }
 
               {/* FIX 2: removed calendarFocus prop, added centering */}
-              <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', margin: '30px 0' }}>
+              <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
+                <div style={{ overflow: 'visible' }}>
                 <DateRange
                   ranges={[state.selection1]}
                   onChange={(item: any) => updateState({ ...state, ...item })}
@@ -401,6 +406,7 @@ function GpuBooking() {
                   direction={state.windowSize <= 760 ? 'vertical' : 'horizontal'}
                   preventSnapRefocus={true}
                 />
+                </div>
               </Grid>
 
             </Grid>
