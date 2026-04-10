@@ -23,7 +23,6 @@ const IconMonitor = () => (
   </svg>
 );
 
-// Define the icons so the browser can draw them
 const IconInfo = ({ color }: { color: string }) => (
   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 2 }} xmlns="http://www.w3.org/2000/svg">
     <circle cx="8" cy="8" r="6.5" stroke={color} strokeWidth="1.3"/>
@@ -37,8 +36,6 @@ const IconInfoAlt = ({ color }: { color: string }) => (
     <path d="M8 7v4M8 5v.5" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
   </svg>
 );
-
-// Date range: https://www.npmjs.com/package/react-date-range
 
 function GpuBooking() {
   const context = useDocusaurusContext();
@@ -62,13 +59,11 @@ function GpuBooking() {
     windowSize: 1000
   });
   const stateRef = React.useRef(state);
-  // Avoid conflict when async calls
   const updateState = React.useCallback((update) => {
     stateRef.current = {...stateRef.current, ...update};
     setState(stateRef.current);
   }, [setState]);
 
-  // To remove warning?: componentDidMount(() => {
   React.useEffect(() => {
     getBookedDays()
     const selection1 = {
@@ -95,14 +90,11 @@ function GpuBooking() {
     return null
   }
 
-  // const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   const handleTextFieldChange = (event: React.FocusEvent<HTMLInputElement>) => {
     if (event.target.id === 'email') {
-      // Email validation
       let errorMessages = state.errorMessages
       if (!event.target.value.match(
           /^[a-zA-Z0-9\._-]+@(?:student.)?maastrichtuniversity.nl$/
-          // /^[a-zA-Z0-9\.-_]+@(?:student.)?maastrichtuniversity.nl$/
         )) {
         errorMessages['email'] = 'Provide your email, must end with @maastrichtuniversity.nl or @student.maastrichtuniversity.nl'
         updateState({ errorMessages: errorMessages})
@@ -113,7 +105,6 @@ function GpuBooking() {
     }
 
     if (event.target.id === 'project_id') {
-      // Project ID validation
       let errorMessages = state.errorMessages
       if (!event.target.value.match(/^[a-zA-Z0-9-]*$/)) {
         errorMessages['project_id'] = 'The project ID should only contains alphanumeric characters and -'
@@ -125,7 +116,6 @@ function GpuBooking() {
     }
 
     if (event.target.id === 'app_id') {
-      // Project ID validation
       let errorMessages = state.errorMessages
       if (!event.target.value.match(/^[a-zA-Z0-9-]*$/)) {
         errorMessages['app_id'] = 'The app ID should only contains alphanumeric characters and -'
@@ -143,8 +133,7 @@ function GpuBooking() {
     }
   }
 
-
-  const handleSubmit  = (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     let error = false;
     updateState({
@@ -153,7 +142,6 @@ function GpuBooking() {
       openSuccess: 'none',
       errorMessage: ''
     })
-    // curl -X POST -d '{"email":"vincent@wwfr.fr", "username":"vincent"}' -H "Content-Type: application/json" http://localhost:8000/user/register
 
     const data = {
       user_email: state.formObj['email'],
@@ -163,61 +151,47 @@ function GpuBooking() {
       ending_date: state.selection1.endDate,
     }
 
-    // Send a GPU request to the API
     if (!error) {
-      axios.post(apiUrl + '/gpu/request', 
-        data, 
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
+      axios.post(apiUrl + '/gpu/request',
+        data,
+        { headers: { 'Content-Type': 'application/json' } }
       )
         .then((res: any) => {
           if (res.data.errorMessage) {
             updateState({
-              openError: 'inline', 
-              openSuccess: 'none', 
+              openError: 'inline',
+              openSuccess: 'none',
               errorMessage: res.data.errorMessage,
               loading: false,
             })
           } else {
             updateState({
-              openSuccess: 'inline', 
+              openSuccess: 'inline',
               openError: 'none',
               loading: false,
             });
           }
-          // Refresh booked days
           getBookedDays()
         })
         .catch(function (error) {
           updateState({
-            openSuccess: 'none', 
+            openSuccess: 'none',
             openError: 'inline',
             loading: false,
           });
           if (error.response) {
-            // Error: [{"loc":["body","user_email"],"msg":"field required","type":"value_error.missing"},{"loc":["body","project_id"],"msg":"field required","type":"value_error.missing"}]
-            // Request made and server responded
-            // {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
             if (error.response.data["detail"]) {
               const errorMsg = JSON.stringify(error.response.data["detail"]).replace(/"/g, '').replace(/{/g, '').replace(/}/g, '')
                 .replace(/\[/g, '').replace(/\]/g, '').replace(/:/g, '').replace(/,/g, '')
                 .replace(/loc/g, '').replace(/body/g, '').replace(/msg/g, ': ').replace(/type/g, '').replace(/value_error.missing/g, ' - ')
-              // const errorMsg = JSON.stringify(error.response.data["detail"]).replaceAll('"','').replaceAll('{','').replaceAll('}','')
-              //   .replaceAll('[','').replaceAll(']','').replaceAll('loc','').replaceAll('body','').replaceAll('msg',': ').replaceAll('type','')
-              //   .replaceAll('value_error.missing',' and ')
               updateState({ errorMessage: 'Error: ' + errorMsg})
             } else {
               updateState({ errorMessage: JSON.stringify(error.response.data) })
             }
           } else if (error.request) {
-            // The request was made but no response was received
             console.log('request err');
             console.log(error.request);
           } else {
-            // Something happened in setting up the request that triggered an Error
             console.log('Error', error.message);
             updateState({ errorMessage: error.message })
           }
@@ -226,45 +200,19 @@ function GpuBooking() {
   }
 
   const getBookedDays = () => {
-    axios.get(apiUrl + '/gpu/booked-days', 
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+    axios.get(apiUrl + '/gpu/booked-days',
+      { headers: { 'Content-Type': 'application/json' } }
     )
       .then((res: any) => {
         updateState({bookedDays: res.data})
-        // console.log(res.data)
       })
       .catch(function (error) {
         console.log(error);
-        // if (error.response) {
-        //   // Request made and server responded
-        //   // Official Error response structure: {"detail":[{"loc":["body","homepage"],"msg":"invalid or missing URL scheme","type":"value_error.url.scheme"}]}
-        //   if (error.response.data["detail"]) {
-        //     updateState({ errorMessage: 'Error: ' + JSON.stringify(error.response.data["detail"])})
-        //   } else {
-        //     updateState({ errorMessage: JSON.stringify(error.response.data) })
-        //   }
-        // } else if (error.request) {
-        //   // The request was made but no response was received
-        //   console.log('request err');
-        //   console.log(error.request);
-        // } else {
-        //   // Something happened in setting up the request that triggered an Error
-        //   console.log('Error', error.message);
-        //   updateState({ errorMessage: error.message })
-        // }
       })
   }
 
   const isBooked = (day: any) => {
-    // if (day < new Date()) {
-    //   return true
-    // }
     let twoDigitMonth = (day.getMonth() + 1).toString();
-    // Need to add +1 to month to fix issue with getting the next month (not sure why)
     if (twoDigitMonth.length == 1)
       twoDigitMonth = "0" + twoDigitMonth;
     let twoDigitDate = day.getDate() + "";
@@ -289,104 +237,91 @@ function GpuBooking() {
     return bookings
   }
 
-  // const gpuCount = (gpuCount: number) => {
-  //   let color = '#2e7d32' // Green
-  //   if (gpuCount > 3) color = '#e65100' // Orange
-  //   if (gpuCount > 5) color = '#b71c1c' // Red
-  //   return (
-  //     <div style={{height: "5px", width: "5px", color: color, fontWeight: '400',
-  //         position: "absolute", top: 2, right: 1, opacity: 0.9}}>{gpuCount}</div>
-  //     // Show a colored dot:
-  //     // <div style={{height: "5px", width: "5px", borderRadius: "100%", background: color,
-  //     //     position: "absolute", top: 2, right: 2}}></div>
-  //   )
-  // }
-  const getGpuColor: any = (gpuCount: any) => {
-    let color = 'success' // Green
-    // if (gpuCount > 5) color = 'warning' // Orange
-    if (gpuCount > 4) color = 'error' // Red
-    return color
-  }
-  
+  // FIX 1: replaced customDayContent with a version that correctly positions the badge
   function customDayContent(day: any) {
-      const booking = isBooked(day);
-      const gpuCount = booking.gpus.length;
-      const color = gpuCount > 4 ? 'error' : 'success';
-  
-      return (
-        <Badge 
-          badgeContent={gpuCount > 0 ? gpuCount : null} 
-          color={color} 
-          style={{ padding: '0 4px' }}
+    const booking = isBooked(day);
+    const gpuCount = booking['gpus'].length;
+    const color = gpuCount > 4 ? 'error' : 'success';
+
+    return (
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        <Badge
+          badgeContent={gpuCount > 0 ? gpuCount : null}
+          color={color}
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          sx={{ '& .MuiBadge-badge': { fontSize: '9px', height: '16px', minWidth: '16px', top: -4, right: -4 } }}
         >
-          <div style={{ cursor: booking.fullyBooked ? 'not-allowed' : 'pointer' }}>
-            <span style={{ 
-              color: booking.fullyBooked ? '#b0bec5' : 'inherit', 
-              fontWeight: booking.fullyBooked ? 300 : 400 
+          <div style={{ cursor: booking['fullyBooked'] ? 'not-allowed' : 'pointer', padding: '0 2px' }}>
+            <span style={{
+              color: booking['fullyBooked'] ? '#b0bec5' : 'inherit',
+              fontWeight: booking['fullyBooked'] ? 300 : 400
             }}>
               {format(day, "d")}
             </span>
           </div>
         </Badge>
-      );
-    }
+      </div>
+    );
+  }
 
   return (
     <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University">
-      {/* <main> */}
-    
+
       <style>{`
   .gpu-subtitle { font-size: 0.9rem; color: #000000; margin-bottom: 20px; }
   .gpu-meta { display: flex; gap: 24px; justify-content: center; margin-bottom: 20px; }
   .gpu-meta-chip { font-size: 0.8rem; color: #000000; display: flex; align-items: center; gap: 7px; }
   .gpu-meta-dot { width: 8px; height: 8px; border-radius: 50%; background: #000000; }
-  .gpu-notice { display: flex; gap: 10px; padding: 15px; margin: 10px auto; max-width: 800px; font-size: 0.9rem; text-align: left; border-radius: 4px; line-height: 1.5; }
+  .gpu-notice { display: flex; gap: 10px; padding: 15px; margin: 10px auto; max-width: 800px; font-size: 0.9rem; font-weight: 500; text-align: left; border-radius: 4px; line-height: 1.5; }
   .gpu-notice.orange { background: #fff7ed; border-left: 5px solid #f97316; color: #7c2d12; }
   .gpu-notice.blue { background: #eff6ff; border-left: 5px solid #3b82f6; color: #1e3a5f; }
   .footer-link-item { font-size: 1.1rem; margin: 15px 0; font-weight: bold; }
   .footer-link-item a { color: #000000 !important; text-decoration: none; }
   .footer-link-item a:hover { text-decoration: underline; }
+  `}</style>
 
-  `}</style>    
-  
         <FormControl fullWidth style={{textAlign: 'center', marginTop: '30px'}}>
           <h1>
             Book a GPU
           </h1>
-<p className="gpu-subtitle">
-          Reserve GPU resources on the DSRI for your project. You'll receive a confirmation email once your booking is processed.
-        </p>
 
-        <div className="gpu-meta">
-          <div className="gpu-meta-chip">
-            <IconMonitor />
-            <strong>7 GPUs</strong> available
-          </div>
-          <div className="gpu-meta-chip">
-            <div className="gpu-meta-dot" />
-            Greyed dates = fully booked
-          </div>
-        </div>
+          <p className="gpu-subtitle">
+            Reserve GPU resources on the DSRI for your project. You'll receive a confirmation email once your booking is processed.
+          </p>
 
-        {/* Orange: 4-day limit */}
-        <div className="gpu-notice orange">
-          <IconInfo color="#f97316" />
-          <div>
-            You can book a GPU for a <strong>maximum of 4 days per calendar month</strong>. Bookings are monitored to ensure fair usage. Consecutive or excessive bookings may be adjusted. If you need more time, <a href={ticketUrl} target="_blank">submit a ticket</a> and we'll look into it.
+          <div className="gpu-meta">
+            <div className="gpu-meta-chip">
+              <IconMonitor />
+              <strong>7 GPUs</strong> available
+            </div>
+            <div className="gpu-meta-chip">
+              <div className="gpu-meta-dot" />
+              Greyed dates = fully booked
+            </div>
           </div>
-        </div>
 
-        {/* Blue: 9AM cutoff */}
-        <div className="gpu-notice blue">
-          <IconInfoAlt color="#3b82f6" />
-          <div>
-            <strong>Same-day Booking:</strong> To ensure automatic activation, please book <strong>BEFORE 09:00 AM</strong>. If you book after 09:00 AM for today, it will not enable automatically.
+          {/* Orange: 4-day limit */}
+          <div className="gpu-notice orange">
+            <IconInfo color="#f97316" />
+            <div>
+              You can book a GPU for a <strong>maximum of 4 days per calendar month</strong>. Bookings are monitored to ensure fair usage. Consecutive or excessive bookings may be adjusted. If you need more time, <a href={ticketUrl} target="_blank">submit a ticket</a> and we'll look into it.
+            </div>
           </div>
-        </div>
 
-<form onSubmit={handleSubmit}>
-            <Grid container spacing={2} >
+          {/* Blue: 9AM cutoff */}
+          <div className="gpu-notice blue">
+            <IconInfoAlt color="#3b82f6" />
+            <div>
+              <strong>Same-day Booking:</strong> To ensure automatic activation, please book <strong>BEFORE 09:00 AM</strong>. If you book after 09:00 AM for today, it will not enable automatically.
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <p style={{ maxWidth: '600px', margin: '0 auto 20px', fontSize: '0.9rem', color: '#374151', fontWeight: 500 }}>
+              To book a GPU, fill in your details below, select your dates on the calendar, and click <em>Request a GPU</em>. You will receive a confirmation email once your booking is confirmed.
+            </p>
+
+            <Grid container spacing={2}>
 
               <Grid item xs={5} style={{textAlign: 'right'}}>
                 <p className={styles.required}>
@@ -399,19 +334,13 @@ function GpuBooking() {
                   multiline
                   label='Email'
                   placeholder='Email'
-                  // value={''}
                   variant="outlined"
-                  // onChange={handleTextFieldChange}
                   onBlur={handleTextFieldChange}
                   size='small'
                   required
                   error={checkError('email')}
                   helperText={checkErrorMessage('email') ? checkErrorMessage('email') : "Must end with @maastrichtuniversity.nl or @student.maastrichtuniversity.nl"}
-                  // helperText="Must end with @maastrichtuniversity.nl or @student.maastrichtuniversity.nl"
-                  // InputLabelProps={{ required: false }}
-                  // All field are required but we hide the *
                 />
-                {/* (must ends with <b>@maastrichtuniversity.nl</b> or <b>@student.maastrichtuniversity.nl</b>): */}
               </Grid>
 
               <Grid item xs={5} style={{textAlign: 'right'}}>
@@ -425,9 +354,7 @@ function GpuBooking() {
                   multiline
                   label='DSRI project ID'
                   placeholder='e.g. machine-learning-analysis'
-                  // value={''}
                   variant="outlined"
-                  // onChange={handleTextFieldChange}
                   onChange={handleTextFieldChange}
                   size='small'
                   required
@@ -447,9 +374,7 @@ function GpuBooking() {
                   multiline
                   label='DSRI app ID'
                   placeholder='e.g. jupyterlab-gpu'
-                  // value={''}
                   variant="outlined"
-                  // onChange={handleTextFieldChange}
                   onChange={handleTextFieldChange}
                   size='small'
                   required
@@ -458,28 +383,30 @@ function GpuBooking() {
                 />
               </Grid>
 
-              {  state.windowSize > 760 &&
+              {state.windowSize > 760 &&
                 <Grid item xs={1} style={{textAlign: 'center', margin: '20px 0px'}}></Grid>
               }
-            <Grid item xs={12} style={{ margin: '30px 0' }}>
-              <DateRange
-                ranges={[state.selection1]}
-                onChange={(item: any) => updateState({ ...state, ...item })}
-                dayContentRenderer={customDayContent}
-                minDate={new Date()}
-                months={state.windowSize <= 760 ? 1 : 2}
-                direction={state.windowSize <= 760 ? 'vertical' : 'horizontal'}
-                preventSnapRefocus={true}
-                calendarFocus="backwards"
-                showSelectionPreview={true}
-                moveRangeOnFirstSelection={false}
-              />
 
-            </Grid>
+              {/* FIX 2: removed calendarFocus prop, added centering */}
+              <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', margin: '30px 0' }}>
+                <DateRange
+                  ranges={[state.selection1]}
+                  onChange={(item: any) => updateState({ ...state, ...item })}
+                  dayContentRenderer={customDayContent}
+                  minDate={new Date()}
+                  showSelectionPreview={true}
+                  moveRangeOnFirstSelection={false}
+                  months={state.windowSize <= 760 ? 1 : 2}
+                  weekStartsOn={1}
+                  direction={state.windowSize <= 760 ? 'vertical' : 'horizontal'}
+                  preventSnapRefocus={true}
+                />
+              </Grid>
+
             </Grid>
 
             <Box style={{ textAlign: 'center', marginTop: '10px'}}>
-              {state.loading && 
+              {state.loading &&
                 <CircularProgress style={{marginTop: '20px'}} />
               }
               <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px'}} sx={{ display: state.openError }}>
@@ -487,28 +414,27 @@ function GpuBooking() {
               </Paper>
               <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
                 ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email with more information to use the GPU on the DSRI once your booking starts. Be aware that if you book after 09:00 AM for today, the GPU will not enable automatically.
-                {/* ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email, or Slack message, with more information to use the GPU on the DSRI the day your booking starts (if you don't get a message, directly contact Vincent Emonet on Slack). */}
               </Paper>
             </Box>
 
- <button type="submit" style={{margin: '30px 0px'}} className={clsx(
+            <button type="submit" style={{margin: '30px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
-              )}>Request a GPU for the selected period</button> 
+              )}>Request a GPU for the selected period</button>
           </form>
 
-<div style={{ paddingBottom: '50px', maxWidth: '800px', margin: '0 auto' }}>
-          <div className="footer-link-item">
-            ⏳ <a href="https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392" target="_blank">Need more than 4 days? Submit a ticket</a>
+          <div style={{ paddingBottom: '50px', maxWidth: '800px', margin: '0 auto' }}>
+            <div className="footer-link-item">
+              ⏳ <a href={ticketUrl} target="_blank">Need more than 4 days? Submit a ticket</a>
+            </div>
+            <div className="footer-link-item">
+              🔎 <a href="https://calendar.dsri.maastrichtuniversity.nl" target="_blank">View the Detailed GPU Schedule</a>
+            </div>
+            <div className="footer-link-item">
+              ❌ <a href={ticketUrl} target="_blank">Cancel your Reservation</a>
+            </div>
           </div>
-          <div className="footer-link-item">
-            🔎 <a href="https://calendar.dsri.maastrichtuniversity.nl" target="_blank">View the Detailed GPU Schedule</a>
-          </div>
-          <div className="footer-link-item">
-            ❌ <a href="https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392" target="_blank">Cancel your Reservation</a>
-          </div>
-        </div>
 
-      </FormControl>
+        </FormControl>
     </Layout>
   );
 }
