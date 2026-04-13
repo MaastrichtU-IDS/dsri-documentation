@@ -136,6 +136,7 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
 
             email_msg = f"""✅ A GPU has been booked from {booking.starting_date.date()} to {booking.ending_date.date()} in project <b>{booking.project_id}</b><br/><br/>
 The GPU will be automatically enabled in your project <b>{booking.project_id}</b> on the <b>{booking.starting_date.date()}</b> at 9:00am, and disabled on the {booking.ending_date.date() + timedelta(days=1)} at 9:00am<br/><br/>
+<b>Please note:</b> the GPU is only enabled automatically if you booked <b>before 09:00 AM</b> on your start date. If you booked after 09:00 AM, please contact us at <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a> and we will enable it manually.<br/><br/>
 Ideally you should start your workspace before getting the GPU enabled, to prepare your data in the persistent folder, and create a script to install your dependencies. Then you can easily enable the GPU in this workspace once your reservation starts, see the documentation for more details: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#prepare-your-gpu-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
 If you want to cancel your reservation please send an email to <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a>
 """
