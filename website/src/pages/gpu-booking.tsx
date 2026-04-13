@@ -237,7 +237,6 @@ function GpuBooking() {
     return bookings
   }
 
-  // FIX 1: replaced customDayContent with a version that correctly positions the badge
   function customDayContent(day: any) {
     const booking = isBooked(day);
     const gpuCount = booking['gpus'].length;
@@ -399,7 +398,7 @@ function GpuBooking() {
                 <Grid item xs={1} style={{textAlign: 'center', margin: '0px'}}></Grid>
               }
 
-              {/* FIX 2: removed calendarFocus prop, added centering */}
+              {/* removed calendarFocus prop, added centering */}
               <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
                 <DateRange
                   ranges={[state.selection1]}
