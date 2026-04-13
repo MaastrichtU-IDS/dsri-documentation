@@ -286,6 +286,8 @@ function GpuBooking() {
   .footer-link-item a { color: #000000 !important; text-decoration: none; }
   .footer-link-item a:hover { text-decoration: underline; }
   .rdrCalendarWrapper { overflow: visible !important; }
+  .contact-us-link { color: #dc2626 !important; font-weight: 600; }
+  .contact-us-link:hover { color: #1d4ed8 !important; }
   .rdrMonth { overflow: visible !important; }
   .rdrDays { overflow: visible !important; }
   .rdrDay { overflow: visible !important; }
@@ -325,7 +327,7 @@ function GpuBooking() {
           <div className="gpu-notice blue">
             <IconInfoAlt color="#3b82f6" />
             <div>
-              <strong>Same-day Booking:</strong> To ensure automatic activation, please book <strong>BEFORE 09:00 AM</strong>. If you book after 09:00 AM for today, it will not enable automatically. If you do book late, please <a href="mailto:rcs-ub@maastrichtuniversity.nl" style={{color: '#dc2626', fontWeight: 600}}>contact us</a> to have it manually enabled.
+              <strong>Same-day Booking:</strong> To ensure automatic activation, please book <strong>BEFORE 09:00 AM</strong>. If you book after 09:00 AM for today, it will not enable automatically. If you do book late, please <a href="mailto:rcs-ub@maastrichtuniversity.nl" className="contact-us-link">contact us</a> to have it manually enabled.
             </div>
           </div>
 
