@@ -4,7 +4,7 @@ import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
 import axios from 'axios';
-import { Badge, Tooltip, CircularProgress, Alert, Grid, TextField, FormControl, Box, Card, Paper } from "@mui/material";
+import { Badge, Tooltip, CircularProgress, Grid, TextField, FormControl, Box, Paper } from "@mui/material";
 
 import { addDays, format } from 'date-fns';
 import 'react-date-range/dist/styles.css'; // main css file
@@ -44,7 +44,7 @@ function GpuBooking() {
   const errorMessages: any = {}
   const [state, setState] = React.useState({
     errorMessages: errorMessages,
-    formObj: { email: '', project_id: ''},
+    formObj: { email: '', project_id: '', app_id: ''},
     errorMessage: '',
     openSuccess: 'none',
     openError: 'none',
@@ -77,241 +77,111 @@ function GpuBooking() {
     })
   }, [])
 
-  const checkError = (field: string) => {
-    if (field in state.errorMessages && state.errorMessages[field] && state.errorMessages[field].length > 0) {
-      return true
-    }
-    return false
-  }
-  const checkErrorMessage = (field: string) => {
-    if (field in state.errorMessages && state.errorMessages[field] && state.errorMessages[field].length > 0) {
-      return state.errorMessages[field]
-    }
-    return null
-  }
+  const checkError = (field: string) => !!(state.errorMessages[field]);
+  const checkErrorMessage = (field: string) => state.errorMessages[field] || null;
 
   const handleTextFieldChange = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (event.target.id === 'email') {
-      let errorMessages = state.errorMessages
-      if (!event.target.value.match(
-          /^[a-zA-Z0-9\._-]+@(?:student.)?maastrichtuniversity.nl$/
-        )) {
+    const { id, value } = event.target;
+    let errorMessages = {...state.errorMessages};
+
+    if (id === 'email') {
+      if (!value.match(/^[a-zA-Z0-9\._-]+@(?:student.)?maastrichtuniversity.nl$/)) {
         errorMessages['email'] = 'Provide your email, must end with @maastrichtuniversity.nl or @student.maastrichtuniversity.nl'
-        updateState({ errorMessages: errorMessages})
       } else {
         errorMessages['email'] = null
-        updateState({ errorMessages: errorMessages, })
       }
+    } else {
+        errorMessages[id] = value.match(/^[a-zA-Z0-9-]*$/) ? null : 'Only alphanumeric characters and -'
     }
-
-    if (event.target.id === 'project_id') {
-      let errorMessages = state.errorMessages
-      if (!event.target.value.match(/^[a-zA-Z0-9-]*$/)) {
-        errorMessages['project_id'] = 'The project ID should only contains alphanumeric characters and -'
-        updateState({ errorMessages: errorMessages})
-      } else {
-        errorMessages['project_id'] = null
-        updateState({ errorMessages: errorMessages, })
-      }
-    }
-
-    if (event.target.id === 'app_id') {
-      let errorMessages = state.errorMessages
-      if (!event.target.value.match(/^[a-zA-Z0-9-]*$/)) {
-        errorMessages['app_id'] = 'The app ID should only contains alphanumeric characters and -'
-        updateState({ errorMessages: errorMessages})
-      } else {
-        errorMessages['app_id'] = null
-        updateState({ errorMessages: errorMessages, })
-      }
-    }
-
-    if (!state.errorMessages[event.target.id]) {
-      let formObj = state.formObj
-      formObj[event.target.id] = event.target.value
-      updateState({formObj: formObj})
-    }
+    
+    updateState({ errorMessages, formObj: {...state.formObj, [id]: value} });
   }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    let error = false;
-    updateState({
-      loading: true,
-      openError: 'none',
-      openSuccess: 'none',
-      errorMessage: ''
-    })
-
-    const data = {
-      user_email: state.formObj['email'],
-      project_id: state.formObj['project_id'],
-      app_id: state.formObj['app_id'],
-      starting_date: state.selection1.startDate,
-      ending_date: state.selection1.endDate,
-    }
-
-    if (!error) {
-      axios.post(apiUrl + '/gpu/request',
-        data,
-        { headers: { 'Content-Type': 'application/json' } }
-      )
-        .then((res: any) => {
-          if (res.data.errorMessage) {
-            updateState({
-              openError: 'inline',
-              openSuccess: 'none',
-              errorMessage: res.data.errorMessage,
-              loading: false,
-            })
-          } else {
-            updateState({
-              openSuccess: 'inline',
-              openError: 'none',
-              loading: false,
-            });
-          }
-          getBookedDays()
-        })
-        .catch(function (error) {
-          updateState({
-            openSuccess: 'none',
-            openError: 'inline',
-            loading: false,
-          });
-          if (error.response) {
-            if (error.response.data["detail"]) {
-              const errorMsg = JSON.stringify(error.response.data["detail"]).replace(/"/g, '').replace(/{/g, '').replace(/}/g, '')
-                .replace(/\[/g, '').replace(/\]/g, '').replace(/:/g, '').replace(/,/g, '')
-                .replace(/loc/g, '').replace(/body/g, '').replace(/msg/g, ': ').replace(/type/g, '').replace(/value_error.missing/g, ' - ')
-              updateState({ errorMessage: 'Error: ' + errorMsg})
-            } else {
-              updateState({ errorMessage: JSON.stringify(error.response.data) })
-            }
-          } else if (error.request) {
-            console.log('request err');
-            console.log(error.request);
-          } else {
-            console.log('Error', error.message);
-            updateState({ errorMessage: error.message })
-          }
-        })
-    }
+    updateState({ loading: true, openError: 'none', openSuccess: 'none', errorMessage: '' })
+    axios.post(apiUrl + '/gpu/request', state.formObj, { headers: { 'Content-Type': 'application/json' } })
+      .then((res: any) => {
+        if (res.data.errorMessage) {
+          updateState({ openError: 'inline', errorMessage: res.data.errorMessage, loading: false })
+        } else {
+          updateState({ openSuccess: 'inline', loading: false });
+        }
+        getBookedDays()
+      })
+      .catch((error) => {
+        updateState({ openError: 'inline', loading: false, errorMessage: error.message });
+      })
   }
 
   const getBookedDays = () => {
-    axios.get(apiUrl + '/gpu/booked-days',
-      { headers: { 'Content-Type': 'application/json' } }
-    )
-      .then((res: any) => {
-        updateState({bookedDays: res.data})
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
+    axios.get(apiUrl + '/gpu/booked-days').then((res: any) => updateState({bookedDays: res.data})).catch(err => console.log(err));
   }
 
   const isBooked = (day: any) => {
-    let twoDigitMonth = (day.getMonth() + 1).toString();
-    if (twoDigitMonth.length == 1)
-      twoDigitMonth = "0" + twoDigitMonth;
-    let twoDigitDate = day.getDate() + "";
-    if (twoDigitDate.length == 1)
-        twoDigitDate = "0" + twoDigitDate;
-    const dayDate = day.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
-    const bookings = {fullyBooked: false}
-    const gpuBooked: any = []
-    if (Object.keys(state.bookedDays).indexOf(dayDate) > -1) {
-      if (Object.keys(state.bookedDays[dayDate]).length > 1) {
-        Object.keys(state.bookedDays[dayDate]).map((booking:any, key: number) => {
-          if (booking != 'fullyBooked') {
-            gpuBooked.push(booking)
-          }
-        })
-      }
-      if (state.bookedDays[dayDate]['fullyBooked'] == true) {
-        bookings['fullyBooked'] = true
-      }
+    const dayDate = format(day, "yyyy-MM-dd");
+    const bookings = {fullyBooked: false, gpus: []}
+    if (state.bookedDays[dayDate]) {
+      Object.keys(state.bookedDays[dayDate]).forEach(k => {
+        if (k !== 'fullyBooked') bookings.gpus.push(k);
+      });
+      if (state.bookedDays[dayDate]['fullyBooked']) bookings.fullyBooked = true;
     }
-    bookings['gpus'] = gpuBooked
-    return bookings
+    return bookings;
   }
 
+  const getGpuColor: any = (gpuCount: any) => gpuCount > 4 ? 'error' : 'success';
+  
+  // FIX: RESTORED THE INITIAL BADGE LOGIC
   function customDayContent(day: any) {
-    const booking = isBooked(day);
+    const booking = isBooked(day)
+    const dayIsBooked = booking['fullyBooked']
     const gpuCount = booking['gpus'].length;
-    const color = gpuCount > 4 ? 'error' : 'success';
 
     return (
-      <Badge
-        badgeContent={gpuCount > 0 ? gpuCount : null}
-        color={color}
+      <Badge 
+        badgeContent={gpuCount > 0 ? gpuCount : null} 
+        color={getGpuColor(gpuCount)}
+        style={{right: -3, top: 0, padding: '0 4px'}}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          '& .MuiBadge-badge': {
-            fontSize: '9px',
-            height: '15px',
-            minWidth: '15px',
-            top: 2,
-            right: -2,
-            pointerEvents: 'none',
-          }
-        }}
       >
-        <span style={{
-          color: booking['fullyBooked'] ? '#b0bec5' : 'inherit',
-          fontWeight: booking['fullyBooked'] ? 300 : 400,
-          cursor: booking['fullyBooked'] ? 'not-allowed' : 'pointer',
-        }}>
-          {format(day, "d")}
-        </span>
+        <div style={{cursor: dayIsBooked ? 'not-allowed' : 'pointer'}}>
+          <span style={{color: dayIsBooked ? '#b0bec5' : 'inherit', fontWeight: dayIsBooked ? '300' : '400'}}>
+            {format(day, "d")}
+          </span>
+        </div>
       </Badge>
-    );
+    )
   }
 
   return (
     <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University">
 
       <style>{`
-  .gpu-subtitle { font-size: 0.9rem; color: #000000; margin-bottom: 20px; }
-  .gpu-meta { display: flex; gap: 24px; justify-content: center; margin-bottom: 20px; }
-  .gpu-meta-chip { font-size: 0.8rem; color: #000000; display: flex; align-items: center; gap: 7px; }
-  .gpu-meta-dot { width: 8px; height: 8px; border-radius: 50%; background: #000000; }
-  .gpu-notice { display: flex; gap: 10px; padding: 15px; margin: 10px auto; max-width: 800px; font-size: 0.9rem; font-weight: 500; text-align: left; border-radius: 4px; line-height: 1.5; }
-  .gpu-notice.orange { background: #fff7ed; border-left: 5px solid #f97316; color: #7c2d12; }
-  .gpu-notice.blue { background: #eff6ff; border-left: 5px solid #3b82f6; color: #1e3a5f; }
-  .footer-link-item { font-size: 1.1rem; margin: 15px 0; font-weight: bold; }
-  .footer-link-item a { color: #000000 !important; text-decoration: none; }
-  .footer-link-item a:hover { text-decoration: underline; }
-  .rdrCalendarWrapper { overflow: visible !important; }
-  .rdrMonth { overflow: visible !important; }
-  .rdrDays { overflow: visible !important; }
-  .rdrDay { overflow: visible !important; }
-  .rdrDayNumber { overflow: visible !important; }
-  .rdrDayNumber span { position: relative; }
-  `}</style>
+        .gpu-subtitle { font-size: 0.9rem; color: #000000; margin-bottom: 20px; font-weight: 400; }
+        .gpu-meta { display: flex; gap: 24px; justify-content: center; margin-bottom: 20px; }
+        .gpu-meta-chip { font-size: 0.8rem; color: #000000; display: flex; align-items: center; gap: 7px; }
+        .gpu-meta-dot { width: 8px; height: 8px; border-radius: 50%; background: #000000; }
+        .gpu-notice { display: flex; gap: 10px; padding: 15px; margin: 10px auto; max-width: 800px; font-size: 0.9rem; font-weight: 500; text-align: left; border-radius: 4px; line-height: 1.5; }
+        .gpu-notice.orange { background: #fff7ed; border-left: 5px solid #f97316; color: #7c2d12; }
+        .gpu-notice.blue { background: #eff6ff; border-left: 5px solid #3b82f6; color: #1e3a5f; }
+        .footer-link-item { font-size: 1.1rem; margin: 15px 0; font-weight: bold; }
+        .footer-link-item a { color: #000000 !important; text-decoration: none; }
+        .footer-link-item a:hover { text-decoration: underline; }
+      `}</style>
 
         <FormControl fullWidth style={{textAlign: 'center', marginTop: '30px'}}>
-          <h1>
-            Book a GPU
-          </h1>
+          <h1>Book a GPU</h1>
 
           <p className="gpu-subtitle">
             Reserve GPU resources on the DSRI for your project. You'll receive a confirmation email once your booking is processed.
           </p>
 
           <div className="gpu-meta">
-            <div className="gpu-meta-chip">
-              <IconMonitor />
-              <strong>7 GPUs</strong> available
-            </div>
-            <div className="gpu-meta-chip">
-              <div className="gpu-meta-dot" />
-              Greyed dates = fully booked
-            </div>
+            <div className="gpu-meta-chip"><IconMonitor /> <strong>7 GPUs</strong> available</div>
+            <div className="gpu-meta-chip"><div className="gpu-meta-dot" /> Greyed dates = fully booked</div>
           </div>
 
-          {/* Orange: 4-day limit */}
           <div className="gpu-notice orange">
             <IconInfo color="#f97316" />
             <div>
@@ -319,88 +189,41 @@ function GpuBooking() {
             </div>
           </div>
 
-          {/* Blue: 9AM cutoff */}
-          <div className="gpu-notice blue">
-            <IconInfoAlt color="#3b82f6" />
-            <div>
-              <strong>Same-day Booking:</strong> To ensure automatic activation, please book <strong>BEFORE 09:00 AM</strong>. If you book after 09:00 AM for today, it will not enable automatically.
-            </div>
-          </div>
+          <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px', color: '#fff'}} sx={{ display: state.openSuccess }}>
+  ✔️ GPU requested successfully! You will receive an email shortly.
+  <br /> 
+  <small>
+    <strong>Note:</strong> If you booked for today after 09:00 AM, the GPU will not enable automatically. 
+    Please <a href="mailto:rcs-ub@maastrichtuniversity.nl" style={{color: '#d32f2f', fontWeight: 'bold'}}>contact us</a> to have it enabled.
+  </small>
+</Paper>
 
           <form onSubmit={handleSubmit}>
-            <p style={{ margin: '0 auto 20px', fontSize: '0.9rem', color: '#374151', textAlign: 'center' }}>
-              To book a GPU, fill in your details below, select your dates on the calendar, and click <em>Request a GPU</em>. You will receive a confirmation email once your booking is confirmed.
+            <p style={{ margin: '20px auto', fontSize: '0.9rem', color: '#000', fontWeight: 'bold' }}>
+               The DSRI has 7 GPUs, the number in the badge on a date indicates the number of GPUs already booked this day, and greyed out days are already fully booked.
             </p>
 
             <Grid container spacing={2}>
-
-              <Grid item xs={5} style={{textAlign: 'right'}}>
-                <p className={styles.required}>
-                  Your UM email:
-                </p>
-              </Grid>
+              <Grid item xs={5} style={{textAlign: 'right'}}><p className={styles.required}>Your UM email:</p></Grid>
               <Grid item xs={7} style={{textAlign: 'left'}}>
-                <TextField
-                  id='email'
-                  multiline
-                  label='Email'
-                  placeholder='Email'
-                  variant="outlined"
-                  onBlur={handleTextFieldChange}
-                  size='small'
-                  required
-                  error={checkError('email')}
-                  helperText={checkErrorMessage('email') ? checkErrorMessage('email') : "Must end with @maastrichtuniversity.nl or @student.maastrichtuniversity.nl"}
-                />
+                <TextField id='email' label='Email' placeholder='Email' variant="outlined" onBlur={handleTextFieldChange} size='small' required error={checkError('email')} helperText={checkErrorMessage('email') || "Must end with @maastrichtuniversity.nl"} />
               </Grid>
 
-              <Grid item xs={5} style={{textAlign: 'right'}}>
-                <p className={styles.required}>
-                  The DSRI project ID where to enable GPU:
-                </p>
-              </Grid>
+              <Grid item xs={5} style={{textAlign: 'right'}}><p className={styles.required}>DSRI project ID:</p></Grid>
               <Grid item xs={7} style={{textAlign: 'left'}}>
-                <TextField
-                  id='project_id'
-                  multiline
-                  label='DSRI project ID'
-                  placeholder='e.g. machine-learning-analysis'
-                  variant="outlined"
-                  onChange={handleTextFieldChange}
-                  size='small'
-                  required
-                  error={checkError('project_id')}
-                  helperText={checkErrorMessage('project_id') ? checkErrorMessage('project_id') : "The project ID should only contains alphanumeric characters and -"}
-                />
+                <TextField id='project_id' label='DSRI project ID' placeholder='e.g. machine-learning-analysis' variant="outlined" onChange={handleTextFieldChange} size='small' required error={checkError('project_id')} helperText={checkErrorMessage('project_id') || "Alphanumeric and - only"} />
               </Grid>
 
-              <Grid item xs={5} style={{textAlign: 'right'}}>
-                <p className={styles.required}>
-                  The ID of the deployed app where will enable GPU:
-                </p>
-              </Grid>
+              <Grid item xs={5} style={{textAlign: 'right'}}><p className={styles.required}>DSRI app ID:</p></Grid>
               <Grid item xs={7} style={{textAlign: 'left'}}>
-                <TextField
-                  id='app_id'
-                  multiline
-                  label='DSRI app ID'
-                  placeholder='e.g. jupyterlab-gpu'
-                  variant="outlined"
-                  onChange={handleTextFieldChange}
-                  size='small'
-                  required
-                  error={checkError('app_id')}
-                  helperText={checkErrorMessage('app_id') ? checkErrorMessage('app_id') : "Make sure this value is right as it will be used to automatically enable the GPU in this app. The app ID should only contains alphanumeric characters and -"}
-                />
+                <TextField id='app_id' label='DSRI app ID' placeholder='e.g. jupyterlab-gpu' variant="outlined" onChange={handleTextFieldChange} size='small' required error={checkError('app_id')} helperText={checkErrorMessage('app_id') || "The ID of the app where the GPU will be enabled."} />
               </Grid>
 
-              {state.windowSize > 760 &&
-                <Grid item xs={1} style={{textAlign: 'center', margin: '0px'}}></Grid>
-              }
-
-              {/* removed calendarFocus prop, added centering */}
-              <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
+              {/* FIX: RESTORED GRID OFFSET FOR CORRECT CALENDAR WIDTH */}
+              {  state.windowSize > 760 && <Grid item xs={1}></Grid> }
+              <Grid item xs={state.windowSize <= 760 ? 12 : 10} style={{textAlign: 'center', margin: '20px 0px'}}>
                 <DateRange
+                  editableDateInputs={true}
                   ranges={[state.selection1]}
                   onChange={(item: any) => updateState({ ...state, ...item })}
                   dayContentRenderer={customDayContent}
@@ -411,38 +234,31 @@ function GpuBooking() {
                   weekStartsOn={1}
                   direction={state.windowSize <= 760 ? 'vertical' : 'horizontal'}
                   preventSnapRefocus={true}
+                  calendarFocus="forwards"
                 />
               </Grid>
-
             </Grid>
 
-            <Box style={{ textAlign: 'center', marginTop: '0px'}}>
-              {state.loading &&
-                <CircularProgress style={{marginTop: '20px'}} />
-              }
-              <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px'}} sx={{ display: state.openError }}>
-                ⚠️&nbsp;&nbsp;{state.errorMessage}
+            <Box style={{ textAlign: 'center', marginTop: '10px'}}>
+              {state.loading && <CircularProgress style={{marginTop: '20px'}} />}
+              <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px', color: '#fff'}} sx={{ display: state.openError }}>
+                ⚠️ {state.errorMessage}
               </Paper>
-              <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
-                ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email with more information to use the GPU on the DSRI once your booking starts. Be aware that if you book after 09:00 AM for today, the GPU will not enable automatically.
+              <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px', color: '#fff'}} sx={{ display: state.openSuccess }}>
+                ✔️ GPU requested successfully! Note: if you booked for today after 09:00 AM, manual activation is required.
               </Paper>
             </Box>
 
-            <button type="submit" style={{margin: '30px 0px'}} className={clsx(
-                'button button--outline button--primary button--lg',
-              )}>Request a GPU for the selected period</button>
+            <button type="submit" style={{margin: '30px 0px'}} className={clsx('button button--outline button--primary button--lg')}>
+              Request a GPU for the selected period
+            </button> 
           </form>
 
+          {/* Footer links reordered and line removed */}
           <div style={{ paddingBottom: '50px', maxWidth: '800px', margin: '0 auto' }}>
-            <div className="footer-link-item">
-              ⏳ <a href={ticketUrl} target="_blank">Need more than 4 days? Submit a ticket</a>
-            </div>
-            <div className="footer-link-item">
-              🔎 <a href="https://calendar.dsri.maastrichtuniversity.nl" target="_blank">View the Detailed GPU Schedule</a>
-            </div>
-            <div className="footer-link-item">
-              ❌ <a href={ticketUrl} target="_blank">Cancel your Reservation</a>
-            </div>
+            <div className="footer-link-item">⏳ <a href={ticketUrl} target="_blank">Need more than 4 days? Submit a ticket</a></div>
+            <div className="footer-link-item">🔎 <a href="https://calendar.dsri.maastrichtuniversity.nl" target="_blank">View the Detailed GPU Schedule</a></div>
+            <div className="footer-link-item">❌ <a href={ticketUrl} target="_blank">Cancel your Reservation</a></div>
           </div>
 
         </FormControl>
