@@ -433,6 +433,7 @@ function GpuBooking() {
                 style={{
                   backgroundColor: "#81c784", 
                   padding: '12px 25px', 
+                  color: '#000000', 
                   width: 'fit-content',      /* Makes box only as wide as the text */
                   margin: '0 auto',          /* Centers the box */
                   whiteSpace: 'nowrap',      /* Forces the text to stay in one row */
@@ -448,6 +449,7 @@ function GpuBooking() {
     style={{
       backgroundColor: "#e57373", 
       padding: '15px', 
+      color: '#000000', 
       borderRadius: '8px'
     }} 
     sx={{ display: state.openError }}
