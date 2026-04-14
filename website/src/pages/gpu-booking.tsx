@@ -237,6 +237,11 @@ function GpuBooking() {
     return bookings
   }
 
+  const getGpuColor: any = (gpuCount: any) => {
+  let color = 'success' // Green
+  if (gpuCount > 4) color = 'error' // Red
+  return color
+}
   function customDayContent(day: any) {
     const booking = isBooked(day)
     const dayIsBooked = booking['fullyBooked']
