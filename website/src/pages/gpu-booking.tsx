@@ -280,7 +280,7 @@ function GpuBooking() {
     <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University">
 
       <style>{`
-  .gpu-subtitle { font-size: 0.9rem; color: #000000; margin-bottom: 20px; }
+  .gpu-subtitle { font-size: 0.9rem; color: #000000; margin-bottom: 10px; }
   .gpu-meta { display: flex; gap: 24px; justify-content: center; margin-bottom: 20px; }
   .gpu-meta-chip { font-size: 0.8rem; color: #000000; display: flex; align-items: center; gap: 7px; }
   .gpu-meta-dot { width: 8px; height: 8px; border-radius: 50%; background: #000000; }
