@@ -441,7 +441,7 @@ function GpuBooking() {
               </Paper>
             </Box>
 
-            <button type="submit" style={{margin: '10px 0px 0px'}} className={clsx(
+            <button type="submit" style={{margin: '20px 0px 30px'}} className={clsx(
                 'button button--outline button--primary button--lg',
               )}>Request a GPU for the selected period</button>
           </form>
