@@ -425,7 +425,7 @@ function GpuBooking() {
 
             </Grid>
 
-            <Box style={{ textAlign: 'center', marginTop: '0px'}}>
+            <Box style={{ textAlign: 'center', margin: '20px auto 10px', maxWidth: '800px' }}>
               {state.loading &&
                 <CircularProgress style={{marginTop: '20px'}} />
               }
@@ -441,7 +441,7 @@ function GpuBooking() {
               </Paper>
             </Box>
 
-            <button type="submit" style={{margin: '20px 0px 30px'}} className={clsx(
+            <button type="submit" style={{margin: '20px 0px 40px'}} className={clsx(
                 'button button--outline button--primary button--lg',
               )}>Request a GPU for the selected period</button>
           </form>
