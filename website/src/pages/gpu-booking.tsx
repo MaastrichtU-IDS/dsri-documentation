@@ -309,22 +309,11 @@ function GpuBooking() {
             Reserve GPU resources on the DSRI for your project. You'll receive a confirmation email once your booking is processed.
           </p>
 
-          <div className="gpu-meta">
-            <div className="gpu-meta-chip">
-              <IconMonitor />
-              <strong>7 GPUs</strong> available
-            </div>
-            <div className="gpu-meta-chip">
-              <div className="gpu-meta-dot" />
-              Greyed dates = fully booked
-            </div>
-          </div>
-
           {/* Orange: 4-day limit */}
           <div className="gpu-notice orange">
             <IconInfo color="#f97316" />
             <div>
-              You can book a GPU for a <strong>maximum of 4 days per calendar month</strong>. Bookings are monitored to ensure fair usage. Consecutive or excessive bookings may be adjusted. If you need more time, <a href={ticketUrl} target="_blank">submit a ticket</a> and we'll look into it.
+              You can book one of our <strong>7 GPUs</strong> for a <strong>maximum of 4 days per calendar month</strong>. Bookings are monitored to ensure fair usage. Consecutive or excessive bookings may be adjusted. If you need more time, <a href={ticketUrl} target="_blank">submit a ticket</a> and we'll look into it.
             </div>
           </div>
 
