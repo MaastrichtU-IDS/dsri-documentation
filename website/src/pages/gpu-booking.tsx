@@ -425,17 +425,38 @@ function GpuBooking() {
 
             </Grid>
 
-            <Box style={{ textAlign: 'center', margin: '20px auto 10px', maxWidth: '800px' }}>
-              {state.loading &&
-                <CircularProgress style={{marginTop: '20px'}} />
-              }
-              <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px'}} sx={{ display: state.openError }}>
-                ⚠️&nbsp;&nbsp;{state.errorMessage}
-              </Paper>
-              <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
-  ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email with more information to use the GPU on the DSRI once your booking starts.
-              </Paper>
-            </Box>
+            <Box style={{ textAlign: 'center', margin: '30px auto 10px' }}>
+  {state.loading && <CircularProgress style={{marginBottom: '10px'}} />}
+  
+              <Paper 
+                elevation={4} 
+                style={{
+                  backgroundColor: "#81c784", 
+                  padding: '12px 25px', 
+                  color: 'white', 
+                  width: 'fit-content',      /* Makes box only as wide as the text */
+                  margin: '0 auto',          /* Centers the box */
+                  whiteSpace: 'nowrap',      /* Forces the text to stay in one row */
+                  borderRadius: '8px',
+                  display: state.openSuccess === 'inline' ? 'block' : 'none' 
+                }}
+  >
+    ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email with more information once your booking starts.
+  </Paper>
+
+  <Paper 
+    elevation={4} 
+    style={{
+      backgroundColor: "#e57373", 
+      padding: '15px', 
+      color: 'white',
+      borderRadius: '8px'
+    }} 
+    sx={{ display: state.openError }}
+  >
+    ⚠️&nbsp;&nbsp;{state.errorMessage}
+  </Paper>
+</Box>
 
             <button type="submit" style={{margin: '10px 0px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
