@@ -433,15 +433,11 @@ function GpuBooking() {
                 ⚠️&nbsp;&nbsp;{state.errorMessage}
               </Paper>
               <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
-                ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email with more information to use the GPU on the DSRI once your booking starts.
-                <br />
-                <span style={{ fontSize: '0.85rem' }}>
-                ❗Be aware that if you book after 09:00 AM for today, the GPU will not enable automatically.
-                </span>
+  ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email with more information to use the GPU on the DSRI once your booking starts.
               </Paper>
             </Box>
 
-            <button type="submit" style={{margin: '20px 0px 40px'}} className={clsx(
+            <button type="submit" style={{margin: '10px 0px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
               )}>Request a GPU for the selected period</button>
           </form>
