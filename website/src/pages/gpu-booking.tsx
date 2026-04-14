@@ -430,7 +430,7 @@ function GpuBooking() {
                   display: state.openSuccess === 'inline' ? 'block' : 'none' 
                 }}
   >
-    ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email with more information once your booking starts.
+    ✔️&nbsp;&nbsp;GPU requested successfully! You will receive a confirmation email shortly and more information once your booking starts.
   </Paper>
 
   <Paper 
