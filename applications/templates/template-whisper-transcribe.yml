@@ -128,7 +128,7 @@ objects:
       io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
     labels:
       app: "${APPLICATION_NAME}"
-    name: "${APPLICATION_NAME}"
+      name: "${APPLICATION_NAME}"
   spec:
     runtimeClassName: selinux
     replicas: 1
