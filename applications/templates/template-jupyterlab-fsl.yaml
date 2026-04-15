@@ -141,6 +141,7 @@ objects:
             app: "${APPLICATION_NAME}"
             deployment: "${APPLICATION_NAME}"
         spec:
+          runtimeClassName: selinux
           serviceAccountName: "anyuid"
           automountServiceAccountToken: false
           securityContext:
