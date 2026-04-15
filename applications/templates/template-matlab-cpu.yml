@@ -158,10 +158,10 @@ objects:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
-          runtimeClassName: selinux
           app: "${APPLICATION_NAME}"
           deployment: "${APPLICATION_NAME}"
       spec:
+        runtimeClassName: selinux
         automountServiceAccountToken: false
         containers:
         - args:
