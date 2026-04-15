@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 kind: Template
 apiVersion: template.openshift.io/v1
@@ -162,7 +161,7 @@ objects:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
-        labels:
+        labels:        
           app: "${APPLICATION_NAME}"
           deployment: "${APPLICATION_NAME}"
       spec:
