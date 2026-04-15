@@ -168,7 +168,10 @@ objects:
       type: RollingUpdate
     template:
       metadata:
+        annotations: 
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
         labels:
+          runtimeClassName: selinux
           app: "${APPLICATION_NAME}"
           deployment: "${APPLICATION_NAME}"
       spec:
