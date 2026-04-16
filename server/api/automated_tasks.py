@@ -170,7 +170,7 @@ def enable_gpu(project_id, app_id, dyn_client):
     except Exception as err:
         # Error when editing GPU quota
         logs = logs + f'❌ Could not set the GPU quota to 1 in *{project_id}*. Error: {str(err)[:21]}\n'
-        email = email + f'The project provided <b>{project_id}</b> was not found, hence the GPU could not be enabled. Contact the DSRI team via <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a><br/>'
+        email = email + f'The project provided <b>{project_id}</b> was not found, hence the GPU could not be enabled. Contact the RCS team via <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a><br/>'
 
     return logs, email
 
