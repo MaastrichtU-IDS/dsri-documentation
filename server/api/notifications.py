@@ -33,9 +33,9 @@ def post_msg_to_slack(text):
 
 
 html_footer = """<br/><br/><br/>Best regards,
-<br/><br/>The DSRI team at Maastricht University"""
+<br/><br/>The RCS team at Maastricht University"""
 plain_footer = """\nBest regards,
-The DSRI team at Maastricht University"""
+The RCS team at Maastricht University"""
 
 
 ## Send an email with UM smtp server (require VPN connection)
