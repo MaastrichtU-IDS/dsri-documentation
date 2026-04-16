@@ -33,9 +33,12 @@ def post_msg_to_slack(text):
 
 
 html_footer = """<br/><br/><br/>Best regards,
-<br/><br/>The RCS team at Maastricht University"""
+<br/><br/>The RCS team at Maastricht University
+<br/><br/><small style="color: #666;">This is an automated message. Please do not reply to this email. For support, contact <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a>.</small>"""
 plain_footer = """\nBest regards,
-The RCS team at Maastricht University"""
+The RCS team at Maastricht University
+
+This is an automated message. Please do not reply to this email. For support, contact rcs-ub@maastrichtuniversity.nl"""
 
 
 ## Send an email with UM smtp server (require VPN connection)
