@@ -88,7 +88,7 @@ parameters:
   description: Use Always to make sure the new image is pulled when you update it
   displayName: Image pull policy
   required: true
-  value: IfNotPresent
+  value: Always
 
 objects:
 - kind: PersistentVolumeClaim
