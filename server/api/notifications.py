@@ -33,14 +33,17 @@ def post_msg_to_slack(text):
 
 
 html_footer = """<br/><br/><br/>Best regards,
-<br/><br/>The DSRI team at Maastricht University"""
+<br/><br/>The RCS team at Maastricht University
+<br/><br/><small style="color: #666;">This is an automated message. Please do not reply to this email. For support, contact <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a>.</small>"""
 plain_footer = """\nBest regards,
-The DSRI team at Maastricht University"""
+The RCS team at Maastricht University
+
+This is an automated message. Please do not reply to this email. For support, contact rcs-ub@maastrichtuniversity.nl"""
 
 
 ## Send an email with UM smtp server (require VPN connection)
 # https://kb.icts.maastrichtuniversity.nl/display/ISM/E-mail+-+Universal+UM+email+server+names
-def send_email(msg, to, fromaddr="DSRI-SUPPORT-L@maastrichtuniversity.nl", subject="📀 DSRI GPU bookings"):
+def send_email(msg, to, fromaddr="no-reply-rcs-ub@maastrichtuniversity.nl", subject="📀 DSRI GPU bookings"):
     toaddrs  = [to]
     # print(f"📬️ Sending an email from {fromaddr} to {toaddrs}")
 

@@ -170,7 +170,7 @@ def enable_gpu(project_id, app_id, dyn_client):
     except Exception as err:
         # Error when editing GPU quota
         logs = logs + f'❌ Could not set the GPU quota to 1 in *{project_id}*. Error: {str(err)[:21]}\n'
-        email = email + f'The project provided <b>{project_id}</b> was not found, hence the GPU could not be enabled. Contact the DSRI team on Slack or via DSRI-SUPPORT-L@maastrichtuniversity.nl<br/>'
+        email = email + f'The project provided <b>{project_id}</b> was not found, hence the GPU could not be enabled. Contact the RCS team via <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a><br/>'
 
     return logs, email
 
@@ -240,6 +240,7 @@ Make sure you have properly moved all data you want to keep in the persistent fo
                     email_msg = f"""✅ Your GPU booking in project <b>{resa["project_id"]}</b> just started!<br/><br/>
 {email_logs}<br/>
 For more details, checkout the documentation to see how to enable or use the GPU: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#enable-gpu-in-your-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
+<b>Please note:</b> if you booked after 09:00 AM on your start date, the GPU may not have been enabled automatically. If this is the case, please contact us at <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a> and we will enable it manually for you.<br/><br/>
 The GPU will be automatically disabled at the end of your booking on the {end_date} at 9:00am
 """
                     send_email(email_msg, to=resa["user_email"], subject="📀 DSRI GPU booking starting")
