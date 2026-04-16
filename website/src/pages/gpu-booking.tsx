@@ -237,6 +237,11 @@ function GpuBooking() {
     return bookings
   }
 
+  const getGpuColor: any = (gpuCount: any) => {
+  let color = 'success' // Green
+  if (gpuCount > 4) color = 'error' // Red
+  return color
+}
   function customDayContent(day: any) {
     const booking = isBooked(day)
     const dayIsBooked = booking['fullyBooked']
@@ -275,7 +280,7 @@ function GpuBooking() {
     <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University">
 
       <style>{`
-  .gpu-subtitle { font-size: 0.9rem; color: #000000; margin-bottom: 20px; }
+  .gpu-subtitle { font-size: 0.9rem; color: #000000; margin-bottom: 10px; }
   .gpu-meta { display: flex; gap: 24px; justify-content: center; margin-bottom: 20px; }
   .gpu-meta-chip { font-size: 0.8rem; color: #000000; display: flex; align-items: center; gap: 7px; }
   .gpu-meta-dot { width: 8px; height: 8px; border-radius: 50%; background: #000000; }
@@ -304,22 +309,11 @@ function GpuBooking() {
             Reserve GPU resources on the DSRI for your project. You'll receive a confirmation email once your booking is processed.
           </p>
 
-          <div className="gpu-meta">
-            <div className="gpu-meta-chip">
-              <IconMonitor />
-              <strong>7 GPUs</strong> available
-            </div>
-            <div className="gpu-meta-chip">
-              <div className="gpu-meta-dot" />
-              Greyed dates = fully booked
-            </div>
-          </div>
-
           {/* Orange: 4-day limit */}
           <div className="gpu-notice orange">
             <IconInfo color="#f97316" />
             <div>
-              You can book a GPU for a <strong>maximum of 4 days per calendar month</strong>. Bookings are monitored to ensure fair usage. Consecutive or excessive bookings may be adjusted. If you need more time, <a href={ticketUrl} target="_blank">submit a ticket</a> and we'll look into it.
+              You can book one of our <strong>7 GPUs</strong> for a <strong>maximum of 4 days per calendar month</strong>. Bookings are monitored to ensure fair usage. Consecutive or excessive bookings may be adjusted. If you need more time, <a href={ticketUrl} target="_blank">submit a ticket</a> and we'll look into it.
             </div>
           </div>
 
@@ -420,17 +414,38 @@ function GpuBooking() {
 
             </Grid>
 
-            <Box style={{ textAlign: 'center', marginTop: '0px'}}>
-              {state.loading &&
-                <CircularProgress style={{marginTop: '20px'}} />
-              }
-              <Paper elevation={4} style={{backgroundColor: "#e57373", padding: '15px'}} sx={{ display: state.openError }}>
-                ⚠️&nbsp;&nbsp;{state.errorMessage}
-              </Paper>
-              <Paper elevation={4} style={{backgroundColor: "#81c784", padding: '15px'}} sx={{ display: state.openSuccess }}>
-                ✔️&nbsp;&nbsp;GPU requested successfully, you will receive an email with more information to use the GPU on the DSRI once your booking starts. Be aware that if you book after 09:00 AM for today, the GPU will not enable automatically.
-              </Paper>
-            </Box>
+            <Box style={{ textAlign: 'center', margin: '30px auto 10px' }}>
+  {state.loading && <CircularProgress style={{marginBottom: '10px'}} />}
+  
+              <Paper 
+                elevation={4} 
+                style={{
+                  backgroundColor: "#81c784", 
+                  padding: '12px 25px', 
+                  color: '#000000', 
+                  width: 'fit-content',      /* Makes box only as wide as the text */
+                  margin: '0 auto',          /* Centers the box */
+                  whiteSpace: 'nowrap',      /* Forces the text to stay in one row */
+                  borderRadius: '8px',
+                  display: state.openSuccess === 'inline' ? 'block' : 'none' 
+                }}
+  >
+    ✔️&nbsp;&nbsp;GPU requested successfully! You will receive a confirmation email shortly and more information once your booking starts.
+  </Paper>
+
+  <Paper 
+    elevation={4} 
+    style={{
+      backgroundColor: "#e57373", 
+      padding: '15px', 
+      color: '#000000', 
+      borderRadius: '8px'
+    }} 
+    sx={{ display: state.openError }}
+  >
+    ⚠️&nbsp;&nbsp;{state.errorMessage}
+  </Paper>
+</Box>
 
             <button type="submit" style={{margin: '10px 0px 0px'}} className={clsx(
                 'button button--outline button--primary button--lg',
