@@ -171,8 +171,7 @@ objects:
           automountServiceAccountToken: false
           securityContext:
             runAsUser: 0
-            supplementalGroups:
-            - 100
+            fsGroup: 100
           volumes:
             - name: data
               persistentVolumeClaim:
