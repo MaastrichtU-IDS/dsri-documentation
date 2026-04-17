@@ -8,7 +8,7 @@ metadata:
     description: |-
       Start VisualStudio Code server with PyTorch installed, and set up to be used with a GPU.
 
-      📂 Use the /home/coder/project folder (workspace of the VSCode UI) to store your data in the existing persistent storage
+      📂 Use the /root/persistent folder (workspace of the VSCode UI) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
 
       Visit https://github.com/MaastrichtU-IDS/code-server for more details and to customize the image
@@ -146,13 +146,13 @@ objects:
             - name: "${APPLICATION_NAME}" 
               image: "${APPLICATION_IMAGE}" 
               imagePullPolicy: IfNotPresent
-              workingDir: /home/coder/project
+              workingDir: /root/persistent
               ports:
                 - containerPort: 8081
                   protocol: TCP
               volumeMounts:
                 - name: data 
-                  mountPath: "/home/coder/project" 
+                  mountPath: "/root/persistent" 
               env:
                 - name: PASSWORD
                   valueFrom:
