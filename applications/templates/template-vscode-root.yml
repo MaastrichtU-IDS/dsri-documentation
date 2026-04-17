@@ -8,17 +8,17 @@ metadata:
     description: |-
       Start VisualStudio Code server with the coder user which has sudo permissions
 
-      📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
+      📦 You can use `sudo apt-get install` or `pip install` to install packages
 
       📂 Use the /home/coder/project folder (workspace of the VSCode UI) to store your data in the existing persistent storage
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
       
-      Python 3 and Java 11 already installed. You can install packages with 'apt-get' after starting the server.
+      Python 3 and Java 17 already installed. You can install packages with 'apt-get' after starting the server.
 
       Visit https://github.com/MaastrichtU-IDS/code-server for more details and to customize the image
     iconClass: icon-kubevirt
     tags: visualstudio,vscode,root,persistent
-    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-vscode
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:
