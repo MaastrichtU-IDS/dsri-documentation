@@ -3,104 +3,77 @@ id: workflows-introduction
 title: Introduction to Workflows
 ---
 
-:::warning Work in progress
+Multiple technologies are available to run workflows on OpenShift/Kubernetes clusters. The right choice depends on your use-case, team setup, and the type of pipeline you need to run.
 
-Running workflows on the DSRI is a work in progress. It usually requires some knowledge about how to orchestrate containers.
+:::caution Use-case dependent
 
-:::
-
-## Introduction
-
-Multiple technologies are available to run workflows on OpenShift/Kubernetes clusters. Each has its strengths and weaknesses in different areas.
-
-:::caution Use-case dependant
-
-The technology to use needs to be **chosen depending on your use-case**.
+The technology to use needs to be **chosen depending on your use-case**. Use the table below to get an overview, then follow the links for deployment instructions.
 
 :::
 
-## Current solutions on the DSRI
+## Overview
 
-Those solutions can easily be deployed on the DSRI. Let
+| Tool | Best for | Docs |
+|---|---|---|---|
+| **GitHub Actions** | CI/CD, automated testing, code pipelines | [Guide](/docs/workflows-github-actions) |
+| **Apache Airflow** | Scheduling, DAG-based data pipelines | [Guide](/docs/workflows-airflow) |
+| **Nextflow** | Bioinformatics, HPC-style pipelines | [Guide](/docs/workflows-nextflow) |
+| **CWL** | Portable scientific workflows, provenance | [Guide](/docs/workflows-cwl) |
+| **Kubeflow** | ML workflows, Tensorflow pipelines | [Contact us](mailto:rcs-ub@maastrichtuniversity.nl) |
+| **Volcano** | Batch jobs, Spark, HPC scheduling | [Contact us](mailto:rcs-ub@maastrichtuniversity.nl)  |
+| **Seldon** | Serving and scaling ML models | [Contact us](mailto:rcs-ub@maastrichtuniversity.nl)  |
 
-### GitHub Actions workflows
 
-GitHub Actions allows you to define automatically containerized workflows through a simple YAML file hosted in your GitHub repository.
+## Supported solutions
 
-See the [page about GitHub Actions runners](/docs/workflows-github-actions) for more details, and to deploy runners on the DSRI.
+These tools are available and documented for use on the DSRI.
+
+### GitHub Actions
+
+GitHub Actions allows you to define containerized workflows through a simple YAML file hosted in your GitHub repository. Runners can be deployed directly on the DSRI, enabling you to run your CI/CD pipelines on the cluster.
+
+See the [GitHub Actions runners page](/docs/workflows-github-actions) for deployment instructions.
 
 ### Apache Airflow
 
-Airflow is a platform to programmatically author, schedule and monitor workflows, aka. DAGs (directed acyclic graphs).
+Airflow is a platform to programmatically author, schedule, and monitor workflows as DAGs (directed acyclic graphs). It is well suited for data engineering pipelines that need to run on a schedule.
 
-See the [page about Airflow](/docs/workflows-airflow) for more details, and to deploy Airflow on the DSRI.
-
-### Argo
-
-[Argo](https://argoproj.github.io/argo/) is a container native workflow engine for [Kubernetes](https://kubernetes.io/) supporting both [DAG](https://argoproj.github.io/docs/argo/examples/readme.html#dag) and [step based](https://argoproj.github.io/docs/argo/examples/readme.html#steps) workflows.
-
-* Workflows easy to define using Kubernetes-like YAML files.
-* Easy to define if your workflow is composed of Docker containers to run with arguments.
-
-:::info Contact us
-
-[Contact us](/help) if you want to run Argo workflow on the DSRI
-
-:::
-
-## More options
-
-Let us know if you are interested in deploying, and using, any of those workflows on the DSRI.
-
-### Kubeflow
-
-Optimized for Tensorflow workflows on Kubernetes.
-
-Pipelines written in Python.
-
-### Apache Airflow
-
-Define, schedule and run workflows. 
-
-Can be deployed with OpenDataHub, see also [this deployment for OpenShift](https://github.com/majordomusio/openshift-airflow).
-
-See also: Airflow on [Kubernetes blog](https://kubernetes.io/blog/2018/06/28/airflow-on-kubernetes-part-1-a-different-kind-of-operator/), and Kubernetes in [Airflow documentation](https://airflow.apache.org/docs/stable/kubernetes.html).
-
-### Volcano
-
-Run batch pipelines on Kubernetes with [Volcano](https://volcano.sh/). 
-
-* More a scheduler than a workflow engine. 
-
-* Volcano can be used to run Spark, Kubeflow or KubeGene workflows.
+See the [Airflow page](/docs/workflows-airflow) for deployment instructions.
 
 ### Nextflow
 
-[Nextflow](https://www.nextflow.io/) has been developed by the genomic research scientific community and is built to run bioinformatics pipeline.
+[Nextflow](https://www.nextflow.io/) was developed by the genomics research community and is designed to run bioinformatics pipelines. Workflows are defined in a Bash-like scripting language, with built-in support for Conda and Docker containers.
 
-Define your workflow in a Bash script fashion, providing input, output and the command to run. Without the need to create and use Docker container for Conda pipelines.
+See the [Nextflow page](/docs/workflows-nextflow) for deployment instructions.
 
-### CWL
+### CWL (Common Workflow Language)
 
-* Developed by the genomic research scientific community.
-* Good support for provenance description (export as RDF).
-* Support on OpenShift still in development
-  * [Apache Airflow](https://airflow.apache.org/docs/stable/kubernetes.html)
-  * [workflows-cwl](https://github.com/Duke-GCB/calrissian/)
-* Propose a GUI to build the workflows: [Rabix Composer](https://rabix.io/)
+[CWL](https://www.commonwl.org/) is a standard for describing analysis workflows, with strong support for provenance and reproducibility. Support on OpenShift is still experimental.
 
-### KubeGene
+See the [CWL page](/docs/workflows-cwl) for more details.
 
-[KubeGene](https://kubegene.io/) is a turn-key genome sequencing workflow management framework.
+## Other options
 
-See the [Workflow example](https://github.com/kubegene/kubegene/blob/master/example/simple-sample/simple-sample.yaml), and how to [define a tool](https://kubegene.io/docs/guides/tool/).
+The following tools are not yet deployed on DSRI but can be made available on request.
+
+### Kubeflow
+
+Optimized for machine learning workflows on Kubernetes, with native support for Tensorflow pipelines. Pipelines are written in Python.
+
+### Volcano
+
+[Volcano](https://volcano.sh/) is a batch scheduling system for Kubernetes. It is more of a scheduler than a workflow engine, and can be used to run Spark, Kubeflow, or KubeGene workloads.
 
 ### Seldon
 
-[Open-source platform](https://www.seldon.io/tech/) for rapidly deploying machine learning models on Kubernetes. Manage, serve and scale models built in any framework on Kubernetes.
+[Seldon](https://www.seldon.io/) is an open-source platform for deploying, managing, and scaling machine learning models on Kubernetes. It supports models built in any framework.
+
+### KubeGene
+
+[KubeGene](https://kubegene.io/) is a workflow management framework designed specifically for genome sequencing pipelines.
 
 :::info Contact us
 
-Feel free to [contact us](/help) if you have any questions about running workflows on DSRI or to request the support of a new technology.
+Feel free to [contact us](mailto:rcs-ub@maastrichtuniversity.nl), if you have any questions about running workflows on DSRI or to request support for a new tool.
 
 :::
