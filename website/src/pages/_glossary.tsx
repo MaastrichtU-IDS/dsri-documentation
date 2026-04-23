@@ -140,6 +140,7 @@ export default function Glossary(): JSX.Element {
     background: active ? 'var(--ifm-color-emphasis-200)' : 'var(--ifm-background-color)',
     color: active ? 'var(--ifm-font-color-base)' : 'var(--ifm-color-emphasis-600)',
     userSelect: 'none',
+    tags: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: '1.25rem' },
   });
 
   const cardStyle = (open: boolean): React.CSSProperties => ({
