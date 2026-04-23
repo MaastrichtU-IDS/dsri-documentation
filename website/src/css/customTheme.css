@@ -88,7 +88,18 @@ html[data-theme='dark'] .header-github-link:before {
   border-color: #444 !important;
 }
 
-.glossary-pill, .glossary-pill span {
+.glossary-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 6px 16px !important;
+  border-radius: 20px !important;
+  border: 1.5px solid #aaa !important;
+  background-color: #fff !important;
+  color: #444 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
   white-space: nowrap !important;
 }
 
