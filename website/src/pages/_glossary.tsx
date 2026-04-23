@@ -123,12 +123,12 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
   },
   tags: { 
-    display: 'flex', 
-    flexWrap: 'wrap', 
-    gap: '12px', 
+    display: 'block',     
+    width: '100%',
     marginBottom: '1.5rem',
     marginTop: '1rem',
   },
+
   grid: { 
     display: 'grid', 
     gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
@@ -151,21 +151,28 @@ export default function Glossary(): JSX.Element {
   });
 
   const tagStyle = (active: boolean): React.CSSProperties => ({
+    // Text styling
     fontSize: '13px',
-    fontWeight: 500,
+    fontWeight: 600,
+    color: active ? '#fff' : '#444',
+    
+    // Pill Shape
     padding: '8px 16px',
     borderRadius: '20px',
     cursor: 'pointer',
     userSelect: 'none',
-    transition: 'all 0.2s ease',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: active ? '1px solid #444' : '1px solid var(--ifm-color-emphasis-300)',
-    background: active ? '#444' : 'var(--ifm-color-emphasis-100)', 
-    color: active ? '#fff' : 'var(--ifm-color-emphasis-700)',
-    marginRight: '8px',
-    marginBottom: '8px',
+    
+    // Background & Border (Bypassing theme defaults)
+    background: active ? '#444' : '#f0f0f0', 
+    border: active ? '1px solid #444' : '1px solid #ddd',
+    
+    // FORCING separation
+    display: 'inline-block',
+    marginRight: '10px',
+    marginBottom: '10px',
+    lineHeight: '1',
+    appearance: 'none', // Removes browser button styling
+    WebkitAppearance: 'none',
   });
 
   const cardStyle = (open: boolean): React.CSSProperties => ({
@@ -186,9 +193,9 @@ export default function Glossary(): JSX.Element {
         onChange={e => setQuery(e.target.value)}
       />
 
-      {/* 2. Filter Buttons */}
       <div style={styles.tags}>
         <button 
+          type="button"
           style={tagStyle(activeTag === null)} 
           onClick={() => setActiveTag(null)}
         >
@@ -196,6 +203,7 @@ export default function Glossary(): JSX.Element {
         </button>
         {allCats.map(c => (
           <button 
+            type="button"
             key={c} 
             style={tagStyle(activeTag === c)} 
             onClick={() => setActiveTag(c)}
