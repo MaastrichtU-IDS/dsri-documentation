@@ -167,12 +167,25 @@ export default function Glossary(): JSX.Element {
         onChange={e => setQuery(e.target.value)}
       />
 
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, margin: '20px 0' }}>
-      <span style={pillStyle(activeTag === null)} onClick={() => setActiveTag(null)}>All</span>
+    <select
+      style={{
+        marginBottom: '1.25rem',
+        padding: '8px 12px',
+        borderRadius: 8,
+        border: '1px solid #aaa',
+        fontSize: 14,
+        cursor: 'pointer',
+        background: 'var(--ifm-background-color)',
+        color: 'var(--ifm-font-color-base)',
+      }}
+      value={activeTag ?? ''}
+      onChange={e => setActiveTag(e.target.value || null)}
+    >
+      <option value="">All categories</option>
       {allCats.map(c => (
-        <span key={c} style={pillStyle(activeTag === c)} onClick={() => setActiveTag(c)}>{c}</span>
+        <option key={c} value={c}>{c}</option>
       ))}
-    </div>
+    </select>
 
     <div style={styles.grid}>
       {filtered.length === 0 && (
