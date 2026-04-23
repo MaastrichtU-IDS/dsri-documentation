@@ -125,8 +125,9 @@ const styles: Record<string, React.CSSProperties> = {
   tags: { 
     display: 'flex', 
     flexWrap: 'wrap', 
-    gap: '12px',      
-    marginBottom: '1.5rem' 
+    gap: '8px', 
+    marginBottom: '1.5rem',
+    marginTop: '1rem' 
   },
   grid: { 
     display: 'grid', 
@@ -152,15 +153,17 @@ export default function Glossary(): JSX.Element {
   const tagStyle = (active: boolean): React.CSSProperties => ({
     fontSize: '13px',
     fontWeight: 500,
-    padding: '6px 16px',     // More padding makes them look like pills
-    borderRadius: '20px',    // This makes them rounded
+    padding: '6px 14px',
+    borderRadius: '20px',
     cursor: 'pointer',
     userSelect: 'none',
     border: '1px solid var(--ifm-color-emphasis-300)',
-    // If active, give it a background color. If not, keep it empty.
-    background: active ? 'var(--ifm-color-primary-lightest)' : 'var(--ifm-background-color)',
-    color: active ? 'var(--ifm-color-primary-darker)' : 'var(--ifm-color-emphasis-700)',
-    transition: 'all 0.2s ease',
+    background: active ? '#444' : 'var(--ifm-background-color)',
+    color: active ? '#fff' : 'var(--ifm-color-emphasis-700)',
+    transition: 'all 0.15s ease',
+    marginRight: '6px',
+    marginBottom: '6px',
+    display: 'inline-block',
   });
 
   const cardStyle = (open: boolean): React.CSSProperties => ({
@@ -181,9 +184,20 @@ export default function Glossary(): JSX.Element {
       />
 
       <div style={styles.tags}>
-        <span style={tagStyle(activeTag === null)} onClick={() => setActiveTag(null)}>All</span>
+        <span 
+          style={tagStyle(activeTag === null)} 
+          onClick={() => setActiveTag(null)}
+        >
+          All
+        </span>
         {allCats.map(c => (
-          <span key={c} style={tagStyle(activeTag === c)} onClick={() => setActiveTag(c)}>{c}</span>
+          <span 
+            key={c} 
+            style={tagStyle(activeTag === c)} 
+            onClick={() => setActiveTag(c)}
+          >
+            {c}
+          </span>
         ))}
       </div>
 
