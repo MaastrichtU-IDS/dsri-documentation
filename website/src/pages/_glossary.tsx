@@ -120,14 +120,14 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'var(--ifm-background-color)',
     color: 'var(--ifm-font-color-base)', 
     outline: 'none',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.05)', // Adds a subtle shadow
+    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
   },
   tags: { 
     display: 'flex', 
     flexWrap: 'wrap', 
-    gap: '8px', 
+    gap: '12px', 
     marginBottom: '1.5rem',
-    marginTop: '1rem' 
+    marginTop: '1rem',
   },
   grid: { 
     display: 'grid', 
@@ -153,17 +153,19 @@ export default function Glossary(): JSX.Element {
   const tagStyle = (active: boolean): React.CSSProperties => ({
     fontSize: '13px',
     fontWeight: 500,
-    padding: '6px 14px',
+    padding: '8px 16px',
     borderRadius: '20px',
     cursor: 'pointer',
     userSelect: 'none',
-    border: '1px solid var(--ifm-color-emphasis-300)',
-    background: active ? '#444' : 'var(--ifm-background-color)',
+    transition: 'all 0.2s ease',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: active ? '1px solid #444' : '1px solid var(--ifm-color-emphasis-300)',
+    background: active ? '#444' : 'var(--ifm-color-emphasis-100)', 
     color: active ? '#fff' : 'var(--ifm-color-emphasis-700)',
-    transition: 'all 0.15s ease',
-    marginRight: '6px',
-    marginBottom: '6px',
-    display: 'inline-block',
+    marginRight: '8px',
+    marginBottom: '8px',
   });
 
   const cardStyle = (open: boolean): React.CSSProperties => ({
@@ -175,6 +177,7 @@ export default function Glossary(): JSX.Element {
 
   return (
     <div style={styles.wrap}>
+      {/* 1. Search Bar */}
       <input
         style={styles.search}
         type="search"
@@ -183,24 +186,26 @@ export default function Glossary(): JSX.Element {
         onChange={e => setQuery(e.target.value)}
       />
 
+      {/* 2. Filter Buttons */}
       <div style={styles.tags}>
-        <span 
+        <button 
           style={tagStyle(activeTag === null)} 
           onClick={() => setActiveTag(null)}
         >
           All
-        </span>
+        </button>
         {allCats.map(c => (
-          <span 
+          <button 
             key={c} 
             style={tagStyle(activeTag === c)} 
             onClick={() => setActiveTag(c)}
           >
             {c}
-          </span>
+          </button>
         ))}
       </div>
 
+      {/* 3. The Grid of Cards */}
       <div style={styles.grid}>
         {filtered.length === 0 && (
           <div style={styles.noResults}>No matching terms</div>
