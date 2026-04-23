@@ -116,7 +116,6 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'var(--ifm-background-color)',
     color: 'var(--ifm-font-color-base)', outline: 'none',
   },
-  tags: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: '1.25rem' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 },
   noResults: { textAlign: 'center', color: 'var(--ifm-color-emphasis-500)', fontSize: 14, padding: '2rem 0', gridColumn: '1/-1' },
 };
@@ -140,6 +139,23 @@ export default function Glossary(): JSX.Element {
     borderRadius: 10, padding: '1rem 1.25rem', cursor: 'pointer',
     transition: 'border-color 0.12s',
   });
+  const pillStyle = (active: boolean): React.CSSProperties => ({
+    display: 'inline-flex',
+    alignItems: 'center',
+    padding: '6px 16px',
+    borderRadius: 20,
+    border: `1.5px solid ${active ? '#444' : '#aaa'}`,
+    backgroundColor: active ? '#444' : '#ffffff',
+    color: active ? '#ffffff' : '#444444',
+    fontSize: 13,
+    fontWeight: 500,
+    cursor: 'pointer',
+    whiteSpace: 'nowrap',
+    margin: 0,
+    textDecoration: 'none',
+    userSelect: 'none' as const,
+    flexShrink: 0,
+  });
 
   return (
     <div style={styles.wrap}>
@@ -151,33 +167,26 @@ export default function Glossary(): JSX.Element {
         onChange={e => setQuery(e.target.value)}
       />
 
-      <div className="glossary-tag-container">
-        <span
-          className={`glossary-pill ${activeTag === null ? 'glossary-pill-active' : ''}`}
-          onClick={() => setActiveTag(null)}
-        >All</span>
-        {allCats.map(c => (
-          <span
-            key={c}
-            className={`glossary-pill ${activeTag === c ? 'glossary-pill-active' : ''}`}
-            onClick={() => setActiveTag(c)}
-          >{c}</span>
-        ))}
-      </div>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, margin: '20px 0' }}>
+      <span style={pillStyle(activeTag === null)} onClick={() => setActiveTag(null)}>All</span>
+      {allCats.map(c => (
+        <span key={c} style={pillStyle(activeTag === c)} onClick={() => setActiveTag(c)}>{c}</span>
+      ))}
+    </div>
 
-      <div style={styles.grid}>
-        {filtered.length === 0 && (
-          <div style={styles.noResults}>No matching terms</div>
-        )}
-        {filtered.map(t => {
-          const c = cats[t.cat];
-          const open = openTerm === t.term;
-          return (
-            <div
-              key={t.term}
-              style={cardStyle(open)}
-              onClick={() => setOpenTerm(open ? null : t.term)}
-            >
+    <div style={styles.grid}>
+      {filtered.length === 0 && (
+        <div style={styles.noResults}>No matching terms</div>
+      )}
+      {filtered.map(t => {
+        const c = cats[t.cat];
+        const open = openTerm === t.term;
+        return (
+          <div
+            key={t.term}
+            style={cardStyle(open)}
+            onClick={() => setOpenTerm(open ? null : t.term)}
+          >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: c.color, flexShrink: 0 }} />
                 <span style={{ fontSize: 15, fontWeight: 500 }}>{t.term}</span>
