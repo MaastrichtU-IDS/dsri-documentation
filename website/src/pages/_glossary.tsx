@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 
-interface Term { term: string; cat: string; short: string; body: string; }
+interface Term {
+  term: string;
+  cat: string;
+  short: string;
+  body: string;
+}
 
-const cats = {
+interface CatStyle {
+  color: string;
+  bg: string;
+  text: string;
+}
+
+const cats: Record<string, CatStyle> = {
   Kubernetes: { color: '#378ADD', bg: '#E6F1FB', text: '#0C447C' },
   OpenShift:  { color: '#D85A30', bg: '#FAECE7', text: '#712B13' },
   Storage:    { color: '#1D9E75', bg: '#E1F5EE', text: '#085041' },
@@ -12,122 +23,227 @@ const cats = {
 };
 
 const terms: Term[] = [
-  { term: 'Pod', cat: 'Kubernetes', short: 'The smallest deployable unit in Kubernetes.', body: 'A pod consists of one or more containers and runs on a worker node. It is the smallest logical unit in Kubernetes.' },
-  { term: 'Node', cat: 'Kubernetes', short: 'A worker machine in the cluster.', body: 'A node is a worker machine in the OpenShift Container Platform cluster.' },
-  { term: 'Kubernetes', cat: 'Kubernetes', short: 'Open-source container orchestration platform.', body: 'Kubernetes (K8s) is an open-source system for automating deployment and management.' },
-  { term: 'Deployment', cat: 'Workload', short: 'Declarative updates for pods.', body: 'Provides declarative updates for pods and replica sets.' },
-  { term: 'Service', cat: 'Networking', short: 'Internal load balancer for pods.', body: 'Serves as an internal load balancer for pods.' },
-  { term: 'Route', cat: 'Networking', short: 'Expose services via a public DNS entry.', body: 'OpenShift API object that allows exposing services via public DNS.' },
-  { term: 'Secret', cat: 'Security', short: 'Holds sensitive data in the cluster.', body: 'Holds secret data like passwords and tokens.' },
-  { term: 'Project', cat: 'OpenShift', short: 'Isolated namespace for users.', body: 'Allows a community of users to organize content in isolation.' },
-  { term: 'OpenShift', cat: 'OpenShift', short: 'Hybrid cloud, enterprise Kubernetes platform.', body: 'Red Hat OpenShift is an enterprise Kubernetes platform.' },
-  { term: 'Persistent volume claim', cat: 'Storage', short: 'Request persistent storage.', body: 'Used to request a persistent volume resource.' },
+  {
+    term: 'Pod', cat: 'Kubernetes',
+    short: 'The smallest deployable unit in Kubernetes.',
+    body: 'A pod consists of one or more containers and runs on a worker node. It is the smallest logical unit in Kubernetes.',
+  },
+  {
+    term: 'Node', cat: 'Kubernetes',
+    short: 'A worker machine in the cluster.',
+    body: 'A node is a worker machine in the OpenShift Container Platform cluster. It is either a virtual machine (VM) or a physical machine.',
+  },
+  {
+    term: 'Kubernetes', cat: 'Kubernetes',
+    short: 'Open-source container orchestration platform.',
+    body: 'Kubernetes (also known as K8s) is a portable, extensible, open-source platform for managing containerized workloads and services. It facilitates declarative configuration and automation, with a large, rapidly growing ecosystem. <a href="https://kubernetes.io/" target="_blank" rel="noopener noreferrer">kubernetes.io ↗</a>',
+  },
+  {
+    term: 'Deployment', cat: 'Workload',
+    short: 'Declarative updates for pods and replica sets.',
+    body: '<strong>Deployment</strong> — a Kubernetes-native object that provides declarative updates for pods and replica sets.<br/><br/><strong>DeploymentConfig</strong> — an OpenShift-specific object that defines the template for a pod and manages deploying new images or configuration changes. Uses replication controllers. Predates Kubernetes Deployment objects.',
+  },
+  {
+    term: 'Service', cat: 'Networking',
+    short: 'Internal load balancer for pods.',
+    body: 'A Kubernetes-native API object that serves as an internal load balancer. A service is a named abstraction of a software service (e.g., <code>mysql</code>) consisting of a local port (e.g., <code>3306</code>) that the proxy listens on, and a selector that determines which pods respond to requests.',
+  },
+  {
+    term: 'Route', cat: 'Networking',
+    short: 'Expose services via a public DNS entry.',
+    body: 'An OpenShift-specific API object that allows developers to expose services through an HTTP(S)-aware load balancing and proxy layer via a public DNS entry.',
+  },
+  {
+    term: 'Secret', cat: 'Security',
+    short: 'Holds sensitive data in the cluster.',
+    body: 'A Kubernetes API object that holds secret data of a certain type, such as passwords, tokens, or keys.',
+  },
+  {
+    term: 'Service Account', cat: 'Kubernetes',
+    short: 'Identity for workloads running in the cluster.',
+    body: 'A service account binds together a name (understood by users and peripheral systems), a principal that can be authenticated and authorized, and a set of secrets.',
+  },
+  {
+    term: 'Project', cat: 'OpenShift',
+    short: 'Isolated namespace for a community of users.',
+    body: 'A project allows a community of users to organize and manage their content in isolation from other communities. It is an extension of the Namespace object from Kubernetes.',
+  },
+  {
+    term: 'OpenShift', cat: 'OpenShift',
+    short: 'Hybrid cloud, enterprise Kubernetes platform.',
+    body: 'Red Hat OpenShift is a hybrid cloud, enterprise Kubernetes application platform, trusted by 2,000+ organizations. It includes a container host and runtime, enterprise Kubernetes, validated integrations, an integrated container registry, developer workflows, and easy access to services. <a href="https://www.openshift.com/" target="_blank" rel="noopener noreferrer">openshift.com ↗</a>',
+  },
+  {
+    term: 'OKD', cat: 'OpenShift',
+    short: 'Community distribution of Kubernetes.',
+    body: 'OKD is a distribution of Kubernetes optimized for continuous application development and multi-tenant deployment. It is a sibling distribution to Red Hat OpenShift, adding developer and operations-centric tools on top of Kubernetes. <a href="https://www.okd.io/" target="_blank" rel="noopener noreferrer">okd.io ↗</a>',
+  },
+  {
+    term: 'OpenShift CLI', cat: 'OpenShift',
+    short: 'Command-line interface (oc) for OpenShift.',
+    body: 'The <code>oc</code> tool is the command-line interface for OpenShift 3 and 4. When referencing as a prerequisite, use: <em>Install the OpenShift CLI (oc).</em>',
+  },
+  {
+    term: 'Operator', cat: 'Workload',
+    short: 'Packaged Kubernetes application logic.',
+    body: 'Operators are the preferred method of packaging, deploying, and managing a Kubernetes application in an OpenShift cluster. An Operator takes human operational knowledge and encodes it into software that is packaged and shared with customers.',
+  },
+  {
+    term: 'Image stream', cat: 'Workload',
+    short: 'Manage and update container images.',
+    body: 'Image streams provide a means of creating and updating container images in an ongoing way. They allow you to track changes to images and trigger updates automatically.',
+  },
+  {
+    term: 'Dockerfile', cat: 'Workload',
+    short: 'Build instructions for a Docker image.',
+    body: 'Docker can build images automatically by reading the instructions from a Dockerfile — a text document that contains all the commands you would normally execute manually to build a Docker image.',
+  },
+  {
+    term: 'Persistent volume claim', cat: 'Storage',
+    short: 'Request persistent storage in the cluster.',
+    body: 'Developers can use a persistent volume claim (PVC) to request a persistent volume (PV) resource without having specific knowledge of the underlying storage infrastructure.',
+  },
 ];
 
 const allCats = [...new Set(terms.map(t => t.cat))];
+
+const styles: Record<string, React.CSSProperties> = {
+  wrap: { padding: '1rem 0' },
+  search: {
+    width: '100%', 
+    boxSizing: 'border-box', 
+    marginBottom: '1.25rem',
+    fontSize: '16px', 
+    padding: '12px 16px',   
+    borderRadius: '10px',   
+    border: '1px solid var(--ifm-color-emphasis-300)',
+    background: 'var(--ifm-background-color)',
+    color: 'var(--ifm-font-color-base)', 
+    outline: 'none',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.05)', // Adds a subtle shadow
+  },
+  tags: { 
+    display: 'flex', 
+    flexWrap: 'wrap', 
+    gap: '12px',         /* Increased gap */
+    marginBottom: '1.5rem',
+    marginTop: '1rem',
+    width: '100%'        /* Ensure it takes full width */
+  },
+  grid: { 
+    display: 'grid', 
+    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
+    gap: '20px'       
+  },
+  noResults: { textAlign: 'center', color: 'var(--ifm-color-emphasis-500)', fontSize: 14, padding: '2rem 0', gridColumn: '1/-1' },
+};
 
 export default function Glossary(): JSX.Element {
   const [query, setQuery] = useState('');
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [openTerm, setOpenTerm] = useState<string | null>(null);
 
+  const q = query.trim().toLowerCase();
+
   const filtered = terms.filter(t => {
-    const q = query.toLowerCase();
-    const matchQ = !q || t.term.toLowerCase().includes(q) || t.short.toLowerCase().includes(q);
+    const matchQ = !q || t.term.toLowerCase().includes(q) || t.short.toLowerCase().includes(q) || t.body.toLowerCase().includes(q);
     const matchCat = !activeTag || t.cat === activeTag;
     return matchQ && matchCat;
   });
 
-  // Styles defined inside to ensure they are applied
-  const pillStyle = (active: boolean): React.CSSProperties => ({
-    display: 'inline-block',
-    padding: '8px 16px',
-    margin: '0 8px 8px 0',
+  const tagStyle = (active: boolean): React.CSSProperties => ({
+    fontSize: '13px',
+    fontWeight: 500,
+    padding: '8px 16px',    /* More padding for a better pill shape */
     borderRadius: '20px',
     cursor: 'pointer',
-    fontSize: '13px',
-    fontWeight: 'bold',
-    // FORCE colors so theme can't hide them
-    background: active ? '#444444' : '#eeeeee',
-    color: active ? '#ffffff' : '#444444',
-    border: '1px solid #cccccc',
-    listStyle: 'none',
+    userSelect: 'none',
+    transition: 'all 0.2s ease',
+    display: 'inline-flex', /* Changed to inline-flex */
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: active ? 'none' : '1px solid var(--ifm-color-emphasis-300)',
+    background: active ? '#444' : 'var(--ifm-color-emphasis-100)', 
+    color: active ? '#fff' : 'var(--ifm-color-emphasis-700)',
+    marginRight: '8px',
+    marginBottom: '8px',
+  });
+
+  const cardStyle = (open: boolean): React.CSSProperties => ({
+    background: 'var(--ifm-card-background-color)',
+    border: `1px solid ${open ? 'var(--ifm-color-emphasis-400)' : 'var(--ifm-color-emphasis-200)'}`,
+    borderRadius: 10, padding: '1rem 1.25rem', cursor: 'pointer',
+    transition: 'border-color 0.12s',
   });
 
   return (
-    <div style={{ padding: '1rem 0' }}>
-      
-      {/* Search Input */}
-      <input
-        type="search"
-        placeholder="Search terms..."
-        style={{
-          width: '100%', padding: '12px', marginBottom: '20px',
-          borderRadius: '8px', border: '1px solid #ccc', fontSize: '16px'
-        }}
-        value={query}
-        onChange={e => setQuery(e.target.value)}
-      />
-
-      {/* Categories using a List (ul/li) to force separation */}
-      <ul style={{ 
-        display: 'flex', 
-        flexWrap: 'wrap', 
-        padding: 0, 
-        margin: '0 0 20px 0', 
-        listStyle: 'none' 
-      }}>
-        <li 
-          style={pillStyle(activeTag === null)} 
+    <div style={styles.tags}>
+        <button 
+          style={tagStyle(activeTag === null)} 
           onClick={() => setActiveTag(null)}
         >
           All
-        </li>
+        </button>
         {allCats.map(c => (
-          <li 
-            key={c}
-            style={pillStyle(activeTag === c)} 
+          <button 
+            key={c} 
+            style={tagStyle(activeTag === c)} 
             onClick={() => setActiveTag(c)}
           >
             {c}
-          </li>
+          </button>
         ))}
-      </ul>
+      </div>
 
-      {/* Grid of Cards */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
-        gap: '20px' 
-      }}>
+      <div style={styles.tags}>
+        <span 
+          style={tagStyle(activeTag === null)} 
+          onClick={() => setActiveTag(null)}
+        >
+          All
+        </span>
+        {allCats.map(c => (
+          <span 
+            key={c} 
+            style={tagStyle(activeTag === c)} 
+            onClick={() => setActiveTag(c)}
+          >
+            {c}
+          </span>
+        ))}
+      </div>
+
+      <div style={styles.grid}>
+        {filtered.length === 0 && (
+          <div style={styles.noResults}>No matching terms</div>
+        )}
         {filtered.map(t => {
-          const c = (cats as any)[t.cat];
-          const isOpen = openTerm === t.term;
+          const c = cats[t.cat];
+          const open = openTerm === t.term;
           return (
-            <div 
-              key={t.term} 
-              onClick={() => setOpenTerm(isOpen ? null : t.term)}
-              style={{
-                background: 'var(--ifm-card-background-color, #fff)',
-                border: '1px solid #ddd',
-                padding: '20px',
-                borderRadius: '12px',
-                cursor: 'pointer',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
-              }}
+            <div
+              key={t.term}
+              style={cardStyle(open)}
+              onClick={() => setOpenTerm(open ? null : t.term)}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: c.color, marginRight: 8 }} />
-                  <span style={{ fontWeight: 'bold' }}>{t.term}</span>
-                </div>
-                <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '10px', background: c.bg, color: c.text }}>{t.cat}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: c.color, flexShrink: 0 }} />
+                <span style={{ fontSize: 15, fontWeight: 500 }}>{t.term}</span>
+                <span style={{
+                  marginLeft: 'auto', fontSize: 11, padding: '2px 8px', borderRadius: 99,
+                  background: c.bg, color: c.text, whiteSpace: 'nowrap',
+                }}>{t.cat}</span>
               </div>
-              <p style={{ fontSize: '13px', color: '#666', margin: 0 }}>{t.short}</p>
-              {isOpen && (
-                <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #eee', fontSize: '13px' }}>
-                  {t.body}
-                </div>
+              {!open && (
+                <p style={{ fontSize: 13, color: 'var(--ifm-color-emphasis-600)', margin: '8px 0 0', lineHeight: 1.5 }}>
+                  {t.short}
+                </p>
+              )}
+              {open && (
+                <div style={{
+                  fontSize: 13, color: 'var(--ifm-color-emphasis-700)', marginTop: 10,
+                  borderTop: '1px solid var(--ifm-color-emphasis-200)', paddingTop: 10, lineHeight: 1.65,
+                }} dangerouslySetInnerHTML={{ __html: t.body }} />
               )}
             </div>
           );
