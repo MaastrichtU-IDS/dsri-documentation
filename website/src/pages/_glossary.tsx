@@ -59,7 +59,7 @@ const terms: Term[] = [
     body: 'A Kubernetes API object that holds secret data of a certain type, such as passwords, tokens, or keys.',
   },
   {
-    term: 'Service Account', cat: 'Kubernetes',
+    term: 'Service Account', cat: 'Security',
     short: 'Identity for workloads running in the cluster.',
     body: 'A service account binds together a name (understood by users and peripheral systems), a principal that can be authenticated and authorized, and a set of secrets.',
   },
@@ -110,31 +110,14 @@ const allCats = [...new Set(terms.map(t => t.cat))];
 const styles: Record<string, React.CSSProperties> = {
   wrap: { padding: '1rem 0' },
   search: {
-    width: '100%', 
-    boxSizing: 'border-box', 
-    marginBottom: '1.25rem',
-    fontSize: '16px', 
-    padding: '12px 16px',   
-    borderRadius: '10px',   
+    width: '100%', boxSizing: 'border-box', marginBottom: '1.25rem',
+    fontSize: 15, padding: '10px 14px', borderRadius: 10,
     border: '1px solid var(--ifm-color-emphasis-300)',
     background: 'var(--ifm-background-color)',
-    color: 'var(--ifm-font-color-base)', 
-    outline: 'none',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.05)', // Adds a subtle shadow
+    color: 'var(--ifm-font-color-base)', outline: 'none',
   },
-  tags: { 
-    display: 'flex', 
-    flexWrap: 'wrap', 
-    gap: '12px',         /* Increased gap */
-    marginBottom: '1.5rem',
-    marginTop: '1rem',
-    width: '100%'        /* Ensure it takes full width */
-  },
-  grid: { 
-    display: 'grid', 
-    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
-    gap: '20px'       
-  },
+  tags: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: '1.25rem' },
+  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 },
   noResults: { textAlign: 'center', color: 'var(--ifm-color-emphasis-500)', fontSize: 14, padding: '2rem 0', gridColumn: '1/-1' },
 };
 
@@ -152,21 +135,11 @@ export default function Glossary(): JSX.Element {
   });
 
   const tagStyle = (active: boolean): React.CSSProperties => ({
-    fontSize: '13px',
-    fontWeight: 500,
-    padding: '8px 16px',    /* More padding for a better pill shape */
-    borderRadius: '20px',
-    cursor: 'pointer',
+    fontSize: 12, padding: '4px 12px', borderRadius: 99, cursor: 'pointer',
+    border: '1px solid var(--ifm-color-emphasis-300)',
+    background: active ? 'var(--ifm-color-emphasis-200)' : 'var(--ifm-background-color)',
+    color: active ? 'var(--ifm-font-color-base)' : 'var(--ifm-color-emphasis-600)',
     userSelect: 'none',
-    transition: 'all 0.2s ease',
-    display: 'inline-flex', /* Changed to inline-flex */
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: active ? 'none' : '1px solid var(--ifm-color-emphasis-300)',
-    background: active ? '#444' : 'var(--ifm-color-emphasis-100)', 
-    color: active ? '#fff' : 'var(--ifm-color-emphasis-700)',
-    marginRight: '8px',
-    marginBottom: '8px',
   });
 
   const cardStyle = (open: boolean): React.CSSProperties => ({
@@ -177,39 +150,19 @@ export default function Glossary(): JSX.Element {
   });
 
   return (
-    <div style={styles.tags}>
-        <button 
-          style={tagStyle(activeTag === null)} 
-          onClick={() => setActiveTag(null)}
-        >
-          All
-        </button>
-        {allCats.map(c => (
-          <button 
-            key={c} 
-            style={tagStyle(activeTag === c)} 
-            onClick={() => setActiveTag(c)}
-          >
-            {c}
-          </button>
-        ))}
-      </div>
+    <div style={styles.wrap}>
+      <input
+        style={styles.search}
+        type="search"
+        placeholder="Search terms..."
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+      />
 
       <div style={styles.tags}>
-        <span 
-          style={tagStyle(activeTag === null)} 
-          onClick={() => setActiveTag(null)}
-        >
-          All
-        </span>
+        <span style={tagStyle(activeTag === null)} onClick={() => setActiveTag(null)}>All</span>
         {allCats.map(c => (
-          <span 
-            key={c} 
-            style={tagStyle(activeTag === c)} 
-            onClick={() => setActiveTag(c)}
-          >
-            {c}
-          </span>
+          <span key={c} style={tagStyle(activeTag === c)} onClick={() => setActiveTag(c)}>{c}</span>
         ))}
       </div>
 

@@ -58,6 +58,40 @@ html[data-theme='dark'] .header-github-link:before {
   height: 50px; /* Adjust as needed */
 }
 
+.glossary-tag-container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin: 20px 0 !important;
+  padding: 0 !important;
+}
+
+.glossary-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 8px 18px !important;
+  border-radius: 20px !important;
+  border: 1px solid #ccc !important;
+  background-color: #f0f0f0 !important;
+  color: #444 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  margin-right: 5px !important;
+  margin-bottom: 5px !important;
+}
+
+.glossary-pill-active {
+  background-color: #444 !important;
+  color: #fff !important;
+  border-color: #444 !important;
+}
+
+.glossary-pill, .glossary-pill span {
+  white-space: nowrap !important;
+}
+
 .footer {
   background-color: #f2f2f2;
   padding: 40px 60px;
