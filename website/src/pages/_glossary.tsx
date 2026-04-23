@@ -41,7 +41,7 @@ const terms: Term[] = [
   {
     term: 'Deployment', cat: 'Workload',
     short: 'Declarative updates for pods and replica sets.',
-    body: '<strong>Deployment</strong> — a Kubernetes-native object that provides declarative updates for pods and replica sets.<br/><br/><strong>DeploymentConfig</strong> — an OpenShift-specific object that defines the template for a pod and manages deploying new images or configuration changes. Uses replication controllers. Predates Kubernetes Deployment objects.',
+    body: '<strong>Deployment</strong> - a Kubernetes-native object that provides declarative updates for pods and replica sets.<br/><br/><strong>DeploymentConfig</strong> - an OpenShift-specific object that defines the template for a pod and manages deploying new images or configuration changes. Uses replication controllers. Predates Kubernetes Deployment objects.',
   },
   {
     term: 'Service', cat: 'Networking',
@@ -134,14 +134,6 @@ export default function Glossary(): JSX.Element {
     return matchQ && matchCat;
   });
 
-  const tagStyle = (active: boolean): React.CSSProperties => ({
-    fontSize: 12, padding: '4px 12px', borderRadius: 99, cursor: 'pointer',
-    border: '1px solid var(--ifm-color-emphasis-300)',
-    background: active ? 'var(--ifm-color-emphasis-200)' : 'var(--ifm-background-color)',
-    color: active ? 'var(--ifm-font-color-base)' : 'var(--ifm-color-emphasis-600)',
-    userSelect: 'none',
-  });
-
   const cardStyle = (open: boolean): React.CSSProperties => ({
     background: 'var(--ifm-card-background-color)',
     border: `1px solid ${open ? 'var(--ifm-color-emphasis-400)' : 'var(--ifm-color-emphasis-200)'}`,
@@ -159,10 +151,17 @@ export default function Glossary(): JSX.Element {
         onChange={e => setQuery(e.target.value)}
       />
 
-      <div style={styles.tags}>
-        <span style={tagStyle(activeTag === null)} onClick={() => setActiveTag(null)}>All</span>
+      <div className="glossary-tag-container">
+        <span
+          className={`glossary-pill ${activeTag === null ? 'glossary-pill-active' : ''}`}
+          onClick={() => setActiveTag(null)}
+        >All</span>
         {allCats.map(c => (
-          <span key={c} style={tagStyle(activeTag === c)} onClick={() => setActiveTag(c)}>{c}</span>
+          <span
+            key={c}
+            className={`glossary-pill ${activeTag === c ? 'glossary-pill-active' : ''}`}
+            onClick={() => setActiveTag(c)}
+          >{c}</span>
         ))}
       </div>
 
