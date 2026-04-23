@@ -1,0 +1,207 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: webdav
+  annotations:
+    openshift.io/display-name: WebDAV Server for existing storage
+    description: |-
+      Deploy a WebDAV server on your persistent volume. This provides a container that offers the WebDAV protocol to upload and download files to your DSRI persistent volume.
+
+      The WebDAV server is based on nginx with the DAV module and uses HTTP Basic Authentication.
+
+      🔑 You must provide a username and password for authentication
+
+      📂 The server exposes all files from the mounted persistent volume at /data
+
+      🔗 You can access the WebDAV server using:
+      - Any WebDAV client (Cyberduck, WinSCP, etc.)
+      - Mount as network drive on Windows/Mac/Linux
+      - Command line tools like curl or cadaver
+
+      Example mount on Linux/Mac:
+      mount -t davfs https://your-route-url /mount/point
+
+      Example with curl:
+      curl -u username:password -T file.txt https://your-route-url/file.txt
+
+      Visit https://github.com/MaastrichtU-IDS/dsri-documentation for more details
+    iconClass: icon-load-balancer
+    tags: webdav,storage,file-server,dav
+    openshift.io/provider-display-name: University Library, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-utilities
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: webdav
+message: |-
+  The WebDAV server has been deployed successfully!
+
+  Access your WebDAV server at the route URL provided.
+  Use your WebDAV client with the credentials you specified.
+
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be without spaces (use -), and unique in the project.
+  value: webdav
+  required: true
+- name: WEBDAV_USERNAME
+  displayName: WebDAV username
+  description: Username for WebDAV authentication
+  value: webdav
+  required: true
+- name: WEBDAV_PASSWORD
+  displayName: WebDAV password
+  description: Password for WebDAV authentication (use a strong password)
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: Application image
+  description: WebDAV server image based on nginx with DAV module.
+  value: ghcr.io/maastrichtu-library/webdav:latest
+  required: true
+- name: STORAGE_NAME
+  displayName: Storage name
+  description: Name of the Persistent Volume Claim that will be exposed by the WebDAV server.
+  value: storage-name
+  required: true
+- name: STORAGE_FOLDER
+  displayName: Storage folder
+  description: Path to the folder used to store your data in the Persistent Volume Claim (leave empty to use the root folder of the storage)
+  required: false
+
+objects:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: ${APPLICATION_NAME}
+      template: webdav
+  stringData:
+    webdav-username: "${WEBDAV_USERNAME}"
+    webdav-password: "${WEBDAV_PASSWORD}"
+
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: webdav
+  spec:
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      importPolicy:
+        scheduled: false
+    lookupPolicy:
+      local: true
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    replicas: 1
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${STORAGE_NAME}"
+        containers:
+        - name: webdav-container
+          image: ${APPLICATION_IMAGE}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 4Gi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          volumeMounts:
+          - name: data
+            mountPath: "/data"
+            subPath: "${STORAGE_FOLDER}"
+          env:
+          - name: WEBDAV_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: webdav-username
+                name: "${APPLICATION_NAME}"
+          - name: WEBDAV_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: webdav-password
+                name: "${APPLICATION_NAME}"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+        automountServiceAccountToken: false
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 80-tcp
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 80-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
