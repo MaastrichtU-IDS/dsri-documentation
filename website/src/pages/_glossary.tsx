@@ -13,6 +13,15 @@ interface CatStyle {
   text: string;
 }
 
+const cats: Record<string, CatStyle> = {
+  Kubernetes: { color: '#378ADD', bg: '#E6F1FB', text: '#0C447C' },
+  OpenShift:  { color: '#D85A30', bg: '#FAECE7', text: '#712B13' },
+  Storage:    { color: '#1D9E75', bg: '#E1F5EE', text: '#085041' },
+  Workload:   { color: '#7F77DD', bg: '#EEEDFE', text: '#3C3489' },
+  Networking: { color: '#BA7517', bg: '#FAEEDA', text: '#633806' },
+  Security:   { color: '#D4537E', bg: '#FBEAF0', text: '#72243E' },
+  Compute:    { color: '#888780', bg: '#F1EFE8', text: '#2C2C2A' },
+};
 const terms: Term[] = [
 {
     term: 'Pod', cat: 'Kubernetes',
