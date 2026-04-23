@@ -120,15 +120,15 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'var(--ifm-background-color)',
     color: 'var(--ifm-font-color-base)', 
     outline: 'none',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
   },
+  // FIX: Added flexbox and gap back to container
   tags: { 
-    display: 'block',     
-    width: '100%',
-    marginBottom: '1.5rem',
-    marginTop: '1rem',
+    display: 'flex', 
+    flexWrap: 'wrap', 
+    gap: '10px', 
+    marginBottom: '2rem',
+    marginTop: '1rem' 
   },
-
   grid: { 
     display: 'grid', 
     gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
@@ -151,28 +151,20 @@ export default function Glossary(): JSX.Element {
   });
 
   const tagStyle = (active: boolean): React.CSSProperties => ({
-    // Text styling
     fontSize: '13px',
     fontWeight: 600,
-    color: active ? '#fff' : '#444',
-    
-    // Pill Shape
     padding: '8px 16px',
     borderRadius: '20px',
     cursor: 'pointer',
-    userSelect: 'none',
-    
-    // Background & Border (Bypassing theme defaults)
+    // FIX: Added display and forced margin to prevent merging
+    display: 'inline-flex',
+    alignItems: 'center',
+    border: '1px solid #ddd',
     background: active ? '#444' : '#f0f0f0', 
-    border: active ? '1px solid #444' : '1px solid #ddd',
-    
-    // FORCING separation
-    display: 'inline-block',
+    color: active ? '#fff' : '#444',
     marginRight: '10px',
     marginBottom: '10px',
-    lineHeight: '1',
-    appearance: 'none', // Removes browser button styling
-    WebkitAppearance: 'none',
+    transition: 'all 0.2s ease',
   });
 
   const cardStyle = (open: boolean): React.CSSProperties => ({
@@ -184,7 +176,6 @@ export default function Glossary(): JSX.Element {
 
   return (
     <div style={styles.wrap}>
-      {/* 1. Search Bar */}
       <input
         style={styles.search}
         type="search"
@@ -203,8 +194,8 @@ export default function Glossary(): JSX.Element {
         </button>
         {allCats.map(c => (
           <button 
+            key={c}
             type="button"
-            key={c} 
             style={tagStyle(activeTag === c)} 
             onClick={() => setActiveTag(c)}
           >
@@ -213,7 +204,6 @@ export default function Glossary(): JSX.Element {
         ))}
       </div>
 
-      {/* 3. The Grid of Cards */}
       <div style={styles.grid}>
         {filtered.length === 0 && (
           <div style={styles.noResults}>No matching terms</div>
