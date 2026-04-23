@@ -110,14 +110,29 @@ const allCats = [...new Set(terms.map(t => t.cat))];
 const styles: Record<string, React.CSSProperties> = {
   wrap: { padding: '1rem 0' },
   search: {
-    width: '100%', boxSizing: 'border-box', marginBottom: '1.25rem',
-    fontSize: 15, padding: '10px 14px', borderRadius: 10,
+    width: '100%', 
+    boxSizing: 'border-box', 
+    marginBottom: '1.25rem',
+    fontSize: '16px', 
+    padding: '12px 16px',   
+    borderRadius: '10px',   
     border: '1px solid var(--ifm-color-emphasis-300)',
     background: 'var(--ifm-background-color)',
-    color: 'var(--ifm-font-color-base)', outline: 'none',
+    color: 'var(--ifm-font-color-base)', 
+    outline: 'none',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.05)', // Adds a subtle shadow
   },
-  tags: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: '1.25rem' },
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 },
+  tags: { 
+    display: 'flex', 
+    flexWrap: 'wrap', 
+    gap: '12px',      
+    marginBottom: '1.5rem' 
+  },
+  grid: { 
+    display: 'grid', 
+    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
+    gap: '20px'       
+  },
   noResults: { textAlign: 'center', color: 'var(--ifm-color-emphasis-500)', fontSize: 14, padding: '2rem 0', gridColumn: '1/-1' },
 };
 
@@ -135,12 +150,17 @@ export default function Glossary(): JSX.Element {
   });
 
   const tagStyle = (active: boolean): React.CSSProperties => ({
-    fontSize: 12, padding: '4px 12px', borderRadius: 99, cursor: 'pointer',
-    border: '1px solid var(--ifm-color-emphasis-300)',
-    background: active ? 'var(--ifm-color-emphasis-200)' : 'var(--ifm-background-color)',
-    color: active ? 'var(--ifm-font-color-base)' : 'var(--ifm-color-emphasis-600)',
+    fontSize: '13px',
+    fontWeight: 500,
+    padding: '6px 16px',     // More padding makes them look like pills
+    borderRadius: '20px',    // This makes them rounded
+    cursor: 'pointer',
     userSelect: 'none',
-    tags: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: '1.25rem' },
+    border: '1px solid var(--ifm-color-emphasis-300)',
+    // If active, give it a background color. If not, keep it empty.
+    background: active ? 'var(--ifm-color-primary-lightest)' : 'var(--ifm-background-color)',
+    color: active ? 'var(--ifm-color-primary-darker)' : 'var(--ifm-color-emphasis-700)',
+    transition: 'all 0.2s ease',
   });
 
   const cardStyle = (open: boolean): React.CSSProperties => ({
