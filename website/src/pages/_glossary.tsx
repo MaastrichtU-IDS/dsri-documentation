@@ -104,8 +104,7 @@ const terms: Term[] = [
     body: 'Developers can use a persistent volume claim (PVC) to request a persistent volume (PV) resource without having specific knowledge of the underlying storage infrastructure.',
   },
 ];
-
-const allCats = [...new Set(terms.map(t => t.cat))];
+const allCats = ['Kubernetes', 'Workload', 'Networking', 'Security', 'OpenShift', 'Storage'];
 
 const styles: Record<string, React.CSSProperties> = {
   wrap: { padding: '1rem 0' },
@@ -138,23 +137,6 @@ export default function Glossary(): JSX.Element {
     border: `1px solid ${open ? 'var(--ifm-color-emphasis-400)' : 'var(--ifm-color-emphasis-200)'}`,
     borderRadius: 10, padding: '1rem 1.25rem', cursor: 'pointer',
     transition: 'border-color 0.12s',
-  });
-  const pillStyle = (active: boolean): React.CSSProperties => ({
-    display: 'inline-flex',
-    alignItems: 'center',
-    padding: '6px 16px',
-    borderRadius: 20,
-    border: `1.5px solid ${active ? '#444' : '#aaa'}`,
-    backgroundColor: active ? '#444' : '#ffffff',
-    color: active ? '#ffffff' : '#444444',
-    fontSize: 13,
-    fontWeight: 500,
-    cursor: 'pointer',
-    whiteSpace: 'nowrap',
-    margin: 0,
-    textDecoration: 'none',
-    userSelect: 'none' as const,
-    flexShrink: 0,
   });
 
   return (
