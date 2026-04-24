@@ -130,7 +130,6 @@ objects:
       app: "${APPLICATION_NAME}"
       name: "${APPLICATION_NAME}"
   spec:
-    runtimeClassName: selinux
     replicas: 1
     selector:
       matchLabels:
@@ -144,6 +143,7 @@ objects:
           app: "${APPLICATION_NAME}"
           deployment: "${APPLICATION_NAME}"
       spec:
+        runtimeClassName: selinux
         containers:
         - env:
           - name: WHISPER_TOKEN
