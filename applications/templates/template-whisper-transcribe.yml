@@ -41,7 +41,7 @@ parameters:
 - name: IMAGE_NAME
   displayName: Docker image used
   required: true
-  value: ghcr.io/maastrichtu-library/whisper-transcribe-dev:latest
+  value: ghcr.io/maastrichtu-library/whisper-transcribe:latest
 - name: STORAGE_SIZE
   description: Size of the storage allocated to the persistent storage in `/persistent`.
   displayName: Storage size
