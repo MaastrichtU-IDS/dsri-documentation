@@ -126,6 +126,7 @@ objects:
   metadata:
     annotations:
       io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+    name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
       name: "${APPLICATION_NAME}"
