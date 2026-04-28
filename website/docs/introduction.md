@@ -6,7 +6,9 @@ slug: /
 
 The **DSRI** (*Data Science Research Infrastructure*) is a cluster of servers for deploying workspaces and applications for data science. Workspaces run in Docker containers orchestrated by Kubernetes and are accessible via an auto-generated URL.
 
-### ✅ What can be done on the DSRI
+## Using the DSRI
+
+### ✅ What can be done
 
 * Gain access to more computing resources (memory and CPUs), which enables you to load larger amount of data, or use more threads for parallelized tasks
 * Run jobs that take a long time to complete
@@ -77,7 +79,7 @@ If you are working at Maastricht University, you can **[request an account](http
 
 :::
 
-### Overview of the DSRI architecture
+## Overview of the DSRI architecture
 
 <img src="/img/dsri_simplified_overview.png" alt="DSRI in a nutshell " style={{maxWidth: '100%', maxHeight: '100%'}} />
 
