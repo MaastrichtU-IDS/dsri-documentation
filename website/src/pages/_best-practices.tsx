@@ -43,17 +43,17 @@ const tips: Tip[] = [
   {
     id: 3, cat: 'general',
     title: 'Use multiple projects for different research tracks',
-    body: 'You can create multiple projects on the DSRI — one per research topic, dataset, or course. This keeps things organized and avoids mixing unrelated workloads.',
+    body: 'You can create multiple projects on the DSRI, one per research topic, dataset, or course. This keeps things organized and avoids mixing unrelated workloads.',
   },
   {
     id: 4, cat: 'general',
     title: 'Being prepared makes your research more reproducible',
-    body: 'Following these best practices is not just about protecting yourself from data loss — it also makes your research more reproducible and easier to hand over to colleagues or revisit later.',
+    body: 'Following these best practices is not just about protecting yourself from data loss, it also makes your research more reproducible and easier to hand over to colleagues or revisit later.',
   },
   {
     id: 5, cat: 'configuration',
     title: 'Make your environment setup reproducible',
-    body: 'If you spend hours or even days configuring your workspace, make sure that setup can be reproduced. Use shell scripts or similar tools to capture your setup steps — not just one-off terminal commands you will forget.',
+    body: 'If you spend hours or even days configuring your workspace, make sure that setup can be reproduced. Use shell scripts or similar tools to capture your setup steps, not just one-off terminal commands you will forget.',
   },
   {
     id: 6, cat: 'configuration',
@@ -63,25 +63,30 @@ const tips: Tip[] = [
   {
     id: 7, cat: 'code',
     title: 'Track your code with git',
-    body: <>Use <strong>git</strong> to track your code development. Keep your workflow as simple as possible and agree on conventions with your team. Do not be intimidated by git's power — start with the basics (commit, push, pull) and build from there.</>,
+    body: "Use git to track your code development. Keep your workflow as simple as possible and agree on conventions with your team. Do not be intimidated by git's power, start with the basics and build from there.",
   },
   {
     id: 8, cat: 'storage',
     title: 'Always use a persistent volume',
-    body: <>When in doubt, add a <a href="/docs/openshift-storage">persistent volume</a> to your application. Data stored on a persistent volume survives pod restarts — data stored elsewhere does not.</>,
+    body: <>When in doubt, add a <a href="/docs/openshift-storage">persistent volume</a> to your application. Data stored on a persistent volume survives pod restarts, data stored elsewhere does not.</>,
   },
   {
     id: 9, cat: 'storage',
     title: 'Make sure you can restore your data',
-    body: 'Even with a persistent volume, things can go wrong. Make sure your data exists in at least one other location outside of DSRI so you can recover from unexpected events.',
+    body: 'Make sure that you can restore the data from elsewhere if something should go wrong.',
   },
   {
-    id: 10, cat: 'data',
-    title: 'Never rely on DSRI as your only copy of data',
-    body: 'DSRI is a computing infrastructure, not a backup service. Always keep a safe copy of your data outside the DSRI — on your local machine, university storage, or a trusted repository.',
+    id: 10, cat: 'storage',
+    title: 'Request only the storage size you actually need',
+    body: 'Request only the storage size you actually need. You can always increase a PVC later, but the space is shared with other users.',
   },
   {
     id: 11, cat: 'data',
+    title: 'Never rely on DSRI as your only copy of data',
+    body: 'DSRI is a computing infrastructure, not a backup service. Always keep a safe copy of your data outside the DSRI, on your local machine, university storage, or a trusted repository.',
+  },
+  {
+    id: 12, cat: 'data',
     title: 'Handle sensitive data responsibly',
     body: 'Sensitive or personal data must be handled in accordance with UM data management policies. If you are unsure whether your data can be processed on the DSRI, contact us before uploading it.',
   },
