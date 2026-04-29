@@ -99,7 +99,6 @@ const faqs: FaqItem[] = [
         <li style={{ marginBottom: 4 }}><strong>DSRI</strong> is built on Kubernetes and designed for interactive workspaces and services (JupyterLab, RStudio, VSCode, databases). Best for exploratory data science and long-running services.</li>
         <li><strong>SLURM</strong> is a job scheduler for HPC batch computing. Best for highly parallelized computations that need to run across many nodes.</li>
       </ul>
-      <p style={{ margin: 0 }}>In short: use DSRI for interactive workspaces, use SLURM for large-scale batch computing.</p>
     </>,
   },
 ];
