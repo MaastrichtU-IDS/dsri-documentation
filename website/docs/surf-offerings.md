@@ -8,7 +8,7 @@ title: SURF's Offerings
 SURF is the ICT cooperative for Dutch education and research institutions. They provide high-performance computing (HPC) and storage infrastructure essential for cutting-edge research.
 
 :::info Need help choosing the right service?
-If you are unsure which solution fits your research or need help with resource estimation, contact the **RCS** team for a consultation at [rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl).
+If you are unsure which solution fits your research or need help with resource estimation, contact the [RCS](mailto:rcs-ub@maastrichtuniversity.nl) team for a consultation.
 :::
 
 ### What is a cluster computer?
@@ -31,9 +31,7 @@ Spider is a versatile DP platform aimed at processing large structured data sets
 SURF Research Cloud is a service to facilitate scientists’ collaborative work. The central idea in SRC is collaborative workspace. A workspcae translates directly to a "Virtual Machine". 
 These hosted workspaces aka virtual machines can be used for conducting research and development individually or together with your team/project members. 
 
----
-
-### Research Data Storage Services
+#### 4.Research Data Storage Services
 
 SURF provides several storage solutions depending on your data's lifecycle:
 
@@ -55,7 +53,7 @@ The RCS team assists researchers with navigating these services:
 3.  **Use Case Analysis:** We assess which specific SURF service (Snellius, Spider, or SRC) is the most efficient fit for your code and data.
 
 **Contact us:**  
-For any questions or to start your application, email us at: **[rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl)**
+For any questions, email us at: **[rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl)**
 
 ---
 
