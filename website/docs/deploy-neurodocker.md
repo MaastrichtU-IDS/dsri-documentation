@@ -10,7 +10,7 @@ We provide specialized environments on the DSRI optimized for neuroimaging analy
 
 Please note that these specialized neuroimaging templates are **not activated by default** in the DSRI catalog.
 
-If you require access to the **Integrated Ubuntu fMRI Workstation**, **Freesurfer**, **FSL**, **ANTs** or **HALFpipe** images, please contact the **[RCS]**(mailto:rcs-ub@maastrichtuniversity.nl) team, to have them enabled for you.
+If you require access to the **Integrated Ubuntu fMRI Workstation**, **Freesurfer**, **FSL**, **ANTs** or **HALFpipe** images, please contact the [RCS](mailto:rcs-ub@maastrichtuniversity.nl) team, to have them enabled for you.
 
 :::
 
