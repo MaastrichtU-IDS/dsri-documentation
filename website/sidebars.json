@@ -62,7 +62,6 @@
         "deploy-database",
         "deploy-matlab",
         "deploy-jupyterhub",
-        "deploy-halfpipe",
         "dask-cluster",
         "mpi-jobs",
         "neuroscience",
