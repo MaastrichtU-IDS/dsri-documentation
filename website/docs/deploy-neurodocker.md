@@ -10,7 +10,7 @@ We provide specialized environments on the DSRI optimized for neuroimaging analy
 
 Please note that these specialized neuroimaging templates are **not activated by default** in the DSRI catalog.
 
-If you require access to the **Integrated Ubuntu fMRI Workstation**, **Freesurfer**, **FSL**, **ANTs** or **HALFpipe** images, please contact the **[RCS](mailto:rcs-ub@maastrichtuniversity.nl)team**, to have them enabled for you.
+If you require access to the **Integrated Ubuntu fMRI Workstation**, **Freesurfer**, **FSL**, **ANTs** or **HALFpipe** images, please contact the **[RCS]**(mailto:rcs-ub@maastrichtuniversity.nl) team, to have them enabled for you.
 
 :::
 
@@ -21,6 +21,9 @@ A complete **Ubuntu 22.04 LTS** desktop environment pre-loaded with FSL, ANTs, a
 - **FSL** 6.0.7 - Full suite including FSLeyes for visualization
 - **ANTs** 2.6.4 - Advanced normalization tools
 - **JupyterLab** - Pre-installed and accessible via a desktop icon
+
+### Firefox in VNC Desktop with the fMRI tools
+Firefox inside the Ubuntu VNC environment is configured with sandboxing disabled for compatibility with DSRI's security model. You may see a security warning in the browser, this can be safely ignored as your pod is already isolated at the Kubernetes level.
 
 ## Standalone Workspaces
 For workflows that don't require a full desktop, we provide lightweight JupyterLab environments:
@@ -37,16 +40,8 @@ Standalone FSL environment for command-line workflows.
 Standalone ANTs environment optimized for registration and segmentation.
 - **Version:** 2.6.4
 
-## HALFpipe
-A **Ubuntu 22.04 LTS** workspace with an LXDE desktop accessible in your browser, co-deployed with HALFpipe for fMRI preprocessing pipelines. HALFpipe is CLI only — connect via `oc exec` to run it (see Technical Configuration below).
-- **Tested version:** 1.3.2 (other versions can be specified at instantiation)
-- **Note:** CLI-only tool. Search for `Ubuntu with desktop interface and HALFPipe` in the template catalog.
+### Technical Configuration:
 
-## Technical Configuration:
-
-### JupyterLab-based Environments
-
-#### Data Persistence
 When instantiating the template you can provide a few parameters similar to the standard JupyterLab, such as:
 
 * **Password** to access the notebook
@@ -57,9 +52,12 @@ The DSRI will automatically create a persistent volume to store data you will pu
 
 You can also link your git repository to the project for automatic deployment see [using git in JupyterLab](https://dsri.maastrichtuniversity.nl/docs/deploy-jupyter#-use-git-in-jupyterlab)
 
-### HALFpipe
+## HALFpipe
+A **Ubuntu 22.04 LTS** workspace with an LXDE desktop accessible in your browser, co-deployed with HALFpipe for fMRI preprocessing pipelines. HALFpipe is CLI only — connect via `oc exec` to run it (see Technical Configuration below).
+- **Tested version:** 1.3.2 (other versions can be specified at instantiation)
+- **Note:** CLI-only tool. Search for `Ubuntu with desktop interface and HALFPipe` in the template catalog.
 
-#### Connecting to the HALFpipe pod
+### Connecting to the HALFpipe pod
 After the pods are deployed, get the pod name first:
 
 ```bash
@@ -73,10 +71,7 @@ oc exec -it <pod name> -- bash
 halfpipe
 ```
 
-#### Data Persistence
+### Data Persistence
 The HALFpipe pod saves data persistently in `/home/fmriprep/data`. Make sure to select this directory when starting HALFpipe. The co-deployed Ubuntu workspace uses the same Persistent Volume Claim (PVC) via the `root/persistent` directory.
 
-### Firefox in VNC Desktop with the fMRI tools
-
-Firefox inside the Ubuntu VNC environment is configured with sandboxing disabled for compatibility with DSRI's security model. You may see a security warning in the browser, this can be safely ignored as your pod is already isolated at the Kubernetes level.
 
