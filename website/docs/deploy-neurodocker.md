@@ -10,7 +10,7 @@ We provide specialized environments on the DSRI optimized for neuroimaging analy
 
 Please note that these specialized neuroimaging templates are **not activated by default** in the DSRI catalog.
 
-If you require access to the **Integrated Ubuntu fMRI Workstation**, **Freesurfer**, **FSL**, **ANTs** or **HALFpipe** images, please contact the **RCS** team, to have them enabled for you, at [rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl).
+If you require access to the **Integrated Ubuntu fMRI Workstation**, **Freesurfer**, **FSL**, **ANTs** or **HALFpipe** images, please contact the **[RCS](mailto:rcs-ub@maastrichtuniversity.nl)team**, to have them enabled for you.
 
 :::
 
@@ -37,7 +37,7 @@ Standalone FSL environment for command-line workflows.
 Standalone ANTs environment optimized for registration and segmentation.
 - **Version:** 2.6.4
 
-### HALFpipe
+## HALFpipe
 A **Ubuntu 22.04 LTS** workspace with an LXDE desktop accessible in your browser, co-deployed with HALFpipe for fMRI preprocessing pipelines. HALFpipe is CLI only — connect via `oc exec` to run it (see Technical Configuration below).
 - **Tested version:** 1.3.2 (other versions can be specified at instantiation)
 - **Note:** CLI-only tool. Search for `Ubuntu with desktop interface and HALFPipe` in the template catalog.
@@ -74,7 +74,7 @@ halfpipe
 ```
 
 #### Data Persistence
-The HALFpipe pod saves data persistently in `/home/fmriprep/data` — make sure to select this directory when starting HALFpipe. The co-deployed Ubuntu workspace uses the same Persistent Volume Claim (PVC) via the `root/persistent` directory.
+The HALFpipe pod saves data persistently in `/home/fmriprep/data`. Make sure to select this directory when starting HALFpipe. The co-deployed Ubuntu workspace uses the same Persistent Volume Claim (PVC) via the `root/persistent` directory.
 
 ### Firefox in VNC Desktop with the fMRI tools
 
