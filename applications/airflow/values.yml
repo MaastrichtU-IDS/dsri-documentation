@@ -180,6 +180,9 @@ postgresql:
   enabled: true
   auth:
     postgresPassword: postgres
+    username: postgres
+    password: postgres
+    database: postgres
 
 # Airflow database config
 data:
