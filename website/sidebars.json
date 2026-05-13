@@ -109,7 +109,8 @@
           "items": [
             "workflows-introduction",
             "workflows-github-actions",
-            "workflows-nextflow"
+            "workflows-nextflow",
+            "workflows-gitlab-runner"
           ]
         }
       ]
