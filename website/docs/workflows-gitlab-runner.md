@@ -50,14 +50,14 @@ Make sure you are in the correct project:
 oc project my-project
 ```
 
-### Step 1 — Create the token secret
+### 1. Create the token secret
 
 ```bash
 oc create secret generic gitlab-runner-secret \
     --from-literal=runner-token=<your-glrt-token>
 ```
 
-### Step 2 — Create the runner configuration
+### 2. Create the runner configuration
 
 Create a file called `config.toml`:
 
@@ -78,7 +78,7 @@ Create a ConfigMap from it:
 oc create configmap custom-config-toml --from-file config.toml=config.toml
 ```
 
-### Step 3 — Create the GitLab Runner resource
+### 3. Create the GitLab Runner resource
 
 Create a file called `gitlab-runner.yaml`:
 
@@ -101,7 +101,7 @@ Apply it:
 oc create -f gitlab-runner.yaml
 ```
 
-### Step 4 — Verify the deployment
+### 4. Verify the deployment
 
 ```bash
 oc get pods

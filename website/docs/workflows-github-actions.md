@@ -5,7 +5,7 @@ title: Deploy GitHub Runners
 
 Deploy a GitHub Actions runner on the DSRI to run your GitHub Actions workflows with more resources than GitHub-hosted runners, which are limited to 7GB RAM, 1 CPU and 6 hours per job.
 
-## Why use a DSRI runner?
+## Why use a GitHub runner?
 
 - Run larger workloads with more CPU, memory and no time restrictions
 - A step can be any Bash command, or a reusable Action from the [GitHub Marketplace](https://github.com/marketplace/)
@@ -121,7 +121,7 @@ oc get pods
 helm get manifest actions-runner | oc get -f -
 ```
 
-Then confirm the runners registered on GitHub by going to your organization's Settings → **Actions** → **Runners**. You should see 3 runners listed with status **Idle**.
+Then confirm the runners registered on GitHub by going to your organization's **Settings** → **Actions** → **Runners**. You should see 3 runners listed with status **Idle**.
 
 > See [all available parameters](https://github.com/redhat-actions/openshift-actions-runner-chart/blob/main/values.yaml) for further customization.
 
