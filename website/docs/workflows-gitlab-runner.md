@@ -145,8 +145,6 @@ oc delete configmap custom-config-toml
 oc delete secret gitlab-runner-secret
 ```
 
-To uninstall the operator, go to **Operators → Installed Operators** in the DSRI web console, find the GitLab Runner operator and click **Uninstall**.
-
 ## See also
 
 - GitLab Runner operator documentation: https://docs.gitlab.com/runner/install/operator.html
