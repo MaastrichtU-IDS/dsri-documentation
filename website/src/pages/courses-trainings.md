@@ -6,7 +6,7 @@ hide_table_of_contents: true
 
 # 🧑‍🏫 Courses
  
-If you are an **UM employee** and wish to use the DSRI as part of a course, our team can help you set up an environment for your course.
+If you are an **UM employee** and wish to use the DSRI as part of a course, our team can help you set up an environment for your course. To ensure timely setup, please submit course requests at least **one week** before the course start date.
 
 ## Submit a Course Request
 
