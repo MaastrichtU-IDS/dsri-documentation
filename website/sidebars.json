@@ -3,7 +3,7 @@
     {
       "type": "category",
       "label": "Quickstart Tips",
-      "items": ["faq", "best-practices", "openshift-commands", "known-issues"]
+      "items": ["faq", "best-practices", "openshift-commands", "guide-known-issues"]
     },
     {
       "type": "category",
