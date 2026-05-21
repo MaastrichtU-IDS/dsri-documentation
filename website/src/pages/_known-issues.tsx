@@ -75,7 +75,7 @@ const issues: Issue[] = [
     fix: <>
       <p style={{ margin: '0 0 8px' }}>This happens when you are not using persistent storage. Make sure your application has a persistent volume attached.</p>
       <img src="/img/persistent_storage.png" alt="Persistent storage" style={{ maxWidth: '100%', borderRadius: 6, border: '1px solid var(--ifm-color-emphasis-200)' }} />
-      <p style={{ margin: '8px 0 0' }}>Contact the DSRI team to request persistent storage if you do not have one yet.</p>
+      <p style={{ margin: '8px 0 0' }}>Contact the RCS team to request persistent storage if you do not have one yet.</p>
     </>,
   },
   {
@@ -190,7 +190,7 @@ const issues: Issue[] = [
     id: 9, cat: 'gpu',
     title: 'GPU quota reached',
     symptom: 'You cannot start a GPU-enabled pod and see a quota error, or your GPU booking is not reflected in your pod.',
-    fix: 'GPU resources are shared and limited. If you have reached your quota, contact the DSRI team to discuss your needs. Make sure to release GPU resources when you are not actively using them.',
+    fix: 'GPU resources are shared and limited. If you have reached your quota, contact the RCS team to discuss your needs. Make sure to release GPU resources when you are not actively using them.',
   },
 ];
 
@@ -215,7 +215,7 @@ export default function KnownIssues(): JSX.Element {
   return (
     <div style={{ maxWidth: 780, paddingBottom: '2rem' }}>
       <p style={{ fontSize: 14, color: 'var(--ifm-color-emphasis-700)', marginBottom: '1.25rem', lineHeight: 1.6 }}>
-        A list of known issues and how to resolve them. Use the search or category filter to find what you need. If your issue is not listed here, <a href="/contact">contact the DSRI team</a>.
+        A list of known issues and how to resolve them. Use the search or category filter to find what you need. If your issue is not listed here, <a href="/contact">contact the RCS team</a>.
       </p>
 
       {/* Search */}
