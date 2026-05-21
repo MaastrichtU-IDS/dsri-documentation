@@ -3,7 +3,7 @@
     {
       "type": "category",
       "label": "Quickstart Tips",
-      "items": ["faq", "best-practices", "openshift-commands"]
+      "items": ["faq", "best-practices", "openshift-commands", "guide-known-issues"]
     },
     {
       "type": "category",
@@ -89,7 +89,6 @@
       "label": "Advanced Topics",
       "items": [
         "access-um-servers",
-        "guide-known-issues",
         "guide-publish-image",
         "guide-workshop",
         "login-docker-registry",
