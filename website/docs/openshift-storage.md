@@ -17,6 +17,12 @@ A storage (aka. Persistent Volume Claim) is only accessible in the project where
 
 :::
 
+:::caution Storage limit per PVC
+
+PVC storage requests are limited to a maximum of **10Ti** per PVC. If you need more storage for your project, please [contact](mailto:rcs-ub@maastrichtuniversity.nl) us.
+
+:::
+
 ### Create the Persistent Storage
 
 1. Switch to the **Administrator** view
