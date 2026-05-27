@@ -42,56 +42,61 @@ const faqs: FaqItem[] = [
   },
   {
     id: 3, cat: 'access',
+    q: 'Can external collaborators access the DSRI?',
+    a: <>Unfortunately, the DSRI is only accessible to people working at Maastricht University. Access requires a UM account with an email ending in <code>@maastrichtuniversity.nl</code> or <code>@student.maastrichtuniversity.nl</code>, and an active connection to the UM VPN. Collaborators based at other institutions will therefore not be able to reach the DSRI.</>,
+  },
+  {
+    id: 4, cat: 'access',
     q: 'Can multiple users work in the same project?',
     a: <>Yes. Multiple users can be added to the same project. See <a href="/docs/manage-access-project">managing access to your project</a> for instructions.</>,
   },
   {
-    id: 4, cat: 'projects',
+    id: 5, cat: 'projects',
     q: 'How long does a project stay active?',
     a: 'Projects may be deleted after a period of inactivity or at the end of a course. Make sure to back up your data and code before that happens.',
   },
   {
-    id: 5, cat: 'projects',
+    id: 6, cat: 'projects',
     q: 'Can I rename or transfer a project?',
     a: <>No, projects cannot be renamed or transferred. If needed, we can create a new project and help you migrate your work. <a href="/contact">Contact us</a> to arrange this.</>,
   },
   {
-    id: 6, cat: 'projects',
+    id: 7, cat: 'projects',
     q: 'My project is deleted and gone. Can you restore it?',
     a: <>DSRI does not keep backups of projects. To be resilient in case of unexpected events, follow the <a href="/docs/best-practices">best practices</a>. That way, your code and configuration can be re-installed swiftly.</>,
   },
   {
-    id: 7, cat: 'storage',
+    id: 8, cat: 'storage',
     q: 'Can I store data persistently?',
     a: <>Yes. Data and code can be stored on persistent volumes, which remain available when pods or applications are restarted. See <a href="/docs/openshift-storage">add a persistent volume</a> for instructions.<br/><br/>A backup is still always necessary, as illustrated on the <a href="/docs/best-practices">best practices</a> page.</>,
   },
   {
-    id: 8, cat: 'storage',
+    id: 9, cat: 'storage',
     q: 'Can I extend a persistent volume?',
     a: 'Yes. You can always increase the size of a persistent volume, but you cannot decrease it.',
   },
   {
-    id: 9, cat: 'storage',
+    id: 10, cat: 'storage',
     q: 'I accidentally deleted something. Can you restore it?',
     a: 'DSRI does not provide an automatic backup service. If something was deleted from storage, it is gone. Make sure your data is stored in more than one place so you can recover from human or technical error.',
   },
   {
-    id: 10, cat: 'storage',
+    id: 11, cat: 'storage',
     q: 'What happens when I restart my application?',
     a: 'Your application will restart, but only data stored on persistent volumes will remain. Anything stored outside a persistent volume will be lost.',
   },
   {
-    id: 11, cat: 'resources',
+    id: 12, cat: 'resources',
     q: 'Are resources shared with other users?',
     a: 'Yes. DSRI is a shared environment, so resource availability can vary depending on demand. Try to use only the resources your workload actually needs.',
   },
   {
-    id: 12, cat: 'resources',
+    id: 13, cat: 'resources',
     q: 'Can I use the DSRI portal with any browser?',
     a: 'We test the portal with Firefox and Chrome. Other browsers may work but unexpected behavior is possible.',
   },
   {
-    id: 13, cat: 'slurm',
+    id: 14, cat: 'slurm',
     q: 'How is the DSRI different from SLURM?',
     a: <>
       <p style={{ margin: '0 0 8px' }}>DSRI and SLURM are both research computing platforms but they serve different purposes:</p>
