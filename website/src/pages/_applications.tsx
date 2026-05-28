@@ -56,9 +56,9 @@ const categories: Category[] = [
 
 export default function Applications(): JSX.Element {
   return (
-    <div style={{ maxWidth: 780, paddingBottom: '2rem' }}>
+    <div style={{ paddingBottom: '2rem' }}>
 
-      <p style={{ fontSize: 14, color: 'var(--ifm-color-emphasis-700)', lineHeight: 1.7, margin: '0 0 1rem' }}>
+      <p style={{ fontSize: 'var(--ifm-font-size-base)', color: 'var(--ifm-color-emphasis-700)', lineHeight: 1.7, margin: '0 0 1rem' }}>
         The DSRI provides ready-to-use workspaces and tools you can launch directly from the{' '}
         <a href="https://console-openshift-console.apps.dsri2.unimaas.nl/catalog">DSRI Catalog</a>.
         Most are OKD <strong>templates</strong> (pre-configured setups you launch with a few parameters) with persistent storage created automatically.
@@ -69,7 +69,7 @@ export default function Applications(): JSX.Element {
         borderRadius: 8,
         background: 'var(--ifm-color-emphasis-100)',
         padding: '14px 16px',
-        fontSize: 13,
+        fontSize: 'inherit',
         color: 'var(--ifm-color-emphasis-700)',
         lineHeight: 1.65,
         marginBottom: '2rem',
@@ -99,12 +99,12 @@ export default function Applications(): JSX.Element {
           alt="Instantiate Template form in the DSRI"
           style={{ maxWidth: '100%', borderRadius: 6, border: '1px solid var(--ifm-color-emphasis-200)', marginBottom: 8 }}
         />
-        <p style={{ margin: 0, fontSize: 12, color: 'var(--ifm-color-emphasis-500)' }}>
+        <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
           The form includes fields such as: <strong>Namespace</strong> (your project), <strong>Application Name</strong>, <strong>Docker image</strong>, <strong>Storage size</strong> for the persistent volume that you can change to your needs, <strong>Password</strong> to access the application, and optional fields like a <strong>Git Repository</strong> to clone at startup.
         </p>
       </div>
 
-      <p style={{ fontSize: 13, color: 'var(--ifm-color-emphasis-600)', margin: '0 0 1.5rem' }}>
+      <p style={{ fontSize: 'inherit', color: 'var(--ifm-color-emphasis-600)', margin: '0 0 1.5rem' }}>
         The following templates and applications are available on the DSRI. Click any of them to view the deployment instructions.
       </p>
 
@@ -115,10 +115,10 @@ export default function Applications(): JSX.Element {
             marginBottom: 4,
             borderBottom: '1px solid var(--ifm-color-emphasis-200)',
           }}>
-            <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--ifm-font-color-base)', margin: '0 0 2px' }}>
+            <p style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--ifm-font-color-base)', margin: '0 0 2px' }}>
               {cat.title}
             </p>
-            <p style={{ fontSize: 12, color: 'var(--ifm-color-emphasis-500)', margin: 0 }}>
+            <p style={{ fontSize: 'inherit', color: 'var(--ifm-color-emphasis-600)', margin: 0 }}>
               {cat.description}
             </p>
           </div>
@@ -133,7 +133,7 @@ export default function Applications(): JSX.Element {
                 justifyContent: 'space-between',
                 padding: '9px 4px',
                 borderBottom: '1px solid var(--ifm-color-emphasis-200)',
-                fontSize: 13,
+                fontSize: 'inherit',
                 color: 'var(--ifm-font-color-base)',
                 textDecoration: 'none',
               }}
@@ -147,7 +147,7 @@ export default function Applications(): JSX.Element {
               }}
             >
               <span>{app.name}</span>
-              <span className="arrow" style={{ fontSize: 13, opacity: 0, transition: 'opacity 0.15s', color: 'var(--ifm-color-primary)' }}>→</span>
+              <span className="arrow" style={{ fontSize: 'inherit', opacity: 0, transition: 'opacity 0.15s', color: 'var(--ifm-color-primary)' }}>→</span>
             </a>
           ))}
         </div>
