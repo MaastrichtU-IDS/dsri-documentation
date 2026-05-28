@@ -58,29 +58,31 @@ export default function Applications(): JSX.Element {
   return (
     <div style={{ paddingBottom: '2rem' }}>
 
-      <p style={{ fontSize: 'var(--ifm-font-size-base)', color: 'var(--ifm-color-emphasis-700)', lineHeight: 1.7, margin: '0 0 1rem' }}>
+      {/* Intro Text - Darker */}
+      <p style={{ fontSize: 'var(--ifm-font-size-base)', color: 'var(--ifm-font-color-base)', lineHeight: 1.7, margin: '0 0 1.5rem' }}>
         The DSRI provides ready-to-use workspaces and tools you can launch directly from the{' '}
         <a href="https://console-openshift-console.apps.dsri2.unimaas.nl/catalog">DSRI Catalog</a>.
         Most are OKD <strong>templates</strong> (pre-configured setups you launch with a few parameters) with persistent storage created automatically.
       </p>
 
+      {/* Info Box */}
       <div style={{
-        border: '1px solid var(--ifm-color-emphasis-200)',
+        border: '1px solid var(--ifm-color-emphasis-300)',
         borderRadius: 8,
         background: 'var(--ifm-color-emphasis-100)',
-        padding: '14px 16px',
+        padding: '20px',
         fontSize: 'inherit',
-        color: 'var(--ifm-color-emphasis-700)',
+        color: 'var(--ifm-font-color-base)', // Darker text
         lineHeight: 1.65,
-        marginBottom: '2rem',
+        marginBottom: '2.5rem',
       }}>
-        <strong style={{ color: 'var(--ifm-font-color-base)', display: 'block', marginBottom: 10 }}>
+        <strong style={{ color: 'var(--ifm-font-color-base)', display: 'block', marginBottom: 10, fontSize: '1.1rem' }}>
           How to launch a template
         </strong>
         <p style={{ margin: '0 0 8px' }}>
           You can find and launch templates on the DSRI in 3 ways:
         </p>
-        <ul style={{ margin: '0 0 10px', paddingLeft: 18 }}>
+        <ul style={{ margin: '0 0 12px', paddingLeft: 18 }}>
           <li style={{ marginBottom: 6 }}>
             Open the <a href="https://console-openshift-console.apps.dsri2.unimaas.nl/catalog">DSRI Catalog</a> directly and make sure the <strong>Templates</strong> checkbox is checked.
           </li>
@@ -91,34 +93,46 @@ export default function Applications(): JSX.Element {
             In your project's <strong>Topology</strong> view, click the <strong>+</strong> icon in the top left corner.
           </li>
         </ul>
-        <p style={{ margin: '0 0 10px' }}>
+        <p style={{ margin: '0 0 15px' }}>
           Once you find your template, click on it to open it. You will see a form on the left where you can fill in the parameters, and a description of the template on the right. When ready, click <strong>Instantiate</strong> to deploy it.
         </p>
+        
+        {/* Improved Image Styling */}
         <img
           src="/img/instantiate-template.png"
           alt="Instantiate Template form in the DSRI"
-          style={{ maxWidth: '100%', borderRadius: 6, border: '1px solid var(--ifm-color-emphasis-200)', marginBottom: 8 }}
+          style={{ 
+            width: '100%', 
+            display: 'block',
+            borderRadius: 6, 
+            border: '1px solid var(--ifm-color-emphasis-300)', 
+            marginBottom: 15,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)' // Makes the image "pop"
+          }}
         />
-        <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
+        
+        {/* Footer info text - No longer faded */}
+        <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--ifm-font-color-base)', borderTop: '1px solid var(--ifm-color-emphasis-300)', paddingTop: '10px' }}>
           The form includes fields such as: <strong>Namespace</strong> (your project), <strong>Application Name</strong>, <strong>Docker image</strong>, <strong>Storage size</strong> for the persistent volume that you can change to your needs, <strong>Password</strong> to access the application, and optional fields like a <strong>Git Repository</strong> to clone at startup.
         </p>
       </div>
 
-      <p style={{ fontSize: 'inherit', color: 'var(--ifm-color-emphasis-600)', margin: '0 0 1.5rem' }}>
+      <p style={{ fontSize: 'inherit', color: 'var(--ifm-font-color-base)', margin: '0 0 1.5rem', fontWeight: '500' }}>
         The following templates and applications are available on the DSRI. Click any of them to view the deployment instructions.
       </p>
 
       {categories.map(cat => (
-        <div key={cat.title} style={{ marginBottom: '1.75rem' }}>
+        <div key={cat.title} style={{ marginBottom: '2rem' }}>
           <div style={{
             paddingBottom: 8,
             marginBottom: 4,
-            borderBottom: '1px solid var(--ifm-color-emphasis-200)',
+            borderBottom: '2px solid var(--ifm-color-emphasis-200)',
           }}>
-            <p style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--ifm-font-color-base)', margin: '0 0 2px' }}>
+            <p style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--ifm-font-color-base)', margin: '0 0 2px' }}>
               {cat.title}
             </p>
-            <p style={{ fontSize: 'inherit', color: 'var(--ifm-color-emphasis-600)', margin: 0 }}>
+            {/* Description text - Darker and clearer */}
+            <p style={{ fontSize: '1rem', color: 'var(--ifm-font-color-base)', opacity: 0.9, margin: 0 }}>
               {cat.description}
             </p>
           </div>
@@ -131,7 +145,7 @@ export default function Applications(): JSX.Element {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '9px 4px',
+                padding: '12px 6px',
                 borderBottom: '1px solid var(--ifm-color-emphasis-200)',
                 fontSize: 'inherit',
                 color: 'var(--ifm-font-color-base)',
@@ -139,14 +153,16 @@ export default function Applications(): JSX.Element {
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLAnchorElement).style.color = 'var(--ifm-color-primary)';
+                (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'var(--ifm-color-emphasis-100)';
                 (e.currentTarget.querySelector('.arrow') as HTMLElement).style.opacity = '1';
               }}
               onMouseLeave={e => {
                 (e.currentTarget as HTMLAnchorElement).style.color = 'var(--ifm-font-color-base)';
+                (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'transparent';
                 (e.currentTarget.querySelector('.arrow') as HTMLElement).style.opacity = '0';
               }}
             >
-              <span>{app.name}</span>
+              <span style={{ fontWeight: 500 }}>{app.name}</span>
               <span className="arrow" style={{ fontSize: 'inherit', opacity: 0, transition: 'opacity 0.15s', color: 'var(--ifm-color-primary)' }}>→</span>
             </a>
           ))}
