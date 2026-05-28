@@ -116,9 +116,6 @@ export default function Applications(): JSX.Element {
               }}
             />
           </div>
-          <p style={{ fontSize: '0.85rem', color: 'var(--ifm-font-color-base)', marginTop: 8, fontStyle: 'italic' }}>
-            🔍 Click on the image to zoom in and see details
-          </p>
         </div>
         
         <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--ifm-font-color-base)', borderTop: '1px solid var(--ifm-color-emphasis-300)', paddingTop: '10px' }}>
