@@ -99,7 +99,6 @@
           "label": "CI/CD & Workflows",
           "collapsed": false,
           "items": [
-            "workflows-introduction",
             "workflows-github-actions",
             "workflows-nextflow",
             "workflows-gitlab-runner"
