@@ -58,7 +58,6 @@ export default function Applications(): JSX.Element {
   return (
     <div style={{ paddingBottom: '2rem' }}>
 
-      {/* Intro Text - Darker */}
       <p style={{ fontSize: 'var(--ifm-font-size-base)', color: 'var(--ifm-font-color-base)', lineHeight: 1.7, margin: '0 0 1.5rem' }}>
         The DSRI provides ready-to-use workspaces and tools you can launch directly from the{' '}
         <a href="https://console-openshift-console.apps.dsri2.unimaas.nl/catalog">DSRI Catalog</a>.
@@ -72,7 +71,7 @@ export default function Applications(): JSX.Element {
         background: 'var(--ifm-color-emphasis-100)',
         padding: '20px',
         fontSize: 'inherit',
-        color: 'var(--ifm-font-color-base)', // Darker text
+        color: 'var(--ifm-font-color-base)', 
         lineHeight: 1.65,
         marginBottom: '2.5rem',
       }}>
@@ -97,21 +96,39 @@ export default function Applications(): JSX.Element {
           Once you find your template, click on it to open it. You will see a form on the left where you can fill in the parameters, and a description of the template on the right. When ready, click <strong>Instantiate</strong> to deploy it.
         </p>
         
-        {/* Improved Image Styling */}
-        <img
-          src="/img/instantiate-template.png"
-          alt="Instantiate Template form in the DSRI"
-          style={{ 
-            width: '100%', 
-            display: 'block',
-            borderRadius: 6, 
-            border: '1px solid var(--ifm-color-emphasis-300)', 
-            marginBottom: 15,
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)' // Makes the image "pop"
-          }}
-        />
+        {/* IMAGE SECTION - FIXED & CLEANED UP */}
+        <div style={{
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+          overflow: 'hidden',
+          backgroundColor: '#fff',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+          marginBottom: 20
+        }}>
+          {/* Mock Browser Header */}
+          <div style={{
+            background: 'var(--ifm-color-emphasis-200)',
+            padding: '8px 12px',
+            display: 'flex',
+            gap: '6px',
+            borderBottom: '1px solid var(--ifm-color-emphasis-300)'
+          }}>
+            <div style={{width: 10, height: 10, borderRadius: '50%', background: '#ff5f56'}}></div>
+            <div style={{width: 10, height: 10, borderRadius: '50%', background: '#ffbd2e'}}></div>
+            <div style={{width: 10, height: 10, borderRadius: '50%', background: '#27c93f'}}></div>
+          </div>
+          
+          <img
+            src="/img/instantiate-template.png"
+            alt="Instantiate Template form"
+            style={{ 
+              width: '100%', 
+              display: 'block',
+              cursor: 'zoom-in'
+            }}
+          />
+        </div>
         
-        {/* Footer info text - No longer faded */}
         <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--ifm-font-color-base)', borderTop: '1px solid var(--ifm-color-emphasis-300)', paddingTop: '10px' }}>
           The form includes fields such as: <strong>Namespace</strong> (your project), <strong>Application Name</strong>, <strong>Docker image</strong>, <strong>Storage size</strong> for the persistent volume that you can change to your needs, <strong>Password</strong> to access the application, and optional fields like a <strong>Git Repository</strong> to clone at startup.
         </p>
@@ -131,7 +148,6 @@ export default function Applications(): JSX.Element {
             <p style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--ifm-font-color-base)', margin: '0 0 2px' }}>
               {cat.title}
             </p>
-            {/* Description text - Darker and clearer */}
             <p style={{ fontSize: '1rem', color: 'var(--ifm-font-color-base)', opacity: 0.9, margin: 0 }}>
               {cat.description}
             </p>
