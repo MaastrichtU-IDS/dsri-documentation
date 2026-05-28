@@ -60,7 +60,7 @@ export default function Applications(): JSX.Element {
 
       <p style={{ fontSize: 'var(--ifm-font-size-base)', color: 'var(--ifm-font-color-base)', lineHeight: 1.7, margin: '0 0 1.5rem' }}>
         The DSRI provides ready-to-use workspaces and tools you can launch directly from the{' '}
-        <a href="https://console-openshift-console.apps.dsri2.unimaas.nl/catalog">DSRI Catalog</a>.
+        <a href="https://console-openshift-console.apps.dsri2.unimaas.nl/catalog" style={{fontWeight: 600}}>DSRI Catalog</a>.
         Most are OKD <strong>templates</strong> (pre-configured setups you launch with a few parameters) with persistent storage created automatically.
       </p>
 
@@ -69,8 +69,7 @@ export default function Applications(): JSX.Element {
         border: '1px solid var(--ifm-color-emphasis-300)',
         borderRadius: 8,
         background: 'var(--ifm-color-emphasis-100)',
-        padding: '20px',
-        fontSize: 'inherit',
+        padding: '24px',
         color: 'var(--ifm-font-color-base)', 
         lineHeight: 1.65,
         marginBottom: '2.5rem',
@@ -93,49 +92,42 @@ export default function Applications(): JSX.Element {
           </li>
         </ul>
         <p style={{ margin: '0 0 15px' }}>
-          Once you find your template, click on it to open it. You will see a form on the left where you can fill in the parameters, and a description of the template on the right. When ready, click <strong>Instantiate</strong> to deploy it.
+          Once you find your template, click on it to open it. You will see a form on the left where you can fill in the parameters. When ready, click <strong>Instantiate</strong> to deploy it.
         </p>
         
-        {/* IMAGE SECTION - FIXED & CLEANED UP */}
-        <div style={{
-          border: '1px solid var(--ifm-color-emphasis-300)',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          backgroundColor: '#fff',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-          marginBottom: 20
-        }}>
-          {/* Mock Browser Header */}
+        {/* IMAGE SECTION - CLEAN WITHOUT DOTS */}
+        <div style={{ textAlign: 'center', marginBottom: 20 }}>
           <div style={{
-            background: 'var(--ifm-color-emphasis-200)',
-            padding: '8px 12px',
-            display: 'flex',
-            gap: '6px',
-            borderBottom: '1px solid var(--ifm-color-emphasis-300)'
+            border: '1px solid var(--ifm-color-emphasis-300)',
+            borderRadius: '8px',
+            overflow: 'hidden',
+            backgroundColor: '#fff',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            display: 'inline-block',
+            width: '100%'
           }}>
-            <div style={{width: 10, height: 10, borderRadius: '50%', background: '#ff5f56'}}></div>
-            <div style={{width: 10, height: 10, borderRadius: '50%', background: '#ffbd2e'}}></div>
-            <div style={{width: 10, height: 10, borderRadius: '50%', background: '#27c93f'}}></div>
+            <img
+              src="/img/instantiate-template.png"
+              alt="Instantiate Template form"
+              style={{ 
+                width: '100%', 
+                display: 'block',
+                cursor: 'zoom-in'
+              }}
+            />
           </div>
-          
-          <img
-            src="/img/instantiate-template.png"
-            alt="Instantiate Template form"
-            style={{ 
-              width: '100%', 
-              display: 'block',
-              cursor: 'zoom-in'
-            }}
-          />
+          <p style={{ fontSize: '0.85rem', color: 'var(--ifm-font-color-base)', marginTop: 8, fontStyle: 'italic' }}>
+            🔍 Click on the image to zoom in and see details
+          </p>
         </div>
         
         <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--ifm-font-color-base)', borderTop: '1px solid var(--ifm-color-emphasis-300)', paddingTop: '10px' }}>
-          The form includes fields such as: <strong>Namespace</strong> (your project), <strong>Application Name</strong>, <strong>Docker image</strong>, <strong>Storage size</strong> for the persistent volume that you can change to your needs, <strong>Password</strong> to access the application, and optional fields like a <strong>Git Repository</strong> to clone at startup.
+          The form includes fields such as: <strong>Namespace</strong>, <strong>Application Name</strong>, <strong>Docker image</strong>, <strong>Storage size</strong>, and <strong>Password</strong>.
         </p>
       </div>
 
-      <p style={{ fontSize: 'inherit', color: 'var(--ifm-font-color-base)', margin: '0 0 1.5rem', fontWeight: '500' }}>
-        The following templates and applications are available on the DSRI. Click any of them to view the deployment instructions.
+      <p style={{ fontSize: 'inherit', color: 'var(--ifm-font-color-base)', margin: '0 0 1.5rem', fontWeight: '600' }}>
+        The following templates and applications are available on the DSRI:
       </p>
 
       {categories.map(cat => (
