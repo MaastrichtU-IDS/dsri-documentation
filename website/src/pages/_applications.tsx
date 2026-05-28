@@ -82,7 +82,7 @@ export default function Applications(): JSX.Element {
         </p>
         <ul style={{ margin: '0 0 12px', paddingLeft: 18 }}>
           <li style={{ marginBottom: 6 }}>
-            Open the <a href="https://console-openshift-console.apps.dsri2.unimaas.nl/catalog">DSRI <strong>Catalog</strong></a> directly and make sure the <strong>Templates</strong> checkbox is checked.
+            Open the <strong>DSRI Catalog</strong> directly and make sure the <strong>Templates</strong> checkbox is checked.
           </li>
           <li style={{ marginBottom: 6 }}>
             In the <strong>Developer</strong> view, click <strong>+Add</strong> &rarr; <strong>Developer Catalog</strong> &rarr; <strong>All services</strong>.
