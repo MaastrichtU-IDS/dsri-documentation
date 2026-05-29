@@ -54,21 +54,56 @@
     },
     {
       "type": "category",
-      "label": "Deploy applications",
+      "label": "Applications & Templates",
+      "link": {
+        "type": "doc",
+        "id": "applications"
+      },
       "items": [
-        "deploy-jupyter",
-        "deploy-rstudio",
-        "deploy-vscode",
-        "deploy-database",
-        "deploy-matlab",
-        "deploy-jupyterhub",
-        "dask-cluster",
-        "mpi-jobs",
-        "neuroscience",
-        "catalog-genomics",
-        "catalog-imaging",
-        "deploy-ubuntu-desktop",
-        "deploy-filebrowser"
+        {
+          "type": "category",
+          "label": "Workspaces",
+          "collapsed": false,
+          "items": [
+            "deploy-jupyter",
+            "deploy-jupyterhub",
+            "deploy-rstudio",
+            "deploy-vscode",
+            "deploy-matlab",
+            "deploy-ubuntu-desktop"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "Data & Compute",
+          "collapsed": false,
+          "items": [
+            "deploy-database",
+            "dask-cluster",
+            "mpi-jobs",
+            "deploy-filebrowser"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "Domain Specific",
+          "collapsed": false,
+          "items": [
+            "neuroscience",
+            "catalog-genomics",
+            "catalog-imaging"
+          ]
+        },
+        {
+          "type": "category",
+          "label": "CI/CD & Workflows",
+          "collapsed": false,
+          "items": [
+            "workflows-github-actions",
+            "workflows-nextflow",
+            "workflows-gitlab-runner"
+          ]
+        }
       ]
     },
     {
@@ -101,19 +136,10 @@
             "checkpointing-ml-training",
             "dask-tutorial"
           ]
-        },
-        {
-          "type": "category",
-          "label": "CI/CD Workflows",
-          "items": [
-            "workflows-introduction",
-            "workflows-github-actions",
-            "workflows-nextflow",
-            "workflows-gitlab-runner"
-          ]
         }
       ]
     },
+        
     {
       "type": "doc",
       "id": "surf-offerings"
