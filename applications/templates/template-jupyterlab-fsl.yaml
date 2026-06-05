@@ -2,9 +2,9 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: fsl-jupyterlab
+  name: jupyterlab-fsl
   annotations:
-    openshift.io/display-name: FSL with JupyterLab
+    openshift.io/display-name: JupyterLab with FSL
     description: |-
       FSL (FMRIB Software Library) 6.0.7 pre-loaded in a JupyterLab workspace. 
       This image is optimized for fMRI preprocessing workflows and includes full Python integration for neuroimaging research.
@@ -24,13 +24,13 @@ metadata:
     openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/documentation-url: https://fsl.fmrib.ox.ac.uk/fsl/docs/install/container.html
 labels:
-  template: fsl-jupyterlab
+  template: jupyterlab-fsl
 
 parameters:
   - name: APPLICATION_NAME
     displayName: Application Name
     description: Must be unique in the project (e.g., fsl-researcher-name).
-    value: fsl-jupyterlab
+    value: jupyterlab-fsl
     required: true
   - name: APPLICATION_IMAGE
     displayName: FSL Docker Image

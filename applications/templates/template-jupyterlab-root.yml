@@ -33,13 +33,11 @@ metadata:
       📂 Use the persistent folder in the workspace of the JupyterLab UI (usually /home/jovyan/work/persistent folder) to store your data in the persistent storage automatically created
       You can find the persistent storage in the DSRI web UI, go to Search > Resources > Persistent Volume Claim.
 
-      📦 We recommend you to use `conda install` to install new packages, but you can also use `sudo apt-get install` or `pip install`
-
       🗑️ Use this command with your application name to delete completely your application and its persistent volumes:
       oc delete all,pvc,secret,configmaps,serviceaccount,rolebinding --selector app=$APPLICATION_NAME
     iconClass: icon-python
     tags: python,jupyter,notebook
-    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:

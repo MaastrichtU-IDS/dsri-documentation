@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: matlab-cpu-nolicense
   annotations:
-    openshift.io/display-name: Matlab with your license
+    openshift.io/display-name: Matlab with your own license
     description: |-
       Start Matlab with a desktop UI, and use your own license to enable
       Matlab (this can be useful when the UM license server does not support the latest
@@ -20,7 +20,7 @@ metadata:
       🐳 Visit https://hub.docker.com/r/mathworks/matlab for more details about the image
     iconClass: icon-beaker
     tags: matlab,cpu,root,persistent
-    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-matlab
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:

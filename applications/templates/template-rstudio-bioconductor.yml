@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: bioconductor-rstudio
   annotations:
-    openshift.io/display-name: Bioconductor with RStudio
+    openshift.io/display-name: RStudio with Bioconductor
     description: |-
       Bioconductor Docker image with RStudio IDE for R-based bioinformatics analysis.
       
@@ -29,7 +29,7 @@ metadata:
 
     iconClass: icon-play
     tags: bioconductor,R,rstudio,root,persistent
-    openshift.io/provider-display-name: Research Computing Support
+    openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:
   template: Bioconductor-RStudio

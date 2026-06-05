@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: jupyterlab-ricopili-existing-pvc
   annotations:
-    openshift.io/display-name: JupyterLab Ricopili on existing storage
+    openshift.io/display-name: JupyterLab with Ricopili on existing storage
     description: |-
       Start a JupyterLab image with an R-kernel and Ricopoli tools installed as the `root` user, with an already existing Persistent Volume Claim (PVC). Find the list of PVC in Search > Resources > Persistent Volume Claim.
 
