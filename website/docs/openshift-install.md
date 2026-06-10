@@ -18,7 +18,7 @@ The `oc` CLI enables to perform operations on your applications deployed on the 
 Download the `oc` and `kubectl` Command Line Interface clients:
 
 ```shell
-wget https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz && tar xvf oc.tar.gz
+wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux.tar.gz && tar xvf openshift-client-linux.tar.gz
 sudo mv oc kubectl /usr/local/bin/
 ```
 
@@ -32,7 +32,7 @@ brew install openshift-cli
 
 Or manually download the program and add it to your path:
 
-1. Download https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/macosx/oc.tar.gz
+1. Download https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-mac.tar.gz
 
 2. Unzip the archive
 
@@ -47,7 +47,7 @@ Or manually download the program and add it to your path:
 ### On Windows
 
 1. Create a folder for OpenShift in Program Files: `C:\Program Files (x86)\OpenShift`
-2. Click [here](https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/windows/oc.zip) to download the `oc` tool `.zip` file, and move it to `C:\Program Files (x86)\OpenShift`.
+2. Click [here](https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-windows.zip) to download the `oc` tool `.zip` file, and move it to `C:\Program Files (x86)\OpenShift`.
 3. Extract the `.zip` file.
 4. Next set the system **PATH** environment variables for the directory containing the `oc.exe` file, which now resides in your newly created **OpenShift** folder inside of `C:\Program Files (x86)\OpenShift`
    1. Open the Control Panel, and click on **System**
