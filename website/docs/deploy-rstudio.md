@@ -3,60 +3,55 @@ id: deploy-rstudio
 title: RStudio
 ---
 
-## Start RStudio
+RStudio is an integrated development environment for R. On the DSRI it runs as a container based on [Rocker RStudio tidyverse images](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) (Debian), with `sudo` privileges so you can install anything you need using `pip`, `apt`, or R's `install.packages()`.
 
-Start a RStudio container based on [Rocker RStudio tidyverse images](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) (debian), with `sudo` privileges to install anything you need (e.g. pip or apt packages)
+## Deploy
 
-You can start a container using the **RStudio** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
+Find the **RStudio** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it. You will need to set a **password** to access the UI. The username will always be `root`.
 
-Provide a few parameters, and Instantiate the template. The **username** will be `root` and the **password** will be what you configure yourself, the DSRI will automatically create a persistent volume in the project space which is the `/root/persistent` folder. You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
+If you need Bioconductor packages for genomics or single-cell RNA sequencing analysis, use the **Bioconductor with RStudio** template instead. It includes Bioconductor 3.21 with R 4.5.2 pre-installed. Everything else works the same way.
 
+## Persistent storage
 
+A persistent volume is automatically created at `/root/persistent`. Data stored in this folder survives pod restarts. You can find it in the DSRI web UI under **Administrator view** > **Storage** > **Persistent Volume Claims**.
 
-<img src="/img/screenshot-deploy-rstudio.png" alt="Deploy RStudio" style={{maxWidth: '100%', maxHeight: '100%'}} />
+## Use git
 
-:::info Official image documentation
-
-See the [official Docker image documentation](https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image) for more details about the container deployed.
-
-:::
-
-If you need Bioconductor packages for genomics or single-cell RNA sequencing analysis, use the **Bioconductor with RStudio** template. It includes Bioconductor 3.21 with R 4.5.2 pre-installed. Everything else works the same way (persistent storage, root access, Git integration).
-
-## Use Git in RStudio
-
-The fastest way to get started is to use `git` from the terminal, for example to clone a git repository use `git clone`
-
-You can also check how to enable Git integration in RStudio at https://support.rstudio.com/hc/en-us/articles/200532077
-
-You can run this command to ask git to save your password for 15min:
+The fastest way to get started is to use `git` from the terminal. For example, to clone a repository:
 
 ```bash
-git config credential.helper cache
+git clone https://github.com/your-org/your-repo.git
 ```
 
-Or store the password/token in a plain text file:
-
-```bash
-git config --global credential.helper 'store --file ~/.git-credentials'
-```
-
-Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in the terminal:
+Before pushing to GitHub or GitLab, configure your username and email:
 
 ```bash
 git config --global user.name "Jean Dupont"
 git config --global user.email jeandupont@gmail.com
 ```
 
-:::tip Git tip
+To save your password for 15 minutes:
 
-We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
+```bash
+git config credential.helper cache
+```
+
+Or store it in a plain text file:
+
+```bash
+git config --global credential.helper 'store --file ~/.git-credentials'
+```
+
+:::tip
+
+We recommend using SSH instead of HTTPS where possible. See [GitHub's guide](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on generating SSH keys.
 
 :::
 
+You can also enable the built-in Git integration in RStudio — see the [RStudio Git documentation](https://support.rstudio.com/hc/en-us/articles/200532077) for instructions.
+
 ## Run R jobs
 
-You can visit this folder that gives all resources and instructions to explain how to run a standalone R job on the DSRI: https://github.com/MaastrichtU-IDS/dsri-demo/tree/main/r-job
+To run a standalone R job on the DSRI, see the [dsri-demo repository](https://github.com/MaastrichtU-IDS/dsri-demo/tree/main/r-job) for resources and instructions.
 
-If you want to run jobs directly from RStudio, checkout this package to run chunks of R code as jobs directly through RStudio: https://github.com/lindeloev/job
-
+To run chunks of R code as background jobs directly from RStudio, see the [job package](https://github.com/lindeloev/job).
