@@ -15,57 +15,6 @@ Configuring and deploying JupyterHub can be complex. Feel free to [submit a tick
 
 Download the preconfigured `config-basic.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-basic.yaml). The default config provided by JupyterHub will not work on the DSRI.
 
-## Deploy
-
-JupyterHub is deployed using a Helm chart. You can do this either via the DSRI web UI or the CLI.
-
-### Via the DSRI web UI
-
-1. In **Developer** mode, go to **Helm** in the side panel, click **Create** and choose **Helm Release**.
-2. Search for `jupyterhub` and select the **JupyterHub** Helm Chart.
-3. Click **Create**, then open the **Chart version** dropdown and select version `3.3.8`. This is the only version currently supported on the DSRI.
-4. Replace the default config with the content of the `config-basic.yaml` you downloaded, and click **Create**.
-
-Once deployed, create a secured route with TLS edge termination:
-
-- In **Developer** mode, go to **Project** in the side panel, then click **Route** > **Create**.
-- Fill in a **Name**, choose **Service**: `proxy-public`, **Target Port**: `80 -> http (TCP)`, tick **Secure Route**, and set **TLS Termination** to **Edge**. Click **Create**.
-
-### Via the CLI
-
-Add the JupyterHub Helm Chart repository:
-
-```bash
-helm repo add jupyterhub https://hub.jupyter.org/helm-chart/
-helm repo update
-```
-
-Install the Helm Chart using your downloaded `config-basic.yaml`:
-
-```bash
-helm upgrade --cleanup-on-fail \
-  --install jupyterhub jupyterhub/jupyterhub \
-  --version=3.3.8 \
-  --namespace=<project-name> \
-  --values config-basic.yaml
-```
-
-Create a secured route:
-
-```bash
-oc create route edge <route-name> --namespace <project-name> --service=proxy-public --port=http
-```
-
-### Upgrading the config
-
-To apply changes to your config, run the same `helm upgrade` command with the updated `config-basic.yaml`. In the web UI, go to **Helm** > click your Helm Release > **Actions** > **Upgrade**, edit the config, and click **Upgrade**.
-
-:::caution
-
-In some cases, users who authenticated with an old method will retain access after you change the authentication config. Set your preferred authentication method before allowing users in.
-
-:::
-
 ## Persistent storage
 
 A persistent volume is automatically created for each user when they log in for the first time. Data is preserved even if JupyterHub is stopped. You can find persistent volumes in the DSRI web UI under **Administrator view** > **Storage** > **Persistent Volume Claims**.
@@ -187,5 +136,12 @@ api_url = '<URL>/hub/api'
 r = requests.get(f'{api_url}/users',
     headers={'Authorization': f'token {api_token}'})
 
-print(json.dumps(r.json(), indent=3))
+status_code = r.status_code
+print('Status code:', status_code)
+
+status = r.raise_for_status()
+print('Status:', status)
+
+users = r.json()
+print(json.dumps(users, indent=3))
 ```
