@@ -7,7 +7,7 @@ Matlab is a numerical computing environment from MathWorks. On the DSRI it runs 
 
 :::info
 
-We are not experts in Matlab — if you have issues with the official Docker image, feel free to contact [MathWorks support](https://nl.mathworks.com/academia/tah-portal/maastricht-university-31574866.html#get) directly (login with your UM account first). Since Matlab is closed source, we cannot fix issues in the image itself.
+We are not experts in Matlab - if you have issues with the official Docker image, feel free to contact [MathWorks support](https://nl.mathworks.com/academia/tah-portal/maastricht-university-31574866.html#get) directly (login with your UM account first). Since Matlab is closed source, we cannot fix issues in the image itself.
 
 :::
 
@@ -16,12 +16,12 @@ We are not experts in Matlab — if you have issues with the official Docker ima
 Find the **Matlab** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
 
 - **Password** to access the Matlab UI. Make sure it is longer than 6 characters.
-- **Matlab image version** — see the [official Matlab Docker image documentation](https://hub.docker.com/r/mathworks/matlab) for available versions.
+- **Matlab image version** - see the [official Matlab Docker image documentation](https://hub.docker.com/r/mathworks/matlab) for available versions.
 
 Once the pod is running, you can access Matlab through two routes visible when clicking on the MATLAB node in the **Topology** view:
 
-- The `matlab` route — access the Matlab desktop UI directly in your browser. This is the recommended option.
-- The `matlab-vnc` route — access Matlab using a VNC client. Only use this if you know what you are doing.
+- The `matlab` route - access the Matlab desktop UI directly in your browser. This is the recommended option.
+- The `matlab-vnc` route - access Matlab using a VNC client. Only use this if you know what you are doing.
 
 ## Persistent storage
 
@@ -55,6 +55,6 @@ The Matlab template in the DSRI Catalog can also be used to deploy a pre-built *
 
 :::caution
 
-GPU access is not enabled by default. You need to make a reservation first — see the [GPU documentation](/docs/deploy-on-gpu) for details.
+GPU access is not enabled by default. You need to make a reservation first - see the [GPU documentation](/docs/deploy-on-gpu) for details.
 
 :::

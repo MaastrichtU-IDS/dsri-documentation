@@ -15,7 +15,7 @@ A persistent volume is automatically created at `/home/coder/project`. Data stor
 
 ## Use git
 
-The easiest way to clone a repository from GitHub is to use the built-in authentication system — click **Clone Repository...** on the Welcome page and follow the instructions at the top of the VS Code window.
+The easiest way to clone a repository from GitHub is to use the built-in authentication system - click **Clone Repository...** on the Welcome page and follow the instructions at the top of the VS Code window.
 
 Alternatively, use `git` from the terminal:
 

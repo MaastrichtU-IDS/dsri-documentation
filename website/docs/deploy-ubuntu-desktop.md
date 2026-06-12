@@ -7,7 +7,7 @@ Ubuntu VNC Desktop provides a full Ubuntu 22.04 LTS desktop environment (LXDE) a
 
 :::caution
 
-This template is not activated by default in the DSRI catalog. Contact the Research Computing Support team at [rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl) to have it enabled for your project.
+This template is not activated by default in the DSRI catalog. Contact the [RCS](mailto:rcs-ub@maastrichtuniversity.nl) team, to have it enabled for your project.
 
 :::
 

@@ -48,7 +48,7 @@ We recommend using SSH instead of HTTPS where possible. See [GitHub's guide](htt
 
 :::
 
-You can also enable the built-in Git integration in RStudio — see the [RStudio Git documentation](https://support.rstudio.com/hc/en-us/articles/200532077) for instructions.
+You can also enable the built-in Git integration in RStudio - see the [RStudio Git documentation](https://support.rstudio.com/hc/en-us/articles/200532077) for instructions.
 
 ## Run R jobs
 
