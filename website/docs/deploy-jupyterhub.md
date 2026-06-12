@@ -33,7 +33,7 @@ singleuser:
 
 Three authentication methods are supported:
 
-**Dummy authentication** (default, testing only) — any username and password combination will work. Do not use this for real workloads or store any data in accounts created this way.
+**Dummy authentication** (default, testing only) - any username and password combination will work. Do not use this for real workloads or store any data in accounts created this way.
 
 ```yaml
 hub:
@@ -43,7 +43,7 @@ hub:
       authenticator_class: dummy
 ```
 
-**Allowed users / admin users** — specify a fixed list of users and a shared password. Keep this password private and do not reuse it from other accounts.
+**Allowed users / admin users** - specify a fixed list of users and a shared password. Keep this password private and do not reuse it from other accounts.
 
 ```yaml
 hub:
@@ -59,7 +59,7 @@ hub:
       authenticator_class: dummy
 ```
 
-**GitHub OAuth** (recommended for groups) — users log in with their GitHub account. Requires creating a [GitHub OAuth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). Replace `<route-name>` and `<project-name>` with your values:
+**GitHub OAuth** (recommended for groups) - users log in with their GitHub account. Requires creating a [GitHub OAuth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). Replace `<route-name>` and `<project-name>` with your values:
 
 ```yaml
 hub:
@@ -107,7 +107,7 @@ singleuser:
 
 Find available images and tags at [quay.io/organization/jupyter](https://quay.io/organization/jupyter). See the [Jupyter documentation](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html) for more details.
 
-To offer users a choice of images at login, use the `profileList` option — see the [config-extensive.yaml](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-extensive.yaml) for a working example.
+To offer users a choice of images at login, use the `profileList` option - see the [config-extensive.yaml](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-extensive.yaml) for a working example.
 
 ### Spawner timeouts
 
