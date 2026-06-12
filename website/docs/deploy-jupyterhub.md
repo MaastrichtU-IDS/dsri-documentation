@@ -11,7 +11,7 @@ Configuring and deploying JupyterHub can be complex. Feel free to [submit a tick
 
 :::
 
-## Before you begin
+## Deploy
 
 Download the preconfigured `config-basic.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-basic.yaml). The default config provided by JupyterHub will not work on the DSRI.
 
