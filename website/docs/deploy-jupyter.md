@@ -11,12 +11,12 @@ Find the **JupyterLab** template in the [DSRI Catalog](https://console-openshift
 
 - **Password** to access the notebook
 - **Docker image** to use (see available images below)
-- **Git repository URL** (optional) — will be automatically cloned at startup; if a `requirements.txt` is present, packages will be installed automatically with `pip`
+- **Git repository URL** (optional) - will be automatically cloned at startup; if a `requirements.txt` is present, packages will be installed automatically with `pip`
 - **Git username and email** to automatically configure git
 
 ## Persistent storage
 
-A persistent volume is automatically created and mounted at `/home/jovyan/work` — the default working folder in JupyterLab. Data stored here survives pod restarts. You can find it in the DSRI web UI under **Administrator view** > **Storage** > **Persistent Volume Claims**.
+A persistent volume is automatically created and mounted at `/home/jovyan/work` - the default working folder in JupyterLab. Data stored here survives pod restarts. You can find it in the DSRI web UI under **Administrator view** > **Storage** > **Persistent Volume Claims**.
 
 ## Available images
 
@@ -25,12 +25,12 @@ The default image is `ghcr.io/maastrichtu-ids/jupyterlab:latest`, a custom image
 You can also use any image from the official Jupyter docker stack:
 
 - `ghcr.io/maastrichtu-ids/jupyterlab:knowledge-graph` — for working with knowledge graphs, includes a SPARQL kernel and OpenRefine
-- `jupyter/scipy-notebook` — science packages pre-installed
-- `jupyter/datascience-notebook` — includes Julia kernel
-- `jupyter/tensorflow-notebook` — TensorFlow pre-installed
-- `jupyter/r-notebook` — for working with R
-- `jupyter/pyspark-notebook` — for connecting to a Spark cluster
-- `jupyter/all-spark-notebook` — for running Spark locally in the notebook
+- `jupyter/scipy-notebook` - science packages pre-installed
+- `jupyter/datascience-notebook` - includes Julia kernel
+- `jupyter/tensorflow-notebook` - TensorFlow pre-installed
+- `jupyter/r-notebook` - for working with R
+- `jupyter/pyspark-notebook` - for connecting to a Spark cluster
+- `jupyter/all-spark-notebook` - for running Spark locally in the notebook
 
 To build your own image, use [this repository](https://github.com/MaastrichtU-IDS/jupyterlab) as a starting point.
 
@@ -38,7 +38,7 @@ To build your own image, use [this repository](https://github.com/MaastrichtU-ID
 
 With the `ghcr.io/maastrichtu-ids/jupyterlab:latest` image you can use conda environments as notebook kernels, as long as `nb_conda_kernels` and `ipykernel` are installed in those environments.
 
-You can pass a git repository URL containing an `environment.yml` file at startup — the conda environment will be installed automatically and appear in the JupyterLab Launcher. See [this repository](https://github.com/MaastrichtU-IDS/dsri-demo) for an example.
+You can pass a git repository URL containing an `environment.yml` file at startup - the conda environment will be installed automatically and appear in the JupyterLab Launcher. See [this repository](https://github.com/MaastrichtU-IDS/dsri-demo) for an example.
 
 Or install it directly in a running JupyterLab using `mamba` (faster than `conda`):
 
