@@ -24,7 +24,7 @@ The default image is `ghcr.io/maastrichtu-ids/jupyterlab:latest`, a custom image
 
 You can also use any image from the official Jupyter docker stack:
 
-- `ghcr.io/maastrichtu-ids/jupyterlab:knowledge-graph` — for working with knowledge graphs, includes a SPARQL kernel and OpenRefine
+- `ghcr.io/maastrichtu-ids/jupyterlab:knowledge-graph` - for working with knowledge graphs, includes a SPARQL kernel and OpenRefine
 - `jupyter/scipy-notebook` - science packages pre-installed
 - `jupyter/datascience-notebook` - includes Julia kernel
 - `jupyter/tensorflow-notebook` - TensorFlow pre-installed
