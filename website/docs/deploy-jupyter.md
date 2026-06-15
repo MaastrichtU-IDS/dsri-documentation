@@ -3,51 +3,52 @@ id: deploy-jupyter
 title: Jupyter Notebooks
 ---
 
-## 🪐 Start JupyterLab
+JupyterLab is an interactive web-based environment for data science and scientific computing. On the DSRI it runs as a container based on the [official Jupyter docker stacks](https://github.com/jupyter/docker-stacks), with `sudo` privileges so you can install anything you need using `pip`, `conda`, or `apt`.
 
-Start a JupyterLab container based on the [official Jupyter docker stacks](https://github.com/jupyter/docker-stacks) (debian), with `sudo` privileges to install anything you need (e.g. pip or apt packages)
+## Deploy
 
-You can start a container using the **JupyterLab** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
+Find the **JupyterLab** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
 
-When instantiating the template you can provide a few parameters, such as:
+- **Password** to access the notebook
+- **Docker image** to use (see available images below)
+- **Git repository URL** (optional) - will be automatically cloned at startup; if a `requirements.txt` is present, packages will be installed automatically with `pip`
+- **Git username and email** to automatically configure git
 
-* **Password** to access the notebook
-* Optionally you can provide a **git repository** to be automatically cloned in the JupyterLab (if there is a `requirements.txt` packages will be automatically installed with `pip`)
-* **Docker image** to use for the notebook (see below for more details on customizing the docker image) 
-* Your **git username and email** to automatically configure git
+## Persistent storage
 
-The DSRI will automatically create a persistent volume to store data you will put in the `/home/jovyan/work` folder (the folder used by the notebook interface). You can find the persistent volumes in the DSRI web UI, go to the **Administrator** view > **Storage** > **Persistent Volume Claims**.
+A persistent volume is automatically created and mounted at `/home/jovyan/work` - the default working folder in JupyterLab. Data stored here survives pod restarts. You can find it in the DSRI web UI under **Administrator view** > **Storage** > **Persistent Volume Claims**.
 
-<img src="/img/screenshot-deploy-jupyter.png" alt="Deploy Jupyter" style={{maxWidth: '100%', maxHeight: '100%'}} />
+## Available images
 
-With this template you can use any image based on the official Jupyter docker stack: https://github.com/jupyter/docker-stacks
+The default image is `ghcr.io/maastrichtu-ids/jupyterlab:latest`, a custom image for data science on the DSRI with additional kernels (Java), conda integration, VisualStudio Code, and Python autocomplete.
 
-* `ghcr.io/maastrichtu-ids/jupyterlab:latest`: custom image for data science on the DSRI, with additional kernels (Java), conda integration, VisualStudio Code, and autocomplete for Python
-* `ghcr.io/maastrichtu-ids/jupyterlab:knowledge-graph`: custom image for working with knowledge graph on the DSRI, with SPARQL kernel and OpenRefine
-* `jupyter/scipy-notebook`: some packages for science are preinstalled 
-* `jupyter/datascience-notebook`: with Julia kernel
-* `jupyter/tensorflow-notebook`: with tensorflow package pre-installed
-* `jupyter/r-notebook`: to work with R
-* `jupyter/pyspark-notebook`: if you want to connect to a Spark cluster
-* `jupyter/all-spark-notebook`: if you want to run Spark locally in the notebook
+You can also use any image from the official Jupyter docker stack:
 
-You can also build your own image, we recommend to use this repository as example to extend a JupyterLab image: https://github.com/MaastrichtU-IDS/jupyterlab
+- `ghcr.io/maastrichtu-ids/jupyterlab:knowledge-graph` - for working with knowledge graphs, includes a SPARQL kernel and OpenRefine
+- `jupyter/scipy-notebook` - science packages pre-installed
+- `jupyter/datascience-notebook` - includes Julia kernel
+- `jupyter/tensorflow-notebook` - TensorFlow pre-installed
+- `jupyter/r-notebook` - for working with R
+- `jupyter/pyspark-notebook` - for connecting to a Spark cluster
+- `jupyter/all-spark-notebook` - for running Spark locally in the notebook
 
-## 📦️ Manage dependencies with Conda
+To build your own image, use [this repository](https://github.com/MaastrichtU-IDS/jupyterlab) as a starting point.
 
-With the `ghcr.io/maastrichtu-ids/jupyterlab:latest` image, you can easily start notebooks from the JupyterLab Launcher page using installed conda environments, at the condition `nb_conda_kernels` and `ipykernel` are installed in those environments.
+## Manage dependencies with conda
 
-* You can pass a Git repository URL which contains an `environment.yml` file in the root folder when starting JupyterLab, the conda environment will automatically be installed at the start of your container, and available in the JupyterLab Launcher page. You can use this repository as example: https://github.com/MaastrichtU-IDS/dsri-demo
+With the `ghcr.io/maastrichtu-ids/jupyterlab:latest` image you can use conda environments as notebook kernels, as long as `nb_conda_kernels` and `ipykernel` are installed in those environments.
 
-* Or you can install it directly in a running JupyterLab (we use `mamba` which is like `conda` but faster):
+You can pass a git repository URL containing an `environment.yml` file at startup - the conda environment will be installed automatically and appear in the JupyterLab Launcher. See [this repository](https://github.com/MaastrichtU-IDS/dsri-demo) for an example.
 
-  ```bash
-  mamba env create -f environment.yml
-  ```
+Or install it directly in a running JupyterLab using `mamba` (faster than `conda`):
 
-  You'll need to wait for 1 or 2 minutes before the new conda environment becomes available on the JupyterLab Launcher page.
+```bash
+mamba env create -f environment.yml
+```
 
-You can easily install an environment with a different version of Python if you need it. Here is an example of an `environment.yml` file to create an environment with Python 3.9, install the minimal dependencies required to easily starts notebooks in this environment with `conda`, and install a `pip` package:
+Wait 1-2 minutes for the new environment to appear in the Launcher.
+
+Example `environment.yml` for a Python 3.9 environment:
 
 ```yaml
 name: custom-env
@@ -57,74 +58,48 @@ channels:
   - anaconda
 dependencies:
   - python=3.9
-  - ipykernel 
+  - ipykernel
   - nb_conda_kernels
   - pip
   - pip:
     - matplotlib
 ```
 
-⚠️ You cannot use `conda activate` in a Docker container, so you will need to either open a notebook using the kernel for your conda env, or use `conda run` to run scripts in the new environment:
+:::caution
+
+You cannot use `conda activate` in a Docker container. Use `conda run` instead to run scripts in a specific environment:
 
 ```bash
 conda run -n custom-env python --version
 ```
 
-## 🐙 Use git in JupyterLab
+:::
 
-You can always use `git` from the terminal.
+## Use git
 
-:::caution Configure username
-
-Before pushing back to GitHub or GitLab, you will need to **configure you username and email** in VSCode terminal:
+You can always use `git` from the terminal. Before pushing to GitHub or GitLab, configure your username and email:
 
 ```bash
 git config --global user.name "Jean Dupont"
 git config --global user.email jeandupont@gmail.com
 ```
 
-:::
-
-:::info Save your password
-
-You can run this command to ask git to save your password for 15min:
+To save your password for 15 minutes:
 
 ```bash
 git config credential.helper cache
 ```
 
-Or store the password in a plain text file:
+Or store it in a plain text file:
 
 ```bash
 git config --global credential.helper 'store --file ~/.git-credentials'
 ```
 
-:::
+:::tip
 
-:::tip Git tip
-
-We recommend to use SSH instead of HTTPS connection when possible, checkout [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) how to generate SSH keys and use them with your GitHub account.
+We recommend using SSH instead of HTTPS where possible. See [GitHub's guide](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on generating SSH keys.
 
 :::
 
-You can also enable and use the [JupyterLab Git extension](https://github.com/jupyterlab/jupyterlab-git) to clone and manage your `git` repositories.
-
-It will prompt you for a username and password if the repository is private.
-
-<img src="https://raw.githubusercontent.com/jupyterlab/jupyterlab-git/master/docs/figs/preview.gif" alt="JupyterLab Git extension" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-### 🐶 Example
-
-Initialize repository
-
-<img src="/img/sample_git_page.png" alt="Initialize repo" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-Include git details in DSRI project setup
-
-<img src="/img/sample_git_details_jupyter.png" alt="git details" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-Verify automatic deployment
-
-<img src="/img/sample_workspace.png" alt="workspace" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-<img src="/img/sample_requirements.png" alt="requirements" style={{maxWidth: '100%', maxHeight: '100%'}} />
+You can also use the [JupyterLab Git extension](https://github.com/jupyterlab/jupyterlab-git) to manage repositories directly from the UI. It will prompt for credentials if the repository is private.

@@ -3,63 +3,43 @@ id: deploy-filebrowser
 title: Filebrowser
 ---
 
-Deploy a file browser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume in case you need it (JupyterLab, RStudio and VisualStudio Code server already include a file browser)
+Filebrowser provides a web UI to upload and download files to and from a persistent volume on the DSRI. It is useful when your application does not have a built-in file manager. Note that JupyterLab, RStudio, and Visual Studio Code already include a file browser, so you only need this for other deployments.
 
-You can start a container using the **File Browser for existing storage** template in the [Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked)
+:::caution
 
-<img src="/img/screenshot-deploy-filebrowser.png" alt="Deploy File browser" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-You can only deploy file browser on an existing Persistent Volume Claim, this enables you to add a web UI to access this storage.
-
-The following parameters can be provided:
-
-1. Provide a unique **Application name**. It will be used to generate the application URL.
-2. Provide a **Password**, you will need to hash the password first for extra security, use this quick docker command to do it: `docker run filebrowser/filebrowser hash mypassword`
-3. The **Storage name** of the Persistent Volume Claim  (PVC) that will be exposed by the filebrowser.
-4. **Storage subpath** in the the Persistent Volume Claim that will be exposed by the filebrowser. Let it empty to use the Root folder of the persistent volume.
-
-You can find the Storage name if you Go to the deployments page > Storage panel.
-
-### Creating or Connecting an Existing Persistent Storage
-
-Find more details about the how to [create persistent storage](https://maastrichtu-ids.github.io/dsri-documentation/docs/openshift-storage/#create-the-persistent-storage)
-
-<img src="/img/screenshot_pvc_storage.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-
-
-<img src="/img/screenshot_pvc_storage_create.png" alt="Create Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-:::info 
-
-The DSRI using the [**Openshift Container Stroage**](https://www.openshift.com/products/container-storage/) (`OCS`)  which is based on [**CEPH**](https://ceph.io/ceph-storage/) offers `ReadWriteOnce` and `ReadWriteMany` access mode. 
-
-* `ReadWriteOnce` ([**RWO**](https://docs.openshift.com/container-platform/4.6/storage/understanding-persistent-storage.html)) volumes cannot be mounted on multiple nodes. Use the `ReadWriteMany` ([**RWX**](https://docs.openshift.com/container-platform/4.6/storage/understanding-persistent-storage.html)) access mode when possible. If a node fails, the system does not allow the attached RWO volume to be mounted on a new node because it is already assigned to the failed node. If you encounter a multi-attach error message as a result, force delete the pod on a shut down or crashed node. 
+Filebrowser can only be deployed on an **existing** Persistent Volume Claim. Make sure you have one before deploying. Contact the DSRI team at [rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl) if you need one created.
 
 :::
 
-Find more details about the how to [Connect the Existing persistent storage](https://maastrichtu-ids.github.io/dsri-documentation/docs/openshift-storage/#connect-the-existing-persistent-storage)
+## Deploy
 
-<img src="/img/screenshot_existing_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+Find the **File Browser for existing storage** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
 
-<img src="/img/screenshot_add_storage.png" alt="Add Existing Persistent Storage" style={{maxWidth: '100%', maxHeight: '100%'}} />
+1. **Application name** - must be unique within your project. It will be used to generate the application URL.
+2. **Password** - hash the password first for security using:
+```bash
+   docker run filebrowser/filebrowser hash mypassword
+```
+3. **Storage name** - the name of the Persistent Volume Claim (PVC) to expose. Find it under **Deployments** > **Storage** panel, or in the DSRI web UI under **Administrator view** > **Storage** > **Persistent Volume Claims**.
+4. **Storage subpath** - the subfolder within the PVC to expose. Leave empty to expose the root of the volume.
 
-:::info
+:::info Default credentials
 
-You can try above method if you want to connect **more applications to the same storage**
-
-:::
-
-This deployment require to have  root user enabled on your project. Contact the [DSRI support team](mailto:dsri-support-l@maastrichtuniversity.nl)  or create a [new issues](https://github.com/MaastrichtU-IDS/dsri-documentation/issues) to request root access or to create persistent volume for your project if you don't have them .
-
-:::info Credentials
-
-Default credentials will be username `admin` and password `admin`
+The default username is `admin` and the default password is `admin`. **Change the password immediately** after first login via the Filebrowser web UI.
 
 :::
 
-:::caution Change password
+## Persistent storage
 
-Please **change the password in the Filebrowser Web UI** once it has been created.
+Filebrowser mounts directly onto an existing PVC - it does not create new storage. To connect multiple applications to the same storage, add the existing PVC to each application via **Deployments** > **Storage** panel.
 
-:::
+For more details on creating and connecting persistent storage, see the [Storage documentation](https://maastrichtu-ids.github.io/dsri-documentation/docs/openshift-storage/#create-the-persistent-storage).
+
+## Particularities
+
+### Storage access modes
+
+The DSRI uses [OpenShift Container Storage](https://www.openshift.com/products/container-storage/) (`OCS`) based on [Ceph](https://ceph.io/ceph-storage/), which offers two access modes:
+
+- **ReadWriteMany (RWX)** - the volume can be mounted on multiple nodes simultaneously. Use this when possible.
+- **ReadWriteOnce (RWO)** - the volume can only be mounted on one node at a time. If that node fails, the volume cannot be remounted on another node until the pod is force-deleted.

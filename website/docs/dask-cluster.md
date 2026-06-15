@@ -3,58 +3,44 @@ id: dask-cluster
 title: Dask Cluster
 ---
 
-## 🧊 Installation with Helm
+[Dask](https://www.dask.org/) is a parallel computing library for Python that scales analytics workflows. On the DSRI, a Dask cluster can be deployed using Helm and includes a Dask scheduler, workers, and a JupyterLab interface to interact with the cluster.
 
-1. Go to the **+Add** page, and select to add **Helm Chart**
+## Deploy
 
-<img src="/img/dask-init1.png" alt="dask init" style={{maxWidth: '100%', maxHeight: '100%'}} />
+Dask is deployed via Helm chart from the DSRI web UI.
 
-2. Search and Select the **Dask chart** then click on **Create**
+1. In **Developer** mode, go to **+Add** and select **Helm Chart**.
+2. Search for **Dask**, select the Dask chart, and click **Create**.
+3. In the YAML configuration, find the `jupyter` section and set the following:
+```yaml
+   jupyter:
+     command: ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
+     servicePort: 8888
+```
+4. Click **Create** to deploy the cluster.
 
-<img src="/img/dask-init2.png" alt="dask init" style={{maxWidth: '100%', maxHeight: '100%'}} />
+## Persistent storage
 
-<img src="/img/dask-init3.png" alt="dask init" style={{maxWidth: '100%', maxHeight: '100%'}} />
+After the cluster is running, add persistent storage to the `dask-jupyter` pod:
 
-3. Configure the Yaml file, while under the `Jupyter` section:
-    - `Command: ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--port=8888", "--no-browser"]`
-    - `servicePort: 8888`
+1. In the **Topology** view, click on the `dask-jupyter` pod.
+2. Go to **Actions** > **Add Storage** and create a new Persistent Volume Claim for the cluster.
 
-<img src="/img/dask-init4.png" alt="dask init" style={{maxWidth: '100%', maxHeight: '100%'}} />
+Data stored on this volume will survive pod restarts.
 
-<img src="/img/dask-init5.png" alt="dask init" style={{maxWidth: '100%', maxHeight: '100%'}} />
+## Access the cluster
 
-4. **Add Storage** to the **dask-jupyter** pod as shown below
+### Create a route
 
-<img src="/img/dask-init6.png" alt="dask init" style={{maxWidth: '100%', maxHeight: '100%'}} />
+1. Switch to the **Administrator** view and go to **Networking** > **Routes**.
+2. Click **Create Route**, fill in a name, select the `dask-jupyter` service, set the target port, and click **Create**.
+3. Use the generated URL to open the JupyterLab interface.
 
-5. Set up a new **Persistent Volume Claim** for the cluster as shown below
+### Get the JupyterLab token
 
-<img src="/img/dask-init7.png" alt="dask init" style={{maxWidth: '100%', maxHeight: '100%'}} />
+The JupyterLab interface is protected by a token. To find it:
 
-### 🪐 Configure a Route for the Cluster
+1. Run `oc get pods` to find the full pod name of `dask-jupyter`.
+2. Run `oc logs <pod-name>` and copy the token from the output.
 
-1. Switch to the **Administrator** view and navigate to **Route**
-
-<img src="/img/dask-route1.png" alt="dask route" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-<img src="/img/dask-route2.png" alt="dask route" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-2. Create a new route by clicking the button **Create Route** with the setup as shown below
-
-<img src="/img/dask-route3.png" alt="dask route" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-<img src="/img/dask-route4.png" alt="dask route" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-<img src="/img/dask-route5.png" alt="dask route" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-3. Navigate the provided link to access your local cluster
-
-<img src="/img/dask-route6.png" alt="dask route" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-### 🪐 Access the Jupyter Password/Token
-
-1. Start up the **terminal**
-    - Run `oc get pods` to find the full podname of the **dask-jupyter**
-    - Run `oc logs <podname>` and copy the token used to access the jupyter notebook
-
-<img src="/img/dask-route7.png" alt="dask route" style={{maxWidth: '100%', maxHeight: '100%'}} />
+Use this token to log in to JupyterLab.
