@@ -4,7 +4,7 @@ title: Anatomy of a DSRI Application
 ---
 
 :::info Check out existing templates
-Browse the RCS team's ready-to-use templates at [https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/applications/templates](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/applications/templates)
+Browse the available ready-to-use [templates](https://github.com/MaastrichtU-IDS/dsri-documentation/tree/master/applications/templates).
 :::
 
 This page shows you how applications are built using **OpenShift templates** and helps you understand the different objects needed when deploying an application on a Kubernetes cluster. While OpenShift templates can only be deployed to OpenShift, the objects they define are the same as in Kubernetes (apart from Route which becomes Ingress).
