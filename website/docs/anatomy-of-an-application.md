@@ -246,7 +246,7 @@ Define the container(s) that will run in the pod. It's recommended to deploy 1 c
 
 ```yaml
           containers:
-            - name: vscode-container 
+            - name: "${APPLICATION_NAME}"
               image: "${APPLICATION_IMAGE}" 
               imagePullPolicy: IfNotPresent
               workingDir: /home/coder/project
@@ -453,7 +453,7 @@ objects:
               emptyDir:
                 medium: Memory
           containers:
-            - name: vscode-container 
+            - name: "${APPLICATION_NAME}"
               image: "${APPLICATION_IMAGE}" 
               imagePullPolicy: IfNotPresent
               workingDir: /home/coder/project
@@ -513,7 +513,7 @@ Add probes to verify application readiness:
 
 ```yaml
 containers:
-  - name: vscode-container
+  - name: "${APPLICATION_NAME}"
     readinessProbe: 
       tcpSocket:
         port: 8080
