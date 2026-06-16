@@ -56,7 +56,7 @@ _...or any program installed in a Docker image!_
 
 <img src="/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
-> **Note:** We currently only allow one GPU being booked per user at a time. Please refer to the [GPU Booker](https://dsri.maastrichtuniversity.nl/gpu-booking/) for more information. Additionally, the L40S GPUs cannot be booked as they are dedicated to certain research departments. Please contact us if you would like to know more about possibilities for co-investing in the DSRI to have your own hardware!
+> **Note:** We currently only allow one GPU being booked per user at a time. Please refer to the [GPU Booker](https://dsri.maastrichtuniversity.nl/gpu-booking/) for more information. Additionally, the L40S GPUs cannot be booked as they are dedicated to certain research departments. Please [contact us](https://dsri.maastrichtuniversity.nl/contact) if you would like to know more about possibilities for co-investing in the DSRI to have your own hardware!
 
 <!-- Old presentation, commented out until we have a new presentation 2025-05-23
 ## Learn more about DSRI
