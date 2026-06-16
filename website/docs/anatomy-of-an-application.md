@@ -246,7 +246,7 @@ Define the container(s) that will run in the pod. It's recommended to deploy 1 c
 
 ```yaml
           containers:
-            - name: vscode 
+            - name: "${APPLICATION_NAME}"
               image: "${APPLICATION_IMAGE}" 
               imagePullPolicy: IfNotPresent
               workingDir: /home/coder/project
