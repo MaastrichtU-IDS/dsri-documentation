@@ -1,4 +1,4 @@
-from pydantic import BaseSettings, validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     # CLUSTER_PASSWORD: str = 'password'
     CLUSTER_API_KEY: str = 'token'
     CLUSTER_URL: str = 'https://api.dsri2.unimaas.nl:6443'
-    CLUSTER_API_VERSION = 'apps.openshift.io/v1'
+    CLUSTER_API_VERSION : str = 'apps.openshift.io/v1'
 
     ENABLE_CRON: bool = False
 
@@ -19,9 +19,7 @@ class Settings(BaseSettings):
     # def gen_sql_url(cls, v, values):
     #     return f"mysql://dsri-user:{values.get('DB_PASSWORD')}@mysql:3306/dsri-db"
 
-    class Config:
-        case_sensitive = True
-
+    model_config = SettingsConfigDict(case_sensitive=True)
 
 settings = Settings()
 

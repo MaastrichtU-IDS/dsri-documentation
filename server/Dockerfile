@@ -1,40 +1,33 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
+# The Docker image is now deprecated, use Uvicorn
+FROM python:3.14-slim
 
 WORKDIR /app/
 
 ENV TZ=Europe/Amsterdam \
     PYTHONUNBUFFERED='1' \
-    APP_MODULE=api.main:app \
-    MAX_WORKERS='16'
-
-## Check here for more details on how the image is built and which env variables are available
-# https://github.com/tiangolo/uvicorn-gunicorn-docker/tree/master/docker-images
-#   WORKER_CLASS=uvicorn.workers.UvicornWorker \
-#   WORKERS_PER_CORE='1' \
-#   LOG_LEVEL=info
+    APP_MODULE=api.main:app
 
 RUN apt-get update && \
-    apt-get install -y wget tzdata && \
+    apt-get install -y --no-install-recommends wget tzdata default-libmysqlclient-dev pkg-config build-essential && \
+    rm -rf /var/lib/apt/lists/* && \
     pip install --upgrade pip
 
 # Download kubectl and oc CLI
 RUN cd /tmp && \
     wget -q https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz && \
     tar xvf oc.tar.gz && \
-    mv oc kubectl /usr/local/bin/
-    # Other option: https://github.com/openshift/okd/releases/download/4.9.0-0.okd-2022-01-14-230113/openshift-client-linux-4.9.0-0.okd-2022-01-14-230113.tar.gz
-    # curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-
+    mv oc kubectl /usr/local/bin/ && \
+    rm -f oc.tar.gz
 
 COPY requirements.txt /app/
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY . /app
 
-RUN python setup.py install
+RUN pip install .
 
-# By default this image entrypoint will use gunicorn to start multiple uvicorn workers
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "80"]
 
 
 ## Running as non-root dont work, the API crashes directly at start without notice

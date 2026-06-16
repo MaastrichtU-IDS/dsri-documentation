@@ -7,7 +7,7 @@ from api.database import init_db
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from fastapi_utils.tasks import repeat_at, repeat_every
+from fastapi_utilities import repeat_at, repeat_every
 
 # Waiting for MySQL to start
 time.sleep(7)
