@@ -146,11 +146,6 @@
     },
     {
       "type": "doc",
-      "id": "contribute",
-      "label": "Contributing to the DSRI"
-    },
-    {
-      "type": "doc",
       "id": "glossary",
       "label": "Glossary"
     }
