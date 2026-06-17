@@ -35,8 +35,6 @@ Below is a non-exhaustive list of applications that can be easily deployed:
 
 _...or any program installed in a Docker image!_
 
-> **Note:** If you work on desktop software with graphical user interfaces, such as Matlab or Spyder, the installation will be much more complex, and usually using your laptop will be more comfortable, stable and reactive than accessing a desktop interface on a remote server through the UM VPN.
-
 ### Hardware
 
 |                | CPU                             | Cores                     | RAM                 | Storage      | Type                     |
@@ -53,10 +51,9 @@ _...or any program installed in a Docker image!_
 | 1x GPU node capacity | 4 NVIDIA L40S 48GB | 2x AMD EPYC 9554 64-Core 3.75GHz | 128 cores (256 vCPUs/threads)   | 1536 GB DDR5 (4800MHz) | HPE ProLiant DL385 Gen11 | No            |
 | Total capacity       | 11 GPUs            | 10 CPUs                          | 640 cores (1280 vCPUs/threads) | 8192 GB             | -                        |               |
 
+> **Note:** We currently only allow one GPU being booked per user at a time. Please refer to the [GPU Booker](https://dsri.maastrichtuniversity.nl/gpu-booking/) for more information. Additionally, the L40S GPUs cannot be booked as they are dedicated to certain research departments. **Please [contact us](https://dsri.maastrichtuniversity.nl/contact) if you would like to know more about possibilities for co-investing in the DSRI to have your own hardware!**
 
 <img src="/img/DSRI_infrastructure_architecture_overview.png" alt="DSRI infrastructure" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-> **Note:** We currently only allow one GPU being booked per user at a time. Please refer to the [GPU Booker](https://dsri.maastrichtuniversity.nl/gpu-booking/) for more information. Additionally, the L40S GPUs cannot be booked as they are dedicated to certain research departments. Please [contact us](https://dsri.maastrichtuniversity.nl/contact) if you would like to know more about possibilities for co-investing in the DSRI to have your own hardware!
 
 <!-- Old presentation, commented out until we have a new presentation 2025-05-23
 ## Learn more about DSRI
