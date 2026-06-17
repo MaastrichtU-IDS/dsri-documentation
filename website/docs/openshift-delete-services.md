@@ -3,13 +3,13 @@ id: openshift-delete-services
 title: Deleting an Application
 ---
 
-It is recommend to use the `oc` tool to delete an application, as it will allow to properly delete all objects related to the application deployment.
+It is recommended to use the `oc` CLI to delete an application, as it will properly remove all objects related to the deployment.
 
-:::caution Project
+:::caution
 
-Make sure you are connected to the right project:
+Make sure you are connected to the right project before deleting anything:
 
-```shell
+```bash
 oc project my-project
 ```
 
@@ -17,17 +17,17 @@ oc project my-project
 
 ## From the terminal
 
-The best way to make sure all objects related to your application have been deleted is to use the command line providing your application name:
+Delete all objects related to your application by providing the application name:
 
-```shell
+```bash
 oc delete all,secret,configmaps,serviceaccount,rolebinding --selector app=my-application
 ```
 
 :::info Force deletion
 
-You can force the deletion if the objects are not deleting properly:
+If objects are not deleting properly, you can force the deletion:
 
-```shell
+```bash
 oc delete all,secret,configmaps,serviceaccount,rolebinding --force --grace-period=0 --selector app=my-application
 ```
 
@@ -35,11 +35,8 @@ oc delete all,secret,configmaps,serviceaccount,rolebinding --force --grace-perio
 
 ## From the web UI
 
-We recommend to use the `oc` CLI to easily delete an application. But in the case you cannot install `oc`  on your computer you can delete the different objects created by the application (easy to find in the **Topology** page):
+If you cannot use the `oc` CLI, you can manually delete the objects created by the application from the **Topology** view:
 
 1. Delete the **Route**
 2. Delete the **Service**
-3. Delete the **Deployment Config** 
-
-<img src="/img/screenshot_delete_application.png" alt="Delete application from the web UI" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
+3. Delete the **Deployment**
