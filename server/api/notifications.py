@@ -10,12 +10,9 @@ import requests
 # To post to Slack, create an app with a bot, and get its bot token: https://api.slack.com/apps
 # Bot tokens access scope: chat:write chat:write.customize
 def post_msg_to_slack(text):
-    # print('📬️ Sending a Slack message')
     data = {
         "channel": os.getenv('SLACK_CHANNEL'),
         "text": text,
-        # 'icon_emoji': ':date:',
-        # 'username': 'DSRI GPU booker',
     }
     print(data)
     print(str(os.getenv('SLACK_BOT_TOKEN')))
@@ -45,7 +42,6 @@ This is an automated message. Please do not reply to this email. For support, co
 # https://kb.icts.maastrichtuniversity.nl/display/ISM/E-mail+-+Universal+UM+email+server+names
 def send_email(msg, to, fromaddr="no-reply-rcs-ub@maastrichtuniversity.nl", subject="📀 DSRI GPU bookings"):
     toaddrs  = [to]
-    # print(f"📬️ Sending an email from {fromaddr} to {toaddrs}")
 
     # Create message container - the correct MIME type is multipart/alternative.
     email = MIMEMultipart('alternative')
@@ -77,7 +73,6 @@ def send_email(msg, to, fromaddr="no-reply-rcs-ub@maastrichtuniversity.nl", subj
 
         smtp.sendmail(fromaddr, toaddrs, email.as_string())
         smtp.quit()
-        # print('✅ Email sent')
     except Exception as e:
         print(f'Error sending the email: {e}')
 
