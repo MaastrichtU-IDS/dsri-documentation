@@ -1,4 +1,3 @@
-import datetime
 import logging
 
 from api.config import settings
@@ -17,30 +16,15 @@ formatter = logging.Formatter(
 console_handler.setFormatter(formatter)
 log.addHandler(console_handler)
 
-## You can also ask more details like line number:
-# "%(asctime)s - %(module)s - %(funcName)s - line:%(lineno)d - %(levelname)s - %(message)s"
-## You can also export logs to a file
-# fh = logging.FileHandler(filename='./server.log')
-# fh.setFormatter(formatter)
-# logger.addHandler(fh)
-
 
 ## Login to the OpenShift cluster using https://github.com/openshift/openshift-restclient-python
 def oc_login():
     """Login to the OpenShift cluster"""
-    kubeConfig = OCPLoginConfiguration(
-        # api_key=settings.CLUSTER_API_KEY
-        # ocp_username=settings.CLUSTER_USER,
-        # ocp_password=settings.CLUSTER_PASSWORD
-    )
+    kubeConfig = OCPLoginConfiguration()
+
     kubeConfig.api_key = {"authorization": "Bearer " + settings.CLUSTER_API_KEY}
     kubeConfig.host = settings.CLUSTER_URL
     kubeConfig.verify_ssl = False
-
-    # Retrieve the auth token
-    # kubeConfig.get_token()
-    # print('Auth token: {0}'.format(kubeConfig.api_key))
-    # print('Token expires: {0}'.format(kubeConfig.api_key_expires))
 
     # Disable proxy for this specific client
     kubeConfig.proxy = None
@@ -49,4 +33,4 @@ def oc_login():
     k8s_client = client.ApiClient(kubeConfig)
     dyn_client = DynamicClient(k8s_client)
 
-    return dyn_client, k8s_client, kubeConfig
+    return dyn_client

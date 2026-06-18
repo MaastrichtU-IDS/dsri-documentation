@@ -9,7 +9,7 @@ router = APIRouter()
     response_model=dict,
 )
 def get_stats() -> dict:
-    dyn_client, _, _ = oc_login()
+    dyn_client = oc_login()
     v1_projects = dyn_client.resources.get(api_version='project.openshift.io/v1', kind='Project')
     all_projects = v1_projects.get()
 

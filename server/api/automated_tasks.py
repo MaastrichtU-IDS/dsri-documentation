@@ -152,7 +152,7 @@ def check_gpu_bookings() -> None:
     SQLModel.metadata.create_all(engine)
 
     # Connect to the OpenShift cluster
-    dyn_client, _, _ = oc_login()
+    dyn_client = oc_login()
 
     # Query the SQL DB to get the GPU reservations
     # And send msgs if reservations starts/ends
