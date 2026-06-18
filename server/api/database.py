@@ -1,5 +1,3 @@
-import os
-
 from sqlmodel import SQLModel, create_engine
 
 from api.config import settings
