@@ -16,7 +16,6 @@ formatter = logging.Formatter(
 console_handler.setFormatter(formatter)
 log.addHandler(console_handler)
 
-
 ## Login to the OpenShift cluster using https://github.com/openshift/openshift-restclient-python
 def oc_login():
     """Login to the OpenShift cluster"""

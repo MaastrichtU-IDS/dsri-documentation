@@ -204,8 +204,6 @@ def check_gpu_bookings() -> None:
             except Exception as err:
                 log.error(err)
 
-
-
 def backup_database() -> None:
     log.info(f'💾 Backing up the SQL database (export to CSV) on the {datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
 

@@ -1,4 +1,3 @@
-import os
 from datetime import datetime, timedelta
 from typing import List, Optional
 from textwrap import dedent
@@ -11,12 +10,10 @@ from fastapi.responses import JSONResponse
 from pydantic import validator
 from sqlmodel import Field, Session, SQLModel, select
 
-
 NUMBER_OF_GPUS = 7
 MAX_BOOK_DAYS = 4
 
 router = APIRouter()
-
 
 class CreateBooking(SQLModel, table=False):
     user_email: str = Field(primary_key=True)
@@ -30,11 +27,9 @@ class CreateBooking(SQLModel, table=False):
         assert str(v) != ''
         return v
 
-
 class GpuBooking(CreateBooking, table=True):
     gpu_id: Optional[int] = Field(primary_key=True)
     created_at: datetime = datetime.now()
-
 
 @router.get("/reservations", name="Get the list of Reservations for the DSRI GPUs",
     description="List of reservations for the DSRI GPUs",
@@ -52,7 +47,6 @@ def get_gpu_reservations() -> List[dict]:
             del resa['project_id']
             reservations.append(resa)
     return JSONResponse(reservations)
-
 
 # Get a dict with all days with GPUs booked
 def get_booked_days() -> dict:
@@ -75,7 +69,6 @@ def get_booked_days() -> dict:
                     booked_days[str(day)]['fullyBooked'] = True
     return booked_days
 
-
 @router.get("/booked-days", name="Get days when DSRI GPUs are booked",
     description="Dict of days, with which GPUs are booked for each day, and if the day is fully booked",
     response_model=dict,
@@ -83,7 +76,6 @@ def get_booked_days() -> dict:
 def get_gpu_booked_days() -> dict:
     booked_days = get_booked_days()
     return JSONResponse(booked_days)
-
 
 @router.post("/request", name="Request a DSRI GPU for a period",
     description="Request a DSRI GPU for a period, this will check if any GPU are available for the requested period",
@@ -147,4 +139,3 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
         except Exception as e:
             print(e)
             return JSONResponse({'errorMessage': 'Error creating the GPU booking.'})
-

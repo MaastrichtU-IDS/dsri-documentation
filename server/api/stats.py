@@ -34,7 +34,6 @@ def get_stats() -> dict:
         department_stats.setdefault(dept, {'projects': 0})
         department_stats[dept]['projects'] += 1
 
-
     return JSONResponse({
         'total_projects': total_projects,
         'faculties': faculty_stats

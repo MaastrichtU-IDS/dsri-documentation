@@ -6,7 +6,6 @@ from email.mime.text import MIMEText
 
 import requests
 
-
 # To post to Slack, create an app with a bot, and get its bot token: https://api.slack.com/apps
 # Bot tokens access scope: chat:write chat:write.customize
 def post_msg_to_slack(text):
@@ -28,7 +27,6 @@ def post_msg_to_slack(text):
     except Exception as e:
         return e
 
-
 html_footer = """<br/><br/><br/>Best regards,
 <br/><br/>The RCS team at Maastricht University
 <br/><br/><small style="color: #666;">This is an automated message. Please do not reply to this email. For support, contact <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a>.</small>"""
@@ -36,7 +34,6 @@ plain_footer = """\nBest regards,
 The RCS team at Maastricht University
 
 This is an automated message. Please do not reply to this email. For support, contact rcs-ub@maastrichtuniversity.nl"""
-
 
 ## Send an email with UM smtp server (require VPN connection)
 # https://kb.icts.maastrichtuniversity.nl/display/ISM/E-mail+-+Universal+UM+email+server+names
@@ -75,4 +72,3 @@ def send_email(msg, to, fromaddr="no-reply-rcs-ub@maastrichtuniversity.nl", subj
         smtp.quit()
     except Exception as e:
         print(f'Error sending the email: {e}')
-

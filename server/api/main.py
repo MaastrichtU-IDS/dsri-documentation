@@ -16,7 +16,6 @@ api_router = APIRouter()
 api_router.include_router(stats.router, prefix="/stats", tags=["Stats"])
 api_router.include_router(gpus.router, prefix="/gpu", tags=["GPUs"])
 
-
 app = FastAPI(
     title='Manage GPU scheduling and cluster stats',
     description="""API to manage GPU scheduling and get cluster statistics
@@ -35,11 +34,9 @@ app = FastAPI(
 )
 app.include_router(api_router)
 
-
 @app.on_event("startup")
 def create_db() -> None:
     init_db()
-
 
 if settings.ENABLE_CRON:
     # Everyday at 09:00
@@ -54,7 +51,6 @@ if settings.ENABLE_CRON:
     def weekly_backup() -> None:
         backup_database()
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -62,7 +58,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 @app.get("/", include_in_schema=False)
 def redirect_root_to_docs():
