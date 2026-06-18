@@ -7,19 +7,19 @@ from api.database import init_db
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from fastapi_utilities import repeat_at, repeat_every
+from fastapi_utilities import repeat_at
 
 # Waiting for MySQL to start
 time.sleep(7)
 
 api_router = APIRouter()
-api_router.include_router(stats.router, prefix="/user", tags=["Users"]) # REMOVE
+api_router.include_router(stats.router, prefix="/stats", tags=["Stats"])
 api_router.include_router(gpus.router, prefix="/gpu", tags=["GPUs"])
 
 
 app = FastAPI(
-    title='Manage DSRI users and GPU scheduling',
-    description="""API to register DSRI users, manage GPU scheduling, and get statistics
+    title='Manage GPU scheduling and cluster stats',
+    description="""API to manage GPU scheduling and get cluster statistics
 
 [Source code](https://github.com/MaastrichtU-IDS/dsri-documentation)
 """,
@@ -34,7 +34,6 @@ app = FastAPI(
     },
 )
 app.include_router(api_router)
-
 
 
 @app.on_event("startup")
@@ -54,8 +53,6 @@ if settings.ENABLE_CRON:
     @repeat_at(cron='0 9 * * 1,4')
     def weekly_backup() -> None:
         backup_database()
-
-    # @repeat_every(seconds=60 * 60 * 24 * 7)  # 7 days
 
 
 app.add_middleware(
