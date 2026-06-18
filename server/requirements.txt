@@ -4,7 +4,5 @@ sqlmodel==0.0.38
 mysqlclient==2.2.8
 requests==2.34.2
 pydantic_settings==2.14.1
-# fastapi_utilities
 fastapi_utilities==0.3.1
-# openshift-client
 openshift==0.13.2
