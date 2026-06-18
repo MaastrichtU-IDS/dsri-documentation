@@ -43,7 +43,7 @@ Once you have a working setup, you can build a custom Docker image with everythi
 Example `Dockerfile` for a Python application:
 
 ```dockerfile
-FROM python:3.8
+FROM python:3.12
 
 USER root
 WORKDIR /root
