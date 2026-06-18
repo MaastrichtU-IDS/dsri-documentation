@@ -1,83 +1,69 @@
 ---
 id: manage-app
-title: Managing Running Application
+title: Managing a Running Application
 ---
 
 ## Stop your application
 
-When you are not using your application anymore you can stop the pod. If you are using a Dynamic or Persistent storage you can restart the pod and continue working with all your data in the same state as you left it.
+When you are not using your application, scale down the pod to free up shared resources for other users. If you are using persistent storage, your data will still be there when you restart.
 
-:::caution Do not waste resources
+:::caution
 
-Please think of stopping applications you are not using to avoid consuming unnecessary resources.
-
-:::
-
-On the **Topology** page click on the down arrow ⬇️ next to the number of pods deployed.
-
-<img src="/img/screenshot_scaledown_pod.png" alt="Scale down pod" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-You can then restart the pod by clicking the up arrow ⬆️
-
-Note that starting more than 1 pod will not increase the amount of resources you have access to, most of the time it will only waste resources and might ends up in weird behavior on your side. The web UI will randomly assign you to 1 of the pod started when you access it. This only works for clusters with multiple workers, such as Apache Flink and Spark. Or if you connect directly to each pod with the terminal to run different processes.
-
-## Start your application
-
-When you try to access your workspace and you encounter the page below, usually this indicates that your pod is not running. For example, this will be the case if you stopped your pod, or if there was maintenance on the cluster.
-
-<img src="/img/screenshot_application_unavailable.png" alt="Screenshot of page that says Application is not available" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-To start the pod, go to the **Topology** page, and click on the up arrow ⬆️ next to the number of pods deployed. Make sure you scale it to 1. Scaling it to more than 1 will not increase the amount of resources you have access to, most of the time it will only waste resources and causes weird behavior on your side.
-
-<img src="/img/screenshot_scaledown_pod.png" alt="Scale down pod" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-:::caution Do not waste resources
-
-Please only scale up resources you're using, and scale down when you're not using them anymore. Consuming resources consumes unnecessary power and might prevent other users from using the DSRI.
+Please stop applications you are not actively using. Idle pods consume shared resources and may prevent other users from running their workloads.
 
 :::
 
+To stop your application, go to the **Topology** page and click the down arrow next to the number of running pods. Set it to `0`.
 
+To restart it, click the up arrow and set it back to `1`.
 
-## Optional: define a docker image
+:::info
 
-Once you have tested your workspace and you know how to set it up it can be helpful to define a `Dockerfile` to build and publish a Docker image with everything directly installed (instead of installing your requirements after starting a generic workspace)
+Running more than 1 pod does not increase the resources available to you. In most cases it wastes resources and causes unexpected behavior. Multiple pods only make sense for distributed workloads like Apache Spark or Flink, or when you connect to each pod separately via the terminal to run different processes.
 
-1. Start from an existing generic Docker image, depending on the base technologies you need, such as Debian, Ubuntu, Python, JupyterLab, VisualStudio Code, RStudio...
-2. Add your source code in the Docker image using `ADD . .` or `COPY . .`
-3. Install dependencies (e.g. `RUN apt-get install gfortran`)
-4. Define which command to run when starting the container (e.g. `ENTRYPOINT["jupyter", "lab"]`)
+:::
 
-Here is a simple example `Dockerfile` for a python application:
+## Application is not available
+
+If you see the page below when trying to access your workspace, it usually means the pod is not running — for example because you stopped it or there was maintenance on the cluster.
+
+<img src="/img/screenshot_application_unavailable.png" alt="Screenshot of Application is not available page" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+To start it again, go to the **Topology** page, click the up arrow next to the pod count, and set it to `1`.
+
+## Define a custom Docker image
+
+Once you have a working setup, you can build a custom Docker image with everything pre-installed so you do not have to reinstall dependencies every time you start a workspace.
+
+1. Start from an existing base image (Debian, Ubuntu, Python, JupyterLab, RStudio, etc.)
+2. Copy your source code into the image using `COPY . .`
+3. Install your dependencies (e.g. `RUN apt-get install gfortran`)
+4. Define the startup command (e.g. `ENTRYPOINT ["jupyter", "lab"]`)
+
+Example `Dockerfile` for a Python application:
 
 ```dockerfile
-# The base image to start from, choose the one with everything you need installed
-FROM python:3.8
+FROM python:3.12
 
-# Change the user and working directory to make sure we are using root
 USER root
 WORKDIR /root
 
-# Install additional packages
 RUN apt-get update && \
-	apt-get install build-essentials
+    apt-get install build-essential
 
-# This line will copy all files and folder that are in the same folder as the Dockerfile (usually the code you want to run in the container)
-ADD . . 
+COPY . .
 
-# This line will install all the python packages described in the requirements.txt of your source code
 RUN pip install -r requirements.txt && \
     pip install notebook jupyterlab
 
-# Command to run when the container is started, here it starts JupyterLab as a service
-ENTRYPOINT [ "jupyter", "lab" ]
+ENTRYPOINT ["jupyter", "lab"]
 ```
 
-Here are some examples of `Dockerfile` for various type of web applications:
+Some example Dockerfiles for reference:
 
-* [Custom JupyterLab](https://github.com/MaastrichtU-IDS/jupyterlab/blob/main/Dockerfile) based on the official [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks)
-* [Custom RStudio](https://github.com/MaastrichtU-IDS/rstudio/blob/main/Dockerfile)
-* [VisualStudio Code server](https://github.com/MaastrichtU-IDS/code-server/blob/main/Dockerfile)
-* [Python web app](https://github.com/MaastrichtU-IDS/knowledge-collaboratory-api/blob/master/Dockerfile)
+- [Custom JupyterLab](https://github.com/MaastrichtU-IDS/jupyterlab/blob/main/Dockerfile)
+- [Custom RStudio](https://github.com/MaastrichtU-IDS/rstudio/blob/main/Dockerfile)
+- [Visual Studio Code server](https://github.com/MaastrichtU-IDS/code-server/blob/main/Dockerfile)
+- [Python web app](https://github.com/MaastrichtU-IDS/knowledge-collaboratory-api/blob/master/Dockerfile)
 
-See the guide to [Publish a Docker image](/docs/guide-publish-image) for more details on this topic.
+See the [Publish a Docker image](/docs/guide-publish-image) guide for more details.
