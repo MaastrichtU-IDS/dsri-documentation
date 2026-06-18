@@ -2,6 +2,7 @@ import csv
 import datetime
 import os
 import pathlib
+from textwrap import dedent
 
 from api.config import settings
 from api.gpus import GpuBooking
@@ -10,23 +11,28 @@ from api.utils import log, oc_login
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session, SQLModel, create_engine, select
 
-
+def _patch_resource(dyn_client, api_version, kind, name, namespace, body_spec):
+    """ Helper function to patch a resource """
+    resource = dyn_client.resources.get(api_version=api_version, kind=kind)
+    body = {
+        'kind': kind,
+        'apiVersion': api_version,
+        'metadata': {'name': name},
+        'spec': body_spec,
+    }
+    resource.patch(body=body, namespace=namespace)
 
 def disable_gpu(project_id, app_id, dyn_client) -> str:
     logs = ''
 
     try:
         # Turn down the Deployment to 0 replicas
-        dyn_dc = dyn_client.resources.get(api_version='apps/v1', kind='Deployment')
-        body = {
-            'kind': 'Deployment',
-            'apiVersion': 'apps/v1',
-            'metadata': {'name': app_id},
-            'spec': {
+        _patch_resource(
+            dyn_client=dyn_client, api_version='apps/v1', kind='Deployment', name=app_id, namespace=project_id, 
+            body_spec= {
                 'replicas': 0,
             }
-        }
-        dyn_dc.patch(body=body, namespace=project_id)
+        )
         logs = logs + f'✅ GPU pod *{app_id}* in *{project_id}* stopped\n'
 
     except Exception as err:
@@ -34,12 +40,9 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
 
     try:
         # Patch Deployment GPU limits
-        dyn_dc = dyn_client.resources.get(api_version='apps/v1', kind='Deployment')
-        body = {
-            'kind': 'Deployment',
-            'apiVersion': 'apps/v1',
-            'metadata': {'name': app_id},
-            'spec': {
+        _patch_resource(
+            dyn_client=dyn_client, api_version='apps/v1', kind='Deployment', name=app_id, namespace=project_id,
+            body_spec= {
                 'template': {
                     'spec': {
                         'containers': [
@@ -62,25 +65,20 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
                     }
                 }
             }
-        }
-        dyn_dc.patch(body=body, namespace=project_id)
+        )
         logs = logs + f'✅ GPU limits disabled for the pod *{app_id}* in *{project_id}*\n'
 
     except Exception as err:
         logs = logs + f'⚠️  Error disabling GPU limits for the pod *{app_id}* in *{project_id}*: {str(err)[:21]}\n'
 
-    # Patch ResourceQuota for GPU
     try:
-        dyn_quota = dyn_client.resources.get(api_version='v1', kind='ResourceQuota')
-        body = {
-            'kind': 'ResourceQuota',
-            'apiVersion': 'v1',
-            'metadata': {'name': 'gpu-quota'},
-            "spec": {
+        # Patch ResourceQuota for GPU
+        _patch_resource(
+            dyn_client=dyn_client, api_version='v1', kind='ResourceQuota', name='gpu-quota', namespace=project_id,
+            body_spec= {
                 "hard": { "requests.nvidia.com/gpu": 0 }
             }
-        }
-        dyn_quota.patch(body=body, namespace=project_id)
+        )
         logs = logs + f'🧊 GPU quota of {project_id} set to 0'
         log.info(logs)
 
@@ -89,51 +87,25 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
 
     return logs
 
-    # with oc.project(project_id), oc.timeout(10*60):
-    #     log.info(f"✅ Found the project {oc.get_project_name()}, disabling GPU")
-
-    # Stop the GPU pod, and change GPU quota to 0
-    # cmds = [
-    #     """oc patch dc/""" + app_id + """ --type=json -p='[{"op": "replace", "path": "/spec/replicas", "value": 0}]' -n """ + project_id,
-    #     """oc patch dc/""" + app_id + """ --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {}}]' -n """ + project_id,
-    #     """oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 0}}}' -n """ + project_id
-    # ]
-    # for cmd in cmds:
-    #     # os.system(cmd)
-    #     # log.info(subprocess.run(cmd.split(' '), capture_output=True))
-    #     log.info(subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT))
-
-    #     return f"🛬✅ Successfully disabled GPU for {app_id} in {project_id}"
-    # except Exception as err:
-    #     return f"🛬⚠️ Could not disable the GPU for {app_id} in {project_id}: {str(err)[:21]}"
-
-
-
 def enable_gpu(project_id, app_id, dyn_client):
     logs = ''
     email = ''
     try:
-        dyn_quota = dyn_client.resources.get(api_version='v1', kind='ResourceQuota')
-        body = {
-            'kind': 'ResourceQuota',
-            'apiVersion': 'v1',
-            'metadata': {'name': 'gpu-quota'},
-            "spec": {
+        # Patch ResourceQuota for GPU
+        _patch_resource(
+            dyn_client=dyn_client, api_version='v1', kind='ResourceQuota', name='gpu-quota', namespace=project_id,
+            body_spec= {
                 "hard": { "requests.nvidia.com/gpu": 1 }
             }
-        }
-        dyn_quota.patch(body=body, namespace=project_id)
+        )
         logs = logs + f'✅ GPU quota of *{project_id}* set to *1*\n'
         email = email + f'The GPU was successfully enabled in your project <b>{project_id}</b><br/><br/>'
 
         try:
-            # Patch Deployment
-            dyn_dc = dyn_client.resources.get(api_version='apps/v1', kind='Deployment')
-            body = {
-                'kind': 'Deployment',
-                'apiVersion': 'apps/v1',
-                'metadata': {'name': app_id},
-                'spec': {
+            # Patch Deployment GPU limits
+            _patch_resource(
+                dyn_client=dyn_client, api_version='apps/v1', kind='Deployment', name=app_id, namespace=project_id,
+                body_spec= {
                     'template': {
                         'spec': {
                             'containers': [
@@ -156,8 +128,7 @@ def enable_gpu(project_id, app_id, dyn_client):
                         }
                     }
                 }
-            }
-            dyn_dc.patch(body=body, namespace=project_id)
+            )
             logs = logs + f'✅ GPU limits of *{app_id}* in *{project_id}* set to *1*'
             email = email + f'The GPU was successfully enabled for your workspace <b>{app_id}</b> in your project <b>{project_id}</b>. You can restart the workspace if needed, and start using the GPU.<br/><br/>'
 
@@ -173,22 +144,6 @@ def enable_gpu(project_id, app_id, dyn_client):
 
     return logs, email
 
-    # with oc.project(project_id), oc.timeout(10*60):
-    #     log.info(f"✅ Found the project {oc.get_project_name()}, enabling GPU")
-    # Change GPU quota to 1, and enable the GPU in the pod
-    # cmds = [
-    #     """oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 1}}}' -n """ + project_id,
-    #     """oc patch dc/""" + app_id + """ --type=json -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/resources", "value": {"requests": {"nvidia.com/gpu": 1}, "limits": {"nvidia.com/gpu": 1}}}]' -n """ + project_id,
-    # ]
-    # for cmd in cmds:
-    #     # os.system(cmd)
-    #     # log.info(subprocess.run(cmd.split(' '), capture_output=subprocess.PIPE).stdout.decode('utf-8'))
-    #     # log.info(subprocess.run(cmd.split(' '), capture_output=True))
-    #     log.info(subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT))
-
-    # return f"🚀✅ Successfully enabled GPU for {app_id} in {project_id}"
-
-
 def check_gpu_bookings() -> None:
     log.info(f'🔎 Checking GPU reservations to send booking notifications on the {datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")}')
 
@@ -197,7 +152,7 @@ def check_gpu_bookings() -> None:
     SQLModel.metadata.create_all(engine)
 
     # Connect to the OpenShift cluster
-    dyn_client, k8s_client, kubeConfig = oc_login()
+    dyn_client, _, _ = oc_login()
 
     # Query the SQL DB to get the GPU reservations
     # And send msgs if reservations starts/ends
@@ -213,35 +168,36 @@ def check_gpu_bookings() -> None:
 
                 # Check GPU booking ending tomorrow (we stop it at end_date + 1)
                 if end_date == datetime.date.today():
-                    email_msg = f"""⚠️ Your GPU booking in project <b>{resa["project_id"]}</b> will end tomorrow at 9:00am!<br/><br/>
-Make sure you have properly moved all data you want to keep in the persistent folder, as the pod will be restarted automatically.
-"""
+                    email_msg = dedent(f"""\
+                                        ⚠️ Your GPU booking in project <b>{resa["project_id"]}</b> will end tomorrow at 9:00am!<br/><br/>
+                                        Make sure you have properly moved all data you want to keep in the persistent folder, as the pod will be restarted automatically.
+                                        """)
                     send_email(email_msg, to=resa["user_email"], subject="📀 DSRI GPU booking ending tomorrow")
-
 
                 # Check if GPU booking end date +1 day is today (since we switch in the morning, it prevents losing a day)
                 if end_date + datetime.timedelta(days=1) == datetime.date.today():
-                    email_msg = f"""⚠️ Your GPU booking in project <b>{resa["project_id"]}</b> just ended, and the access to the GPU in your project has been disabled<br/><br/>"""
+                    email_msg = dedent(f"""\
+                                        ⚠️ Your GPU booking in project <b>{resa["project_id"]}</b> just ended, and the access to the GPU in your project has been disabled<br/><br/>""")
                     send_email(email_msg, to=resa["user_email"], subject="📀 DSRI GPU booking ended")
-#                     slack_msg = f'📀 🛬 Booking ends: *GPU {resa["gpu_id"]}* in project *{resa["project_id"]}* for {resa["user_email"]} on the {datetime.date.today()}\n'
-#                     slack_msg = slack_msg + """```
-# oc patch resourcequota/gpu-quota --patch '{"spec":{"hard": {"requests.nvidia.com/gpu": 0}}}' -n """ + resa['project_id'] + """
-# ```"""
+
                     slack_msg = disable_gpu(resa["project_id"], resa["app_id"], dyn_client)
-                    slack_msg = f"""🚀🔌 Disabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} and {end_date}):\n""" + slack_msg
+                    slack_msg = dedent(f"""\
+                                        🚀🔌 Disabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} and {end_date}):\n""") + slack_msg
                     post_msg_to_slack(slack_msg)
 
 
                 # Check GPU booking starting
                 if start_date == datetime.date.today():
                     slack_msg, email_logs = enable_gpu(resa["project_id"], resa["app_id"], dyn_client)
-                    slack_msg = f"""🚀🔋 Enabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} to {end_date}):\n""" + slack_msg
-                    email_msg = f"""✅ Your GPU booking in project <b>{resa["project_id"]}</b> just started!<br/><br/>
-{email_logs}<br/>
-For more details, checkout the documentation to see how to enable or use the GPU: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#enable-gpu-in-your-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
-<b>Please note:</b> if you booked after 09:00 AM on your start date, the GPU may not have been enabled automatically. If this is the case, please contact us at <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a> and we will enable it manually for you.<br/><br/>
-The GPU will be automatically disabled at the end of your booking on the {end_date} at 9:00am
-"""
+                    slack_msg = dedent(f"""\
+                                        🚀🔋 Enabling the GPU for {resa["user_email"]} in *{resa["project_id"]}* (from {start_date} to {end_date}):\n""") + slack_msg
+                    email_msg = dedent(f"""\
+                                        ✅ Your GPU booking in project <b>{resa["project_id"]}</b> just started!<br/><br/>
+                                        {email_logs}<br/>
+                                        For more details, checkout the documentation to see how to enable or use the GPU: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#enable-gpu-in-your-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
+                                        <b>Please note:</b> if you booked after 09:00 AM on your start date, the GPU may not have been enabled automatically. If this is the case, please contact us at <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a> and we will enable it manually for you.<br/><br/>
+                                        The GPU will be automatically disabled at the end of your booking on the {end_date} at 9:00am
+                                        """)
                     send_email(email_msg, to=resa["user_email"], subject="📀 DSRI GPU booking starting")
                     post_msg_to_slack(slack_msg)
 
