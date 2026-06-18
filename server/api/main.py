@@ -1,6 +1,6 @@
 import time
 
-from api import gpus, users
+from api import gpus, stats
 from api.automated_tasks import backup_database, check_gpu_bookings
 from api.config import settings
 from api.database import init_db
@@ -13,7 +13,7 @@ from fastapi_utilities import repeat_at, repeat_every
 time.sleep(7)
 
 api_router = APIRouter()
-api_router.include_router(users.router, prefix="/user", tags=["Users"])
+api_router.include_router(stats.router, prefix="/user", tags=["Users"]) # REMOVE
 api_router.include_router(gpus.router, prefix="/gpu", tags=["GPUs"])
 
 

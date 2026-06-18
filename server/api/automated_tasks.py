@@ -6,7 +6,6 @@ import pathlib
 from api.config import settings
 from api.gpus import GpuBooking
 from api.notifications import post_msg_to_slack, send_email
-from api.users import User
 from api.utils import log, oc_login
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session, SQLModel, create_engine, select
@@ -272,38 +271,4 @@ def backup_database() -> None:
         [writer.writerow([getattr(curr, column.name) for column in GpuBooking.__mapper__.columns]) for curr in results]
         outfile.close()
 
-        # Dump Users
-        outfile = open(f'{folder_path}/dsri-db_{date}_users.csv', 'w')
-        writer = csv.writer(outfile)
-        statement = select(User)
-        results = session.exec(statement).all()
-        [writer.writerow([getattr(curr, column.name) for column in User.__mapper__.columns]) for curr in results]
-        outfile.close()
-
         log.info(f'✅ Database backed up successfully on the {date}')
-
-
-
-# Just here as an example, but not really used in practice
-# pip install scholarly
-
-# def get_publications_about_dsri() -> None:
-#     # will paginate to the next page by default
-#     pubs = scholarly.search_pubs("This research was made possible, in part, using the Data Science Research Infrastructure (DSRI) hosted at Maastricht University")
-#     valid_pubs = []
-#     limit = 20
-#     for i, pub in enumerate(pubs):
-#         if i >= limit:
-#             break
-#         if 'data science research infrastructure' in pub['bib']['abstract'].lower():
-#             if 'dsri' in pub['bib']['abstract'].lower():
-#                 if 'maastricht university' in pub['bib']['abstract'].lower():
-#                     valid_pubs.append({
-#                         'title': pub['bib']['title'],
-#                         'authors': ', '.join(pub['bib']['author']),
-#                         'pub_year': pub['bib']['pub_year'],
-#                         'venue': pub['bib']['venue'],
-#                         'abstract': pub['bib']['abstract'],
-#                         'url': pub['pub_url'],
-#                     })
-#     print(json.dumps(valid_pubs, indent=2))
