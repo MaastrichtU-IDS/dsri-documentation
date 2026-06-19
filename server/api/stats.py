@@ -13,28 +13,37 @@ def get_stats() -> dict:
     v1_projects = dyn_client.resources.get(api_version='project.openshift.io/v1', kind='Project')
     all_projects = v1_projects.get()
 
-    faculty_stats = {}
+    affiliations_stats = {}
     department_stats = {}
     total_projects = 0
-    KNOWN_FACULTIES = {'fhml', 'fasos', 'sbe', 'fse'}
+    KNOWN_AFFILIATIONS = {'icts', 'fhml', 'bu', 'fdr', 'law', 'fin', 'fdewb', 'sbe', 'fdcw', 'fasos', 'ub', 'fdp', 'fpn', 'fs', 'fse'}
 
+    AFFILIATION_RENAMES = {
+        'fdr': 'law',
+        'fdewb': 'sbe',
+        'fdcw': 'fasos',
+        'fdp': 'fpn',
+    }
+    
     for project in all_projects.items:
         name = project.metadata.name
         parts = name.split('-', 2)
-        if len(parts) == 3 and parts[0] in KNOWN_FACULTIES:
+        if len(parts) == 3 and parts[0] in KNOWN_AFFILIATIONS:
             total_projects += 1
-            faculty, department, slug = parts
+            affiliation, department, slug = parts
         else:
             continue
+        
+        affiliation = AFFILIATION_RENAMES.get(affiliation, affiliation)
+        
+        affiliations_stats.setdefault(affiliation, {'projects': 0})
+        affiliations_stats[affiliation]['projects'] += 1
 
-        faculty_stats.setdefault(faculty, {'projects': 0})
-        faculty_stats[faculty]['projects'] += 1
-
-        dept = f'{faculty}-{department}'
+        dept = f'{affiliation}-{department}'
         department_stats.setdefault(dept, {'projects': 0})
         department_stats[dept]['projects'] += 1
 
     return JSONResponse({
         'total_projects': total_projects,
-        'faculties': faculty_stats
+        'affiliations': affiliations_stats
     })

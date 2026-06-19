@@ -31,6 +31,7 @@ app = FastAPI(
         "email": "DSRI-SUPPORT-L@maastrichtuniversity.nl",
         "url": "https://github.com/MaastrichtU-IDS/dsri-documentation",
     },
+    swagger_ui_parameters={"defaultModelsExpandDepth": -1},
 )
 app.include_router(api_router)
 
