@@ -6,6 +6,14 @@ slug: /
 
 The **DSRI** (*Data Science Research Infrastructure*) is a cluster of servers for deploying workspaces and applications for data science. Workspaces run in Docker containers orchestrated by Kubernetes and are accessible via an auto-generated URL.
 
+:::info Research data management
+
+Not sure where to store your data or whether it can be processed on the DSRI? Check these resources first:
+- **[Storage Finder](https://library.maastrichtuniversity.nl/research/rdm/services-tools-training/storage-finder-tool/)** - find the right storage solution for your research data.
+- **[Research Data Compliance Self Assessment](https://maastrichtu-library.github.io/rdm-compliance-decision-tool/)** - understand what compliance steps apply to your research data.
+
+:::
+
 ## Using the DSRI
 
 ### ✅ What can be done
