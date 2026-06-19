@@ -1,4 +1,3 @@
-# The Docker image is now deprecated, use Uvicorn
 FROM python:3.14-slim
 
 WORKDIR /app/
@@ -28,21 +27,3 @@ COPY . /app
 RUN pip install .
 
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "80"]
-
-
-## Running as non-root dont work, the API crashes directly at start without notice
-# ## Create non root user "app" in group "app"
-# RUN addgroup --system app && adduser --system --group app
-# ## Make sure all files belongs to the app user
-# RUN chown -R app:app /app && \
-#     chown -R app:app $HOME && \
-#     chown -R app:app /usr/local
-# ## Switch to app user to install the python app
-# USER app
-
-
-## If you want to use crontab: copy cron file to the cron.d directory
-# COPY cron/gpu-notification-cron /etc/cron.d/gpu-notification-cron
-# RUN chmod 0644 /etc/cron.d/gpu-notification-cron  && \
-#     crontab /etc/cron.d/gpu-notification-cron
-    # touch /var/log/cron.log
