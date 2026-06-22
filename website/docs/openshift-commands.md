@@ -7,139 +7,170 @@ title: Command Line Tips
 
 Here is an overview of common `oc` commands:
 
-| **Command**                      | **Description**                                              |
-| -------------------------------- | ------------------------------------------------------------ |
-| `oc login --token=<token>`      | Login to the DSRI OpenShift cluster in your terminal         |
-| `oc get projects`                | List all available projects                                  |
-| `oc project <project> `          | Switch to project                                            |
-| `oc get pods `                   | Get running pods (a pod can run one or multiple containers for your application) |
-| `oc rsh <pod_name> <command>`    | Remote terminal connexion to a pod (Shell/Bash)              |
-| `oc cp <from> <to>`              | Copy files from host to container or vice versa, e.g. from host: `oc cp <local dir> <pod>:<pod_dir>` or from to host: `oc cp <pod>:<pod_dir> <local dir>` |
-| `oc rsync <from> <to>`           | Similar to rsync command on Linux to synchronize directories between container and host or the other way around |
-| `oc exec <pod_id> <folder_path>` | Execute command in pods                                      |
-| `oc delete pod <pod_id>`         | Delete pod                                                   |
+| **Command** | **Description** |
+| --- | --- |
+| `oc login --token=<token>` | Login to the DSRI cluster in your terminal |
+| `oc get projects` | List all available projects |
+| `oc project <project>` | Switch to a project |
+| `oc get pods` | List running pods |
+| `oc rsh <pod-name>` | Open a remote shell connection to a pod |
+| `oc cp <from> <to>` | Copy files between your machine and a pod |
+| `oc rsync <from> <to>` | Synchronize directories between your machine and a pod |
+| `oc exec <pod-id> -- <command>` | Execute a command in a pod |
+| `oc delete pod <pod-id>` | Delete a pod |
 
 ## Projects
 
-### List projects
+List all projects:
 
-```shell
+```bash
 oc projects
 ```
 
-### Connect to project
+Switch to a project:
 
-```shell
+```bash
 oc project my-project
 ```
 
----
-
-## ImageStreams
-
-To update an ImageStream in your project to pull the latest update from the external repository (e.g. from ghcr.io or DockerHub):
-
-```bash
-oc import-image <imagestream-id>
-```
-
----
-
 ## Pods
-
-### Create pod from YAML
-
-```shell
-oc create -f my-pod.yaml
-```
-
-> E.g. [d2s-pod-virtuoso.yaml](https://github.com/MaastrichtU-IDS/d2s-core/blob/master/argo/d2s-pod-virtuoso.yaml).
 
 ### List pods
 
-```shell
-oc get pod
+```bash
+oc get pods
 ```
 
-List running pods:
+List only running pods:
 
 ```bash
 oc get pods --field-selector=status.phase=Running
 ```
 
-### Get specific pod
+### Get a specific pod
 
-```shell
-oc get pod | grep <pod_id>
+```bash
+oc get pod | grep <pod-id>
 ```
 
-Using selector with Apache Flink as example, and showing only the pod id without header:
+Using a selector (Apache Flink example):
 
 ```bash
 oc get pod --selector app=flink --selector component=jobmanager --no-headers -o=custom-columns=NAME:.metadata.name
 ```
 
-### Remote Shell connection
+### Connect to a pod
 
-Connect to a pod with [Bash](https://devhints.io/bash).
-
-```shell
-oc rsh <pod_id>
-```
-
-### Execute command in pod
-
-Example creating a folder:
-
-```shell
-oc exec <pod_id> -- mkdir -p /mnt/workspace/resources
-```
-
-### Delete pod
-
-```shell
-oc delete pod <pod_id>
-```
-
-:::caution Force pod deletion
-
-If the pod is not properly deleted, you can force its deletion:
+Open a shell connection to a pod:
 
 ```bash
-oc delete pod --force --grace-period=0 <pod_id>
+oc rsh <pod-id>
 ```
 
-:::
+### Execute a command in a pod
+
+```bash
+oc exec <pod-id> -- mkdir -p /mnt/workspace/resources
+```
 
 ### Get pod logs
 
-```shell
-oc logs -f <pod_id>
+```bash
+oc logs -f <pod-id>
 ```
 
-:::info Debug a pod
+### Delete a pod
 
-Get more details on how to [debug a pod](/docs/guide-monitoring).
+```bash
+oc delete pod <pod-id>
+```
+
+:::caution Force deletion
+
+If the pod is not deleting properly, force it:
+
+```bash
+oc delete pod --force --grace-period=0 <pod-id>
+```
 
 :::
 
-## Create app from template
+:::info
 
-Create app from template using the CLI and providing parameters as arguments:
+See the [monitoring guide](/docs/guide-monitoring) for more details on how to debug a pod.
+
+:::
+
+## Deployments
+
+Restart a deployment:
+
+```bash
+oc rollout restart deployment/<name>
+```
+
+Scale a deployment down:
+
+```bash
+oc scale deployment/<name> --replicas=0
+```
+
+Scale a deployment back up:
+
+```bash
+oc scale deployment/<name> --replicas=1
+```
+
+## Storage
+
+List all Persistent Volume Claims in your project:
+
+```bash
+oc get pvc
+```
+
+Get details on a specific PVC:
+
+```bash
+oc describe pvc <pvc-name>
+```
+
+## Debugging
+
+Get detailed information and events for a pod:
+
+```bash
+oc describe pod <pod-id>
+```
+
+List recent events in your project:
+
+```bash
+oc get events
+```
+
+## ImageStreams
+
+To update an ImageStream to pull the latest version from an external registry (e.g. ghcr.io or DockerHub):
+
+```bash
+oc import-image <imagestream-id>
+```
+
+## Create a pod from a YAML file
+
+```bash
+oc create -f my-pod.yaml
+```
+
+## Deploy from a template
+
+Deploy an application from a template using the CLI:
 
 ```bash
 oc new-app my-template -p APPLICATION_NAME=my-app -p ADMIN_PASSWORD=mypassword
 ```
 
-Example for the Semantic Web course notebooks:
-
-```bash
-oc new-app template-jupyterstack-notebook -p APPLICATION_NAME=swcourseName -p NOTEBOOK_PASSWORD=PASSWORD
-
-oc delete all --selector template=template-jupyterstack-notebook
-```
-
-### Copy files
+## Copy files
 
 See the [Load data](/docs/openshift-load-data) page.
-
