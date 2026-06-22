@@ -90,4 +90,4 @@ Ephemeral storage is currently disabled by default as it was causing data loss f
 
 :::
 
-When creating a pod without persistent storage, OpenShift uses ephemeral storage bound to the pod — data is lost when the pod is deleted. This can be sufficient for quick testing but is not recommended for any data you want to keep.
+When creating a pod without persistent storage, OpenShift uses ephemeral storage bound to the pod, and be aware that the data is lost when the pod is deleted. This can be sufficient for quick testing but is not recommended for any data you want to keep.
