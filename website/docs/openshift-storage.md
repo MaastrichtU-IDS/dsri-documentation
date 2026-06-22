@@ -21,7 +21,7 @@ PVC storage requests are limited to a maximum of **10Ti** per PVC. If you need m
 
 :::
 
-## Create a persistent volume
+## Create the Persistent Storage (PVC)
 
 1. Switch to the **Administrator** view.
 2. Go to **Storage** > **Persistent Volume Claims**.
@@ -50,7 +50,7 @@ Some templates such as **JupyterLab** automatically create a persistent volume w
 
 :::
 
-## Connect an existing persistent volume
+## Connect an Existing Persistent Storage (PVC)
 
 To attach an existing PVC to an application:
 
@@ -62,7 +62,7 @@ To attach an existing PVC to an application:
 
 This is also how you connect multiple applications to the same storage.
 
-## Expand an existing persistent volume
+## Expand an Existing Persistent Storage (PVC)
 
 1. Switch to the **Administrator** view.
 2. Go to **Storage** > **Persistent Volume Claims**.
