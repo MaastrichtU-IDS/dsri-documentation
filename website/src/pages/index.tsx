@@ -7,13 +7,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import axios from 'axios';
 import styles from './styles.module.css';
 
-import { Grid, TextField, FormControl, Box, Card, Paper, Typography } from "@mui/material";
-import { Pie, Doughnut, Bar, Line } from 'react-chartjs-2';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import 'chartjs-plugin-labels';
-
-// import {Chart, ArcElement} from 'chart.js'
-// Chart.register(ArcElement);
+import { Grid, Typography } from "@mui/material";
+import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 // Resolve environment variables:
@@ -72,17 +67,79 @@ function Feature({ imageUrl, title, description }) {
   );
 }
 
+const affiliationLabels: Record<string, string> = {
+  icts:  'ICT Services',
+  fhml:  'Faculty of Health, Medicine and Life Sciences',
+  bu:    'Maastricht University',
+  law:   'Faculty of Law',
+  fin:   'Finance',
+  sbe:   'School of Business and Economics',
+  fasos: 'Faculty of Arts and Social Sciences',
+  ub:    'University Library',
+  fpn:   'Faculty of Psychology and Neuroscience',
+  fs:    'Faculty of Science',
+  fse:   'Faculty of Science and Engineering',
+};
+
+const buildBarChart  = (affiliations: Record<string, { projects: number }>) => {
+  const labels: string[] = [];
+  const data: number[] = [];
+
+  Object.entries(affiliations).forEach(([id, val]) => {
+    labels.push(affiliationLabels[id] ?? id.toUpperCase());
+    data.push(val.projects);
+  });
+  
+  return {
+    data: {
+      labels,
+      datasets: [{
+        data,
+        label: ' Projects',
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)', 'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 205, 86, 0.2)', 'rgba(75, 192, 192, 0.2)',
+          'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)',
+          'rgba(201, 203, 207, 0.2)', 'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)', 'rgba(255, 205, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)', 'rgb(255, 159, 64)',
+          'rgb(255, 205, 86)', 'rgb(75, 192, 192)',
+          'rgb(54, 162, 235)', 'rgb(153, 102, 255)',
+          'rgb(201, 203, 207)', 'rgb(255, 99, 132)',
+          'rgb(255, 159, 64)', 'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+        ],
+        borderWidth: 1,
+      }],
+    },
+    options: {
+      scales: {
+        y: { 
+          beginAtZero: true,
+          grace: 1,
+          ticks: {
+            precision: 0
+          }
+        },
+      },
+      plugins: {
+        legend: { display: false },
+      },
+    },
+  };
+};
 
 function Home() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
 
   const [state, setState] = React.useState({
-    stats: {},
-    usersDeptPie: {},
-    projectTypesPie: {},
-    timelineChart: {},
-    numberOfDepts: 0
+    stats: {} as any,
+    projectsDeptChart: {} as any,
+    numberOfAffiliations: 0
   });
   const stateRef = React.useRef(state);
   // Avoid conflict when async calls
@@ -91,254 +148,21 @@ function Home() {
     setState(stateRef.current);
   }, [setState]);
 
-  const pieColors = [
-    '#81d4fa', // blue
-    '#ffcc80', // orange
-    '#a5d6a7', // green
-    '#b39ddb', // purple
-    '#ef5350' // red
-  ]
-
-  const buildCharts  = (stats: any) => {
-    const deptUsersArray = []
-    const deptLabelArray = []
-    Object.keys(stats).map((dept: string) => {
-      if (stats[dept]['users'] > 1) {
-        deptUsersArray.push(stats[dept]['users'])
-        deptLabelArray.push(dept)
-      }
-    })
-    updateState({
-      numberOfDepts: deptLabelArray.length
-    })
-    const config = {
-      type: 'pie',
-      data: {
-        datasets: [{
-          data: deptUsersArray,
-          label: 'Users per affiliation',
-          labels: deptLabelArray,
-          backgroundColor: pieColors,
-          // backgroundColor: [
-          //   'rgba(255, 99, 132, 0.2)', 'rgba(255, 159, 64, 0.2)',
-          //   'rgba(255, 205, 86, 0.2)', 'rgba(75, 192, 192, 0.2)',
-          //   'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)',
-          //   'rgba(201, 203, 207, 0.2)'
-          // ],
-          // borderColor: [
-          //   'rgb(255, 99, 132)', 'rgb(255, 159, 64)',
-          //   'rgb(255, 205, 86)', 'rgb(75, 192, 192)',
-          //   'rgb(54, 162, 235)', rgb(153, 102, 255)',
-          //   'rgb(201, 203, 207)'
-          // ],
-          // borderWidth: 1
-        }],
-        labels: deptLabelArray
-      },
-      options: {
-        responsive: true,
-        // maintainAspectRatio: false,
-        animation: { animateScale: true, animateRotate: true },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function(tooltipItem: any) {
-                // var dataset = data.datasets[tooltipItem.datasetIndex];
-                const index = tooltipItem.dataIndex;
-                console.log(tooltipItem)
-                const label = departmentsList.filter(dept => {
-                  return dept.id === deptLabelArray[index];
-                })
-                console.log(label);
-                return ' ' + label[0]['label']
-                // return dataset.labels[index];
-                // return 'toto'
-              }
-            }
-          },
-          datalabels: {
-            legend: false,
-            color: 'black',
-            // https://github.com/chartjs/chartjs-plugin-datalabels/blob/master/docs/guide/positioning.md
-            labels: {
-              title: {
-                anchor: 'end',
-                align: 'end',
-                offset: -55,
-                formatter: function(value: any, context: any) {
-                  return context.dataset['labels'][context['dataIndex']];
-                }
-              },
-              value: {
-                anchor: 'center',
-                formatter: function(value: any, context: any) {
-                  return value;
-                }
-              }
-            },
-          }
-        }
-      }
-    };
-    return config;
-  }
-
-  const departmentsList = [
-    {id: 'BIGCAT', label: 'Department of Bioinformatics'},
-    {id: 'DKE', label: 'Department of Knowledge Engineering'},
-    {id: 'FASOS', label: 'Faculty of Arts and Social Sciences'},
-    {id: 'FHML', label: 'Faculty of Health, Medicine and Life Sciences'},
-    {id: 'FSE', label: 'Faculty of Science and Engineering'},
-    {id: 'GWFP', label: 'Gravitational Waves and Fundamental Physics'},
-    {id: 'HSR', label: 'Health Services Research'},
-    {id: 'ICTS', label: 'ICT Services'},
-    {id: 'IDS', label: 'Institute of Data Science'},
-    {id: 'MAASTRO', label: 'Maastro Clinic'},
-    {id: 'MACSBIO', label: 'Maastricht Centre for Systems Biology'},
-    {id: 'MSCM', label: 'Department of Marketing and Supply Chain Management'},
-    {id: 'MSP', label: 'Maastricht Science Programme'},
-    {id: 'NUTRIM', label: 'School of Nutrition and Translational Research in Metabolism'},
-    {id: 'PHARTOX', label: 'Department of Pharmacology & Toxicology'},
-    {id: 'SBE', label: 'School of Business and Economics'},
-    {id: 'TECH LAB', label: 'Law and Tech Lab'},
-    {id: 'TGX', label: 'Department of Toxicogenomics'},
-    {id: 'PSYCHO', label: 'Faculty of Psychology and Neuroscience'},
-    {id: 'UM', label: 'Maastricht University'},
-    // {id: 'PN', label: '???'},
-    // {id: 'Other', label: 'Other'},
-  ]
-  const projectTypeMap = {
-    "Machine Learning on CPU (python, jupyter, matlab)": "ML on CPU",
-    "Machine Learning on GPU (python, jupyter, matlab)": "ML on GPU",
-    "Bioinformatics pipeline (python, conda, sequencing pipeline, workflows)": "Bioinformatics",
-    "Data hosting (SQL, knowledge graph, key-value stores, data lakes)": "Database",
-    "Data processing (python, java, workflows, services orchestration)": "Data processing",
-    "Continuous Delivery / Integration (website deployment, jenkins, argo cd)": "Websites",
-    "Bayesian Econometric models": "Econometric models",
-  }
-
-  const buildBarChart  = (projects: any) => {
-    const projectsUsersArray = []
-    const projectsLabelArray = []
-    const projectsDescArray = []
-    Object.keys(projects).map((projectType: string) => {
-      if (projectType && projects[projectType]['users'] > 3) {
-        projectsUsersArray.push(projects[projectType]['users'])
-        // projectsLabelArray.push(projectType)
-        projectsLabelArray.push(projectTypeMap[projectType])
-        projectsDescArray.push(projectType)
-      }
-    })
-    const config = {
-      type: 'bar',
-      data: {
-        datasets: [{
-          data: projectsUsersArray,
-          label: ' Users',
-          // labels: deptUsersArray
-          // labels: projectsDescArray,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)', 'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 205, 86, 0.2)', 'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)',
-            'rgba(201, 203, 207, 0.2)'
-          ],
-          borderColor: [
-            'rgb(255, 99, 132)', 'rgb(255, 159, 64)',
-            'rgb(255, 205, 86)', 'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)', 'rgb(153, 102, 255)',
-            'rgb(201, 203, 207)'
-          ],
-          borderWidth: 1
-        }],
-        labels: projectsLabelArray
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        },
-        // responsive: true,
-        // // maintainAspectRatio: false,
-        // animation: { animateScale: true, animateRotate: true },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              title: function(tooltipItem: any) {
-                return projectsDescArray[tooltipItem[0].dataIndex];
-              }
-            }
-          },
-        }
-      }
-    };
-    return config;
-  }
-
-  const buildTimelineChart  = (timeline: any) => {
-    const daysArray = []
-    const usersArray = []
-    Object.keys(timeline).map((day: string) => {
-      daysArray.push(day)
-      // projectsLabelArray.push(projectType)
-      usersArray.push(timeline[day])
-    })
-    const config = {
-      type: 'line',
-      data: {
-        datasets: [{
-          data: usersArray,
-          label: ' Number of Users',
-          // labels: deptUsersArray
-          // labels: projectsDescArray,
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
-          borderColor: 'rgb(54, 162, 235)',
-          borderWidth: 3
-        }],
-        labels: daysArray
-      },
-      options: {
-        elements: {
-          point:{
-            radius: 0,
-            hitRadius: 8
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    };
-    return config;
-  }
-
-
   React.useEffect(() => {
-    axios.get(apiUrl + '/user/stats',
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    axios.get(apiUrl + 'stats/stats', {
+      headers: { 'Content-Type': 'application/json' },
+    })
       .then((res: any) => {
         updateState({
-          stats: res.data,
-          usersDeptPie: buildCharts(res.data['departments']),
-          projectTypesPie: buildBarChart(res.data['project_types']),
-          timelineChart: buildTimelineChart(res.data['users_timeline'])
+          stats : res.data,
+          numberOfAffiliations: Object.keys(res.data['affiliations']).length,
+          projectsDeptChart: buildBarChart(res.data['affiliations'])
         })
       })
       .catch(function (error) {
         console.log(error);
       })
   }, [])
-
 
   return (
     <Layout title={`${siteConfig.title}`} description="Data Science Research Infrastructure at Maastricht University">
@@ -381,46 +205,23 @@ function Home() {
             </div>
           </section>
         )}
-        { state.usersDeptPie['data'] &&
+        { state.projectsDeptChart['data'] &&
           <Grid container alignItems="center" justifyContent="center"
               spacing={2} style={{ textAlign: 'center', marginBottom: '60px' }}>
             <Grid item xs={12}>
               <p>
-                The DSRI is used by <b>{state.stats['users']}</b> researchers and students, from <b>{state.numberOfDepts}</b> different affiliations, for <b>{state.stats['projects']}</b> projects at Maastricht University
+                The DSRI hosts <b>{state.stats['total_projects']}</b> projects across <b>{state.numberOfAffiliations}</b> affiliations at Maastricht University.
               </p>
             </Grid>
-            <Grid item xs={1} sm={3}></Grid>
-            <Grid item xs={10} sm={6} style={{ textAlign: 'right' }}>
-              <Line data={state.timelineChart['data']}
-                options={state.timelineChart['options']}
+            <Grid item xs={1} sm={2}></Grid>
+            <Grid item xs={10} sm={8} style={{ textAlign: 'center' }}>
+              <Typography variant='h6'>Projects per affiliation</Typography>
+              <Bar 
+                data={state.projectsDeptChart['data']}
+                options={state.projectsDeptChart['options']}
               />
             </Grid>
-            <Grid item xs={1} sm={3}></Grid>
-            <Grid item xs={1}></Grid>
-            <Grid item xs={11} sm={3} style={{ textAlign: 'center' }}>
-              <Typography variant='h6'>
-                Users per affiliation
-              </Typography>
-              <Pie data={state.usersDeptPie['data']}
-                options={state.usersDeptPie['options']}
-                // style={{margin: '30px'}}
-                plugins={[
-                  ChartDataLabels,
-                ]}
-              />
-            </Grid>
-            <Grid item xs={12} sm={5} style={{ textAlign: 'center' }}>
-              <Typography variant='h6'>
-                Users per project types
-              </Typography>
-              <Bar data={state.projectTypesPie['data']}
-                options={state.projectTypesPie['options']}
-                plugins={[
-                  ChartDataLabels,
-                ]}
-              />
-            </Grid>
-
+            <Grid item xs={1} sm={2}></Grid>
           </Grid>
         }
         {/* Video img/video_dsri_introduction.webm */}
