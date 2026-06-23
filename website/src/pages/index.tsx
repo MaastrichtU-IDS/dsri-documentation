@@ -149,7 +149,7 @@ function Home() {
   }, [setState]);
 
   React.useEffect(() => {
-    axios.get(apiUrl + 'stats/stats', {
+    axios.get(apiUrl + '/stats/stats', {
       headers: { 'Content-Type': 'application/json' },
     })
       .then((res: any) => {
