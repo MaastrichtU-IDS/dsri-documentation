@@ -1,25 +1,24 @@
 import time
 
-from api import gpus, users
+from api import gpus, stats
 from api.automated_tasks import backup_database, check_gpu_bookings
 from api.config import settings
 from api.database import init_db
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from fastapi_utils.tasks import repeat_at, repeat_every
+from fastapi_utilities import repeat_at
 
 # Waiting for MySQL to start
 time.sleep(7)
 
 api_router = APIRouter()
-api_router.include_router(users.router, prefix="/user", tags=["Users"])
+api_router.include_router(stats.router, prefix="/stats", tags=["Stats"])
 api_router.include_router(gpus.router, prefix="/gpu", tags=["GPUs"])
 
-
 app = FastAPI(
-    title='Manage DSRI users and GPU scheduling',
-    description="""API to register DSRI users, manage GPU scheduling, and get statistics
+    title='Manage GPU scheduling and cluster stats',
+    description="""API to manage GPU scheduling and get cluster statistics
 
 [Source code](https://github.com/MaastrichtU-IDS/dsri-documentation)
 """,
@@ -32,15 +31,13 @@ app = FastAPI(
         "email": "DSRI-SUPPORT-L@maastrichtuniversity.nl",
         "url": "https://github.com/MaastrichtU-IDS/dsri-documentation",
     },
+    swagger_ui_parameters={"defaultModelsExpandDepth": -1},
 )
 app.include_router(api_router)
-
-
 
 @app.on_event("startup")
 def create_db() -> None:
     init_db()
-
 
 if settings.ENABLE_CRON:
     # Everyday at 09:00
@@ -55,9 +52,6 @@ if settings.ENABLE_CRON:
     def weekly_backup() -> None:
         backup_database()
 
-    # @repeat_every(seconds=60 * 60 * 24 * 7)  # 7 days
-
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -65,7 +59,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 @app.get("/", include_in_schema=False)
 def redirect_root_to_docs():

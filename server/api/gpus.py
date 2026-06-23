@@ -1,21 +1,19 @@
-import os
 from datetime import datetime, timedelta
 from typing import List, Optional
+from textwrap import dedent
 
 from api.database import engine
-from api.notifications import post_msg_to_slack, send_email
-from fastapi import APIRouter, Body, FastAPI, Request, Response
+from api.notifications import send_email
+from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import validator
 from sqlmodel import Field, Session, SQLModel, select
 
-
 NUMBER_OF_GPUS = 7
 MAX_BOOK_DAYS = 4
 
 router = APIRouter()
-
 
 class CreateBooking(SQLModel, table=False):
     user_email: str = Field(primary_key=True)
@@ -29,11 +27,9 @@ class CreateBooking(SQLModel, table=False):
         assert str(v) != ''
         return v
 
-
 class GpuBooking(CreateBooking, table=True):
     gpu_id: Optional[int] = Field(primary_key=True)
     created_at: datetime = datetime.now()
-
 
 @router.get("/reservations", name="Get the list of Reservations for the DSRI GPUs",
     description="List of reservations for the DSRI GPUs",
@@ -52,7 +48,6 @@ def get_gpu_reservations() -> List[dict]:
             reservations.append(resa)
     return JSONResponse(reservations)
 
-
 # Get a dict with all days with GPUs booked
 def get_booked_days() -> dict:
     with Session(engine) as session:
@@ -70,11 +65,9 @@ def get_booked_days() -> dict:
                     'starting_date': str(resa.starting_date),
                     'ending_date': str(resa.ending_date)
                 }
-                # booked_days[day].append(str(resa.gpu_id))
                 if len(booked_days[str(day)].keys()) >= NUMBER_OF_GPUS + 1:
                     booked_days[str(day)]['fullyBooked'] = True
     return booked_days
-
 
 @router.get("/booked-days", name="Get days when DSRI GPUs are booked",
     description="Dict of days, with which GPUs are booked for each day, and if the day is fully booked",
@@ -83,7 +76,6 @@ def get_booked_days() -> dict:
 def get_gpu_booked_days() -> dict:
     booked_days = get_booked_days()
     return JSONResponse(booked_days)
-
 
 @router.post("/request", name="Request a DSRI GPU for a period",
     description="Request a DSRI GPU for a period, this will check if any GPU are available for the requested period",
@@ -134,16 +126,16 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
             session.add(booking)
             session.commit()
 
-            email_msg = f"""✅ A GPU has been booked from {booking.starting_date.date()} to {booking.ending_date.date()} in project <b>{booking.project_id}</b><br/><br/>
-The GPU will be automatically enabled in your project <b>{booking.project_id}</b> on the <b>{booking.starting_date.date()}</b> at 9:00am, and disabled on the {booking.ending_date.date() + timedelta(days=1)} at 9:00am<br/><br/>
-<b>Please note:</b> the GPU is only enabled automatically if you booked <b>before 09:00 AM</b> on your start date. If you booked after 09:00 AM, please contact us at <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a> and we will enable it manually.<br/><br/>
-Ideally you should start your workspace before getting the GPU enabled, to prepare your data in the persistent folder, and create a script to install your dependencies. Then you can easily enable the GPU in this workspace once your reservation starts, see the documentation for more details: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#prepare-your-gpu-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
-If you want to cancel your reservation please send an email to <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a>
-"""
+            email_msg = dedent(f"""\
+                                ✅ A GPU has been booked from {booking.starting_date.date()} to {booking.ending_date.date()} in project <b>{booking.project_id}</b><br/><br/>
+                                The GPU will be automatically enabled in your project <b>{booking.project_id}</b> on the <b>{booking.starting_date.date()}</b> at 9:00am, and disabled on the {booking.ending_date.date() + timedelta(days=1)} at 9:00am<br/><br/>
+                                <b>Please note:</b> the GPU is only enabled automatically if you booked <b>before 09:00 AM</b> on your start date. If you booked after 09:00 AM, please contact us at <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a> and we will enable it manually.<br/><br/>
+                                Ideally you should start your workspace before getting the GPU enabled, to prepare your data in the persistent folder, and create a script to install your dependencies. Then you can easily enable the GPU in this workspace once your reservation starts, see the documentation for more details: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#prepare-your-gpu-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
+                                If you want to cancel your reservation please send an email to <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a>
+                                """)
             send_email(email_msg, to=booking.user_email, subject="📀 DSRI GPU booking registered")
-            # print(post_msg_to_slack(f'📅➕ New booking: GPU {booking.gpu_id} for {booking.user_email} from {booking.starting_date} to {booking.ending_date}'))
+            
             return JSONResponse({'message': 'GPU booking successfully submitted, you will receive an email with more details soon.'})
         except Exception as e:
             print(e)
             return JSONResponse({'errorMessage': 'Error creating the GPU booking.'})
-
