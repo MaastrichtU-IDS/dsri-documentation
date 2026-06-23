@@ -16,7 +16,7 @@ def get_stats() -> dict:
     affiliations_stats = {}
     department_stats = {}
     total_projects = 0
-    KNOWN_AFFILIATIONS = {'icts', 'fhml', 'bu', 'fdr', 'law', 'fin', 'fdewb', 'sbe', 'fdcw', 'fasos', 'ub', 'fdp', 'fpn', 'fs', 'fse'}
+    KNOWN_AFFILIATIONS = {'icts', 'fhml', 'fdr', 'law', 'fin', 'fdewb', 'sbe', 'fdcw', 'fasos', 'ub', 'fdp', 'fpn', 'fse'}
 
     AFFILIATION_RENAMES = {
         'fdr': 'law',
