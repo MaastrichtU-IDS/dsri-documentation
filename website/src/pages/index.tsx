@@ -213,15 +213,15 @@ function Home() {
                 The DSRI hosts <b>{state.stats['total_projects']}</b> projects across <b>{state.numberOfAffiliations}</b> affiliations at Maastricht University.
               </p>
             </Grid>
-            <Grid item xs={1} sm={2}></Grid>
-            <Grid item xs={10} sm={8} style={{ textAlign: 'center' }}>
+            <Grid item xs={1} sm={3}></Grid>
+            <Grid item xs={10} sm={6} style={{ textAlign: 'center' }}>
               <Typography variant='h6'>Projects per affiliation</Typography>
               <Bar 
                 data={state.projectsDeptChart['data']}
                 options={state.projectsDeptChart['options']}
               />
             </Grid>
-            <Grid item xs={1} sm={2}></Grid>
+            <Grid item xs={1} sm={3}></Grid>
           </Grid>
         }
         {/* Video img/video_dsri_introduction.webm */}
