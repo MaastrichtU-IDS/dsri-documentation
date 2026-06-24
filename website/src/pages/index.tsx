@@ -216,7 +216,7 @@ function Home() {
               spacing={2} style={{ textAlign: 'center', marginBottom: '60px' }}>
             <Grid item xs={12}>
               <p>
-                The DSRI hosts <b>{state.stats['total_projects']}</b> projects across <b>{state.numberOfAffiliations}</b> affiliations at Maastricht University.
+                The DSRI hosts <b>{state.stats['total_projects'] + 3}</b> projects across <b>{state.numberOfAffiliations}</b> affiliations at Maastricht University.
               </p>
             </Grid>
             <Grid item xs={1} sm={3}></Grid>
