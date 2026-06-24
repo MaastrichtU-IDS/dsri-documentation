@@ -26,13 +26,13 @@ Use your general UM password.
 
 :::
 
-If you do not have access to the DSRI while you think you should, [please contact us](mailto:rcs-ub@maastrichtuniversity.nl).
-
-Log in at **[https://console.dsri.unimaas.nl](https://console.dsri.unimaas.nl)** using the standard Maastricht University portal:
+Access the DSRI web UI at [https://console.dsri.unimaas.nl](https://console.dsri.unimaas.nl) using your UM credentials.
 
 <img src="/img/screenshot_login_screen.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 <img src="/img/screenshot_um_login_screen.png" alt="UM login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
+
+If you do not have access to the DSRI while you think you should, please [contact us](/contact).
 
 :::info Command line interface
 
@@ -44,7 +44,7 @@ We recommend installing the `oc` command line interface to perform additional op
 
 In the DSRI web console, applications are deployed in projects. A project is created for you when you are granted access to the DSRI.
 
-After logging in, navigate to your project using the **Projects** overview on the home screen.
+After logging in, navigate to your project using the **Project** overview on the home screen.
 
 :::caution Reuse your project
 
@@ -62,9 +62,6 @@ You can grant or revoke access permissions for project collaborators under your 
 
 The DSRI web console lets you **visualize**, **browse**, and **manage** your projects and workloads directly from the browser.
 
-From within a project you can:
+The **Topology view** provides a visual overview of your workloads and their connections. If no workloads are running, it will display options to deploy a new application.
 
-- Deploy applications from container images, Dockerfiles, or Git repositories
-- Monitor running workloads, check pod logs, and inspect resource usage
-- Manage storage, secrets, and config maps
-- Set resource quotas and access permissions for collaborators
+<img src="/img/screenshot_topology_view.png" alt="Topology View" style={{maxWidth: '100%', maxHeight: '100%'}} />
