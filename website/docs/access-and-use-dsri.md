@@ -18,15 +18,13 @@ sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.USER --auth
 
 ## Access the web UI
 
-Access the DSRI web UI at **[https://console.dsri.unimaas.nl](https://console.dsri.unimaas.nl)**
+Access the DSRI web UI at [https://console.dsri.unimaas.nl](https://console.dsri.unimaas.nl) using your UM credentials.
 
 :::info Password
 
 Use your general UM password.
 
 :::
-
-Access the DSRI web UI at [https://console.dsri.unimaas.nl](https://console.dsri.unimaas.nl) using your UM credentials.
 
 <img src="/img/screenshot_login_screen.png" alt="Login screen" style={{maxWidth: '100%', maxHeight: '100%'}} />
 
