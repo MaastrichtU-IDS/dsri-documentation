@@ -85,9 +85,15 @@ const buildBarChart  = (affiliations: Record<string, { projects: number }>) => {
   const labels: string[] = [];
   const data: number[] = [];
 
+  const manualOffsets: Record<string, number> = {
+    fasos: 1,
+    law:   1,
+    sbe:   1,
+  };
+
   Object.entries(affiliations).forEach(([id, val]) => {
     labels.push(affiliationLabels[id] ?? id.toUpperCase());
-    data.push(val.projects);
+    data.push(val.projects + (manualOffsets[id] ?? 0)); // account for L40S project
   });
   
   return {
