@@ -6,6 +6,13 @@ slug: /
 
 The **DSRI** (*Data Science Research Infrastructure*) is a cluster of servers for deploying workspaces and applications for data science. Workspaces run in Docker containers orchestrated by Kubernetes and are accessible via an auto-generated URL.
 
+### How do you deploy an application on the DSRI?
+
+<video width="100%" controls style={{marginBottom: '1.5rem'}}>
+  <source src="/videos/RStudio_tutorial.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
 :::info Research data management
 
 Not sure where to store your data or whether it can be processed on the DSRI? Check these resources first:
