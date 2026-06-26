@@ -8,11 +8,10 @@ The **DSRI** (*Data Science Research Infrastructure*) is a cluster of servers fo
 
 ### Video introduction
 
-<video width="100%" controls style={{marginBottom: '1.5rem'}}>
+<video width="100%" controls>
   <source src="/videos/RStudio_tutorial.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
-
 
 ## Using the DSRI
 
