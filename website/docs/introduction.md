@@ -13,13 +13,6 @@ The **DSRI** (*Data Science Research Infrastructure*) is a cluster of servers fo
   Your browser does not support the video tag.
 </video>
 
-:::info Research data management
-
-Not sure where to store your data or whether it can be processed on the DSRI? Check these resources first:
-- **[Storage Finder](https://library.maastrichtuniversity.nl/research/rdm/services-tools-training/storage-finder-tool/)** - find the right storage solution for your research data.
-- **[Research Data Compliance Self Assessment](https://maastrichtu-library.github.io/rdm-compliance-decision-tool/)** - understand what compliance steps apply to your research data.
-
-:::
 
 ## Using the DSRI
 
@@ -83,6 +76,14 @@ For user already familiar with those concepts [workflow orchestration tools](/do
 :::info Request an account
 
 If you are working at Maastricht University, you can **[request an account](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=09acae9cdf454968bc94ad125b1f8e76&from=436967a9-738c-4112-b3f6-240a9847118e&openedFromService=true)**, and run your services on the DSRI.
+
+:::
+
+:::info Research data management
+
+Not sure where to store your data or whether it can be processed on the DSRI? Check these resources first:
+- **[Storage Finder](https://library.maastrichtuniversity.nl/research/rdm/services-tools-training/storage-finder-tool/)** - find the right storage solution for your research data.
+- **[Research Data Compliance Self Assessment](https://maastrichtu-library.github.io/rdm-compliance-decision-tool/)** - understand what compliance steps apply to your research data.
 
 :::
 
