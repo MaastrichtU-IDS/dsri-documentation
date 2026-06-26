@@ -6,13 +6,12 @@ slug: /
 
 The **DSRI** (*Data Science Research Infrastructure*) is a cluster of servers for deploying workspaces and applications for data science. Workspaces run in Docker containers orchestrated by Kubernetes and are accessible via an auto-generated URL.
 
-:::info Research data management
+### Video introduction
 
-Not sure where to store your data or whether it can be processed on the DSRI? Check these resources first:
-- **[Storage Finder](https://library.maastrichtuniversity.nl/research/rdm/services-tools-training/storage-finder-tool/)** - find the right storage solution for your research data.
-- **[Research Data Compliance Self Assessment](https://maastrichtu-library.github.io/rdm-compliance-decision-tool/)** - understand what compliance steps apply to your research data.
-
-:::
+<video width="100%" controls>
+  <source src="/videos/RStudio_tutorial.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ## Using the DSRI
 
@@ -79,6 +78,14 @@ If you are working at Maastricht University, you can **[request an account](http
 
 :::
 
+:::info Research data management
+
+Not sure where to store your data or whether it can be processed on the DSRI? Check these resources first:
+- **[Storage Finder](https://library.maastrichtuniversity.nl/research/rdm/services-tools-training/storage-finder-tool/)** - find the right storage solution for your research data.
+- **[Research Data Compliance Self Assessment](https://maastrichtu-library.github.io/rdm-compliance-decision-tool/)** - understand what compliance steps apply to your research data.
+
+:::
+
 :::caution Data storage
 
 **DSRI is a computing infrastructure**, built and used to run data science workloads. DSRI stores data in a persistent manner, but all data stored on the DSRI is susceptible to be altered by the workloads you are running, and we cannot guarantee its immutability.
@@ -86,10 +93,6 @@ If you are working at Maastricht University, you can **[request an account](http
 **Always keep a safe copy of your data outside the DSRI**. And don't rely on the DSRI for long term storage.
 
 :::
-
-## Overview of the DSRI architecture
-
-<img src="/img/dsri_simplified_overview.png" alt="DSRI in a nutshell " style={{maxWidth: '100%', maxHeight: '100%'}} />
 
 
 
