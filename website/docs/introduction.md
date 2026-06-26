@@ -94,9 +94,5 @@ Not sure where to store your data or whether it can be processed on the DSRI? Ch
 
 :::
 
-## Overview of the DSRI architecture
-
-<img src="/img/dsri_simplified_overview.png" alt="DSRI in a nutshell " style={{maxWidth: '100%', maxHeight: '100%'}} />
-
 
 
