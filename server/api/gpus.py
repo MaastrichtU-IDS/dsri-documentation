@@ -28,7 +28,7 @@ class CreateBooking(SQLModel, table=False):
         return v
 
 class GpuBooking(CreateBooking, table=True):
-    gpu_id: Optional[int] = Field(primary_key=True)
+    gpu_id: Optional[int] = Field(default=None, primary_key=True)
     created_at: datetime = datetime.now()
 
 @router.get("/reservations", name="Get the list of Reservations for the DSRI GPUs",
