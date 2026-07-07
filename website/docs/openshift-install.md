@@ -3,79 +3,67 @@ id: openshift-install
 title: Installing the Client
 ---
 
-Install the **OpenShift Command Line Interface (CLI)**: `oc` to access the DSRI from your computer's terminal. 
+Install the **OpenShift Command Line Interface (CLI)**: `oc` to access the DSRI from your terminal.
 
-The `oc` CLI enables to perform operations on your applications deployed on the DSRI, such as:
+The `oc` CLI allows you to:
 
-* Copy large files to or from the DSRI using `oc cp`
-* Connect to an application terminal using `oc rsh`
-* Get the applications running in your project with `oc get pods`
+- Copy large files to or from the DSRI using `oc cp`
+- Connect to an application terminal using `oc rsh`
+- List the applications running in your project with `oc get pods`
 
 ## Install the `oc` client
 
 ### On Linux
 
-Download the `oc` and `kubectl` Command Line Interface clients:
-
-```shell
+```bash
 wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux.tar.gz && tar xvf openshift-client-linux.tar.gz
 sudo mv oc kubectl /usr/local/bin/
 ```
 
 ### On Mac
 
-Use [`brew`](https://brew.sh):
+Using [`brew`](https://brew.sh):
 
 ```bash
 brew install openshift-cli
 ```
 
-Or manually download the program and add it to your path:
+Or manually:
 
-1. Download https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-mac.tar.gz
+1. Download [openshift-client-mac.tar.gz](https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-mac.tar.gz)
+2. Unzip the archive.
+3. Move the `oc` binary to a directory on your PATH. To check your PATH:
 
-2. Unzip the archive
-
-3. Move the `oc` binary to a directory on your PATH.
-
-   To check your `PATH`, open a terminal and execute the following command:
-
-   ```bash
-   echo $PATH
-   ```
+```bash
+echo $PATH
+```
 
 ### On Windows
 
-1. Create a folder for OpenShift in Program Files: `C:\Program Files (x86)\OpenShift`
-2. Click [here](https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-windows.zip) to download the `oc` tool `.zip` file, and move it to `C:\Program Files (x86)\OpenShift`.
+1. Create a folder: `C:\Program Files (x86)\OpenShift`
+2. Download [openshift-client-windows.zip](https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-windows.zip) and move it to that folder.
 3. Extract the `.zip` file.
-4. Next set the system **PATH** environment variables for the directory containing the `oc.exe` file, which now resides in your newly created **OpenShift** folder inside of `C:\Program Files (x86)\OpenShift`
-   1. Open the Control Panel, and click on **System**
-   2. Click on **Advanced system settings** on the left or open the **Advanced** tab of *System Properties.* 
-   3. Click the button labeled **Environment Variables...** at the bottom. 
-   4. Look for the option **Path** in either the **User variables** section (for the current user) or the **System variables** section (for all users on the system).
-
-<img class="screenshot" src="/img/OC_Path.png" alt="Set OC Path" style={{zoom: '100%', maxHeight: '500px', maxWidth: '500px'}} />
-
-This makes it easy to access the `oc` command line interface by simply opening up the **PowerShell** and typing in the `oc` command, e.g.:
+4. Add the folder to your system PATH:
+   1. Open **Control Panel** > **System** > **Advanced system settings**.
+   2. Click **Environment Variables**.
+   3. Find **Path** in the User or System variables and add `C:\Program Files (x86)\OpenShift`.
+5. Verify the installation by opening PowerShell and running:
 
 ```powershell
 oc version
 ```
 
-:::note Official documentation
+:::info
 
-See the [official documentation to install the client](https://docs.okd.io/latest/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli) if needed.
+See the [official OKD documentation](https://docs.okd.io/latest/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli) if you run into issues installing the client.
 
 :::
 
-## Log in the terminal with `oc`
+## Log in with `oc`
 
-To use the `oc` Command Line Interface, you will need to authenticate to the [DSRI](https://console-openshift-console.apps.dsri2.unimaas.nl/console) in your terminal:
+:::warning
 
-:::warning PASSWORD NOT SUPPORTED
-
-Authentication to the `oc` Command Line Interface using your password is not supported. 
+Authentication using your UM password is not supported. You must use a token.
 
 :::
 
@@ -83,20 +71,14 @@ Authentication to the `oc` Command Line Interface using your password is not sup
 oc login --token=<token>
 ```
 
-The token is provided by the Web UI:
+To get your token:
 
-1. Go to the [DSRI web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console).
+1. Go to the [DSRI web UI](https://console.dsri.unimaas.nl).
+2. Click your username in the top right corner and select **Copy login command**.
+3. Paste the command in your terminal and run it.
 
-2. Click on the **Copy Login Command** button (in the top right of the page).
-
-   <img src="/img/screenshot_copy_login.png" alt="Deploy VSCode" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-3. Paste the copied command in your terminal, and execute it to login with `oc` 🔑
-
-:::info Login command
-The command should look like this:
+The command will look like this:
 
 ```bash
-oc login https://api.dsri2.unimaas.nl:6443 --token=$GENERATED_TOKEN
+oc login https://api.dsri.unimaas.nl:6443 --token=$GENERATED_TOKEN
 ```
-:::
