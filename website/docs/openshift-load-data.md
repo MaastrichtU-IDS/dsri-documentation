@@ -36,6 +36,8 @@ oc get pod --selector app=<my-application-name>
 
 ### Copy from local to pod
 
+Folders are uploaded recursively by default:
+
 ```bash
 oc cp <folder-to-copy> <pod-name>:<absolute-path-in-pod>
 ```
@@ -52,7 +54,15 @@ Example:
 oc cp my-folder jupyterlab-000:/home/jovyan
 ```
 
+Or use this one-liner to automatically get the pod name from your application label:
+
+```bash
+oc get pod --selector app=<my-application-name> -o name | xargs -I{} oc cp <folder-to-copy> {}:<absolute-path-in-pod>
+```
+
 ### Copy from pod to local
+
+Just do the inverse:
 
 ```bash
 oc cp <pod-name>:<path-to-copy> <local-destination>
@@ -72,6 +82,12 @@ Use `oc rsync` when you have many large files or files that change regularly. Un
 
 ```bash
 oc rsync --progress <folder-to-sync> <pod-name>:<path-in-pod>
+```
+
+Or use this one-liner to automatically get the pod name from your application label:
+
+```bash
+oc get pod --selector app=<my-application-name> -o name | xargs -I{} oc rsync --progress <folder-to-sync> {}:<absolute-path-in-pod>
 ```
 
 ### Sync pod to local
