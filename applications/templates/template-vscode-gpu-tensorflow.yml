@@ -142,6 +142,10 @@ objects:
             - name: data 
               persistentVolumeClaim:
                 claimName: "${APPLICATION_NAME}"
+            - name: dshm
+              emptyDir:
+                medium: Memory
+                sizeLimit: 8Gi
           containers:
             - name: "${APPLICATION_NAME}" 
               image: "${APPLICATION_IMAGE}" 
@@ -153,6 +157,8 @@ objects:
               volumeMounts:
                 - name: data 
                   mountPath: "/root/persistent" 
+                - name: dshm
+                  mountPath: "/dev/shm"
               env:
                 - name: PASSWORD
                   valueFrom:
