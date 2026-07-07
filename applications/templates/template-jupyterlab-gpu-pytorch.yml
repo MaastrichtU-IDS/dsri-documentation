@@ -208,8 +208,14 @@ objects:
           volumeMounts:
           - mountPath: "/workspace/persistent"
             name: data
+          - mountPath: "/dev/shm"
+            name: dshm
         serviceAccountName: anyuid
         volumes:
         - name: data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 8Gi
