@@ -1,121 +1,98 @@
 ---
 id: openshift-load-data
-title: Uploading data
+title: Uploading Data
 ---
 
-## In RStudio, JupyterLab and VSCode
+There are several ways to upload data to your workspace on the DSRI, depending on the size of your files and the application you are using.
 
-* If you are using **JupyterLab** or **VSCode** you should be able to load data to the container by simply **drag and drop the files to upload** in the JupyterLab/VSCode web UI.
-* For **RStudio**, use the Upload file button in the RStudio web UI to upload files from your computer to the RStudio workspace.
+## From the web UI
 
-:::caution File too big
+Most workspaces have a built-in file manager:
 
-If those solutions don't work due to the files size, try one of the solutions below.
+- **JupyterLab** and **VSCode** — drag and drop files directly into the web UI.
+- **RStudio** — use the **Upload** button in the Files panel.
 
-:::
+:::caution
 
-## Copy large files with the terminal 
-
-The quickest way to upload large files or folders from a laptop or server to the DSRI is to use the `oc` command line interface.
-
-:::tip Install the client
-
-To install the `oc` client on your laptop/server, visit the [Install the client](/docs/openshift-install) page
+If files are too large to upload via the web UI, use `oc cp` or `oc rsync` instead.
 
 :::
 
-`oc cp` directly copy, and overwrite existing files, from a laptop or server to an Application pod on the DSRI.
+## Copy files with `oc cp`
 
-First get the `<pod_id>` using your application name:
+`oc cp` copies files or folders from your machine to a pod on the DSRI, overwriting existing files.
 
-```shell
-oc get pod --selector app=<my_application_name>
+First, get the pod name using your application name:
+
+```bash
+oc get pod --selector app=<my-application-name>
 ```
 
 ### Copy from local to pod
 
-Folders are uploaded recursively by default:
-
-```shell
-oc cp <folder_to_copy> <pod_id>:<absolute_path_in_pod>
+```bash
+oc cp <folder-to-copy> <pod-name>:<absolute-path-in-pod>
 ```
 
-:::caution Use absolute path in the pod
+:::caution
 
-You need to provide the absolute (full) path where you want to copy it in the pod. Use your application workspace path, e.g. `/home/jovyan` for JupyterLab or `/home/rstudio` for RStudio)
+Always use the **absolute path** in the pod, for example `/home/jovyan` for JupyterLab or `/home/rstudio` for RStudio.
 
 :::
 
-For example:
-
-```shell
-oc cp my-folder jupyterlab-000:/home/jovyan
-```
-
-You can also use this one-liner to automatically get the pod ID based on your app label:
+Example:
 
 ```bash
-oc get pod --selector app=<my_application_name> | xargs -I{} oc cp <folder_to_copy> {}:<absolute_path_in_pod>
+oc cp my-folder jupyterlab-000:/home/jovyan
 ```
 
 ### Copy from pod to local
 
-Just do the inverse:
-
-```shell
-oc cp <pod_ID>:<path_to_copy> <local_destination>
+```bash
+oc cp <pod-name>:<path-to-copy> <local-destination>
 ```
 
-### Download data from SURFdrive
+## Sync files with `oc rsync`
 
-You can download data from your SURFdrive to your pod by creating a public link to the file:
+Use `oc rsync` when you have many large files or files that change regularly. Unlike `oc cp`, rsync only transfers files that have changed, shows progress, and can resume if interrupted.
 
-1. Go to the file in SURFdrive you'd like to share
-2. Click share and the create public link
-3. Fill in a name for the public link (like DSRI). The name does not matter much, but it can help you keep track of the goal of the public link.
-4. Click copy to clipboard
-5. Visit link in browser and copy the direct URL displayed on that page.
-6. Use the direct URL you just copied to download the file using either wget or curl (e.g. "wget https://surfdrive.surf.nl/files/index.php/s/5mFwyAKj4UexlJb/download")
-7. Revoke link in the SURFdrive portal
+:::caution
 
-## Synchronizes files with `oc rsync`
-
-If you have a lot of large files and/or they are updated regularly, you can use `rsync` as it synchronizes the files if they already exist, preventing duplication and making synchronization faster.  You can also see the progress with `rsync` which you cannot with `cp`. And if the upload is stopped for any reason `rsync` should pick it up from where it stopped (instead of restarting from scratch like `oc cp` does)
-
-:::caution 
-
-Rsync does not work with symlinks (created with `ln -s`)
+`oc rsync` does not work with symlinks created with `ln -s`.
 
 :::
 
 ### Sync local to pod
 
-```shell
-oc rsync --progress <folder_to_sync> <pod-id>:<sync_path_in_pod>
-```
-
-You can also use this one-liner to automatically get the pod ID based on your app label:
-
 ```bash
-oc get pod --selector app=<my_application_name> | xargs -I{} oc rsync --progress <folder_to_sync> {}:<absolute_path_in_pod>
+oc rsync --progress <folder-to-sync> <pod-name>:<path-in-pod>
 ```
 
 ### Sync pod to local
 
-Again, do the inverse:
-
-```shell
-oc rsync --progress <pod-id>:<folder_to_sync> <local_destination_to_sync>
+```bash
+oc rsync --progress <pod-name>:<folder-to-sync> <local-destination>
 ```
 
-### More options
+### Additional options
 
-You can use more options to improve the upload of large files:
+| Option | Description |
+| --- | --- |
+| `--compress` | Compress file data during transfer |
+| `--delete` | Delete files in the destination not present in the source |
+| `--watch` | Watch directory for changes and resync automatically |
 
-| `--compress` | compress file data during the transfer               |
-| ------------ | ---------------------------------------------------- |
-| `--delete`   | delete files not present in source                   |
-| `--watch`    | Watch directory for changes and resync automatically |
+## Download data from SURFdrive
 
-## One-liner
+To download data from SURFdrive directly to your pod:
 
+1. Go to the file in SURFdrive and click **Share** > **Create public link**.
+2. Give the link a name and click **Copy to clipboard**.
+3. Open the link in a browser and copy the direct download URL shown on the page.
+4. In your pod terminal, download the file using `wget` or `curl`:
+
+```bash
+wget https://surfdrive.surf.nl/files/index.php/s/yourlink/download
+```
+
+5. Revoke the link in the SURFdrive portal when done.
