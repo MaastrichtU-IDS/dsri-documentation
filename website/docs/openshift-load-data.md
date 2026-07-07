@@ -5,12 +5,18 @@ title: Uploading Data
 
 There are several ways to upload data to your workspace on the DSRI, depending on the size of your files and the application you are using.
 
+:::info
+
+To use `oc cp` or `oc rsync`, you need to install the `oc` client first. See the [Install the client](/docs/openshift-install) page for instructions.
+
+:::
+
 ## From the web UI
 
 Most workspaces have a built-in file manager:
 
-- **JupyterLab** and **VSCode** — drag and drop files directly into the web UI.
-- **RStudio** — use the **Upload** button in the Files panel.
+- **JupyterLab** and **VSCode**: drag and drop files directly into the web UI.
+- **RStudio**: use the **Upload** button in the Files panel.
 
 :::caution
 
