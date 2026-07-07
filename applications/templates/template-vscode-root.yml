@@ -165,8 +165,8 @@ objects:
                       key: application-password 
               resources:
                 requests:
-                  cpu: "200m"
-                  memory: "256Mi"
+                  cpu: '2'
+                  memory: 4Gi
                 limits:
                   cpu: '32'
                   memory: "200Gi"

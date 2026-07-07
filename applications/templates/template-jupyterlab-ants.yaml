@@ -167,8 +167,8 @@ objects:
                   value: "/usr/local/ants/bin"
               resources:
                 requests:
-                  cpu: 500m
-                  memory: 2Gi
+                  cpu: '2'
+                  memory: 4Gi
                 limits:
                   cpu: '8'
                   memory: 16Gi
