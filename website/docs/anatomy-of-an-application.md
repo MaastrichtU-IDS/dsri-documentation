@@ -486,7 +486,7 @@ objects:
                       key: application-password 
               resources:
                 requests:
-                  cpu: 2
+                  cpu: '2'
                   memory: "4Gi"
                 limits:
                   cpu: '32'
