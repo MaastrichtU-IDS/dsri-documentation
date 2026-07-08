@@ -191,7 +191,7 @@ objects:
                 cpu: '8'
                 memory: 16Gi
               requests:
-                cpu: 500m
+                cpu: '2'
                 memory: 4Gi
             volumeMounts:
             - name: data

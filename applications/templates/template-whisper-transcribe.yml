@@ -167,8 +167,8 @@ objects:
               cpu: '64'
               memory: 256Gi
             requests:
-              cpu: 200m
-              memory: 256Mi
+              cpu: '2'
+              memory: 4Gi
           volumeMounts:
           - mountPath: "/persistent"
             name: data
