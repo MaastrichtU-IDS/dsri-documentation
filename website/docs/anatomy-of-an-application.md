@@ -287,12 +287,25 @@ Define resource requests and limits. Requests are the minimum resources guarante
 ```yaml
               resources:
                 requests:
-                  cpu: "200m"
-                  memory: "256Mi"
+                  cpu: '2'
+                  memory: 4Gi
                 limits:
                   cpu: '32'
-                  memory: "200Gi"
+                  memory: 200Gi
 ```
+
+:::caution Resource limits are enforced on the DSRI
+All pods must have CPU and memory requests and limits explicitly set. Pods deployed without them will be rejected.
+
+Resource values also cannot exceed the cluster-wide maximums:
+
+| | CPU | Memory |
+|---|---|---|
+| Requests | 128 cores | 256Gi |
+| Limits | 200 cores | 768Gi |
+
+If your workload requires values beyond these limits, please contact the [RCS team](/contact).
+:::
 
 ## The complete application
 
