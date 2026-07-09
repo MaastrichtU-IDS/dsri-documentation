@@ -9,7 +9,7 @@ title: Imaging Software
 
 ### Deploy
 
-Find the **CellProfiler** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it. The template uses the [official CellProfiler image](https://hub.docker.com/r/cellprofiler/cellprofiler) from DockerHub.
+Find the **CellProfiler** template in the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) and instantiate it. The template uses the [official CellProfiler image](https://hub.docker.com/r/cellprofiler/cellprofiler) from DockerHub.
 
 ### Persistent storage
 

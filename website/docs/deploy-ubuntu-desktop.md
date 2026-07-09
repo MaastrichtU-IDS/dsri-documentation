@@ -13,7 +13,7 @@ This template is not activated by default in the DSRI catalog. Contact the [RCS]
 
 ## Deploy
 
-Once the template is enabled for your project, find **Ubuntu VNC Desktop** in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it with a password of your choice.
+Once the template is enabled for your project, find **Ubuntu VNC Desktop** in the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) and instantiate it with a password of your choice.
 
 Login credentials:
 - **Username**: `root`

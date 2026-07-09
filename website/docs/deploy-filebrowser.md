@@ -13,7 +13,7 @@ Filebrowser can only be deployed on an **existing** Persistent Volume Claim. Mak
 
 ## Deploy
 
-Find the **File Browser for existing storage** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
+Find the **File Browser for existing storage** template in the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
 
 1. **Application name** - must be unique within your project. It will be used to generate the application URL.
 2. **Password** - hash the password first for security using:

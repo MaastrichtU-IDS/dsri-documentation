@@ -7,7 +7,7 @@ RStudio is an integrated development environment for R. On the DSRI it runs as a
 
 ## Deploy
 
-Find the **RStudio** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it. You will need to set a **password** to access the UI. The username will always be `root`.
+Find the **RStudio** template in the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) and instantiate it. You will need to set a **password** to access the UI. The username will always be `root`.
 
 If you need Bioconductor packages for genomics or single-cell RNA sequencing analysis, use the **Bioconductor with RStudio** template instead. It includes Bioconductor 3.21 with R 4.5.2 pre-installed. Everything else works the same way.
 

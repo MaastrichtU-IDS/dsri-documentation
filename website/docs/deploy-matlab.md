@@ -13,7 +13,7 @@ We are not experts in Matlab - if you have issues with the official Docker image
 
 ## Deploy
 
-Find the **Matlab** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
+Find the **Matlab** template in the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
 
 - **Password** to access the Matlab UI. Make sure it is longer than 6 characters.
 - **Matlab image version** - see the [official Matlab Docker image documentation](https://hub.docker.com/r/mathworks/matlab) for available versions.
