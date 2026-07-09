@@ -7,7 +7,7 @@ JupyterLab is an interactive web-based environment for data science and scientif
 
 ## Deploy
 
-Find the **JupyterLab** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
+Find the **JupyterLab** template in the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
 
 - **Password** to access the notebook
 - **Docker image** to use (see available images below)

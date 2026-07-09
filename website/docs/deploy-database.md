@@ -3,7 +3,7 @@ id: deploy-database
 title: Databases
 ---
 
-The DSRI provides templates for several SQL, NoSQL, and graph databases. You can deploy them directly from the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) or via Helm.
+The DSRI provides templates for several SQL, NoSQL, and graph databases. You can deploy them directly from the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) or via Helm.
 
 Once a database is running, you can connect to it from another pod in the same project using the **database service name as hostname**. To list services in your project:
 

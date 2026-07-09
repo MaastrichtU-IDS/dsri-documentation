@@ -29,9 +29,9 @@ If no suitable image can be found on [DockerHub](https://hub.docker.com/), it ca
 
 ## Deploy the image on DSRI
 
-Once you have a Docker image for your application you can deploy it using the [DSRI web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/console/projects).
+Once you have a Docker image for your application you can deploy it using the [DSRI web UI](https://console.dsri.unimaas.nl).
 
-Go to the [Overview page](https://console-openshift-console.apps.dsri2.unimaas.nl/console/projects) of your project.
+Go to the [Overview page](https://console.dsri.unimaas.nl) of your project.
 
 * Click the **Add to Project** button in top right corner > **Deploy Image**
 * Select to deploy from **Image Name**

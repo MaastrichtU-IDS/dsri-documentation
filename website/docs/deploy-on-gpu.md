@@ -38,7 +38,7 @@ We currently mainly use Tensorflow, PyTorch and CUDA, but any image available in
 
 You can easily deploy your GPU workspace from the DSRI catalog:
 
-1. Go to the [DSRI Catalog web UI](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog): Click on **Add to Project**, then **Browse Catalog**
+1. Go to the [DSRI Catalog web UI](https://console.dsri.unimaas.nl/catalog): Click on **Add to Project**, then **Browse Catalog**
 2. Search the catalog for  "GPU", and make sure the Template checkbox is enabled
 3. Choose the template: **JupyterLab on GPU**
 4. Follow the instructions to create the template in the DSRI web UI, all information about the images you can use are provided there. The most notable is the base image you want to use for your workspace (`cuda`, `tensorflow` or `pytorch`)

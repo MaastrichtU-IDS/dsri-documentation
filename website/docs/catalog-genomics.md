@@ -9,7 +9,7 @@ title: Genomics
 
 ### Deploy
 
-Find the **Trinity RNA-Seq** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it. The template uses the Trinity RNA-Seq image hosted in the [UM IDS GitHub Container Registry](https://github.com/orgs/maastrichtu-ids/packages/container/package/trinityrnaseq).
+Find the **Trinity RNA-Seq** template in the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) and instantiate it. The template uses the Trinity RNA-Seq image hosted in the [UM IDS GitHub Container Registry](https://github.com/orgs/maastrichtu-ids/packages/container/package/trinityrnaseq).
 
 ### Persistent storage
 

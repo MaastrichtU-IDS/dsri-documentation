@@ -7,7 +7,7 @@ Visual Studio Code server is a browser-based version of VS Code that runs as a c
 
 ## Deploy
 
-Find the **VisualStudio Code server** template in the [DSRI Catalog](https://console-openshift-console.apps.dsri2.unimaas.nl/catalog) (make sure the **Templates** checkbox is checked) and instantiate it with a password of your choice.
+Find the **VisualStudio Code server** template in the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) and instantiate it with a password of your choice.
 
 ## Persistent storage
 
