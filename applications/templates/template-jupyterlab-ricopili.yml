@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: jupyterlab-ricopili
   annotations:
-    openshift.io/display-name: JupyterLab Ricopili
+    openshift.io/display-name: JupyterLab with Ricopili
     description: |-
       Start JupyterLab image with R-kernel and Ricopoli tools installed as the `root` user.
 

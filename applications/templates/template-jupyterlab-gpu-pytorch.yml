@@ -19,22 +19,8 @@ metadata:
       📂 Use the `/workspace/persistent` folder (workspace of the JupyterLab UI) to store your data in the persistent
       storage
       
-      🐳 You can directly use the following Docker images to work on GPU:
-      - CUDA build, based on https://ngc.nvidia.com/catalog/containers/nvidia:cuda
-      ghcr.io/maastrichtu-ids/jupyterlab:cuda
-      - Tensorflow build, based on https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
-      ghcr.io/maastrichtu-ids/jupyterlab:gpu-tensorflow
-      - PyTorch build, based on https://ngc.nvidia.com/catalog/containers/nvidia:pytorch
-      ghcr.io/maastrichtu-ids/jupyterlab:gpu-pytorch
-      - FSL, built with NeuroDocker and CUDA:
-      ghcr.io/maastrichtu-ids/jupyterlab:fsl-gpu
-      
       Feel free to check how the GPU images are built and to customize them for your project:
-      https://github.com/MaastrichtU-IDS/jupyterlab
-      
-      🔧 You can find an
-      example for PyTorch in the following repository:
-      https://gitlab.maastrichtuniversity.nl/dsri-examples/dsri-pytorch-workspace
+      https://github.com/MaastrichtU-IDS/jupyterlab      
       
       🗑️
       Use this command with your application name to delete completely your application

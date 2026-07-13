@@ -2,9 +2,9 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: ants-jupyterlab
+  name: jupyterlab-ants
   annotations:
-    openshift.io/display-name: ANTs with JupyterLab
+    openshift.io/display-name: JupyterLab with ANTs
     description: |-
       Advanced Normalization Tools (ANTs) 2.6.4 pre-loaded in a JupyterLab workspace. 
 
@@ -21,12 +21,12 @@ metadata:
     openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/documentation-url: https://github.com/ANTsX/ANTs
 labels:
-  template: ants-jupyterlab
+  template: jupyterlab-ants
 
 parameters:
   - name: APPLICATION_NAME
     displayName: Application Name
-    value: ants-jupyterlab
+    value: jupyterlab-ants
     required: true
   - name: APPLICATION_IMAGE
     displayName: ANTs Docker Image
