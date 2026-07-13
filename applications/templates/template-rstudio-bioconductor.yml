@@ -2,11 +2,11 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: bioconductor-rstudio
+  name: rstudio-bioconductor
   annotations:
     openshift.io/display-name: RStudio with Bioconductor
     description: |-
-      Bioconductor Docker image with RStudio IDE for R-based bioinformatics analysis.
+      RStudio IDE with Bioconductor package installed for R-based bioinformatics analysis.
       
       This template provides the Bioconductor 3.21 suite with R 4.5.2, suitable for genomics workflows including single-cell RNA sequencing analysis.
       You can install packages like Seurat as needed.
@@ -32,13 +32,13 @@ metadata:
     openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:
-  template: Bioconductor-RStudio
+  template: rstudio-bioconductor
 
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
   description: Must be without spaces (use -), and unique in the project.
-  value: bioconductor-rstudio
+  value: rstudio-bioconductor
   required: true
 - name: APPLICATION_IMAGE
   displayName: Bioconductor Docker image
