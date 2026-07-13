@@ -4,11 +4,11 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: matlab-cpu-nolicense
   annotations:
-    openshift.io/display-name: Matlab with your own license
+    openshift.io/display-name: MATLAB with your own license
     description: |-
-      Start Matlab with a desktop UI, and use your own license to enable
-      Matlab (this can be useful when the UM license server does not support the latest
-      Matlab release).
+      Start MATLAB with a desktop UI, and use your own license to enable
+      MATLAB (this can be useful when the UM license server does not support the latest
+      MATLAB release).
       Running on CPU, with admin privileges to install anything you
       need
       
@@ -39,12 +39,12 @@ parameters:
     required: true
   - name: STORAGE_SIZE
     displayName: Storage size
-    description: Size of the storage used for Matlab (approximate).
+    description: Size of the storage used for MATLAB (approximate).
     value: 10Gi
     required: true
   - name: PASSWORD
-    displayName: Matlab UI password
-    description: The password to access the Matlab web UI
+    displayName: MATLAB UI password
+    description: The password to access the MATLAB web UI
     required: true
   - name: DEPLOYMENT_TYPE
     displayName: Type of deployment

@@ -4,15 +4,15 @@ apiVersion: template.openshift.io/v1
 metadata:
   annotations:
     description: |- 
-      Start Matlab with desktop UI.
+      Start MATLAB with desktop UI.
       
       Running on CPU, with admin privileges to install anything you need.
       
-      Matlab will be automatically enabled using the UM matlab license server.
+      MATLAB will be automatically enabled using the UM MATLAB license server.
       
       You can choose between 2 types of deployment:
-      - Browser: access directly matlab in the browser, only available from r2024a and up
-      - VNC: access matlab in a Linux desktop in the browser, highly unstable, Matlab devs
+      - Browser: access directly MATLAB in the browser, only available from r2024a and up
+      - VNC: access MATLAB in a Linux desktop in the browser, highly unstable, MATLAB devs
       acknowledge themselves it is tricky to use
       
       📂 Use the `/home/matlab/persistent` folder to store your data in the persistent storage automatically created.
@@ -21,7 +21,7 @@ metadata:
       
       🐳 Visit https://hub.docker.com/r/mathworks/matlab for more details about the image'
     iconClass: icon-beaker
-    openshift.io/display-name: Matlab
+    openshift.io/display-name: MATLAB
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-matlab
     openshift.io/provider-display-name: Institute of Data Science, UM
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
@@ -42,13 +42,13 @@ parameters:
   name: APPLICATION_IMAGE
   required: true
   value: mathworks/matlab:r2025a
-- description: Size of the storage used for Matlab (approximate).
+- description: Size of the storage used for MATLAB (approximate).
   displayName: Storage size
   name: STORAGE_SIZE
   required: true
   value: 10Gi
-- description: The password to access the Matlab web UI
-  displayName: Matlab UI password
+- description: The password to access the MATLAB web UI
+  displayName: MATLAB UI password
   name: PASSWORD
   required: true
 
