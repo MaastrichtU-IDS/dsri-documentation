@@ -29,7 +29,7 @@ parameters:
   - name: APPLICATION_IMAGE
     displayName: Jupyter notebook Docker image
     description: Check the description on the right for more details about available images
-    value: ghcr.io/maastrichtu-ids/jupyterlab:freesurfer
+    value: default-route-openshift-image-registry.apps.dsri.unimaas.nl/openshift/freesurfer:latest
     required: true
   - name: STORAGE_SIZE
     displayName: Storage size
