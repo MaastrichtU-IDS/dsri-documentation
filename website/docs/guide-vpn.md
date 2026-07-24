@@ -74,19 +74,13 @@ Provide your UM username and password.
 
 
 
-#### Install the VPN (AnyConnect Secure Mobility Client) on Linux
+#### Install the VPN (Cisco Secure Client) on Linux
 
-* Connect to **UMnet** or **eduroam** WiFi at Maastricht University
+* Download the **Cisco Secure Client** for Linux from [vpn.maastrichtuniversity.nl](https://vpn.maastrichtuniversity.nl/), the same way as described above for Windows.
 
-* For **Linux**, use `openconnect` to connect to the UM VPN. You can easily install it on Ubuntu and Debian distributions with `apt`:
-```bash
-  sudo apt install openconnect
-  # Employees:
-  sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.USER --authgroup=01 vpn.maastrichtuniversity.nl
-  # Students:
-  sudo openconnect --useragent "AnyConnect" --no-external-auth -u YOUR.STUDENT.NUMBER --authgroup=06 vpn.maastrichtuniversity.nl
-```
+* Install the client and open it.
 
-  > Provide your UM password when prompted.
-
+* Connect to `vpn.maastrichtuniversity.nl` and provide your UM username and password.
+  - **Employees:** use your P number, e.g. `P7000000`, and select `01-Employees`
+  - **Students:** use your student number, e.g. `I6000000`, and select `06-AssignedStudents`
 
