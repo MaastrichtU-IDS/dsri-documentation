@@ -23,9 +23,9 @@ PVC storage requests are limited to a maximum of **10Ti** per PVC. If you need m
 
 ## Create the Persistent Storage (PVC)
 
-1. Switch to the **Administrator** view.
-2. Go to **Storage** > **Persistent Volume Claims**.
-3. Click **Create Persistent Volume Claim**.
+1. In the left sidebar, click **PersistentVolumeClaims**.
+2. Make sure the correct **Project** is selected at the top of the page.
+3. Click **Create PersistentVolumeClaim**.
 4. Choose the storage class. The default is `ocs-storagecluster-ceph-rbd` (block storage). Change this to `ocs-storagecluster-cephfs` if you want to bind multiple pods to the same PVC.
 5. Provide a unique name for the PVC, starting with `pvc-` (e.g. `pvc-filebrowser`).
 6. Select the access mode and storage size:
@@ -64,8 +64,8 @@ This is also how you connect multiple applications to the same storage.
 
 ## Expand an Existing Persistent Storage (PVC)
 
-1. Switch to the **Administrator** view.
-2. Go to **Storage** > **Persistent Volume Claims**.
+1. In the left sidebar, click **PersistentVolumeClaims**.
+2. Make sure the correct **Project** is selected at the top of the page.
 3. Click the three dots (⋮) next to the PVC you want to expand.
 4. Click **Expand PVC**.
 5. Enter the new size and click **Expand**. It can take up to 2 minutes to complete.
@@ -74,10 +74,11 @@ This is also how you connect multiple applications to the same storage.
 
 Dynamic storage can be created manually:
 
-1. In your project, go to **Storage** in the left sidebar.
-2. Click **Create Storage**.
-3. Set the storage class to `ocs-storagecluster-cephfs`.
-4. Choose an access mode:
+1. In the left sidebar, click **PersistentVolumeClaims**.
+2. Make sure the correct **Project** is selected at the top of the page.
+3. Click **Create PersistentVolumeClaim**.
+4. Set the storage class to `ocs-storagecluster-cephfs`.
+5. Choose an access mode:
    - **Single User (RWO)** - only you can read and write.
    - **Shared Access (RWX)** - all users with project access can read and write.
    - **Read Only (ROX)** - all users with project access can read.
