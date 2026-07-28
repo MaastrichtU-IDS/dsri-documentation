@@ -1,0 +1,52 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: oc-copy
+  annotations:
+    openshift.io/display-name: "OC copy"
+    description: >-
+      A pod with the OC CLI and tmux for copying files
+      between projects. Mounts a PVC of your choice.
+    iconClass: icon-openshift
+    tags: oc,copy,migration,utility
+parameters:
+- name: NAME
+  displayName: Pod name
+  value: oc-copy
+  required: true
+- name: PVC_NAME
+  displayName: PVC to mount
+  description: Name of an existing PVC in this namespace to mount for copied files.
+  required: true
+objects:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: ${NAME}
+    labels:
+      app: ${NAME}
+  spec:
+    securityContext:
+      supplementalGroups: [100]
+      fsGroupChangePolicy: OnRootMismatch
+    containers:
+    - name: oc
+      image: ghcr.io/maastrichtu-library/rcs-docker-oc-copy:latest
+      command: ["sleep", "infinity"]
+      env:
+      - name: KUBECONFIG
+        value: /tmp/kubeconfig
+      resources:
+        limits:
+          cpu: '8'
+          memory: 16Gi
+        requests:
+          cpu: '2'
+          memory: 4Gi
+      volumeMounts:
+      - name: data
+        mountPath: /persistent
+    volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: ${PVC_NAME}
