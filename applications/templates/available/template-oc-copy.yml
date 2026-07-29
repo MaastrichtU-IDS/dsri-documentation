@@ -34,7 +34,7 @@ objects:
     containers:
     - name: oc
       image: ghcr.io/maastrichtu-library/rcs-docker-oc-copy:latest
-      imagePullPolicy; Always
+      imagePullPolicy: Always
       command: ["sleep", "infinity"]
       env:
       - name: KUBECONFIG
