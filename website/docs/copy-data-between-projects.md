@@ -11,9 +11,9 @@ Read this documentaiton carefully. There are multiple steps involved to make thi
 
 ## Prerequisites
 
-A deployment and running pod in the project you want to copy your data and files **to**. For example, a JupyterLab or RStudio deployment.
-A deployment and running pod in the project you want to copy your data and file **from**. Note that the running pod needs to be connected to the PVC which holds your data you want to copy!
-All PVCs need to have storageClass `ocs-storagecluster-cephfs` and volumeMode: `ReadWriteMany` (RWX).
+* A deployment and running pod in the project you want to copy your data and files **to**. For example, a JupyterLab or RStudio deployment.
+* A deployment and running pod in the project you want to copy your data and file **from**. Note that the running pod needs to be connected to the PVC which holds your data you want to copy!
+* All PVCs need to have storageClass `ocs-storagecluster-cephfs` and volumeMode: `ReadWriteMany` (RWX).
 
 ## Select the right template
 
