@@ -1,6 +1,6 @@
 ---
 id: copy-data-between-projects
-title: Copy data between projects
+title: Copy Data Between Projects
 ---
 
 If you have two projects, or more, of which you want to copy data between there is a utility pod "OC copy" that enables you to do so.
@@ -45,7 +45,7 @@ oc exec -it oc-copy -n <projectname> -- sh
 
 ### Starting tmux shell session
 
-```danger
+```warning
 This is a very important step, especially when copying over large amounts of data and files! This will make sure the copying process will keep on going even when you disconnect from the OC copy pod's terminal.
 ```
 
@@ -125,7 +125,7 @@ Always use the **absolute path** in the pod, for example `/home/jovyan/persisten
 
 ## Detach from the tmux shell session and exit the OC copy pod's terminal
 
-```danger
+```warning
 This is again a very important step. If not done correctly, the copying process will stop and copying over the data and files will fail!
 ```
 
