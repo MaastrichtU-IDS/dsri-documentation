@@ -49,6 +49,7 @@
         "prepare-project-for-dsri",
         "openshift-load-data",
         "openshift-storage",
+        "copy-data-between-projects",
         "openshift-delete-services"
       ]
     },
