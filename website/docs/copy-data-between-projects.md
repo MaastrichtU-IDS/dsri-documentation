@@ -6,19 +6,19 @@ title: Copy Data Between Projects
 If you have two projects, or more, of which you want to copy data between there is a utility pod "OC copy" that enables you to do so.
 
 ```caution
-Read this documentaiton carefully. There are multiple steps involved to make this work properly. Please *fully* read the documentation first before using the OC copy pod.
+Read this documentaiton carefully. There are multiple steps involved to make this work properly. Please **fully** read the documentation first before using the OC copy pod.
 ```
 
 ## Prerequisites
 
-A deployment and running pod in the project you want to copy your data and files *to*. For example, a JupyterLab or RStudio deployment.
-A deployment and running pod in the project you want to copy your data and file *from*. Note that the running pod needs to be connected to the PVC which holds your data you want to copy!
+A deployment and running pod in the project you want to copy your data and files **to**. For example, a JupyterLab or RStudio deployment.
+A deployment and running pod in the project you want to copy your data and file **from**. Note that the running pod needs to be connected to the PVC which holds your data you want to copy!
 All PVCs need to have storageClass `ocs-storagecluster-cephfs` and volumeMode: ReadWriteMany (RWX).
 
 ## Select the right template
 
-You will need to deploy the OC copy pod in the project *you want the data to end up*. So, the project where you want to copy the data to needs to have the OC copy pod.
-Select the OC copy template via searching for it through the catalogue in the web UI. You will be presented with a form that you'll need to fill in. In the `PVC to mount` field, you need to fill in the PVC name *connected to the running pod to which you want to copy your data and files to*.
+You will need to deploy the OC copy pod in the project **you want the data to end up**. So, the project where you want to copy the data to needs to have the OC copy pod.
+Select the OC copy template via searching for it through the catalogue in the web UI. You will be presented with a form that you'll need to fill in. In the `PVC to mount` field, you need to fill in the PVC name **connected to the running pod to which you want to copy your data and files to**.
 
 ## Example - part 1
 
@@ -37,7 +37,7 @@ Either use rsh or exec to connect to the OC copy pod's terminal.
 oc rsh -n <projectname> oc-copy
 ```
 
-Or
+or
 
 ```bash
 oc exec -it oc-copy -n <projectname> -- sh
@@ -69,7 +69,7 @@ oc login https://<URL>:<port> --token=<token>
 
 ### List available projects, and select the right project
 
-You need to select the correct project. In this case this will be the project you want to copy your data and files *from*.
+You need to select the correct project. In this case this will be the project you want to copy your data and files **from**.
 
 ```bash
 oc projects
@@ -81,7 +81,7 @@ oc project <projectname>
 
 ### Get the pod's name
 
-You need to get the correct pod's name. In this case this will be the pod you want to copy your data and files *from*.
+You need to get the correct pod's name. In this case this will be the pod you want to copy your data and files **from**.
 
 ```bash
 oc get pods
@@ -160,7 +160,7 @@ Either use rsh or exec to connect to the OC copy pod's terminal.
 oc rsh -n <projectname> oc-copy
 ```
 
-Or
+or
 
 ```bash
 oc exec -it oc-copy -n <projectname> -- sh
