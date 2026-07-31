@@ -1,6 +1,6 @@
 ---
 id: openshift-storage
-title: Data storage
+title: Data Storage
 ---
 
 The DSRI uses [OpenShift Container Storage](https://www.openshift.com/products/container-storage/) (`OCS`) based on [Ceph](https://ceph.io/ceph-storage/). Three types of storage are available:
