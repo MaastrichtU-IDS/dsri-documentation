@@ -13,7 +13,7 @@ Read this documentaiton carefully. There are multiple steps involved to make thi
 
 A deployment and running pod in the project you want to copy your data and files **to**. For example, a JupyterLab or RStudio deployment.
 A deployment and running pod in the project you want to copy your data and file **from**. Note that the running pod needs to be connected to the PVC which holds your data you want to copy!
-All PVCs need to have storageClass `ocs-storagecluster-cephfs` and volumeMode: ReadWriteMany (RWX).
+All PVCs need to have storageClass `ocs-storagecluster-cephfs` and volumeMode: `ReadWriteMany` (RWX).
 
 ## Select the right template
 
@@ -22,10 +22,10 @@ Select the OC copy template via searching for it through the catalogue in the we
 
 ## Example - part 1
 
-You have projects rstudio-project-1 which has data and files you want to copy to project jupyterlab-project-2. 
-In project rstudio-project-1, you have a RStudio pod running connected to a PVC named rstudio-pvc. This PVC has you data and files you want to copy to jupyterlab-project-2.
-In project jupyterlab-project-2, you have a JupyterLab pod running conencted to a PVC named jupyterlab-pvc. This is the PVC you want to copy the data and files to.
-Therefore, you will instantiate the OC copy template in project jupyterlab-project-2 and will fill in for the `PVC to mount` field the name of the JupyterLab pod's PVC. You will in: `jupyterlab-pvc`.
+You have projects `rstudio-project-1` which has data and files you want to copy to project `jupyterlab-project-2`. 
+In project `rstudio-project-1`, you have a RStudio pod running connected to a PVC named `rstudio-pvc`. This PVC has you data and files you want to copy to `jupyterlab-project-2`.
+In project `jupyterlab-project-2`, you have a JupyterLab pod running conencted to a PVC named `jupyterlab-pvc`. This is the PVC you want to copy the data and files to.
+Therefore, you will instantiate the OC copy template in project `jupyterlab-project-2` and will fill in for the `PVC to mount` field the name of the JupyterLab pod's PVC. You will fill in: `jupyterlab-pvc`.
 
 ## Using the OC copy pod
 
@@ -152,7 +152,7 @@ exit
 
 When you want to check the progress after a while, or see if the copying process has finished correctly, you can reconnect to the terminal and tmux shell session.
 
-Connec to the OC copy pod's terminal via the web UI, or via the OC CLI on your machine.
+Connect to the OC copy pod's terminal via the web UI, or via the OC CLI on your machine.
 
 Either use rsh or exec to connect to the OC copy pod's terminal.
 
@@ -188,9 +188,9 @@ Scrolling to see earlier output in tmux is `Ctrl-b` then `[`, then `arrow`/`Page
 
 ## Example - part 2
 
-In the previous part we instantiated and deployed the OC copy pod in the jupyterlab-project-2 project and connected the OC copy pod to the jupyterlab-pvc PVC. In this part we are going to copy over data and files from the rstudio-project-1 project to the jupyterlab-project-2 project. More specifically we will copy it over from the rstudio-pvc PVC to the jupyterlab-pvc PVC.
+In the previous part we instantiated and deployed the OC copy pod in the `jupyterlab-project-2` project and connected the OC copy pod to the `jupyterlab-pvc` PVC. In this part we are going to copy over data and files from the `rstudio-project-1` project to the `jupyterlab-project-2` project. More specifically we will copy it over from the `rstudio-pvc` PVC to the `jupyterlab-pvc` PVC.
 
-First we will connect to the OC copy pod in the jupyterlab-project-2 project. We will use `oc rsh` for this from the OC CLI.
+First we will connect to the OC copy pod in the `jupyterlab-project-2` project. We will use `oc rsh` for this from the OC CLI.
 
 ```bash
 oc rsh -n jupyterlab-project-2 oc-copy
@@ -203,14 +203,14 @@ Note that we name this tmux shell sessions: `copy`
 tmux new -s copy
 ```
 
-Inside this tmux shell session we will need to log into the OC CLI in order to be able to connect to the rstudio-project-1 project.
+Inside this tmux shell session we will need to log into the OC CLI in order to be able to connect to the `rstudio-project-1` project.
 Follow the steps above on how to get your OC CLI token.
 
 ```bash
 oc login https://<URL>:<port> --token=<token>
 ```
 
-Next, we need to make sure we are connected to the rstudio-project-1 project. Let's list our available projects and connect to the rstudio-project-1 project.
+Next, we need to make sure we are connected to the `rstudio-project-1` project. Let's list our available projects and connect to the `rstudio-project-1` project.
 
 ```bash
 oc projects
@@ -223,13 +223,13 @@ rstudio-project-1
 jupyterlab-project-2
 ```
 
-Connect to the rstudio-project-1 project.
+Connect to the `rstudio-project-1` project.
 
 ```bash
 oc project rstudio-project-1
 ```
 
-Now we can retrieve the exact podname of our RStudio pod which is connected to the rstudio-pvc PVC, and which has the data and files we want to copy over to the jupyterlab-project-2 project.
+Now we can retrieve the exact podname of our RStudio pod which is connected to the `rstudio-pvc` PVC, and which has the data and files we want to copy over to the `jupyterlab-project-2` project.
 
 ```bash
 oc get pods
