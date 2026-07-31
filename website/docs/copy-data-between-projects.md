@@ -6,7 +6,7 @@ title: Copy Data Between Projects
 If you have two projects, or more, of which you want to copy data between there is a utility pod "OC copy" that enables you to do so.
 
 :::caution
-Read this documentaiton carefully. There are multiple steps involved to make this work properly. Please **fully** read the documentation first before using the OC copy pod.
+Read this documentation carefully. There are multiple steps involved to make this work properly. Please **fully** read the documentation first before using the OC copy pod.
 :::
 
 ## Prerequisites
@@ -23,7 +23,7 @@ Select the OC copy template via searching for it through the catalogue in the we
 ## Example - part 1
 
 You have projects `rstudio-project-1` which has data and files you want to copy to project `jupyterlab-project-2`. 
-In project `rstudio-project-1`, you have a RStudio pod running connected to a PVC named `rstudio-pvc`. This PVC has you data and files you want to copy to `jupyterlab-project-2`.
+In project `rstudio-project-1`, you have a RStudio pod running connected to a PVC named `rstudio-pvc`. This PVC has your data and files you want to copy to `jupyterlab-project-2`.
 In project `jupyterlab-project-2`, you have a JupyterLab pod running conencted to a PVC named `jupyterlab-pvc`. This is the PVC you want to copy the data and files to.
 Therefore, you will instantiate the OC copy template in project `jupyterlab-project-2` and will fill in for the `PVC to mount` field the name of the JupyterLab pod's PVC. You will fill in: `jupyterlab-pvc`.
 
@@ -142,7 +142,7 @@ d
 ```
 
 Now you can exit the OC copy pod's terminal without disrupting the copying process.
-Just tpye exit to exit the terminal.
+Just type exit to exit the terminal.
 
 ```bash
 exit
@@ -260,7 +260,7 @@ then
 d
 ```
 
-We have detahced from the tmux session. We can safely exit the terminal now, and therefore also for example close our laptop.
+We have detached from the tmux session. We can safely exit the terminal now, and therefore also for example close our laptop.
 
 ```
 exit
@@ -292,4 +292,4 @@ Let's connect to the (only) tmux shell session, named `copy`.
 tmux attach -t copy
 ```
 
-You can check the progress, or either verify the copying process finished without any warnings and/or errors. After you can close eveything by just typing `exit` in the tmux shell session and `exit` again in the OC copy pod's terminal.
+You can check the progress, or either verify the copying process finished without any warnings and/or errors. After you can close everything by just typing `exit` in the tmux shell session and `exit` again in the OC copy pod's terminal.
