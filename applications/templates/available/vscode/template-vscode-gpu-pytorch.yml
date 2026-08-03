@@ -42,24 +42,6 @@ parameters:
     required: true
 
 objects:
-  - kind: ImageStream
-    apiVersion: image.openshift.io/v1
-    metadata:
-      name: "${APPLICATION_NAME}"
-      labels:
-        app: "${APPLICATION_NAME}"
-        template: vscode-gpu-pytorch
-    spec:
-      lookupPolicy:
-        local: true
-      tags:
-        - name: latest
-          from:
-            kind: DockerImage
-            name: ${APPLICATION_IMAGE}
-          importPolicy:
-            scheduled: false
-
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:

@@ -64,24 +64,6 @@ parameters:
   value: "-browser"
 
 objects:
-- kind: ImageStream
-  apiVersion: image.openshift.io/v1
-  metadata:
-    labels:
-      app: "${APPLICATION_NAME}"
-      template: matlab-cpu
-    name: "${APPLICATION_NAME}"
-  spec:
-    lookupPolicy:
-      local: true
-    tags:
-    - from:
-        kind: DockerImage
-        name: "${APPLICATION_IMAGE}"
-      importPolicy:
-        scheduled: false
-      name: latest
-
 - kind: PersistentVolumeClaim
   apiVersion: v1
   metadata:
