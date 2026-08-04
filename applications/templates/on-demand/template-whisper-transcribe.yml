@@ -166,9 +166,11 @@ objects:
             limits:
               cpu: '64'
               memory: 256Gi
+              ephemeral-storage: 50Gi
             requests:
               cpu: '2'
               memory: 4Gi
+              ephemeral-storage: 2Gi
           volumeMounts:
           - mountPath: "/persistent"
             name: data
