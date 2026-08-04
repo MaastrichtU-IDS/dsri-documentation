@@ -14,7 +14,6 @@ def post_msg_to_slack(text):
         "text": text,
     }
     print(data)
-    print(str(os.getenv('SLACK_BOT_TOKEN')))
     try:
         return requests.post(
             'https://slack.com/api/chat.postMessage',
