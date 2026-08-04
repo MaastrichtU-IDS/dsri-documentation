@@ -140,6 +140,8 @@ objects:
                 requests:
                   cpu: 100m
                   memory: 256Mi
+                  ephemeral-storage: 2Gi
                 limits:
                   cpu: '1'
                   memory: 2Gi
+                  ephemeral-storage: 50Gi
