@@ -55,8 +55,8 @@ def disable_gpu(project_id, app_id, dyn_client) -> str:
                                         "nvidia.com/gpu": None
                                     },
                                     "requests": {
-                                        "cpu": "200m",
-                                        "memory": "512Mi",
+                                        "cpu": "2",
+                                        "memory": "4Gi",
                                         "nvidia.com/gpu": None
                                     }
                                 }
@@ -118,8 +118,8 @@ def enable_gpu(project_id, app_id, dyn_client):
                                             "nvidia.com/gpu": "1"
                                         },
                                         "requests": {
-                                            "cpu": "200m",
-                                            "memory": "512Mi",
+                                            "cpu": "2",
+                                            "memory": "4Gi",
                                             "nvidia.com/gpu": "1"
                                         }
                                     }
