@@ -4,7 +4,7 @@ class Settings(BaseSettings):
     API_PASSWORD: str = 'password'
 
     CLUSTER_API_KEY: str = 'token'
-    CLUSTER_URL: str = 'https://api.dsri2.unimaas.nl:6443'
+    CLUSTER_URL: str = 'https://api.dsri.unimaas.nl:6443'
     CLUSTER_API_VERSION : str = 'apps.openshift.io/v1'
 
     ENABLE_CRON: bool = False
