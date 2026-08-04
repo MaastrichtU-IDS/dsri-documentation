@@ -289,20 +289,22 @@ Define resource requests and limits. Requests are the minimum resources guarante
                 requests:
                   cpu: '2'
                   memory: 4Gi
+                  ephemeral-storage: 2Gi
                 limits:
                   cpu: '32'
                   memory: 200Gi
+                  ephemeral-storage: 50Gi
 ```
 
 :::caution Resource limits are enforced on the DSRI
-All pods must have CPU and memory requests and limits explicitly set. Pods deployed without them will be rejected.
+All pods must have CPU, memory, and ephemeral-storage requests and limits explicitly set. Pods deployed without them will be rejected.
 
 Resource values also cannot exceed the cluster-wide maximums:
 
-| | CPU | Memory |
-|---|---|---|
-| Requests | 32 cores | 128Gi |
-| Limits | 128 cores | 512Gi |
+| | CPU | Memory | Ephemeral storage |
+|---|---|---|---|
+| Requests | 32 cores | 128Gi | ≤ limit (50Gi) |
+| Limits | 128 cores | 512Gi | 50Gi |
 
 If your workload requires values beyond these limits, please contact the [RCS team](/contact).
 :::
@@ -488,9 +490,11 @@ objects:
                 requests:
                   cpu: '2'
                   memory: "4Gi"
+                  ephemeral-storage: 2Gi
                 limits:
                   cpu: '32'
                   memory: "200Gi"
+                  ephemeral-storage: 50Gi
 ```
 </details>
 
