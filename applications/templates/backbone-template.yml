@@ -40,25 +40,7 @@ parameters:
   #   required: false
 
 objects:
-  # 1. ImageStream to manage the application image
-  - kind: ImageStream
-    apiVersion: image.openshift.io/v1
-    metadata:
-      name: "${APPLICATION_NAME}"
-      labels:
-        app: "${APPLICATION_NAME}"
-    spec:
-      lookupPolicy:
-        local: true
-      tags:
-        - name: latest
-          from:
-            kind: DockerImage
-            name: ${APPLICATION_IMAGE}
-          importPolicy:
-            scheduled: false
-
-  # 2. Persistent Volume Claim for data storage
+  # 1. Persistent Volume Claim for data storage
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -73,7 +55,7 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
       
-  # 3. Service to expose the application internally
+  # 2. Service to expose the application internally
   - kind: Service
     apiVersion: v1
     metadata:
@@ -91,7 +73,7 @@ objects:
           port: 8080
           targetPort: 8080
 
-  # 4. Route to expose the Service to external traffic
+  # 3. Route to expose the Service to external traffic
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
@@ -109,7 +91,7 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
-  # 5. Secret for storing sensitive data like passwords
+  # 4. Secret for storing sensitive data like passwords
   - kind: Secret
     apiVersion: v1
     metadata:
@@ -120,7 +102,7 @@ objects:
       # The key here is 'password'. Access it in the deployment with a secretKeyRef.
       application-password: "${PASSWORD}"
 
-  # 6. Deployment to run the application container
+  # 5. Deployment to run the application container
   - kind: Deployment
     apiVersion: apps/v1
     metadata:

@@ -49,24 +49,6 @@ parameters:
     required: true
 
 objects:
-  - kind: ImageStream
-    apiVersion: image.openshift.io/v1
-    metadata:
-      name: ${APPLICATION_NAME}
-      labels:
-        app: ${APPLICATION_NAME}
-        template: ubuntu-vnc
-    spec:
-      tags:
-      - name: latest
-        from:
-          kind: DockerImage
-          name: ${APPLICATION_IMAGE}
-        importPolicy:
-          scheduled: false
-      lookupPolicy:
-        local: true
-
   - apiVersion: "v1"
     kind: "PersistentVolumeClaim"
     metadata:

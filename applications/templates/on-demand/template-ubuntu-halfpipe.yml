@@ -23,23 +23,6 @@ message: |-
   A Ubuntu pod has been scheduled for creation in your project, and should be soon available.
   Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
 objects:
-  - apiVersion: image.openshift.io/v1
-    kind: ImageStream
-    metadata:
-      labels:
-        app: '${APPLICATION_NAME}'
-        template: ubuntu-vnc-halfpipe
-      name: '${APPLICATION_NAME}'
-    spec:
-      lookupPolicy:
-        local: true
-      tags:
-        - from:
-            kind: DockerImage
-            name: '${APPLICATION_IMAGE}'
-          importPolicy:
-            scheduled: false
-          name: latest
   - apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:

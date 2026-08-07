@@ -47,24 +47,6 @@ parameters:
     required: false
 
 objects:
-  - kind: ImageStream
-    apiVersion: image.openshift.io/v1
-    metadata:
-      name: "${APPLICATION_NAME}"
-      labels:
-        app: "${APPLICATION_NAME}"
-        template: filebrowser
-    spec:
-      lookupPolicy:
-        local: true
-      tags:
-        - name: latest
-          from:
-            kind: DockerImage
-            name: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
-          importPolicy:
-            scheduled: false
-
   - kind: Service
     apiVersion: v1
     metadata:
