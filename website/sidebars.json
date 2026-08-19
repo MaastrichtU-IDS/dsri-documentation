@@ -132,8 +132,7 @@
         {
           "type": "category",
           "label": "Machine Learning Tutorials",
-          "items": [
-            "tools-machine-learning",
+          "items": [           
             "checkpointing-ml-training",
             "dask-tutorial"
           ]
