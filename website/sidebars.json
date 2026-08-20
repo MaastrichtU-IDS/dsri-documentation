@@ -21,8 +21,7 @@
         "openshift-install",
         "manage-access-project",
         "start-workspace",
-        "manage-app",
-        "delete-a-project"
+        "manage-app"
       ]
     },
     {
