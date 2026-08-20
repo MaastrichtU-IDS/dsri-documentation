@@ -7,40 +7,38 @@ The DSRI is a good platform to run a training or class within Maastricht Univers
 
 ## Request VPN accounts for users
 
-If the users are **students** from Maastricht University, **or not** from Maastricht University (without an email @maastrichtuniversity.nl, or @maastro.nl), you will need to contact the ICT support of your department to request the creation of accounts so that your users can connect to the UM VPN.
+If the users are **students** from Maastricht University, or are **not** from Maastricht University (without an email @maastrichtuniversity.nl), you will need to contact the ICT support of your department to request accounts so that your users can connect to the UM VPN.
 
-At FSE, you will need to send an email to [lo-fse@maastrichtuniversity.nl](mailto:lo-fse@maastrichtuniversity.nl) and [DSRI-SUPPORT-L@maastrichtuniversity.nl](mailto:DSRI-SUPPORT-L@maastrichtuniversity.nl) with the following information:
+At FSE, send an email to [lo-fse@maastrichtuniversity.nl](mailto:lo-fse@maastrichtuniversity.nl) and [rcs-ub@maastrichtuniversity.nl](mailto:rcs-ub@maastrichtuniversity.nl) with the following information:
 
-* Emails of the users
-* Why they need access to the DSRI (provide the ID of the course at Maastricht University if it is for a course)
-* Until which date the users will need those VPN accounts
+- Emails of the users
+- Why they need access to the DSRI (provide the course ID if it is for a course)
+- Until which date the users will need the VPN accounts
 
-## Fill a form
+## Request DSRI access for your users
 
-Fill this  [form 📬](/register) to give us more details on your project (you don't need to do it if you have already filled it in the past).
+Submit a [ticket](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=09acae9cdf454968bc94ad125b1f8e76&from=436967a9-738c-4112-b3f6-240a9847118e&openedFromService=true) to give us more details about your workshop or course so we can set up access for your users.
 
 ## Prepare your workshop
 
-Use the [DSRI documentation](/docs/access-dsri) to explain to your users how to access the DSRI.
+Use the [DSRI documentation](https://dsri.maastrichtuniversity.nl/docs/) to explain to your users how to access and use the DSRI.
 
 ### Publish an image for your training
 
 Feel free to use the existing templates for JupyterLab, RStudio, or Visual Studio Code in the DSRI catalog.
 
-You can easily reuse our images to adapt it to your training need and install all required dependencies:
-* https://github.com/MaastrichtU-IDS/jupyterlab
-* https://github.com/MaastrichtU-IDS/rstudio
-* https://github.com/MaastrichtU-IDS/code-server
+You can reuse our images and adapt them to your training needs by installing the required dependencies:
 
-Then you will just need to instruct your users to start an existing templates with your newly published image.
+- [JupyterLab image](https://github.com/MaastrichtU-IDS/jupyterlab)
+- [RStudio image](https://github.com/MaastrichtU-IDS/rstudio)
+- [Visual Studio Code image](https://github.com/MaastrichtU-IDS/code-server)
 
-With the JupyterLab template you can also prepare a git repository to be cloned in the workspace as soon as they start it.
+Then instruct your users to start an existing template with your newly published image.
 
-You can find some examples of python scripts with database to run on the DSRI in this repository: https://github.com/MaastrichtU-IDS/dsri-demo
+With the JupyterLab template you can also provide a git repository URL to be automatically cloned in the workspace when users start it.
 
+You can find examples of Python scripts with databases to run on the DSRI in the [dsri-demo repository](https://github.com/MaastrichtU-IDS/dsri-demo).
 
 ### Show your users how to start a workspace
 
-You can use this video showing how to start a RStudio workspace, the process is similar for JupyterLab and VisualStudio Code: https://www.youtube.com/watch?v=Y0BjotH1LiE
-
-Otherwise just do it directly with them.
+Point your users to the [DSRI documentation](https://dsri.maastrichtuniversity.nl/docs/) for step-by-step instructions on starting a workspace. Otherwise, walk through it directly with them during the workshop.
