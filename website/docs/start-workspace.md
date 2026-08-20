@@ -7,19 +7,19 @@ This page will help you start a workspace to run your code and experiments on th
 
 ## Introduction to containers
 
-Everything running on the DSRI runs inside a Docker container — a lightweight, isolated Linux environment with only what you need installed. This gives you full control over your environment and avoids conflicts between dependencies.
+Everything running on the DSRI runs inside a Docker container (a lightweight, isolated Linux environment with only what you need installed). This gives you full control over your environment and avoids conflicts between dependencies.
 
-You can start from existing images that already have popular data science applications pre-installed with a web interface — JupyterLab for Python, RStudio for R, or Visual Studio Code if you prefer an IDE. Once inside a running container, you can install anything you need from the terminal and run your code through the notebook, RStudio, or VSCode interface.
+You can start from existing images that already have popular data science applications pre-installed with a web interface (JupyterLab for Python, RStudio for R, or Visual Studio Code if you prefer an IDE). Once inside a running container, you can install anything you need from the terminal and run your code through the notebook, RStudio, or VSCode interface.
 
 ## Choose your workspace
 
 The DSRI provides ready-to-use templates for the most common data science workspaces:
 
-- **JupyterLab** — run Python, R, Julia, and Java notebooks with a built-in terminal and file browser.
-- **Visual Studio Code** — your daily IDE, running in the browser on the DSRI.
-- **RStudio** — the go-to environment for R users.
-- **Ubuntu Desktop** — a full Ubuntu desktop accessible in your browser, useful for graphical applications. Available on request.
-- **Custom workspace** — deploy any application with a web interface. See [Anatomy of a DSRI application](/docs/anatomy-of-an-application) for details.
+- **JupyterLab** - run Python, R, Julia, and Java notebooks with a built-in terminal and file browser.
+- **Visual Studio Code** - your daily IDE, running in the browser on the DSRI.
+- **RStudio** - the go-to environment for R users.
+- **Ubuntu Desktop** - a full Ubuntu desktop accessible in your browser, useful for graphical applications. Available on request.
+- **Custom workspace** - deploy any application with a web interface. See [Anatomy of a DSRI application](/docs/anatomy-of-an-application) for details.
 
 :::info
 
