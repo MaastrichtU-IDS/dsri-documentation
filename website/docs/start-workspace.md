@@ -3,105 +3,82 @@ id: start-workspace
 title: Starting Your Workspace
 ---
 
-This page will help you to start a workspace to run your code and experiments on the DSRI in a container. 
+This page will help you start a workspace to run your code and experiments on the DSRI.
 
 ## Introduction to containers
 
-Anything running in DSRI needs to be running in a docker container. Docker containers are namespaces that share the kernel on a linux system, you can see them as a clean minimalist Linux computers with only what you need to run your programs installed. This allows you to completely control the environment where your code runs, and avoid conflicts.
+Everything running on the DSRI runs inside a Docker container (a lightweight, isolated Linux environment with only what you need installed). This gives you full control over your environment and avoids conflicts between dependencies.
 
-When running experiments we can start from existing images that have been already published for popular data science applications with a web interface. You can use, for example, JupyterLab when running python, RStudio when running R, or VisualStudio Code if you prefer.
+You can start from existing images that already have popular data science applications pre-installed with a web interface (JupyterLab for Python, RStudio for R, or Visual Studio Code if you prefer an IDE). Once inside a running container, you can install anything you need from the terminal and run your code through the notebook, RStudio, or VSCode interface.
 
-Once you access a running container, you can install anything you need like if it was a linux/ubuntu computer (most of them runs with admin privileges), and run anything via the notebook/RStudio/VSCode interface, or the terminal.
+## Choose your workspace
 
-## Choose your interface
+The DSRI provides ready-to-use templates for the most common data science workspaces:
 
-First step to get your code running on the DSRI is to pick the base interface you want to use to access your workspace on the DSRI.
+- **JupyterLab** - run Python, R, Julia, and Java notebooks with a built-in terminal and file browser.
+- **Visual Studio Code** - your daily IDE, running in the browser on the DSRI.
+- **RStudio** - the go-to environment for R users.
+- **Ubuntu Desktop** - a full Ubuntu desktop accessible in your browser, useful for graphical applications. Available on request.
+- **Custom workspace** - deploy any application with a web interface. See [Anatomy of a DSRI application](/docs/anatomy-of-an-application) for details.
 
-We prepared generic Docker images for data science workspaces with your favorite web UI pre-installed to easily deploy your workspace. So you just need to choose your favorite workspace, start the container, access it, add your code, and install your dependencies.
+:::info
 
-1. Login to the DSRI dashboard
-2. Select your project, or create one with a meaningful short name representing your project, e.g. `workspace-yourname`
-3. Go to the **+Add** page, and select to add **From Developer Catalog => All services**
-
-<img src="/img/screenshot_access_catalog_manu17112024.png" alt="Access catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-4. Search for templates corresponding to the application you want to deploy among the one described below (make sure the filter for templates is properly checked). 
-
-**JupyterLab**: Access and run your code using the popular Jupyter notebooks, with kernel for python, java, R, julia. It also provides a good web interface to access the terminal, upload and browse the files.
-
-**VisualStudio Code**: Your daily IDE, but in your browser, running on the DSRI. 
-
-**RStudio**: R users favorite's.
-
-**The terminal**: For people who are used to the terminal and just want to run scripts, it provides smaller and more stable images, which makes installation and deployment easier. You can use the **Ubuntu** template to start a basic ubuntu image and access it from the terminal.
-
-**Any web interface**: You can easily run and access most programs with a web interface on the DSRI. You can use the template **Custom workspace** if your application is exposed on port 8888. Otherwise visit the page [Anatomy of a DSRI application](/docs/anatomy-of-an-application) for more details. 
-
-**Desktop interface**: there is the possibility to start a container as a Linux operating system with a graphical desktop interface. It can be useful to deploy software like Matlab, but the setup can be a bit more complex. You will get an Ubuntu computer with a basic Desktop interface, running on the DSRI, that you can access directly in your web browser. The desktop interface is accessed through a web application by using noVNC, which exposes the VNC connection without needing a VNC client.
-
-:::info More applications
-
-You can also find more documentation on the different applications that can be deployed from the DSRI under **Deploy applications** in the menu on the left.
+See the [Applications & Templates](/docs/applications) page for the full list of available templates and deployment instructions for each one.
 
 :::
 
 ## Start your workspace
 
-Once you chose your favorite way to run your experiments, you can click on the application you want to use for your workspace. Checkout the description to learn more details about the application that will be deployed. 
+1. Log in to the [DSRI web UI](https://console.dsri.unimaas.nl).
+2. Select your project
+3. Click the **+** button in the top right corner of the page, or go to **+Add** and select **Developer Catalog** > **All services**.
+4. Make sure the **Templates** checkbox is checked, then search for the application you want to deploy.
+5. Click on the template, read the description, and click **Instantiate Template**.
+6. Fill in the parameters (such as a password to access the web UI) and click **Create**.
 
-Then click on **Instantiate Template**, and fill the parameters, such as the password to access the web UI. Note that the application name needs to be unique in the project. Finally click on the **Create** button.
-
-<img src="/img/screenshot_template_configuration.png" alt="Filter templates catalog" style={{maxWidth: '100%', maxHeight: '100%'}} />
-
-You should see your application in your project dashboard, it can take a few seconds to a few minutes to pull the docker image and start the application. 
-
-Once the application has started you will be able to access it by clicking on its circle, then click the **Route**, that has been automatically generated for the web interface, in the Resources tab.
-
-:::info Check the workshop
-
-For a more detailed tutorial, you can follow the [workshop to start Data Science applications on the DSRI](https://maastrichtu-ids.github.io/dsri-workshop-start-app/)
-
-:::
+Your application will appear in the project view. It may take a few seconds to a few minutes to pull the Docker image and start. Once running, click on the application and open the **Route** that has been automatically generated to access the web UI.
 
 ## Upload your code and data
 
-We recommend you to use `git` to clone your project code in your workspace, as it helps sharing and managing the evolution of your project. 
+We recommend using `git` to clone your code into your workspace. It makes sharing and version control straightforward. It is pre-installed in most images, or you can install it with:
 
-It will be preinstalled in most images, otherwise you can install it easily with `apt-get install git`
+```bash
+apt-get install git
+```
 
-With web interface like JupyterLab, VisualStudio Code and Rstudio you can easily upload small and medium size files directly through the UI with a drag and drop.
+For small and medium files, you can drag and drop directly into the JupyterLab, VSCode, or RStudio web UI.
 
-Otherwise you can use the terminal, install the `oc` client, and use the `oc cp` or `oc rsync` commands to upload large files to your workspace on the DSRI. See the Upload data page for more details.
+For large files, install the `oc` client and use `oc cp` or `oc rsync`. See the [Uploading data](/docs/openshift-load-data) page for details.
 
 ## Install your dependencies
 
-Once the workspace is started, you can install the different dependencies you need to run your experiments.
+Once your workspace is running, install the dependencies you need. Save all installation commands in a script (e.g. `install.sh`) so you can reproduce the environment easily if the container restarts.
 
-It is recommended to save all the commands you used to install the different requirements in a script (e.g. `install.sh`). This will insure you can reinstall the environment easily and faithfully if the container is restarted. You can also use them to create a Docker image with everything prepared for your application.
-
-Most containers for science are based on debian/ubuntu, so you can install new packages with `apt-get`:
+Most containers are based on Debian/Ubuntu, so you can install packages with:
 
 ```bash
 apt-get update
-apt-get install -y build-essentials wget curl
+apt-get install -y wget curl
 ```
 
 ## Run your code
 
-You can use your web interface to run your code as you like to do: notebooks, rstudio, execute via VSCode
+You can run your code through the web interface as usual. For long-running jobs, we recommend running scripts from the terminal rather than directly in a notebook, as notebooks can be unstable for jobs that run for more than a few minutes.
 
-Note that for jobs which are running for a long time the web UI is not always the best solution, e.g. Jupyter notebooks can be quite instable when running a 30 min codeblock.
-
-A quick solution for that is to run your code in scripts, using the bash terminal. You can use the `nohup` prefix, and `&` suffix to run your script in the background, so that you can even disconnect, and come back later to check the results and logs.
-
-For example with a python script, you would do:
+Use `nohup` and `&` to run a script in the background so you can disconnect and come back later:
 
 ```bash
 nohup python my_script.py &
 ```
 
-The script will run in the background, and all terminal output will be stored in the file `nohup.out`
+Output will be saved to `nohup.out`. To check if the process is still running:
 
-You can also check if the process is currently running by typing `ps aux` or `top` 
+```bash
+ps aux
+```
 
-You can kill the process by getting the process ID (PID) using the previous commands, and then: `kill -9 PID`
+To stop it, get the process ID (PID) from the above command and run:
+
+```bash
+kill -9 <PID>
+```
