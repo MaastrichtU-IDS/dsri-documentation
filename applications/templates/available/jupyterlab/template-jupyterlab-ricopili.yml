@@ -16,6 +16,10 @@ metadata:
       🐳 Docker images, see https://github.com/MaastrichtU-IDS/jupyterlab/tree/main/ricopili & https://github.com/MaastrichtU-Library/rcs-docker-ricopili for more details.
       - Ricopili package:
       ghcr.io/maastrichtu-ids/jupyterlab:ricopili
+
+      📂 A FileBrowser is co-deployed to manage your files via a web UI.
+      Login with admin and the same password you set for the web UI above.
+      The storage is organised as /data/source, /data/results, /data/scripts.
     iconClass: icon-python
     tags: ricopili,jupyter,notebook,R
     openshift.io/provider-display-name: Research Computing Support, UM
@@ -52,7 +56,7 @@ objects:
     name: ${APPLICATION_NAME}
     labels:
       app: ${APPLICATION_NAME}
-      template: custom-workspace
+      template: jupyterlab-ricopili
   spec:
     accessModes:
       - ReadWriteMany
@@ -67,7 +71,7 @@ objects:
     name: ${APPLICATION_NAME}
     labels:
       app: ${APPLICATION_NAME}
-      template: custom-workspace
+      template: jupyterlab-ricopili
   spec:
     ports:
     - name: 8888-tcp
@@ -85,7 +89,7 @@ objects:
     name: ${APPLICATION_NAME}
     labels:
       app: ${APPLICATION_NAME}
-      template: custom-workspace
+      template: jupyterlab-ricopili
   spec:
     host: ''
     to:
@@ -97,14 +101,14 @@ objects:
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
-      
+
 - kind: Secret
   apiVersion: v1
   metadata:
     name: ${APPLICATION_NAME}
     labels:
       app: ${APPLICATION_NAME}
-      template: custom-workspace
+      template: jupyterlab-ricopili
   stringData:
     application-password: ${PASSWORD}
 
@@ -114,7 +118,7 @@ objects:
     name: ${APPLICATION_NAME}
     labels:
       app: ${APPLICATION_NAME}
-      template: custom-workspace
+      template: jupyterlab-ricopili
   spec:
     replicas: 1
     strategy:
@@ -133,6 +137,14 @@ objects:
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
+        # FileBrowser folder layout
+        initContainers:
+          - name: init-dirs
+            image: busybox
+            command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+            volumeMounts:
+              - name: data
+                mountPath: /data
         containers:
         - name: ${APPLICATION_NAME}
           image: ${APPLICATION_IMAGE}
@@ -169,3 +181,131 @@ objects:
           persistentVolumeClaim:
             claimName: ${APPLICATION_NAME}
 
+# === FileBrowser ===
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+      template: jupyterlab-ricopili
+  spec:
+    selector:
+      app: "${APPLICATION_NAME}-filebrowser"
+    ports:
+      - name: "80-tcp"
+        protocol: TCP
+        port: 80
+        targetPort: 80
+    type: ClusterIP
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+      template: jupyterlab-ricopili
+  spec:
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-filebrowser"
+    port:
+      targetPort: "80-tcp"
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+      template: jupyterlab-ricopili
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:
+          app: "${APPLICATION_NAME}-filebrowser"
+          deployment: "${APPLICATION_NAME}-filebrowser"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        automountServiceAccountToken: false
+        volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: ${APPLICATION_NAME}
+          - name: filebrowser-db
+            emptyDir: {}
+        # Seed the FileBrowser database with an admin user using the same
+        # password as the JupyterLab application (from the app Secret),
+        # so both stay in sync when the template is instantiated.
+        # The filebrowser image has no shell, so each step is its own initContainer
+        # calling the binary directly via `args` (the image's own entrypoint),
+        # not `command`, since that binary is not on $PATH.
+        initContainers:
+          - name: init-filebrowser-db
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            args:
+              - "-d"
+              - "/database/filebrowser.db"
+              - "config"
+              - "init"
+            volumeMounts:
+              - name: filebrowser-db
+                mountPath: /database
+          - name: init-filebrowser-user
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            args:
+              - "-d"
+              - "/database/filebrowser.db"
+              - "users"
+              - "add"
+              - "admin"
+              - "$(PASSWORD)"
+              - "--perm.admin"
+            env:
+              - name: PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    key: application-password
+                    name: ${APPLICATION_NAME}
+            volumeMounts:
+              - name: filebrowser-db
+                mountPath: /database
+        containers:
+          - name: filebrowser
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            imagePullPolicy: IfNotPresent
+            args:
+              - "--root"
+              - "/data"
+              - "--database"
+              - "/database/filebrowser.db"
+            ports:
+              - containerPort: 80
+                protocol: TCP
+            volumeMounts:
+              - name: data
+                mountPath: /data
+              - name: filebrowser-db
+                mountPath: /database
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+                ephemeral-storage: 1Gi
+              limits:
+                cpu: '1'
+                memory: 2Gi
+                ephemeral-storage: 5Gi
