@@ -1,0 +1,246 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: ontotext-graphdb
+  annotations:
+    openshift.io/display-name: Ontotext GraphDB
+    description: |-
+      Start a Ontotext GraphDB triplestore, with a SPARQL endpoint
+
+      🔐 After accessing GraphDB for the first time you can easily enable security, and define a password for the admin user.
+
+      📂 We use the folder `/opt/graphdb/home` in the container to store the database and import folder in the persistent storage
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+
+      📂 A FileBrowser is co-deployed to manage your files via a web UI.
+      Default credentials: login admin / password browsemeplease
+      (this template has no application password to sync with, so this default is fixed).
+      The storage is organised as /data/source, /data/results, /data/scripts, alongside GraphDB's own home folder.
+
+      Visit https://github.com/Ontotext-AD/graphdb-docker for more details about the image used
+    iconClass: icon-datavirt
+    tags: triplestore,graph,database,rdf,sparql
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-database#ontotext-graphdb-triplestore
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: ontotext-graphdb
+
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be without spaces (use -), and unique in the project.
+  value: graphdb
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: Application Docker image name 
+  description: The GraphDB image needs to be build manually first and publish in your project
+  value: ontotext/graphdb:10.8.11
+  required: true
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage used for the application.
+  value: 20Gi
+  required: true
+- name: GRAPHDB_JAVA_MEMORY
+  displayName: GraphDB java memory
+  description: Maximum memory allocated to java for GraphDB (-xms and -xmx)
+  value: 8g
+  required: true
+
+objects:
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1" 
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+    storageClassName: ocs-storagecluster-cephfs
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 7200-tcp
+      protocol: TCP
+      port: 7200
+      targetPort: 7200
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 7200-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    replicas: 1
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        # FileBrowser folder layout
+        initContainers:
+        - name: init-dirs
+          image: busybox
+          command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
+        containers:
+        - name: "${APPLICATION_NAME}"
+          image: ${APPLICATION_IMAGE}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 7200
+            protocol: TCP
+          volumeMounts:
+          - name: data
+            mountPath: "/opt/graphdb/home"
+          env:
+          - name: GDB_JAVA_OPTS
+            value: |
+              -Xmx${GRAPHDB_JAVA_MEMORY} -Xms${GRAPHDB_JAVA_MEMORY}
+              -Dgraphdb.home=/opt/graphdb/home
+              -Dgraphdb.workbench.importDirectory=/opt/graphdb/home/import
+              -Dgraphdb.workbench.cors.enable=true
+              -Denable-context-index=true
+              -Dentity-pool-implementation=transactional
+              -Dgraphdb.append.request.id.headers=true
+              -Dreuse.vars.in.subselects=true
+        automountServiceAccountToken: false
+
+# === FileBrowser ===
+# No PASSWORD parameter exists in this template to sync with, so FileBrowser
+# uses a fixed default password (browsemeplease) baked into the image args.
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+  spec:
+    selector:
+      app: "${APPLICATION_NAME}-filebrowser"
+    ports:
+      - name: "80-tcp"
+        protocol: TCP
+        port: 80
+        targetPort: 80
+    type: ClusterIP
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+  spec:
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-filebrowser"
+    port:
+      targetPort: "80-tcp"
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:
+          app: "${APPLICATION_NAME}-filebrowser"
+          deployment: "${APPLICATION_NAME}-filebrowser"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        automountServiceAccountToken: false
+        volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: "${APPLICATION_NAME}"
+        containers:
+          - name: filebrowser
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            imagePullPolicy: IfNotPresent
+            args:
+              - "--root"
+              - "/data"
+              - "--password"
+              - "$2a$10$1q1DVy.Cz3e5566.UPJT8eeexDspJ4sI8qZR6TfyHvA/7NH0beKY."
+            ports:
+              - containerPort: 80
+                protocol: TCP
+            volumeMounts:
+              - name: data
+                mountPath: /data
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+                ephemeral-storage: 1Gi
+              limits:
+                cpu: '1'
+                memory: 2Gi
+                ephemeral-storage: 5Gi

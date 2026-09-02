@@ -1,0 +1,364 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: jupyterlab-freesurfer-filebrowser
+  annotations:
+    openshift.io/display-name: JupyterLab-FreeSurfer (with FileBrowser)
+    description: |-
+
+      📂 Use the persistent folder in the workspace of the JupyterLab UI (/workspace/persistent folder) to store your data in the persistent storage automatically created
+      You can find the persistent storage in the DSRI web UI, go to Search > Resources > Persistent Volume Claim.
+
+      📂 A FileBrowser is co-deployed to manage your files via a web UI.
+      Login with admin and the same password you set for JupyterLab.
+      The storage is organised as /data/source, /data/results, /data/scripts.
+
+      🗑️ Use this command with your application name to delete completely your application and its persistent volumes:
+      oc delete all,pvc,secret,configmaps,serviceaccount,rolebinding --selector app=$APPLICATION_NAME
+    iconClass: icon-python
+    tags: python,jupyter,notebook,freesurfer
+    openshift.io/provider-display-name: Research Computing Support, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-jupyter
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: jupyterlab-freesurfer-filebrowser
+
+parameters:
+  - name: APPLICATION_NAME
+    displayName: Name for the application
+    description: Must be without spaces (use -), and unique in the project.
+    value: jupyterlab-freesurfer
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Jupyter notebook Docker image
+    description: Check the description on the right for more details about available images
+    value: default-route-openshift-image-registry.apps.dsri.unimaas.nl/openshift/freesurfer:latest
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage allocated to the notebook persistent storage.
+    value: 5Gi
+    required: true
+  - name: PASSWORD
+    displayName: JupyterLab UI Password
+    description: The password/token to access the JupyterLab web UI
+    required: true
+
+  #Custom parameters  
+  - name: GIT_URL
+    displayName: URL of a git repository to clone in the workspace (optional)
+    description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents. Only works for images based on the official images
+    required: false
+  - name: GIT_NAME
+    displayName: Git name
+    description: Email used to automatically define git config --global user.name
+    value: default
+    required: true
+  - name: GIT_EMAIL
+    displayName: Git email
+    description: Email used to automatically define git config --global user.email
+    value: default@maastrichtuniversity.nl
+    required: true
+
+objects:
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-freesurfer-filebrowser
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: latest
+          from:
+            kind: DockerImage
+            name: ${APPLICATION_IMAGE}
+          importPolicy:
+            scheduled: false
+
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-freesurfer-filebrowser
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-freesurfer-filebrowser
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}"
+      ports:
+        - name: "8888-tcp"
+          protocol: TCP
+          port: 8888
+          targetPort: 8888
+      type: ClusterIP
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-freesurfer-filebrowser
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: "8888-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-freesurfer-filebrowser
+    stringData:
+      application-password: "${PASSWORD}"
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-freesurfer-filebrowser
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: "anyuid"
+          automountServiceAccountToken: false
+          securityContext:
+            runAsUser: 0
+            fsGroup: 100
+          # FileBrowser folder layout
+          initContainers:
+            - name: init-dirs
+              image: busybox
+              command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+          containers:
+            - name: "${APPLICATION_NAME}"
+              image: "${APPLICATION_IMAGE}"
+              imagePullPolicy: IfNotPresent
+              workingDir: /workspace
+              ports:
+                - containerPort: 8888
+                  protocol: TCP
+                - containerPort: 4040
+                  protocol: TCP
+                - containerPort: 4041
+                  protocol: TCP
+              volumeMounts:
+                - name: data
+                  mountPath: /workspace/persistent
+              env:
+                - name: JUPYTER_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      key: application-password
+                      name: "${APPLICATION_NAME}"
+                - name: GIT_URL
+                  value: "${GIT_URL}"
+                - name: GIT_NAME
+                  value: "${GIT_NAME}"
+                - name: GIT_EMAIL
+                  value: "${GIT_EMAIL}"
+                - name: SUBJECTS_DIR
+                  value: "/subjects"
+                - name: FS_LICENSE
+                  value: "/license.txt"
+                - name: WORKSPACE
+                  value: "/workspace"
+                - name: PERSISTENT_FOLDER
+                  value: "/workspace/persistent"
+              readinessProbe:
+                tcpSocket:
+                  port: 8888
+              livenessProbe:
+                initialDelaySeconds: 15
+                tcpSocket:
+                  port: 8888
+                failureThreshold: 40
+                periodSeconds: 10
+                timeoutSeconds: 2
+              resources:
+                requests:
+                  cpu: '2'
+                  memory: 4Gi
+                  ephemeral-storage: 2Gi
+                limits:
+                  cpu: '32'
+                  memory: 200Gi
+                  ephemeral-storage: 50Gi
+
+  # === FileBrowser ===
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+        template: jupyterlab-freesurfer-filebrowser
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}-filebrowser"
+      ports:
+        - name: "80-tcp"
+          protocol: TCP
+          port: 80
+          targetPort: 80
+      type: ClusterIP
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+        template: jupyterlab-freesurfer-filebrowser
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}-filebrowser"
+      port:
+        targetPort: "80-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+        template: jupyterlab-freesurfer-filebrowser
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}-filebrowser"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}-filebrowser"
+            deployment: "${APPLICATION_NAME}-filebrowser"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+            - name: filebrowser-db
+              emptyDir: {}
+          # Seed the FileBrowser database with an admin user using the same
+          # password as the JupyterLab application (from the app Secret),
+          # so both stay in sync when the template is instantiated.
+          # The filebrowser image has no shell, so each step is its own initContainer
+          # calling the binary directly via `args` (the image's own entrypoint),
+          # not `command`, since that binary is not on $PATH.
+          initContainers:
+            - name: init-filebrowser-db
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              args:
+                - "-d"
+                - "/database/filebrowser.db"
+                - "config"
+                - "init"
+              volumeMounts:
+                - name: filebrowser-db
+                  mountPath: /database
+            - name: init-filebrowser-user
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              args:
+                - "-d"
+                - "/database/filebrowser.db"
+                - "users"
+                - "add"
+                - "admin"
+                - "$(PASSWORD)"
+                - "--perm.admin"
+              env:
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: application-password
+                      name: "${APPLICATION_NAME}"
+              volumeMounts:
+                - name: filebrowser-db
+                  mountPath: /database
+          containers:
+            - name: filebrowser
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              imagePullPolicy: IfNotPresent
+              args:
+                - "--root"
+                - "/data"
+                - "--database"
+                - "/database/filebrowser.db"
+              ports:
+                - containerPort: 80
+                  protocol: TCP
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+                - name: filebrowser-db
+                  mountPath: /database
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+                  ephemeral-storage: 1Gi
+                limits:
+                  cpu: '1'
+                  memory: 2Gi
+                  ephemeral-storage: 5Gi

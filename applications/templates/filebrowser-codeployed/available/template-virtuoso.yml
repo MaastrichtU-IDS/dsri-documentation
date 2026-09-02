@@ -1,0 +1,371 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: virtuoso-triplestore
+  annotations:
+    openshift.io/display-name: Virtuoso triplestore
+    description: |-
+      Start a OpenLink Virtuoso triplestore, with a SPARQL endpoint
+
+      You can start Virtuoso using 2 different popular images:
+      - Official OpenLink Virtuoso image (uses /database to store the data)
+      openlink/virtuoso-opensource-7:latest
+      - Alternative tenforce/virtuoso image (uses /data to store the data)
+      tenforce/virtuoso:latest
+
+      Visit https://github.com/openlink/virtuoso-opensource for more details about the Virtuoso triplestore
+      Visit https://hub.docker.com/r/openlink/virtuoso-opensource-7 for more details about the image
+      Visit https://github.com/vemonet/virtuoso-ldp to enable the Linked Data Platform feature
+
+      📂 A FileBrowser is co-deployed to manage your files via a web UI.
+      Login with admin and the same password you set for the triplestore admin (dba) user.
+      The storage is organised as /data/source, /data/results, /data/scripts, alongside Virtuoso's own database folder.
+    iconClass: icon-kubevirt
+    tags: triplestore,graph,database,rdf,sparql
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-database#start-virtuoso-triplestore
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: virtuoso-triplestore
+
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be without spaces (use -), and unique in the project.
+  value: virtuoso
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: Application Docker image
+  description: Docker image to deploy the Virtuoso triplestore
+  value: openlink/virtuoso-opensource-7:latest
+  required: true
+- name: STORAGE_SIZE
+  displayName: Storage size
+  description: Size of the storage used for the notebook (approximate).
+  value: 10Gi
+  required: true
+- name: PASSWORD
+  displayName: Triplestore admin password
+  description: The password of the dba user.
+  required: true
+
+#Custom parameters
+- name: DATABASE_PATH
+  displayName: The database storage path
+  description: Change it to /data for the tenforce/virtuoso image
+  value: /database
+  required: true
+- name: DEFAULT_GRAPH
+  displayName: Triplestore default graph
+  description: The default graph used by the Virtuoso triplestore
+  value: https://w3id.org/um/graph
+  required: true
+- name: TRIPLESTORE_URL
+  displayName: URL where the triplestore will be publicly deployed
+  description: Only used to define the URL of data added via the DAV Linked Data Platform
+  value: https://w3id.org/um/data/
+  required: true
+- name: LOG_LEVEL
+  displayName: Triplestore log level
+  description: "Amount of log produced: 0 is minimum, 7 is maximum"
+  value: "0"
+  required: true
+
+objects:
+- kind: "PersistentVolumeClaim"
+  apiVersion: "v1"
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+    storageClassName: ocs-storagecluster-cephfs
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8890-tcp
+      protocol: TCP
+      port: 8890
+      targetPort: 8890
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8890-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Secret
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
+    
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    replicas: 1
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:        
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        # FileBrowser folder layout
+        initContainers:
+        - name: init-dirs
+          image: busybox
+          command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${APPLICATION_NAME}"
+        containers:
+        - name: "${APPLICATION_NAME}"
+          image: "${APPLICATION_IMAGE}"
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8890
+            protocol: TCP
+          - containerPort: 1111
+            protocol: TCP
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+              ephemeral-storage: 50Gi
+            requests:
+              cpu: '200m'
+              memory: 1Gi
+              ephemeral-storage: 2Gi
+          volumeMounts:
+          - name: data
+            mountPath: "/database"
+          env:
+          # http://vos.openlinksw.com/owiki/wiki/VOS/VirtRDFPerformanceTuning
+          # http://docs.openlinksw.com/virtuoso/rdfperfgeneral/
+          # https://github.com/tenforce/docker-virtuoso/blob/master/virtuoso.ini
+          - name: DBA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: DAV_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: SPARQL_UPDATE
+            value: "true"
+          - name: DEFAULT_GRAPH
+            value: "${DEFAULT_GRAPH}"
+          - name: VIRT_Database_ErrorLogLevel
+            value: "${LOG_LEVEL}"
+          - name: VIRT_SPARQL_ShortenLongURIs
+            value: "1"
+          - name: VIRT_SPARQL_MaxCacheExpiration
+            value: "1"
+          - name: VIRT_SPARQL_ExternalQuerySource
+            value: "1"
+          - name: VIRT_SPARQL_ExternalXsltSource
+            value: "1"
+          - name: VIRT_SPARQL_ResultSetMaxRows
+            value: "1048576"
+          - name: VIRT_SPARQL_MaxQueryCostEstimationTime
+            value: "100000"
+          - name: VIRT_SPARQL_MaxQueryExecutionTime
+            value: "6000"
+          - name: VIRT_VDB_VDBDisconnectTimeout
+            value: "7200000"
+          - name: VIRT_Client_SQL_QUERY_TIMEOUT
+            value: "14400000"
+          - name: VIRT_CLient_SQL_TXN_TIMEOUT
+            value: "14400000"
+          - name: VIRT_Parameters_Timeout
+            value: "7200"
+          - name: VIRT_Parameters_TransactionAfterImageLimit
+            value: "5000000000"
+          - name: VIRT_Parameters_NumberOfBuffers
+            value: "493674"
+            # To use up to 4G of RAM according to documentation
+          - name: VIRT_Parameters_TempDBSize
+            value: "100000000"
+          - name: VIRT_Database_MaxCheckpointRemap
+            value: "125000"
+          - name: VIRT_TempDatabase_MaxCheckpointRemap
+            value: "125000"
+          - name: VIRT_URIQA_DefaultHost
+            value: "${TRIPLESTORE_URL}"
+        automountServiceAccountToken: false
+
+# === FileBrowser ===
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+  spec:
+    selector:
+      app: "${APPLICATION_NAME}-filebrowser"
+    ports:
+      - name: "80-tcp"
+        protocol: TCP
+        port: 80
+        targetPort: 80
+    type: ClusterIP
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+  spec:
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-filebrowser"
+    port:
+      targetPort: "80-tcp"
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:
+          app: "${APPLICATION_NAME}-filebrowser"
+          deployment: "${APPLICATION_NAME}-filebrowser"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        automountServiceAccountToken: false
+        volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: "${APPLICATION_NAME}"
+          - name: filebrowser-db
+            emptyDir: {}
+        # Seed the FileBrowser database with an admin user using the same
+        # password as the Virtuoso dba admin user (from the app Secret),
+        # so both stay in sync when the template is instantiated.
+        # The filebrowser image has no shell, so each step is its own initContainer
+        # calling the binary directly via `args` (the image's own entrypoint),
+        # not `command`, since that binary is not on $PATH.
+        initContainers:
+          - name: init-filebrowser-db
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            args:
+              - "-d"
+              - "/database/filebrowser.db"
+              - "config"
+              - "init"
+            volumeMounts:
+              - name: filebrowser-db
+                mountPath: /database
+          - name: init-filebrowser-user
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            args:
+              - "-d"
+              - "/database/filebrowser.db"
+              - "users"
+              - "add"
+              - "admin"
+              - "$(PASSWORD)"
+              - "--perm.admin"
+            env:
+              - name: PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    key: application-password
+                    name: "${APPLICATION_NAME}"
+            volumeMounts:
+              - name: filebrowser-db
+                mountPath: /database
+        containers:
+          - name: filebrowser
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            imagePullPolicy: IfNotPresent
+            args:
+              - "--root"
+              - "/data"
+              - "--database"
+              - "/database/filebrowser.db"
+            ports:
+              - containerPort: 80
+                protocol: TCP
+            volumeMounts:
+              - name: data
+                mountPath: /data
+              - name: filebrowser-db
+                mountPath: /database
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+                ephemeral-storage: 1Gi
+              limits:
+                cpu: '1'
+                memory: 2Gi
+                ephemeral-storage: 5Gi

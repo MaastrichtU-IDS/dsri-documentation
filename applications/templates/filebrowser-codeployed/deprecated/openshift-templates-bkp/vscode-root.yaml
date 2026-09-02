@@ -1,0 +1,193 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: vscode-root
+metadata:
+  annotations:
+    description: "Start VisualStudio Code server with the coder user which has sudo
+      permissions\n\n\U0001F4E6 We recommend you to use `conda install` to install
+      new packages, but you can also use `sudo apt-get install` or `pip install`\n\n\U0001F4C2
+      Use the /home/coder/project folder (workspace of the VSCode UI) to store your
+      data in the existing persistent storage\nYou can find the persistent storage
+      in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims\n\nPython
+      3 and Java 11 already installed. You can install packages with 'apt-get' after
+      starting the server.\n\nVisit https://github.com/MaastrichtU-IDS/code-server
+      for more details and to customize the image"
+    iconClass: icon-kubevirt
+    kubectl.kubernetes.io/last-applied-configuration: "{\"apiVersion\":\"template.openshift.io/v1\",\"kind\":\"Template\",\"labels\":{\"template\":\"vscode-root\"},\"metadata\":{\"annotations\":{\"description\":\"Start
+      VisualStudio Code server with the coder user which has sudo permissions\\n\\n\U0001F4E6
+      We recommend you to use `conda install` to install new packages, but you can
+      also use `sudo apt-get install` or `pip install`\\n\\n\U0001F4C2 Use the /home/coder/project
+      folder (workspace of the VSCode UI) to store your data in the existing persistent
+      storage\\nYou can find the persistent storage in the DSRI web UI, go to Administrator
+      view \\u003e Storage \\u003e Persistent Volume Claims\\n\\nPython 3 and Java
+      11 already installed. You can install packages with 'apt-get' after starting
+      the server.\\n\\nVisit https://github.com/MaastrichtU-IDS/code-server for more
+      details and to customize the image\",\"iconClass\":\"icon-kubevirt\",\"openshift.io/display-name\":\"VisualStudio
+      Code server\",\"openshift.io/documentation-url\":\"https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-vscode\",\"openshift.io/provider-display-name\":\"Institute
+      of Data Science, UM\",\"openshift.io/support-url\":\"https://maastrichtu-ids.github.io/dsri-documentation/help\",\"tags\":\"visualstudio,vscode,root,persistent\"},\"name\":\"vscode-root\",\"namespace\":\"openshift\"},\"objects\":[{\"apiVersion\":\"v1\",\"kind\":\"Secret\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"stringData\":{\"application-password\":\"${PASSWORD}\"}},{\"apiVersion\":\"v1\",\"kind\":\"PersistentVolumeClaim\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"accessModes\":[\"ReadWriteMany\"],\"resources\":{\"requests\":{\"storage\":\"${STORAGE_SIZE}\"}}}},{\"apiVersion\":\"image.openshift.io/v1\",\"kind\":\"ImageStream\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\",\"template\":\"vscode-root-dynamic\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"lookupPolicy\":{\"local\":true},\"tags\":[{\"from\":{\"kind\":\"DockerImage\",\"name\":\"${APPLICATION_IMAGE}\"},\"name\":\"latest\"}]}},{\"apiVersion\":\"apps.openshift.io/v1\",\"kind\":\"DeploymentConfig\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"replicas\":1,\"selector\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"},\"strategy\":{\"type\":\"Recreate\"},\"template\":{\"metadata\":{\"annotations\":{\"io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel\":\"true\"},\"labels\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"env\":[{\"name\":\"PASSWORD\",\"valueFrom\":{\"secretKeyRef\":{\"key\":\"application-password\",\"name\":\"${APPLICATION_NAME}\"}}}],\"image\":\"${APPLICATION_NAME}:latest\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"vscode-container\",\"ports\":[{\"containerPort\":8080,\"protocol\":\"TCP\"}],\"resources\":{\"limits\":{\"cpu\":\"32\",\"memory\":\"200Gi\"},\"requests\":{\"cpu\":\"2\",\"memory\":\"4Gi\"}},\"volumeMounts\":[{\"mountPath\":\"/home/coder/project\",\"name\":\"data\"},{\"mountPath\":\"/dev/shm\",\"name\":\"dshm\"}],\"workingDir\":\"/home/coder/project\"}],\"runtimeClassName\":\"selinux\",\"serviceAccountName\":\"anyuid\",\"volumes\":[{\"name\":\"data\",\"persistentVolumeClaim\":{\"claimName\":\"${APPLICATION_NAME}\"}},{\"emptyDir\":{\"medium\":\"Memory\"},\"name\":\"dshm\"}]}},\"triggers\":[{\"type\":\"ConfigChange\"}]}},{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"ports\":[{\"name\":\"8080-tcp\",\"port\":8080,\"protocol\":\"TCP\",\"targetPort\":8080}],\"selector\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"}}},{\"apiVersion\":\"route.openshift.io/v1\",\"kind\":\"Route\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"host\":\"\",\"port\":{\"targetPort\":\"8080-tcp\"},\"tls\":{\"insecureEdgeTerminationPolicy\":\"Redirect\",\"termination\":\"edge\"},\"to\":{\"kind\":\"Service\",\"name\":\"${APPLICATION_NAME}\",\"weight\":100}}}],\"parameters\":[{\"description\":\"Must
+      be without spaces (use -), and unique in the project.\",\"displayName\":\"Application
+      name\",\"name\":\"APPLICATION_NAME\",\"required\":true,\"value\":\"vscode\"},{\"description\":\"The
+      password to access the VSCode application\",\"displayName\":\"Password\",\"name\":\"PASSWORD\",\"required\":true},{\"description\":\"Size
+      of the storage used for the notebook workspace.\",\"displayName\":\"Storage
+      size\",\"name\":\"STORAGE_SIZE\",\"required\":true,\"value\":\"10Gi\"},{\"description\":\"See
+      https://github.com/MaastrichtU-IDS/code-server for more details and to customize
+      the image\",\"displayName\":\"Docker image for the application\",\"name\":\"APPLICATION_IMAGE\",\"required\":true,\"value\":\"ghcr.io/maastrichtu-ids/code-server\"}]}\n"
+    openshift.io/display-name: VisualStudio Code server
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-vscode
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    tags: visualstudio,vscode,root,persistent
+  creationTimestamp: "2021-05-27T13:58:53Z"
+  name: vscode-root
+  namespace: openshift
+  resourceVersion: "3786756269"
+  uid: 031261fe-897c-40ce-acc3-f3f1068ce84a
+objects:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  stringData:
+    application-password: ${PASSWORD}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: vscode-root-dynamic
+    name: ${APPLICATION_NAME}
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      name: latest
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: "true"
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        automountServiceAccountToken: false
+        containers:
+        - env:
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: ${APPLICATION_NAME}
+          image: ${APPLICATION_NAME}:latest
+          imagePullPolicy: IfNotPresent
+          name: vscode-container
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources:
+            limits:
+              cpu: "32"
+              memory: 200Gi
+            requests:
+              cpu: "2"
+              memory: 4Gi
+          volumeMounts:
+          - mountPath: /home/coder/project
+            name: data
+          - mountPath: /dev/shm
+            name: dshm
+          workingDir: /home/coder/project
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: ${APPLICATION_NAME}
+        - emptyDir:
+            medium: Memory
+          name: dshm
+    triggers:
+    - type: ConfigChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    host: ""
+    port:
+      targetPort: 8080-tcp
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+parameters:
+- description: Must be without spaces (use -), and unique in the project.
+  displayName: Application name
+  name: APPLICATION_NAME
+  required: true
+  value: vscode
+- description: The password to access the VSCode application
+  displayName: Password
+  name: PASSWORD
+  required: true
+- description: Size of the storage used for the notebook workspace.
+  displayName: Storage size
+  name: STORAGE_SIZE
+  required: true
+  value: 10Gi
+- description: See https://github.com/MaastrichtU-IDS/code-server for more details
+    and to customize the image
+  displayName: Docker image for the application
+  name: APPLICATION_IMAGE
+  required: true
+  value: ghcr.io/maastrichtu-ids/code-server

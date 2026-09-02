@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: ubuntu-vnc-halfpipe-filebrowser
+  name: ubuntu-vnc-halfpipe
   annotations:
     description: |-
       Start a minimal Ubuntu 22.04 Linux workspace with an LXDE desktop interface accessible directly in your browser. Additionally HALFPipe is deployed which can be accessed via the terminal.
@@ -12,13 +12,9 @@ metadata:
 
       Use the `/root/persistent` folder to store your data in the Ubuntu workspace and us the `/home/fmriprep/data` in the HALFPipe workspace. Files kept in this directory are stored in persistent storage and will survive pod restarts.
 
-      📂 A FileBrowser is co-deployed to manage your files via a web UI, useful for getting files in and out of the shared storage without going through the VNC desktop.
-      Login with admin and the same password you set for Ubuntu.
-      The storage is organised as /data/source, /data/results, /data/scripts, alongside your existing /root/persistent and /home/fmriprep/data content.
-
       Source code: https://github.com/MaastrichtU-Library/ubuntu-vnc
     iconClass: icon-ubuntu
-    openshift.io/display-name: Ubuntu with desktop interface and HALFPipe (with FileBrowser)
+    openshift.io/display-name: Ubuntu with desktop interface and HALFPipe
     openshift.io/documentation-url: 'https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-utilities#ubuntu'
     openshift.io/provider-display-name: 'Research Computing Support, UM'
     openshift.io/support-url: 'https://maastrichtu-ids.github.io/dsri-documentation/help'
@@ -32,7 +28,7 @@ objects:
     metadata:
       labels:
         app: '${APPLICATION_NAME}'
-        template: ubuntu-vnc-halfpipe-filebrowser
+        template: ubuntu-vnc-halfpipe
       name: '${APPLICATION_NAME}'
     spec:
       accessModes:
@@ -46,7 +42,7 @@ objects:
     metadata:
       labels:
         app: '${APPLICATION_NAME}'
-        template: ubuntu-vnc-halfpipe-filebrowser
+        template: ubuntu-vnc-halfpipe
       name: '${APPLICATION_NAME}'
     spec:
       ports:
@@ -62,7 +58,7 @@ objects:
     metadata:
       labels:
         app: '${APPLICATION_NAME}'
-        template: ubuntu-vnc-halfpipe-filebrowser
+        template: ubuntu-vnc-halfpipe
       name: '${APPLICATION_NAME}'
     spec:
       host: ''
@@ -80,7 +76,7 @@ objects:
     metadata:
       labels:
         app: '${APPLICATION_NAME}'
-        template: ubuntu-vnc-halfpipe-filebrowser
+        template: ubuntu-vnc-halfpipe
       name: '${APPLICATION_NAME}'
     stringData:
       application-password: '${PASSWORD}'
@@ -89,7 +85,7 @@ objects:
     metadata:
       labels:
         app: '${APPLICATION_NAME}'
-        template: ubuntu-vnc-halfpipe-filebrowser
+        template: ubuntu-vnc-halfpipe
       name: '${APPLICATION_NAME}'
     spec:
       replicas: 1
@@ -108,14 +104,6 @@ objects:
             deployment: '${APPLICATION_NAME}'
         spec:
           automountServiceAccountToken: false
-          # FileBrowser folder layout
-          initContainers:
-            - name: init-dirs
-              image: busybox
-              command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
-              volumeMounts:
-                - name: data
-                  mountPath: /data
           containers:
             - env:
                 - name: MOZ_DISABLE_CONTENT_SANDBOX
@@ -166,7 +154,7 @@ objects:
     metadata:
       labels:
         app: 'halfpipe'
-        template: ubuntu-vnc-halfpipe-filebrowser
+        template: ubuntu-vnc-halfpipe
       name: 'halfpipe'
     spec:
       replicas: 1
@@ -218,133 +206,6 @@ objects:
             - name: data
               persistentVolumeClaim:
                 claimName: '${APPLICATION_NAME}'
-
-  # === FileBrowser ===
-  - apiVersion: v1
-    kind: Service
-    metadata:
-      name: '${APPLICATION_NAME}-filebrowser'
-      labels:
-        app: '${APPLICATION_NAME}-filebrowser'
-    spec:
-      selector:
-        app: '${APPLICATION_NAME}-filebrowser'
-      ports:
-        - name: "80-tcp"
-          protocol: TCP
-          port: 80
-          targetPort: 80
-      type: ClusterIP
-
-  - apiVersion: route.openshift.io/v1
-    kind: Route
-    metadata:
-      name: '${APPLICATION_NAME}-filebrowser'
-      labels:
-        app: '${APPLICATION_NAME}-filebrowser'
-    spec:
-      to:
-        kind: Service
-        name: '${APPLICATION_NAME}-filebrowser'
-      port:
-        targetPort: "80-tcp"
-      tls:
-        termination: edge
-        insecureEdgeTerminationPolicy: Redirect
-
-  - apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: '${APPLICATION_NAME}-filebrowser'
-      labels:
-        app: '${APPLICATION_NAME}-filebrowser'
-    spec:
-      replicas: 1
-      strategy:
-        type: Recreate
-      selector:
-        matchLabels:
-          app: '${APPLICATION_NAME}-filebrowser'
-      template:
-        metadata:
-          annotations:
-            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
-          labels:
-            app: '${APPLICATION_NAME}-filebrowser'
-            deployment: '${APPLICATION_NAME}-filebrowser'
-        spec:
-          runtimeClassName: selinux
-          serviceAccountName: anyuid
-          automountServiceAccountToken: false
-          volumes:
-            - name: data
-              persistentVolumeClaim:
-                claimName: '${APPLICATION_NAME}'
-            - name: filebrowser-db
-              emptyDir: {}
-          # Seed the FileBrowser database with an admin user using the same
-          # password as the Ubuntu VNC application (from the app Secret),
-          # so both stay in sync when the template is instantiated.
-          # The filebrowser image has no shell, so each step is its own initContainer
-          # calling the binary directly via `args` (the image's own entrypoint),
-          # not `command`, since that binary is not on $PATH.
-          initContainers:
-            - name: init-filebrowser-db
-              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
-              args:
-                - "-d"
-                - "/database/filebrowser.db"
-                - "config"
-                - "init"
-              volumeMounts:
-                - name: filebrowser-db
-                  mountPath: /database
-            - name: init-filebrowser-user
-              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
-              args:
-                - "-d"
-                - "/database/filebrowser.db"
-                - "users"
-                - "add"
-                - "admin"
-                - "$(PASSWORD)"
-                - "--perm.admin"
-              env:
-                - name: PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      key: application-password
-                      name: '${APPLICATION_NAME}'
-              volumeMounts:
-                - name: filebrowser-db
-                  mountPath: /database
-          containers:
-            - name: filebrowser
-              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
-              imagePullPolicy: IfNotPresent
-              args:
-                - "--root"
-                - "/data"
-                - "--database"
-                - "/database/filebrowser.db"
-              ports:
-                - containerPort: 80
-                  protocol: TCP
-              volumeMounts:
-                - name: data
-                  mountPath: /data
-                - name: filebrowser-db
-                  mountPath: /database
-              resources:
-                requests:
-                  cpu: 100m
-                  memory: 256Mi
-                  ephemeral-storage: 1Gi
-                limits:
-                  cpu: '1'
-                  memory: 2Gi
-                  ephemeral-storage: 5Gi
-
 parameters:
   - name: APPLICATION_NAME
     displayName: Application name
@@ -371,4 +232,4 @@ parameters:
     value: 'halfpipe/halfpipe:1.3.2'
     required: true
 labels:
-  template: ubuntu-vnc-halfpipe-filebrowser
+  template: ubuntu-vnc-halfpipe

@@ -1,0 +1,174 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: trinityrnaseq
+message: |-
+  A trinityrnaseq pod has been scheduled for creation in your project, and should be soon available.
+  Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
+
+  You can use `oc get pods` to get the pod ID and connect using your local terminal `oc rsh POD_ID`
+  Or use the terminal tab in the trinityrnaseq pod view of the OpenShift web UI
+metadata:
+  annotations:
+    description: "Start trinityrnaseq with the 'root' user which has sudo permissions
+      to install anything.\n\n\U0001F4C2 Use the `/usr/local/src/work` folder (home
+      of the root user) to store your data in the existing persistent storage\nYou
+      can find the persistent storage in the DSRI web UI, go to Administrator view
+      > Storage > Persistent Volume Claims\n\U0001F517 We enabled the port 8787 in
+      the trinityrnaseq container if you need to deploy applications\n\nImage from
+      https://github.com/trinityrnaseq/trinityrnaseq, hosted in the GitHub Container
+      Registry."
+    iconClass: icon-scala
+    kubectl.kubernetes.io/last-applied-configuration: "{\"apiVersion\":\"template.openshift.io/v1\",\"kind\":\"Template\",\"labels\":{\"template\":\"trinityrnaseq\"},\"message\":\"A
+      trinityrnaseq pod has been scheduled for creation in your project, and should
+      be soon available.\\nBuilding images takes some minutes to complete, so please
+      be patient. You can follow progress on your projects overview page.\\n\\nYou
+      can use `oc get pods` to get the pod ID and connect using your local terminal
+      `oc rsh POD_ID`\\nOr use the terminal tab in the trinityrnaseq pod view of the
+      OpenShift web UI\",\"metadata\":{\"annotations\":{\"description\":\"Start trinityrnaseq
+      with the 'root' user which has sudo permissions to install anything.\\n\\n\U0001F4C2
+      Use the `/usr/local/src/work` folder (home of the root user) to store your data
+      in the existing persistent storage\\nYou can find the persistent storage in
+      the DSRI web UI, go to Administrator view \\u003e Storage \\u003e Persistent
+      Volume Claims\\n\U0001F517 We enabled the port 8787 in the trinityrnaseq container
+      if you need to deploy applications\\n\\nImage from https://github.com/trinityrnaseq/trinityrnaseq,
+      hosted in the GitHub Container Registry.\",\"iconClass\":\"icon-scala\",\"openshift.io/display-name\":\"Trinity
+      RNA-Seq\",\"openshift.io/documentation-url\":\"https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-genomics\",\"openshift.io/provider-display-name\":\"Institute
+      of Data Science, UM\",\"openshift.io/support-url\":\"https://maastrichtu-ids.github.io/dsri-documentation/help\",\"tags\":\"trinityrnaseq,persistent,omics\"},\"name\":\"trinityrnaseq\",\"namespace\":\"openshift\"},\"objects\":[{\"apiVersion\":\"v1\",\"kind\":\"PersistentVolumeClaim\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"accessModes\":[\"ReadWriteMany\"],\"resources\":{\"requests\":{\"storage\":\"${STORAGE_SIZE}\"}}}},{\"apiVersion\":\"image.openshift.io/v1\",\"kind\":\"ImageStream\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\",\"template\":\"trinityrnaseq\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"lookupPolicy\":{\"local\":true},\"tags\":[{\"from\":{\"kind\":\"DockerImage\",\"name\":\"${APPLICATION_IMAGE}\"},\"importPolicy\":{\"scheduled\":true},\"name\":\"latest\"}]}},{\"apiVersion\":\"apps.openshift.io/v1\",\"kind\":\"DeploymentConfig\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"replicas\":1,\"selector\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"},\"strategy\":{\"type\":\"Recreate\"},\"template\":{\"metadata\":{\"annotations\":{\"io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel\":\"true\"},\"labels\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"command\":[\"tail\",\"-f\",\"/dev/null\"],\"image\":\"${APPLICATION_NAME}:latest\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"trinityrnaseq-container\",\"ports\":[{\"containerPort\":8787,\"protocol\":\"TCP\"}],\"resources\":{\"limits\":{\"cpu\":\"32\",\"memory\":\"200Gi\"},\"requests\":{\"cpu\":\"2\",\"memory\":\"4Gi\"}},\"volumeMounts\":[{\"mountPath\":\"/usr/local/src/work\",\"name\":\"data\"}]}],\"runtimeClassName\":\"selinux\",\"serviceAccountName\":\"anyuid\",\"volumes\":[{\"name\":\"data\",\"persistentVolumeClaim\":{\"claimName\":\"${APPLICATION_NAME}\"}}]}},\"triggers\":[{\"type\":\"ConfigChange\"},{\"imageChangeParams\":{\"automatic\":true,\"containerNames\":[\"trinityrnaseq-container\"],\"from\":{\"kind\":\"ImageStreamTag\",\"name\":\"${APPLICATION_NAME}:latest\"}},\"type\":\"ImageChange\"}]}},{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"ports\":[{\"name\":\"8787-tcp\",\"port\":8787,\"protocol\":\"TCP\",\"targetPort\":8787}],\"selector\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"}}}],\"parameters\":[{\"description\":\"Must
+      be without spaces (use -), and unique in the project.\",\"displayName\":\"Application
+      name\",\"name\":\"APPLICATION_NAME\",\"required\":true,\"value\":\"trinityrnaseq\"},{\"description\":\"Size
+      of the storage used for the notebook (approximate).\",\"displayName\":\"Storage
+      size\",\"name\":\"STORAGE_SIZE\",\"required\":true,\"value\":\"10Gi\"},{\"description\":\"See
+      https://github.com/orgs/MaastrichtU-IDS/packages/container/package/trinityrnaseq
+      for more details on the image\",\"displayName\":\"Application Docker image\",\"name\":\"APPLICATION_IMAGE\",\"required\":true,\"value\":\"ghcr.io/maastrichtu-ids/trinityrnaseq\"}]}\n"
+    openshift.io/display-name: Trinity RNA-Seq
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-genomics
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    tags: trinityrnaseq,persistent,omics
+  creationTimestamp: "2021-05-27T13:58:49Z"
+  name: trinityrnaseq
+  namespace: openshift
+  resourceVersion: "3786747705"
+  uid: 491a831a-a855-4e2c-8cdd-164b403567f2
+objects:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: ${STORAGE_SIZE}
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: trinityrnaseq
+    name: ${APPLICATION_NAME}
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - from:
+        kind: DockerImage
+        name: ${APPLICATION_IMAGE}
+      importPolicy:
+        scheduled: false
+      name: latest
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: "true"
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        automountServiceAccountToken: false
+        containers:
+        - command:
+          - tail
+          - -f
+          - /dev/null
+          image: ${APPLICATION_NAME}:latest
+          imagePullPolicy: IfNotPresent
+          name: trinityrnaseq-container
+          ports:
+          - containerPort: 8787
+            protocol: TCP
+          resources:
+            limits:
+              cpu: "32"
+              memory: 200Gi
+            requests:
+              cpu: "2"
+              memory: 4Gi
+          volumeMounts:
+          - mountPath: /usr/local/src/work
+            name: data
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: ${APPLICATION_NAME}
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: false
+        containerNames:
+        - trinityrnaseq-container
+        from:
+          kind: ImageStreamTag
+          name: ${APPLICATION_NAME}:latest
+      type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - name: 8787-tcp
+      port: 8787
+      protocol: TCP
+      targetPort: 8787
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+parameters:
+- description: Must be without spaces (use -), and unique in the project.
+  displayName: Application name
+  name: APPLICATION_NAME
+  required: true
+  value: trinityrnaseq
+- description: Size of the storage used for the notebook (approximate).
+  displayName: Storage size
+  name: STORAGE_SIZE
+  required: true
+  value: 10Gi
+- description: See https://github.com/orgs/MaastrichtU-IDS/packages/container/package/trinityrnaseq
+    for more details on the image
+  displayName: Application Docker image
+  name: APPLICATION_IMAGE
+  required: true
+  value: ghcr.io/maastrichtu-ids/trinityrnaseq

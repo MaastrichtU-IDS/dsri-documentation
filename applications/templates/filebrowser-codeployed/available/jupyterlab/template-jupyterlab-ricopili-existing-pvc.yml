@@ -1,0 +1,295 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: jupyterlab-ricopili-existing-pvc
+  annotations:
+    openshift.io/display-name: JupyterLab with Ricopili on existing storage
+    description: |-
+      Start a JupyterLab image with an R-kernel and Ricopoli tools installed as the `root` user, with an already existing Persistent Volume Claim (PVC). Find the list of PVC in Search > Resources > Persistent Volume Claim.
+
+      🔥 Ricopili tools are installed and can be found in /root/ricopili. Fopr more information see https://sites.google.com/a/broadinstitute.org/ricopili/.
+
+      📂 Use the workspace (/root/persistent) of the web UI to store your data in the persistent storage automatically created
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+      
+      🐳 Docker images, see https://github.com/MaastrichtU-IDS/jupyterlab/tree/main/ricopili & https://github.com/MaastrichtU-Library/rcs-docker-ricopili for more details.
+      - Ricopili package:
+      ghcr.io/maastrichtu-ids/jupyterlab:ricopili
+
+      📂 A FileBrowser is co-deployed to manage your files via a web UI.
+      Login with admin and the same password you set for the web UI above.
+      The storage is organised as /data/source, /data/results, /data/scripts.
+    iconClass: icon-python
+    tags: ricopili,jupyter,notebook,R
+    openshift.io/provider-display-name: Research Computing Support, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: jupyterlab-ricopili-existing-pvc
+
+parameters:
+- name: APPLICATION_NAME
+  displayName: Name for the application
+  description: Must be without spaces (use -), and unique in the project.
+  value: jupyterlab-ricopili
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: Docker image
+  value: ghcr.io/maastrichtu-ids/jupyterlab:ricopili
+  required: true
+  description: Docker image of your application in a public registry
+- name: PERSISTENT_VOLUME_CLAIM
+  displayName: Persistent Volume Claim
+  description: The name of the already existing Persistent Volume Claim to mount to this pod. Find the list in Search > Resources > Persistent Volume Claim.
+  required: true
+- name: PASSWORD
+  displayName: Web UI Password
+  description: The password to access the web UI
+  required: true
+
+objects:
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: jupyterlab-ricopili-existing-pvc
+  spec:
+    ports:
+    - name: 8888-tcp
+      protocol: TCP
+      port: 8888
+      targetPort: 8888
+    selector:
+      app: ${APPLICATION_NAME}
+      deployment: ${APPLICATION_NAME}
+    type: ClusterIP
+
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: jupyterlab-ricopili-existing-pvc
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+    port:
+      targetPort: 8888-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Secret
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: jupyterlab-ricopili-existing-pvc
+  stringData:
+    application-password: ${PASSWORD}
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      template: jupyterlab-ricopili-existing-pvc
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: ${APPLICATION_NAME}
+        deployment: ${APPLICATION_NAME}
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:
+          app: ${APPLICATION_NAME}
+          deployment: ${APPLICATION_NAME}
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        # FileBrowser folder layout
+        initContainers:
+          - name: init-dirs
+            image: busybox
+            command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+            volumeMounts:
+              - name: data
+                mountPath: /data
+        containers:
+        - name: ${APPLICATION_NAME}
+          image: ${APPLICATION_IMAGE}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8888
+            protocol: TCP
+          env:
+          - name: JUPYTER_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: ${APPLICATION_NAME}
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: ${APPLICATION_NAME}
+          volumeMounts:
+          - name: data
+            mountPath: /root/persistent
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+              ephemeral-storage: 50Gi
+            requests:
+              cpu: '2'
+              memory: 4Gi
+              ephemeral-storage: 2Gi
+        automountServiceAccountToken: false
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: ${PERSISTENT_VOLUME_CLAIM}
+
+# === FileBrowser ===
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+      template: jupyterlab-ricopili-existing-pvc
+  spec:
+    selector:
+      app: "${APPLICATION_NAME}-filebrowser"
+    ports:
+      - name: "80-tcp"
+        protocol: TCP
+        port: 80
+        targetPort: 80
+    type: ClusterIP
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+      template: jupyterlab-ricopili-existing-pvc
+  spec:
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-filebrowser"
+    port:
+      targetPort: "80-tcp"
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+      template: jupyterlab-ricopili-existing-pvc
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:
+          app: "${APPLICATION_NAME}-filebrowser"
+          deployment: "${APPLICATION_NAME}-filebrowser"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        automountServiceAccountToken: false
+        volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: ${PERSISTENT_VOLUME_CLAIM}
+          - name: filebrowser-db
+            emptyDir: {}
+        # Seed the FileBrowser database with an admin user using the same
+        # password as the JupyterLab application (from the app Secret),
+        # so both stay in sync when the template is instantiated.
+        # The filebrowser image has no shell, so each step is its own initContainer
+        # calling the binary directly via `args` (the image's own entrypoint),
+        # not `command`, since that binary is not on $PATH.
+        initContainers:
+          - name: init-filebrowser-db
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            args:
+              - "-d"
+              - "/database/filebrowser.db"
+              - "config"
+              - "init"
+            volumeMounts:
+              - name: filebrowser-db
+                mountPath: /database
+          - name: init-filebrowser-user
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            args:
+              - "-d"
+              - "/database/filebrowser.db"
+              - "users"
+              - "add"
+              - "admin"
+              - "$(PASSWORD)"
+              - "--perm.admin"
+            env:
+              - name: PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    key: application-password
+                    name: ${APPLICATION_NAME}
+            volumeMounts:
+              - name: filebrowser-db
+                mountPath: /database
+        containers:
+          - name: filebrowser
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            imagePullPolicy: IfNotPresent
+            args:
+              - "--root"
+              - "/data"
+              - "--database"
+              - "/database/filebrowser.db"
+            ports:
+              - containerPort: 80
+                protocol: TCP
+            volumeMounts:
+              - name: data
+                mountPath: /data
+              - name: filebrowser-db
+                mountPath: /database
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+                ephemeral-storage: 1Gi
+              limits:
+                cpu: '1'
+                memory: 2Gi
+                ephemeral-storage: 5Gi

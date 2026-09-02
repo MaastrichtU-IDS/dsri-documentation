@@ -1,0 +1,341 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: rstudio-root-existing-pvc
+  annotations:
+    openshift.io/display-name: RStudio on existing storage
+    description: |-
+      Start RStudio with the 'root' as username which has root permissions (sudo), and with an existing Persistent Volume Claim (PVC). Find the list of PVC in Search > Resources > Persistent Volume Claim.
+
+      🔑 Default credentials are
+      - login: root
+      - password: $user_password
+
+      🐳 Available images with this template:
+      bioconductor/bioconductor_docker:devel
+      rocker/rstudio
+      rocker/tidyverse
+      ghcr.io/maastrichtu-ids/rstudio
+
+      Images based on rocker can be deployed: https://hub.docker.com/r/rocker/rstudio/
+      Visit https://github.com/MaastrichtU-IDS/rstudio for more details to build and customize the image
+
+      📂 Use the /root/persistent folder to store your data in a persistent storage automatically created.
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+
+      📂 A FileBrowser is co-deployed to manage your files via a web UI.
+      Login with admin and the same password you set for RStudio.
+      The storage is organised as /data/source, /data/results, /data/scripts.
+    iconClass: icon-play
+    tags: R,rstudio,root,persistent
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-rstudio
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: rstudio-root-existing-pvc
+
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application name
+  description: Must be without spaces (use -), and unique in the project.
+  value: rstudio
+  required: true
+- name: APPLICATION_IMAGE
+  displayName: RStudio Docker image
+  description: Check on the right to see which images can be used to start RStudio
+  value: ghcr.io/maastrichtu-ids/rstudio:latest
+  required: true
+- name: PERSISTENT_VOLUME_CLAIM
+  displayName: Persistent Volume Claim
+  description: The name of the already existing Persistent Volume Claim to mount to this notebook. Find the list in Search > Resources > Persistent Volume Claim.
+  required: true
+- name: PASSWORD
+  displayName: RStudio password
+  description: The password of the RStudio user. 
+  required: true
+
+- name: OPENBLAS_NUM_THREADS
+  displayName: Number of threads for OpenBLAS
+  description: Restricting the number of thread allocated to OpenBLAS can speed up computations using OpenBLAS (leave empty for default 64)
+  value: "1"
+  required: false
+
+objects:
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 8787-tcp
+      protocol: TCP
+      port: 8787
+      targetPort: 8787
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}"
+      weight: 100
+    port:
+      targetPort: 8787-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+# Shiny server route
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-shiny"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    ports:
+    - name: 3838-tcp
+      protocol: TCP
+      port: 3838
+      targetPort: 3838
+    selector:
+      app: "${APPLICATION_NAME}"
+      deployment: "${APPLICATION_NAME}"
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-shiny"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    host: ''
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-shiny"
+      weight: 100
+    port:
+      targetPort: 3838-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Secret 
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  stringData:
+    application-password: "${PASSWORD}"
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}"
+    labels:
+      app: "${APPLICATION_NAME}"
+  spec:
+    strategy:
+      type: Recreate
+    replicas: 1
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          alpha.image.policy.openshift.io/resolve-names: "*"
+        labels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        # FileBrowser folder layout
+        initContainers:
+        - name: init-dirs
+          image: busybox
+          command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "${PERSISTENT_VOLUME_CLAIM}"
+        containers:
+        - name: "${APPLICATION_NAME}"
+          image: ${APPLICATION_IMAGE}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8787
+            protocol: TCP
+          - containerPort: 3838
+            protocol: TCP
+          resources:
+            limits:
+              cpu: '32'
+              memory: 200Gi
+              ephemeral-storage: 50Gi
+            requests:
+              cpu: '2'
+              memory: 4Gi
+              ephemeral-storage: 2Gi
+          volumeMounts:
+          - name: data
+            mountPath: "/root/persistent"
+          env:
+          - name: USER
+            value: "rstudio"
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: application-password
+                name: "${APPLICATION_NAME}"
+          - name: ROOT
+            value: "TRUE"
+          - name: RUNROOTLESS
+            value: 'true'
+          - name: OPENBLAS_NUM_THREADS
+            value: "${OPENBLAS_NUM_THREADS}"
+        automountServiceAccountToken: false
+
+# === FileBrowser ===
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+  spec:
+    selector:
+      app: "${APPLICATION_NAME}-filebrowser"
+    ports:
+      - name: "80-tcp"
+        protocol: TCP
+        port: 80
+        targetPort: 80
+    type: ClusterIP
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+  spec:
+    to:
+      kind: Service
+      name: "${APPLICATION_NAME}-filebrowser"
+    port:
+      targetPort: "80-tcp"
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: "${APPLICATION_NAME}-filebrowser"
+    labels:
+      app: "${APPLICATION_NAME}-filebrowser"
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+        labels:
+          app: "${APPLICATION_NAME}-filebrowser"
+          deployment: "${APPLICATION_NAME}-filebrowser"
+      spec:
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        automountServiceAccountToken: false
+        volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: "${PERSISTENT_VOLUME_CLAIM}"
+          - name: filebrowser-db
+            emptyDir: {}
+        # Seed the FileBrowser database with an admin user using the same
+        # password as the RStudio application (from the app Secret),
+        # so both stay in sync when the template is instantiated.
+        # The filebrowser image has no shell, so each step is its own initContainer
+        # calling the binary directly via `args` (the image's own entrypoint),
+        # not `command`, since that binary is not on $PATH.
+        initContainers:
+          - name: init-filebrowser-db
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            args:
+              - "-d"
+              - "/database/filebrowser.db"
+              - "config"
+              - "init"
+            volumeMounts:
+              - name: filebrowser-db
+                mountPath: /database
+          - name: init-filebrowser-user
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            args:
+              - "-d"
+              - "/database/filebrowser.db"
+              - "users"
+              - "add"
+              - "admin"
+              - "$(PASSWORD)"
+              - "--perm.admin"
+            env:
+              - name: PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    key: application-password
+                    name: "${APPLICATION_NAME}"
+            volumeMounts:
+              - name: filebrowser-db
+                mountPath: /database
+        containers:
+          - name: filebrowser
+            image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+            imagePullPolicy: IfNotPresent
+            args:
+              - "--root"
+              - "/data"
+              - "--database"
+              - "/database/filebrowser.db"
+            ports:
+              - containerPort: 80
+                protocol: TCP
+            volumeMounts:
+              - name: data
+                mountPath: /data
+              - name: filebrowser-db
+                mountPath: /database
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+                ephemeral-storage: 1Gi
+              limits:
+                cpu: '1'
+                memory: 2Gi
+                ephemeral-storage: 5Gi

@@ -1,0 +1,304 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: matlab-cpu-nolicense
+  annotations:
+    openshift.io/display-name: MATLAB with your own license
+    description: |-
+      Start MATLAB with a desktop UI, and use your own license to enable
+      MATLAB (this can be useful when the UM license server does not support the latest
+      MATLAB release).
+      Running on CPU, with admin privileges to install anything you
+      need
+      
+      📂 Use the `/root/persistent` folder to store your data in the
+      persistent storage automatically created.
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent
+      Volume Claims
+
+      📂 A FileBrowser is co-deployed to manage your files via a web UI.
+      Login with admin and the same password you set for MATLAB.
+      The storage is organised as /data/source, /data/results, /data/scripts.
+      
+      🐳 Visit https://hub.docker.com/r/mathworks/matlab for more details about the image
+    iconClass: icon-beaker
+    tags: matlab,cpu,root,persistent
+    openshift.io/provider-display-name: Research Computing Support, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-matlab
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: matlab-cpu-nolicense
+
+parameters:
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be unique in the project. It will be used to generate the application URL.
+    value: matlab
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Application Docker image
+    description: See https://hub.docker.com/r/mathworks/matlab for more details
+    value: mathworks/matlab:r2025a
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage used for MATLAB (approximate).
+    value: 10Gi
+    required: true
+  - name: PASSWORD
+    displayName: MATLAB UI password
+    description: The password to access the MATLAB web UI
+    required: true
+  - name: DEPLOYMENT_TYPE
+    displayName: Type of deployment
+    description: "-vnc or -browser"
+    value: "-browser"
+    required: true
+
+objects:
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}"
+      ports:
+        - name: "8888-tcp"
+          protocol: TCP
+          port: 8888
+          targetPort: 8888
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: "8888-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    stringData:
+      application-password: "${PASSWORD}"
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          automountServiceAccountToken: false
+          securityContext:
+            runAsUser: 0
+          serviceAccountName: anyuid
+          # FileBrowser folder layout
+          initContainers:
+            - name: init-dirs
+              image: busybox
+              command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+          containers:
+            - name: "${APPLICATION_NAME}"
+              image: "${APPLICATION_IMAGE}"
+              imagePullPolicy: IfNotPresent
+              args:
+                - "${DEPLOYMENT_TYPE}"
+              ports:
+                - containerPort: 8888
+                  protocol: TCP
+              resources:
+                requests:
+                  cpu: '2'
+                  memory: 4Gi
+                  ephemeral-storage: 2Gi
+                limits:
+                  cpu: '32'
+                  memory: 200Gi
+                  ephemeral-storage: 50Gi
+              volumeMounts:
+                - name: data
+                  mountPath: "/root/persistent"
+              env:
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: application-password
+                      name: "${APPLICATION_NAME}"
+
+  # === FileBrowser ===
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}-filebrowser"
+      ports:
+        - name: "80-tcp"
+          protocol: TCP
+          port: 80
+          targetPort: 80
+      type: ClusterIP
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}-filebrowser"
+      port:
+        targetPort: "80-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}-filebrowser"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}-filebrowser"
+            deployment: "${APPLICATION_NAME}-filebrowser"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+            - name: filebrowser-db
+              emptyDir: {}
+          # Seed the FileBrowser database with an admin user using the same
+          # password as the MATLAB application (from the app Secret),
+          # so both stay in sync when the template is instantiated.
+          # The filebrowser image has no shell, so each step is its own initContainer
+          # calling the binary directly via `args` (the image's own entrypoint),
+          # not `command`, since that binary is not on $PATH.
+          initContainers:
+            - name: init-filebrowser-db
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              args:
+                - "-d"
+                - "/database/filebrowser.db"
+                - "config"
+                - "init"
+              volumeMounts:
+                - name: filebrowser-db
+                  mountPath: /database
+            - name: init-filebrowser-user
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              args:
+                - "-d"
+                - "/database/filebrowser.db"
+                - "users"
+                - "add"
+                - "admin"
+                - "$(PASSWORD)"
+                - "--perm.admin"
+              env:
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: application-password
+                      name: "${APPLICATION_NAME}"
+              volumeMounts:
+                - name: filebrowser-db
+                  mountPath: /database
+          containers:
+            - name: filebrowser
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              imagePullPolicy: IfNotPresent
+              args:
+                - "--root"
+                - "/data"
+                - "--database"
+                - "/database/filebrowser.db"
+              ports:
+                - containerPort: 80
+                  protocol: TCP
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+                - name: filebrowser-db
+                  mountPath: /database
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+                  ephemeral-storage: 1Gi
+                limits:
+                  cpu: '1'
+                  memory: 2Gi
+                  ephemeral-storage: 5Gi

@@ -1,0 +1,177 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: ubuntu-vnc
+  annotations:
+    openshift.io/display-name: Ubuntu with desktop interface
+    description: |-
+      Start a minimal Ubuntu 22.04 Linux workspace with an LXDE desktop interface accessible directly in your browser.
+
+      You will be the `root` user inside the container.
+
+      Use the `/root/persistent` folder to store your data. Files kept in this directory are stored in persistent storage and will survive pod restarts.
+
+      Source code: https://github.com/MaastrichtU-Library/ubuntu-vnc
+    iconClass: icon-ubuntu
+    tags: ubuntu,ui,vnc,root,persistent
+    openshift.io/provider-display-name: Research Computing Support, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-utilities#ubuntu
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: ubuntu-vnc
+message: |-
+  A Ubuntu pod has been scheduled for creation in your project, and should be soon available.
+  Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
+
+  You can use `oc get pods` to get the pod ID and connect using your local terminal `oc rsh POD_ID`
+  Or use the terminal tab in the Ubuntu pod view of the OpenShift web UI
+
+parameters:
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be without spaces (use -), and unique in the project.
+    value: ubuntu-vnc
+    required: true
+  - name: PASSWORD
+    displayName: Ubuntu Password
+    description: The password of your user and to access Ubuntu from the web UI
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage used for the notebook (approximate).
+    value: 10Gi
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Application Docker image
+    description: The Docker image for the Ubuntu VNC desktop.
+    value: ghcr.io/maastrichtu-library/ubuntu-vnc:22.04
+    required: true
+
+objects:
+  - apiVersion: "v1"
+    kind: "PersistentVolumeClaim"
+    metadata:
+      name: ${APPLICATION_NAME}
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - "ReadWriteMany"
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      ports:
+      - name: 6080-tcp
+        protocol: TCP
+        port: 6080
+        targetPort: 80
+      selector:
+        app: "${APPLICATION_NAME}"
+        deployment: "${APPLICATION_NAME}"
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      host: ''
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+        weight: 100
+      port:
+        targetPort: 6080-tcp
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: ubuntu-vnc
+    stringData:
+      application-password: "${PASSWORD}"
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      strategy:
+        type: Recreate
+      replicas: 1
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+          deployment: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          containers:
+          - name: "${APPLICATION_NAME}"
+            image: "${APPLICATION_IMAGE}"
+            imagePullPolicy: IfNotPresent
+            ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 5900
+              protocol: TCP
+            env:
+            - name: MOZ_DISABLE_CONTENT_SANDBOX
+              value: "1"
+            - name: HTTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            - name: VNC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: application-password
+                  name: "${APPLICATION_NAME}"
+            resources:
+              limits:
+                cpu: '32'
+                memory: 200Gi
+                ephemeral-storage: 50Gi
+              requests:
+                cpu: '2'
+                memory: 4Gi
+                ephemeral-storage: 2Gi
+            volumeMounts:
+            - name: data
+              mountPath: "/root/persistent"
+          volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: "${APPLICATION_NAME}"

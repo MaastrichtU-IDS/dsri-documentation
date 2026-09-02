@@ -1,0 +1,169 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: filebrowser
+message: The filebrowser has been deployed with default login/password (admin/admin).
+  Change it in the Filebrowser web UI settings at the first login.
+metadata:
+  annotations:
+    description: "Deploy a filebrowser on your persistent volume. This will provide
+      a web UI to upload and download data to your DSRI persistent volume.\n\nYou
+      need to hash the password first, use this docker command on your laptop to generate
+      the password (replace yourpassword by your password), then double each $ to
+      escape them:\ndocker run filebrowser/filebrowser hash yourpassword\n\n\U0001F511
+      Default credentials are\n- login: admin\n- password: browsemeplease\n\n\U0001F4C2
+      Note that we use the `/srv` folder in the container (workspace of the Filebrowser
+      UI) to access the data in the existing persistent storage"
+    iconClass: icon-load-balancer
+    kubectl.kubernetes.io/last-applied-configuration: "{\"apiVersion\":\"template.openshift.io/v1\",\"kind\":\"Template\",\"labels\":{\"template\":\"filebrowser\"},\"message\":\"The
+      filebrowser has been deployed with default login/password (admin/admin). Change
+      it in the Filebrowser web UI settings at the first login.\",\"metadata\":{\"annotations\":{\"description\":\"Deploy
+      a filebrowser on your persistent volume. This will provide a web UI to upload
+      and download data to your DSRI persistent volume.\\n\\nYou need to hash the
+      password first, use this docker command on your laptop to generate the password
+      (replace yourpassword by your password), then double each $ to escape them:\\ndocker
+      run filebrowser/filebrowser hash yourpassword\\n\\n\U0001F511 Default credentials
+      are\\n- login: admin\\n- password: browsemeplease\\n\\n\U0001F4C2 Note that
+      we use the `/srv` folder in the container (workspace of the Filebrowser UI)
+      to access the data in the existing persistent storage\",\"iconClass\":\"icon-load-balancer\",\"openshift.io/display-name\":\"File
+      Browser for existing storage\",\"openshift.io/documentation-url\":\"https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-utilities#file-browser\",\"openshift.io/provider-display-name\":\"Institute
+      of Data Science, UM\",\"openshift.io/support-url\":\"https://maastrichtu-ids.github.io/dsri-documentation/help\",\"tags\":\"filebrowser,storage\"},\"name\":\"filebrowser\",\"namespace\":\"openshift\"},\"objects\":[{\"apiVersion\":\"image.openshift.io/v1\",\"kind\":\"ImageStream\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\",\"template\":\"filebrowser\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"lookupPolicy\":{\"local\":true},\"tags\":[{\"from\":{\"kind\":\"DockerImage\",\"name\":\"ghcr.io/maastrichtu-ids/filebrowser:v2.11.0\"},\"importPolicy\":{\"scheduled\":true},\"name\":\"latest\"}]}},{\"apiVersion\":\"apps.openshift.io/v1\",\"kind\":\"DeploymentConfig\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"replicas\":1,\"selector\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"},\"strategy\":{\"type\":\"Recreate\"},\"template\":{\"metadata\":{\"annotations\":{\"io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel\":\"true\"},\"labels\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"args\":[\"--password\",\"${APPLICATION_PASSWORD}\"],\"image\":\"${APPLICATION_NAME}:latest\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"filebrowser-container\",\"ports\":[{\"containerPort\":80,\"protocol\":\"TCP\"}],\"resources\":{\"limits\":{\"cpu\":\"1\",\"memory\":\"2Gi\"},\"requests\":{\"cpu\":\"1\",\"memory\":\"1Gi\"}},\"volumeMounts\":[{\"mountPath\":\"/srv\",\"name\":\"data\",\"subPath\":\"${STORAGE_FOLDER}\"}]}],\"runtimeClassName\":\"selinux\",\"serviceAccountName\":\"anyuid\",\"volumes\":[{\"name\":\"data\",\"persistentVolumeClaim\":{\"claimName\":\"${STORAGE_NAME}\"}}]}}}},{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"ports\":[{\"name\":\"80-tcp\",\"port\":80,\"protocol\":\"TCP\",\"targetPort\":80}],\"selector\":{\"app\":\"${APPLICATION_NAME}\",\"deploymentconfig\":\"${APPLICATION_NAME}\"}}},{\"apiVersion\":\"route.openshift.io/v1\",\"kind\":\"Route\",\"metadata\":{\"labels\":{\"app\":\"${APPLICATION_NAME}\"},\"name\":\"${APPLICATION_NAME}\"},\"spec\":{\"host\":\"\",\"port\":{\"targetPort\":\"80-tcp\"},\"tls\":{\"insecureEdgeTerminationPolicy\":\"Redirect\",\"termination\":\"edge\"},\"to\":{\"kind\":\"Service\",\"name\":\"${APPLICATION_NAME}\",\"weight\":100}}}],\"parameters\":[{\"description\":\"Must
+      be without spaces (use -), and unique in the project.\",\"displayName\":\"Application
+      name\",\"name\":\"APPLICATION_NAME\",\"required\":true,\"value\":\"filebrowser\"},{\"description\":\"Provide
+      the password as a hash (default value is browsemeplease) to login with admin
+      in the filebrowser\",\"displayName\":\"Application password\",\"name\":\"APPLICATION_PASSWORD\",\"required\":true,\"value\":\"$$2a$$10$$1q1DVy.Cz3e5566.UPJT8eeexDspJ4sI8qZR6TfyHvA/7NH0beKY.\"},{\"description\":\"Name
+      of the Persistent Volume Claim that will be exposed by the filebrowser.\",\"displayName\":\"Storage
+      name\",\"name\":\"STORAGE_NAME\",\"required\":true,\"value\":\"storage-name\"},{\"description\":\"Path
+      to the folder used to store your application data in the the Persistent Volume
+      Claim (leave empty to use the root folder of the storage)\",\"displayName\":\"Storage
+      folder\",\"name\":\"STORAGE_FOLDER\",\"required\":false}]}\n"
+    openshift.io/display-name: File Browser for existing storage
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/catalog-utilities#file-browser
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+    tags: filebrowser,storage
+  creationTimestamp: "2021-05-27T13:58:46Z"
+  name: filebrowser
+  namespace: openshift
+  resourceVersion: "3784842274"
+  uid: 9e22a99b-244b-460f-932b-481623abf8b8
+objects:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      template: filebrowser
+    name: ${APPLICATION_NAME}
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - from:
+        kind: DockerImage
+        name: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+      importPolicy:
+        scheduled: false
+      name: latest
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: "true"
+        labels:
+          app: ${APPLICATION_NAME}
+          deploymentconfig: ${APPLICATION_NAME}
+      spec:
+        automountServiceAccountToken: false
+        containers:
+        - args:
+          - --password
+          - ${APPLICATION_PASSWORD}
+          image: ${APPLICATION_NAME}:latest
+          imagePullPolicy: IfNotPresent
+          name: filebrowser-container
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources:
+            limits:
+              cpu: "1"
+              memory: 2Gi
+            requests:
+              cpu: "1"
+              memory: 1Gi
+          volumeMounts:
+          - mountPath: /srv
+            name: data
+            subPath: ${STORAGE_FOLDER}
+        runtimeClassName: selinux
+        serviceAccountName: anyuid
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: ${STORAGE_NAME}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - name: 80-tcp
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: ${APPLICATION_NAME}
+      deploymentconfig: ${APPLICATION_NAME}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    host: ""
+    port:
+      targetPort: 80-tcp
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+parameters:
+- description: Must be without spaces (use -), and unique in the project.
+  displayName: Application name
+  name: APPLICATION_NAME
+  required: true
+  value: filebrowser
+- description: Provide the password as a hash (default value is browsemeplease) to
+    login with admin in the filebrowser
+  displayName: Application password
+  name: APPLICATION_PASSWORD
+  required: true
+  value: $$2a$$10$$1q1DVy.Cz3e5566.UPJT8eeexDspJ4sI8qZR6TfyHvA/7NH0beKY.
+- description: Name of the Persistent Volume Claim that will be exposed by the filebrowser.
+  displayName: Storage name
+  name: STORAGE_NAME
+  required: true
+  value: storage-name
+- description: Path to the folder used to store your application data in the the Persistent
+    Volume Claim (leave empty to use the root folder of the storage)
+  displayName: Storage folder
+  name: STORAGE_FOLDER

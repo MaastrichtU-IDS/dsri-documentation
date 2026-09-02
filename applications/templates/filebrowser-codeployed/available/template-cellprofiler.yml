@@ -1,0 +1,218 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: cellprofiler
+  annotations:
+    openshift.io/display-name: CellProfiler
+    description: |-
+      Start the CellProfiler with the 'root' user which has sudo permissions to install anything.
+
+      📂 Use the `/usr/local/src` folder to store your data in the existing persistent storage
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+
+      To run the CellProfiler in the terminal:
+      cellprofiler --help
+      cellprofiler --run
+      cellprofiler --run-headless
+
+      Use the GitHub mirror to avoid DockerHub pull limits (cf. https://github.com/MaastrichtU-Library/cellprofiler): 
+      ghcr.io/maastrichtu-library/cellprofiler
+
+      Or use the official image from https://hub.docker.com/r/cellprofiler/cellprofiler
+      cellprofiler/cellprofiler:4.1.3
+
+      📂 A FileBrowser is co-deployed to manage your files via a web UI.
+      Default credentials: login admin / password browsemeplease
+      (this template has no application password to sync with, so this default is fixed).
+      The storage is organised as /data/source, /data/results, /data/scripts.
+    iconClass: icon-amq
+    tags: cellprofiler,persistent
+    openshift.io/provider-display-name: Institute of Data Science, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: cellprofiler
+message: |-
+  A cellprofiler pod has been scheduled for creation in your project, and should be soon available.
+  Building images takes some minutes to complete, so please be patient. You can follow progress on your projects overview page.
+
+  You can use `oc get pods` to get the pod ID and connect using your local terminal `oc rsh POD_ID`
+  Or use the terminal tab in the cellprofiler pod view of the OpenShift web UI
+
+parameters:
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be without spaces (use -), and unique in the project.
+    value: cellprofiler
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Application Docker image
+    description: See https://hub.docker.com/r/cellprofiler/cellprofiler for more details on the image
+    value: ghcr.io/maastrichtu-library/cellprofiler:latest
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage used for the notebook (approximate).
+    value: 10Gi
+    required: true
+
+objects:
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          # FileBrowser folder layout
+          initContainers:
+            - name: init-dirs
+              image: busybox
+              command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+          containers:
+            - name: "${APPLICATION_NAME}"
+              image: "${APPLICATION_IMAGE}"
+              imagePullPolicy: IfNotPresent
+              command: [ "tail", "-f", "/dev/null"]
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+              volumeMounts:
+                - name: data
+                  mountPath: "/usr/local/src"
+              resources:
+                requests:
+                  cpu: '2'
+                  memory: 4Gi
+                  ephemeral-storage: 2Gi
+                limits:
+                  cpu: '32'
+                  memory: 200Gi
+                  ephemeral-storage: 50Gi
+
+  # === FileBrowser ===
+  # No PASSWORD parameter exists in this template to sync with, so FileBrowser
+  # uses a fixed default password (browsemeplease) baked into the image args.
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}-filebrowser"
+      ports:
+        - name: "80-tcp"
+          protocol: TCP
+          port: 80
+          targetPort: 80
+      type: ClusterIP
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}-filebrowser"
+      port:
+        targetPort: "80-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}-filebrowser"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}-filebrowser"
+            deployment: "${APPLICATION_NAME}-filebrowser"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+          containers:
+            - name: filebrowser
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              imagePullPolicy: IfNotPresent
+              args:
+                - "--root"
+                - "/data"
+                - "--password"
+                - "$2a$10$1q1DVy.Cz3e5566.UPJT8eeexDspJ4sI8qZR6TfyHvA/7NH0beKY."
+              ports:
+                - containerPort: 80
+                  protocol: TCP
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+                  ephemeral-storage: 1Gi
+                limits:
+                  cpu: '1'
+                  memory: 2Gi
+                  ephemeral-storage: 5Gi

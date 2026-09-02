@@ -1,0 +1,290 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: vscode-root
+  annotations:
+    openshift.io/display-name: VisualStudio Code server
+    description: |-
+      Start VisualStudio Code server with the coder user which has sudo permissions
+
+      📦 You can use `sudo apt-get install` or `pip install` to install packages
+
+      📂 Use the /home/coder/project folder (workspace of the VSCode UI) to store your data in the existing persistent storage
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
+      
+      Python 3 and Java 17 already installed. You can install packages with 'apt-get' after starting the server.
+
+      📂 A FileBrowser is co-deployed to manage your files via a web UI.
+      Login with admin and the same password you set for VSCode.
+      The storage is organised as /data/source, /data/results, /data/scripts.
+
+      Visit https://github.com/MaastrichtU-IDS/code-server for more details and to customize the image
+    iconClass: icon-kubevirt
+    tags: visualstudio,vscode,root,persistent
+    openshift.io/provider-display-name: Research Computing Support, UM
+    openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-vscode
+    openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
+labels:
+  template: vscode-root
+
+parameters:
+  - name: APPLICATION_NAME
+    displayName: Application name
+    description: Must be without spaces (use -), and unique in the project.
+    value: vscode
+    required: true
+  - name: APPLICATION_IMAGE
+    displayName: Docker image for the application
+    description: See https://github.com/MaastrichtU-IDS/code-server for more details and to customize the image
+    value: ghcr.io/maastrichtu-ids/code-server
+    required: true
+  - name: STORAGE_SIZE
+    displayName: Storage size
+    description: Size of the storage used for the notebook workspace.
+    value: 10Gi
+    required: true
+  - name: PASSWORD
+    displayName: Password
+    description: The password to access the VSCode application
+    required: true
+
+objects:
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${STORAGE_SIZE}
+      storageClassName: ocs-storagecluster-cephfs
+
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}" 
+      ports:
+        - name: "8080-tcp"
+          protocol: TCP
+          port: 8080
+          targetPort: 8080
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}"
+      port:
+        targetPort: "8080-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    stringData:
+      application-password: "${PASSWORD}" 
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}" 
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}"
+            deployment: "${APPLICATION_NAME}"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          # FileBrowser folder layout
+          initContainers:
+            - name: init-dirs
+              image: busybox
+              command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+          volumes:
+            - name: data 
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+          containers:
+            - name: "${APPLICATION_NAME}" 
+              image: "${APPLICATION_IMAGE}" 
+              imagePullPolicy: IfNotPresent
+              workingDir: /home/coder/project
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+              volumeMounts:
+                - name: data 
+                  mountPath: "/home/coder/project" 
+              env:
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: "${APPLICATION_NAME}"
+                      key: application-password 
+              resources:
+                requests:
+                  cpu: '2'
+                  memory: 4Gi
+                  ephemeral-storage: 2Gi
+                limits:
+                  cpu: '32'
+                  memory: "200Gi"
+                  ephemeral-storage: 50Gi
+
+  # === FileBrowser ===
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    spec:
+      selector:
+        app: "${APPLICATION_NAME}-filebrowser"
+      ports:
+        - name: "80-tcp"
+          protocol: TCP
+          port: 80
+          targetPort: 80
+      type: ClusterIP
+
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    spec:
+      to:
+        kind: Service
+        name: "${APPLICATION_NAME}-filebrowser"
+      port:
+        targetPort: "80-tcp"
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: "${APPLICATION_NAME}-filebrowser"
+      labels:
+        app: "${APPLICATION_NAME}-filebrowser"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: "${APPLICATION_NAME}-filebrowser"
+      template:
+        metadata:
+          annotations:
+            io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          labels:
+            app: "${APPLICATION_NAME}-filebrowser"
+            deployment: "${APPLICATION_NAME}-filebrowser"
+        spec:
+          runtimeClassName: selinux
+          serviceAccountName: anyuid
+          automountServiceAccountToken: false
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: "${APPLICATION_NAME}"
+            - name: filebrowser-db
+              emptyDir: {}
+          # Seed the FileBrowser database with an admin user using the same
+          # password as the VSCode application (from the app Secret)
+          initContainers:
+            - name: init-filebrowser-db
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              args:
+                - "-d"
+                - "/database/filebrowser.db"
+                - "config"
+                - "init"
+              volumeMounts:
+                - name: filebrowser-db
+                  mountPath: /database
+            - name: init-filebrowser-user
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              args:
+                - "-d"
+                - "/database/filebrowser.db"
+                - "users"
+                - "add"
+                - "admin"
+                - "$(PASSWORD)"
+                - "--perm.admin"
+              env:
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: application-password
+                      name: "${APPLICATION_NAME}"
+              volumeMounts:
+                - name: filebrowser-db
+                  mountPath: /database
+          containers:
+            - name: filebrowser
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              imagePullPolicy: IfNotPresent
+              args:
+                - "--root"
+                - "/data"
+                - "--database"
+                - "/database/filebrowser.db"
+              ports:
+                - containerPort: 80
+                  protocol: TCP
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+                - name: filebrowser-db
+                  mountPath: /database
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+                  ephemeral-storage: 1Gi
+                limits:
+                  cpu: '1'
+                  memory: 2Gi
+                  ephemeral-storage: 5Gi
