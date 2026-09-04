@@ -12,6 +12,8 @@ If you are planning to present or publish your work which was made possible by u
 
 # Citations
 
+* **Network-based stratification of allele-specific expression reveals patient subgroups in Huntington's disease**, *Daan van Beek, Aishwarya Iyer, Friederike Ehrhart, Chris T. Evelo, Theo M. de Kok, Ilja C.W Arts, , Michiel E. Adriaens, Martina Kutmon*, [Bioinformatics](https://doi.org/10.1093/bioinformatics/btag592), 2026.
+
 * **Ultra-high-field (9.4 T) ex vivo diffusion MRI tractography reveals microstructural differences in Parkinson's disease motor subtypes**, *Jackson Boonstra, Stijn Michielse, Yasin Temel, Ali Jahanshahi, Alard Roebroeck*, [Neurobiology of Disease](https://www.sciencedirect.com/science/article/pii/S0969996126000100), 2026.
 
 * **AudioToolAgent: An Agentic Framework for Audio-Language Models**, *Gijs Wijngaard, Elia Formisano, Michel Dumontier*, [https://arxiv.org/pdf/2510.02995](https://arxiv.org/pdf/2510.02995), 2025.
