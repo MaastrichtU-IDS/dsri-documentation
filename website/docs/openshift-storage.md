@@ -85,10 +85,9 @@ Dynamic storage can be created manually:
 
 ## Ephemeral storage
 
-:::warning
+:::info
 
-Ephemeral storage is currently disabled by default as it was causing data loss for users.
+When creating a pod without persistent storage, OpenShift uses ephemeral storage bound to the pod, and be aware that the data is lost when the pod is deleted. This can be sufficient for quick testing but is not recommended for any data you want to keep.
 
 :::
 
-When creating a pod without persistent storage, OpenShift uses ephemeral storage bound to the pod, and be aware that the data is lost when the pod is deleted. This can be sufficient for quick testing but is not recommended for any data you want to keep.
