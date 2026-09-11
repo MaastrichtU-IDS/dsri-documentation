@@ -433,15 +433,18 @@ function GpuBooking() {
     ✔️&nbsp;&nbsp;GPU requested successfully! You will receive a confirmation email shortly and more information once your booking starts.
   </Paper>
 
-  <Paper 
+    <Paper 
     elevation={4} 
     style={{
       backgroundColor: "#e57373", 
       padding: '15px', 
       color: '#000000', 
-      borderRadius: '8px'
+      borderRadius: '8px',
+      maxWidth: '800px',
+      margin: '0 auto',
+      textAlign: 'left'
     }} 
-    sx={{ display: state.openError }}
+    sx={{ display: state.openError === 'inline' ? 'block' : 'none' }}
   >
     ⚠️&nbsp;&nbsp;{state.errorMessage}
   </Paper>
