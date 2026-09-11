@@ -114,7 +114,7 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     if delta.days + 1 > MAX_BOOK_DAYS:
         return JSONResponse({'errorMessage': f'You can book a GPU for a maximum of {str(MAX_BOOK_DAYS)} days'})
 
-    # NEW: monthly cap check, across all of this user's existing bookings
+    # Monthly cap check, across all of this user's existing bookings
     # that start in the same calendar month as this new request.
     new_booking_days = delta.days + 1
     with Session(engine) as session:
