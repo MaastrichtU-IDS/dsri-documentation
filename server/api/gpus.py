@@ -12,6 +12,7 @@ from sqlmodel import Field, Session, SQLModel, select
 
 NUMBER_OF_GPUS = 7
 MAX_BOOK_DAYS = 4
+MAX_BOOK_DAYS_PER_MONTH = 4  # total days allowed across ALL bookings in a calendar month
 
 router = APIRouter()
 
@@ -77,6 +78,25 @@ def get_gpu_booked_days() -> dict:
     booked_days = get_booked_days()
     return JSONResponse(booked_days)
 
+# Sum how many days `user_email` has already booked in the same
+# calendar month as `reference_date`, across ALL of their bookings
+# (not just one). This is what was missing before - the old code only
+# checked the length of a single incoming booking (MAX_BOOK_DAYS above),
+# never the user's running total for the month.
+def get_user_days_booked_this_month(session: Session, user_email: str, reference_date: datetime) -> int:
+    year = reference_date.year
+    month = reference_date.month
+
+    statement = select(GpuBooking).where(GpuBooking.user_email == user_email)
+    existing_bookings = session.exec(statement).all()
+
+    total_days = 0
+    for booking in existing_bookings:
+        if booking.starting_date.year == year and booking.starting_date.month == month:
+            delta = booking.ending_date - booking.starting_date
+            total_days += delta.days + 1
+    return total_days
+
 @router.post("/request", name="Request a DSRI GPU for a period",
     description="Request a DSRI GPU for a period, this will check if any GPU are available for the requested period",
     response_model=dict,
@@ -93,6 +113,25 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     delta = schedule.ending_date - schedule.starting_date
     if delta.days + 1 > MAX_BOOK_DAYS:
         return JSONResponse({'errorMessage': f'You can book a GPU for a maximum of {str(MAX_BOOK_DAYS)} days'})
+
+    # NEW: monthly cap check, across all of this user's existing bookings
+    # that start in the same calendar month as this new request.
+    new_booking_days = delta.days + 1
+    with Session(engine) as session:
+        user_days_booked_this_month = get_user_days_booked_this_month(
+            session, schedule.user_email, schedule.starting_date
+        )
+
+    if user_days_booked_this_month + new_booking_days > MAX_BOOK_DAYS_PER_MONTH:
+        return JSONResponse({
+            'errorMessage': (
+                f'You have already booked {user_days_booked_this_month} day(s) of GPU time '
+                f'this month. This request would bring your total to '
+                f'{user_days_booked_this_month + new_booking_days} days, exceeding the '
+                f'{MAX_BOOK_DAYS_PER_MONTH}-day monthly limit. Contact rcs-ub@maastrichtuniversity.nl '
+                f'if you need an exception.'
+            )
+        })
 
     for i in range(delta.days + 1):
         day_time = schedule.starting_date + timedelta(days=i)
@@ -134,7 +173,7 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
                                 If you want to cancel your reservation please send an email to <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a>
                                 """)
             send_email(email_msg, to=booking.user_email, subject="📀 DSRI GPU booking registered")
-            
+
             return JSONResponse({'message': 'GPU booking successfully submitted, you will receive an email with more details soon.'})
         except Exception as e:
             print(e)
