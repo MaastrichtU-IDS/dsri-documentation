@@ -50,7 +50,6 @@ parameters:
 - name: PASSWORD
   displayName: FileBrowser password
   description: The password to access the co-deployed FileBrowser web UI
-  value: browsemeplease
   required: true
 
 objects:
