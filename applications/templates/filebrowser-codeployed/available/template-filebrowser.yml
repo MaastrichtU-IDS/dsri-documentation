@@ -10,7 +10,7 @@ metadata:
 
       🔑 Default login is admin, with the password you set.
 
-      📂 Note that we use the `/srv` folder in the container (workspace of the Filebrowser UI) to access the data in the existing persistent storage
+      📂 Note that we use the `/filebrowser` folder in the container (workspace of the Filebrowser UI) to access the data in the existing persistent storage
     iconClass: icon-load-balancer
     tags: filebrowser,storage
     openshift.io/provider-display-name: Research Computing Support, UM
@@ -147,7 +147,7 @@ objects:
               imagePullPolicy: IfNotPresent
               args:
                 - "--root"
-                - "/srv"
+                - "/filebrowser"
                 - "--database"
                 - "/database/filebrowser.db"
               ports:
@@ -155,7 +155,7 @@ objects:
                   protocol: TCP
               volumeMounts:
                 - name: data
-                  mountPath: "/srv"
+                  mountPath: "/filebrowser"
                   subPath: "${STORAGE_FOLDER}"
                 - name: filebrowser-db
                   mountPath: /database
