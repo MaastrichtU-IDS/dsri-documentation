@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: cellprofiler
   annotations:
-    openshift.io/display-name: CellProfiler
+    openshift.io/display-name: CellProfiler (with FileBrowser)
     description: |-
       Start the CellProfiler with the 'root' user which has sudo permissions to install anything.
 

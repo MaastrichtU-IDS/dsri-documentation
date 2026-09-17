@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: virtuoso-triplestore
   annotations:
-    openshift.io/display-name: Virtuoso triplestore
+    openshift.io/display-name: Virtuoso triplestore (with FileBrowser)
     description: |-
       Start a OpenLink Virtuoso triplestore, with a SPARQL endpoint
 

@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: trinityrnaseq
   annotations:
-    openshift.io/display-name: Trinity RNA-Seq
+    openshift.io/display-name: Trinity RNA-Seq (with FileBrowser)
     description: |-
       Start trinityrnaseq with the 'root' user which has sudo permissions to install anything.
 

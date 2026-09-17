@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: ontotext-graphdb
   annotations:
-    openshift.io/display-name: Ontotext GraphDB
+    openshift.io/display-name: Ontotext GraphDB (with FileBrowser)
     description: |-
       Start a Ontotext GraphDB triplestore, with a SPARQL endpoint
 
