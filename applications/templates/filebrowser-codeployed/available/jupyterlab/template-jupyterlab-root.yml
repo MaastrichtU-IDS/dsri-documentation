@@ -35,7 +35,7 @@ metadata:
 
       📂 A FileBrowser is co-deployed to manage your files via a web UI.
       Login with admin and the same password you set for JupyterLab.
-      The storage is organised as /data/source, /data/results, /data/scripts.
+      The storage is organised as /persistent/source, /persistent/results, /persistent/scripts.
 
       🗑️ Use this command with your application name to delete completely your application and its persistent volumes:
       oc delete all,pvc,secret,configmaps,serviceaccount,rolebinding --selector app=$APPLICATION_NAME
@@ -176,10 +176,10 @@ objects:
           initContainers:
             - name: init-dirs
               image: busybox
-              command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+              command: ["sh", "-c", "mkdir -p /persistent/source /persistent/results /persistent/scripts && chmod -R 777 /persistent"]
               volumeMounts:
                 - name: data
-                  mountPath: /data
+                  mountPath: /persistent
           volumes:
             - name: data
               persistentVolumeClaim:
@@ -305,7 +305,8 @@ objects:
           # password as the JupyterLab application (from the app Secret),
           # so both stay in sync when the template is instantiated.
           # The filebrowser image has no shell, so each step is its own initContainer
-          # calling the binary directly instead of using `sh -c`.
+          # calling the binary directly via `args` (the image's own entrypoint),
+          # not `command`, since that binary is not on $PATH.
           initContainers:
             - name: init-filebrowser-db
               image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
@@ -342,7 +343,7 @@ objects:
               imagePullPolicy: IfNotPresent
               args:
                 - "--root"
-                - "/data"
+                - "/persistent"
                 - "--database"
                 - "/database/filebrowser.db"
               ports:
@@ -350,7 +351,7 @@ objects:
                   protocol: TCP
               volumeMounts:
                 - name: data
-                  mountPath: /data
+                  mountPath: /persistent
                 - name: filebrowser-db
                   mountPath: /database
               resources:

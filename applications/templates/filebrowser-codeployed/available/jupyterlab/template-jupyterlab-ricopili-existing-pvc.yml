@@ -19,7 +19,7 @@ metadata:
 
       📂 A FileBrowser is co-deployed to manage your files via a web UI.
       Login with admin and the same password you set for the web UI above.
-      The storage is organised as /data/source, /data/results, /data/scripts.
+      The storage is organised as /persistent/source, /persistent/results, /persistent/scripts.
     iconClass: icon-python
     tags: ricopili,jupyter,notebook,R
     openshift.io/provider-display-name: Research Computing Support, UM
@@ -125,10 +125,10 @@ objects:
         initContainers:
           - name: init-dirs
             image: busybox
-            command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+            command: ["sh", "-c", "mkdir -p /persistent/source /persistent/results /persistent/scripts && chmod -R 777 /persistent"]
             volumeMounts:
               - name: data
-                mountPath: /data
+                mountPath: /persistent
         containers:
         - name: ${APPLICATION_NAME}
           image: ${APPLICATION_IMAGE}
@@ -232,7 +232,7 @@ objects:
           - name: filebrowser-db
             emptyDir: {}
         # Seed the FileBrowser database with an admin user using the same
-        # password as the JupyterLab application (from the app Secret),
+        # password as the web UI application (from the app Secret),
         # so both stay in sync when the template is instantiated.
         # The filebrowser image has no shell, so each step is its own initContainer
         # calling the binary directly via `args` (the image's own entrypoint),
@@ -273,7 +273,7 @@ objects:
             imagePullPolicy: IfNotPresent
             args:
               - "--root"
-              - "/data"
+              - "/persistent"
               - "--database"
               - "/database/filebrowser.db"
             ports:
@@ -281,7 +281,7 @@ objects:
                 protocol: TCP
             volumeMounts:
               - name: data
-                mountPath: /data
+                mountPath: /persistent
               - name: filebrowser-db
                 mountPath: /database
             resources:
