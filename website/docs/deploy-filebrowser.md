@@ -3,7 +3,7 @@ id: deploy-filebrowser
 title: Filebrowser
 ---
 
-Filebrowser provides a web UI to upload and download files to and from a persistent volume on the DSRI. It is useful when your application does not have a built-in file manager. Note that JupyterLab, RStudio, and Visual Studio Code already include a file browser, so you only need this for other deployments.
+Filebrowser provides a web UI to upload and download files to and from a persistent volume on the DSRI. It is useful when your application does not have a built-in file manager.
 
 :::caution
 
@@ -16,16 +16,15 @@ Filebrowser can only be deployed on an **existing** Persistent Volume Claim. Mak
 Find the **File Browser for existing storage** template in the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
 
 1. **Application name** - must be unique within your project. It will be used to generate the application URL.
-2. **Password** - hash the password first for security using:
 ```bash
-   docker run filebrowser/filebrowser hash mypassword
+   docker run filebrowser/filebrowser 
 ```
 3. **Storage name** - the name of the Persistent Volume Claim (PVC) to expose. Find it under **Deployments** > **Storage** panel, or in the DSRI web UI under **Administrator view** > **Storage** > **Persistent Volume Claims**.
 4. **Storage subpath** - the subfolder within the PVC to expose. Leave empty to expose the root of the volume.
 
 :::info Default credentials
 
-The default username is `admin` and the default password is `admin`. **Change the password immediately** after first login via the Filebrowser web UI.
+The default username is `admin` and the default password set by you.
 
 :::
 
