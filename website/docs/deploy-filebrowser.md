@@ -16,9 +16,7 @@ Filebrowser can only be deployed on an **existing** Persistent Volume Claim. Mak
 Find the **File Browser for existing storage** template in the [DSRI Catalog](https://console.dsri.unimaas.nl/catalog/) (make sure the **Templates** checkbox is checked) and instantiate it with the following parameters:
 
 1. **Application name** - must be unique within your project. It will be used to generate the application URL.
-```bash
-   docker run filebrowser/filebrowser 
-```
+2. **Password** - to access the UI
 3. **Storage name** - the name of the Persistent Volume Claim (PVC) to expose. Find it under **Deployments** > **Storage** panel, or in the DSRI web UI under **Administrator view** > **Storage** > **Persistent Volume Claims**.
 4. **Storage subpath** - the subfolder within the PVC to expose. Leave empty to expose the root of the volume.
 
