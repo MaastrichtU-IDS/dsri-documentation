@@ -6,14 +6,9 @@ metadata:
   annotations:
     openshift.io/display-name: File Browser for existing storage
     description: |-
-      Deploy a filebrowser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume.
+      TESTDeploy a filebrowser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume.
 
-      You need to hash the password first, use this docker command on your laptop to generate the password (replace yourpassword by your password), then double each $ to escape them:
-      docker run filebrowser/filebrowser hash yourpassword
-
-      🔑 Default credentials are
-      - login: admin
-      - password: browsemeplease
+      🔑 Default login is admin, with the password you set.
 
       📂 Note that we use the `/srv` folder in the container (workspace of the Filebrowser UI) to access the data in the existing persistent storage
     iconClass: icon-load-balancer
@@ -23,7 +18,7 @@ metadata:
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:
   template: filebrowser
-message: The filebrowser has been deployed with default login/password (admin/admin). Change it in the Filebrowser web UI settings at the first login.
+message: The filebrowser has been deployed. Login with admin and the password you set.
 
 parameters:
   - name: APPLICATION_NAME
@@ -31,10 +26,9 @@ parameters:
     description: Must be without spaces (use -), and unique in the project.
     value: filebrowser
     required: true
-  - name: APPLICATION_PASSWORD
+  - name: PASSWORD
     displayName: Application password
-    description: Provide the password as a hash (default value is browsemeplease) to login with admin in the filebrowser
-    value: $$2a$$10$$1q1DVy.Cz3e5566.UPJT8eeexDspJ4sI8qZR6TfyHvA/7NH0beKY.
+    description: The plain-text password to login with admin in the filebrowser
     required: true
   - name: STORAGE_NAME
     displayName: Storage name
@@ -78,6 +72,15 @@ objects:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
 
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}"
+      labels:
+        app: "${APPLICATION_NAME}"
+    stringData:
+      application-password: "${PASSWORD}"
+
   - kind: Deployment
     apiVersion: apps/v1
     metadata:
@@ -106,11 +109,47 @@ objects:
             - name: data
               persistentVolumeClaim:
                 claimName: "${STORAGE_NAME}"
+            - name: filebrowser-db
+              emptyDir: {}
+          initContainers:
+            - name: init-filebrowser-db
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              args:
+                - "-d"
+                - "/database/filebrowser.db"
+                - "config"
+                - "init"
+              volumeMounts:
+                - name: filebrowser-db
+                  mountPath: /database
+            - name: init-filebrowser-user
+              image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
+              args:
+                - "-d"
+                - "/database/filebrowser.db"
+                - "users"
+                - "add"
+                - "admin"
+                - "$(PASSWORD)"
+                - "--perm.admin"
+              env:
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: application-password
+                      name: "${APPLICATION_NAME}"
+              volumeMounts:
+                - name: filebrowser-db
+                  mountPath: /database
           containers:
             - name: "${APPLICATION_NAME}"
               image: ghcr.io/maastrichtu-ids/filebrowser:v2.11.0
               imagePullPolicy: IfNotPresent
-              args: ["--password", "${APPLICATION_PASSWORD}"]
+              args:
+                - "--root"
+                - "/srv"
+                - "--database"
+                - "/database/filebrowser.db"
               ports:
                 - containerPort: 80
                   protocol: TCP
@@ -118,12 +157,14 @@ objects:
                 - name: data
                   mountPath: "/srv"
                   subPath: "${STORAGE_FOLDER}"
+                - name: filebrowser-db
+                  mountPath: /database
               resources:
                 requests:
                   cpu: 100m
                   memory: 256Mi
-                  ephemeral-storage: 2Gi
+                  ephemeral-storage: 1Gi
                 limits:
                   cpu: '1'
                   memory: 2Gi
-                  ephemeral-storage: 50Gi
+                  ephemeral-storage: 5Gi
