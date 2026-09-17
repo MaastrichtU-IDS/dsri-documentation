@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: rstudio-root
   annotations:
-    openshift.io/display-name: RStudio
+    openshift.io/display-name: RStudio (with FileBrowser)
     description: |-
       Start RStudio with the 'root' as username which has root permissions (sudo).
 

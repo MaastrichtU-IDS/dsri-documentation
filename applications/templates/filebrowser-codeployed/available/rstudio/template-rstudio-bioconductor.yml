@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: rstudio-bioconductor
   annotations:
-    openshift.io/display-name: RStudio with Bioconductor
+    openshift.io/display-name: RStudio with Bioconductor (with FileBrowser)
     description: |-
       RStudio IDE with Bioconductor package installed for R-based bioinformatics analysis.
       
