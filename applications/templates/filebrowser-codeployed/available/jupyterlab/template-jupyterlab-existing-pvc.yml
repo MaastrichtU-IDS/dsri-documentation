@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: jupyterlab-existing-pvc
   annotations:
-    openshift.io/display-name: JupyterLab on existing storage
+    openshift.io/display-name: JupyterLab on existing storage (with FileBrowser)
     description: |-
       Start JupyterLab on an existing Persistent Volume Claim (PVC). It is usually the same as the name of the deployment. Find the list of PVC in Search > Resources > Persistent Volume Claim.
       

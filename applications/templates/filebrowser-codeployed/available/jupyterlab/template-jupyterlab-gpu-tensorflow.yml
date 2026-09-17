@@ -32,7 +32,7 @@ metadata:
       oc delete all,pvc,secret,configmaps,serviceaccount,rolebinding
       --selector app=$APPLICATION_NAME
     iconClass: icon-python
-    openshift.io/display-name: JupyterLab with TensorFlow on GPU
+    openshift.io/display-name: JupyterLab with TensorFlow on GPU (with FileBrowser)
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-on-gpu
     openshift.io/provider-display-name: Research Computing Support, UM
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
