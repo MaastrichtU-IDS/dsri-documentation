@@ -4,7 +4,7 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: matlab-cpu-nolicense
   annotations:
-    openshift.io/display-name: MATLAB with your own license
+    openshift.io/display-name: MATLAB with your own license (with FileBrowser)
     description: |-
       Start MATLAB with a desktop UI, and use your own license to enable
       MATLAB (this can be useful when the UM license server does not support the latest
