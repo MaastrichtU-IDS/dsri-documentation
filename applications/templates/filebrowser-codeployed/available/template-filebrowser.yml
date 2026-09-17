@@ -6,7 +6,7 @@ metadata:
   annotations:
     openshift.io/display-name: File Browser for existing storage
     description: |-
-      TESTDeploy a filebrowser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume.
+      Deploy a filebrowser on your persistent volume. This will provide a web UI to upload and download data to your DSRI persistent volume.
 
       🔑 Default login is admin, with the password you set.
 
