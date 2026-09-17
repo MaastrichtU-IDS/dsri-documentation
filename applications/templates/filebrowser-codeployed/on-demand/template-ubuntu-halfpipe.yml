@@ -14,7 +14,7 @@ metadata:
 
       📂 A FileBrowser is co-deployed to manage your files via a web UI, useful for getting files in and out of the shared storage without going through the VNC desktop.
       Login with admin and the same password you set for Ubuntu.
-      The storage is organised as /data/source, /data/results, /data/scripts, alongside your existing /root/persistent and /home/fmriprep/data content.
+      The storage is organised as /persistent/source, /persistent/results, /persistent/scripts, alongside your existing /root/persistent and /home/fmriprep/data content.
 
       Source code: https://github.com/MaastrichtU-Library/ubuntu-vnc
     iconClass: icon-ubuntu
@@ -112,10 +112,10 @@ objects:
           initContainers:
             - name: init-dirs
               image: busybox
-              command: ["sh", "-c", "mkdir -p /data/source /data/results /data/scripts && chmod -R 777 /data"]
+              command: ["sh", "-c", "mkdir -p /persistent/source /persistent/results /persistent/scripts && chmod -R 777 /persistent"]
               volumeMounts:
                 - name: data
-                  mountPath: /data
+                  mountPath: /persistent
           containers:
             - env:
                 - name: MOZ_DISABLE_CONTENT_SANDBOX
@@ -324,7 +324,7 @@ objects:
               imagePullPolicy: IfNotPresent
               args:
                 - "--root"
-                - "/data"
+                - "/persistent"
                 - "--database"
                 - "/database/filebrowser.db"
               ports:
@@ -332,7 +332,7 @@ objects:
                   protocol: TCP
               volumeMounts:
                 - name: data
-                  mountPath: /data
+                  mountPath: /persistent
                 - name: filebrowser-db
                   mountPath: /database
               resources:
