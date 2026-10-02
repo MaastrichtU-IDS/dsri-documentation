@@ -7,6 +7,7 @@ metadata:
     openshift.io/display-name: JupyterLab
     description: |-
       Start JupyterLab images based on the official Docker stack, as the `jovyan` user, with sudo privileges to install anything you need.
+      Login is handled by your DSRI (OpenShift) account: no token or password needed.
 
       🐳 You can use any image based on the official Jupyter docker stack:
       - ghcr.io/maastrichtu-ids/jupyterlab (with VSCode, Java and SPARQL kernels)
@@ -35,6 +36,8 @@ metadata:
 
       🗑️ Use this command with your application name to delete completely your application and its persistent volumes:
       oc delete all,pvc,secret,configmaps,serviceaccount,rolebinding --selector app=$APPLICATION_NAME
+
+      ⚠️ POC VERSION: JupyterLab is fronted by an OpenShift oauth-proxy sidecar instead of the built-in token (RCS-1046).
     iconClass: icon-python
     tags: python,jupyter,notebook
     openshift.io/provider-display-name: Research Computing Support, UM
@@ -59,12 +62,15 @@ parameters:
     description: Size of the storage allocated to the notebook persistent storage.
     value: 5Gi
     required: true
-  - name: PASSWORD
-    displayName: JupyterLab UI Password
-    description: The password/token to access the JupyterLab web UI
+
+  # oauth-proxy parameters
+  - name: OAUTH_PROXY_IMAGE
+    displayName: oauth-proxy image
+    description: Pin this to a tag matching the cluster version instead of latest.
+    value: quay.io/openshift/origin-oauth-proxy:latest
     required: true
 
-  #Custom parameters  
+  #Custom parameters
   - name: GIT_URL
     displayName: URL of a git repository to clone in the workspace (optional)
     description: It will be automatically cloned, then requirements.txt and packages.txt will be automatically installed if presents. Only works for images based on the official images
@@ -96,6 +102,31 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
+  # Dedicated per-workspace OAuth client identity.
+  # Only used by the oauth-proxy container; the pod itself still runs as "anyuid".
+  # Created by the template, so the redirect annotation needs no manual/Kyverno step.
+  - kind: ServiceAccount
+    apiVersion: v1
+    metadata:
+      name: "${APPLICATION_NAME}-oauth"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-root
+      annotations:
+        serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"${APPLICATION_NAME}"}}'
+
+  # Token for the OAuth client SA above, filled in by the token controller.
+  - kind: Secret
+    apiVersion: v1
+    type: kubernetes.io/service-account-token
+    metadata:
+      name: "${APPLICATION_NAME}-oauth-token"
+      labels:
+        app: "${APPLICATION_NAME}"
+        template: jupyterlab-root
+      annotations:
+        kubernetes.io/service-account.name: "${APPLICATION_NAME}-oauth"
+
   - kind: Service
     apiVersion: v1
     metadata:
@@ -107,10 +138,10 @@ objects:
       selector:
         app: "${APPLICATION_NAME}"
       ports:
-        - name: "8888-tcp"
+        - name: "oauth-proxy"
           protocol: TCP
-          port: 8888
-          targetPort: 8888
+          port: 4180
+          targetPort: 4180
       type: ClusterIP
 
   - kind: Route
@@ -125,20 +156,10 @@ objects:
         kind: Service
         name: "${APPLICATION_NAME}"
       port:
-        targetPort: "8888-tcp"
+        targetPort: "oauth-proxy"
       tls:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
-
-  - kind: Secret
-    apiVersion: v1
-    metadata:
-      name: "${APPLICATION_NAME}"
-      labels:
-        app: "${APPLICATION_NAME}"
-        template: jupyterlab-root
-    stringData:
-      application-password: "${PASSWORD}"
 
   - kind: Deployment
     apiVersion: apps/v1
@@ -164,6 +185,7 @@ objects:
         spec:
           runtimeClassName: selinux
           serviceAccountName: "anyuid"
+          # Unchanged from the original: no token in the JupyterLab container.
           automountServiceAccountToken: false
           securityContext:
             runAsUser: 0
@@ -172,14 +194,72 @@ objects:
             - name: data
               persistentVolumeClaim:
                 claimName: "${APPLICATION_NAME}"
+            # Same layout as an automounted SA volume, but with the OAuth SA's token,
+            # and only mounted into the oauth-proxy container.
+            - name: oauth-sa
+              projected:
+                sources:
+                  - secret:
+                      name: "${APPLICATION_NAME}-oauth-token"
+                      items:
+                        - key: token
+                          path: token
+                        - key: namespace
+                          path: namespace
+                  - configMap:
+                      name: kube-root-ca.crt
+                      items:
+                        - key: ca.crt
+                          path: ca.crt
+                  - configMap:
+                      name: openshift-service-ca.crt
+                      items:
+                        - key: service-ca.crt
+                          path: service-ca.crt
+            # In-memory cookie secret for oauth-proxy, generated fresh at each pod start.
+            - name: cookie-secret
+              emptyDir:
+                medium: Memory
+                sizeLimit: 1Mi
+          initContainers:
+            # Writes a random 32-character cookie secret. Reuses the JupyterLab image,
+            # which is already pulled on the node.
+            - name: generate-cookie-secret
+              image: "${APPLICATION_IMAGE}"
+              imagePullPolicy: IfNotPresent
+              command:
+                - python3
+                - -c
+                - "import secrets; open('/cookie/secret', 'w').write(secrets.token_hex(16))"
+              volumeMounts:
+                - name: cookie-secret
+                  mountPath: /cookie
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+                limits:
+                  cpu: 200m
+                  memory: 128Mi
           containers:
             - name: "${APPLICATION_NAME}"
               image: "${APPLICATION_IMAGE}"
               imagePullPolicy: IfNotPresent
               workingDir: /home/jovyan/work
+              # Same as the image's default Cmd (start-notebook.sh --no-browser --config=...),
+              # with --ip=0.0.0.0 replaced by 127.0.0.1 and the token/password disabled.
+              # The image's Entrypoint (start.sh) still runs and drops to jovyan with sudo.
+              args:
+                - start-notebook.sh
+                - --no-browser
+                - --config=/etc/jupyter/jupyter_notebook_config.py
+                - --ServerApp.token=
+                - --ServerApp.password=
+                # Only reachable from inside the pod (the proxy), not from the cluster network
+                - --ServerApp.ip=127.0.0.1
+                # Accept the route hostname forwarded by the proxy
+                - --ServerApp.allow_remote_access=True
               ports:
-                - containerPort: 8888
-                  protocol: TCP
                 - containerPort: 4040
                   protocol: TCP
                 - containerPort: 4041
@@ -188,11 +268,6 @@ objects:
                 - name: data
                   mountPath: /home/jovyan/work/persistent
               env:
-                - name: JUPYTER_TOKEN
-                  valueFrom:
-                    secretKeyRef:
-                      key: application-password
-                      name: "${APPLICATION_NAME}"
                 - name: JUPYTER_ENABLE_LAB
                   value: "yes"
                 - name: GRANT_SUDO
@@ -203,16 +278,18 @@ objects:
                   value: "${GIT_NAME}"
                 - name: GIT_EMAIL
                   value: "${GIT_EMAIL}"
+              # tcpSocket probes can't reach 127.0.0.1, so check from inside the container
               readinessProbe:
-                tcpSocket:
-                  port: 8888
+                exec:
+                  command: ["python3", "-c", "import socket; socket.create_connection(('127.0.0.1', 8888), 2)"]
+                timeoutSeconds: 5
               livenessProbe:
+                exec:
+                  command: ["python3", "-c", "import socket; socket.create_connection(('127.0.0.1', 8888), 2)"]
                 initialDelaySeconds: 15
-                tcpSocket:
-                  port: 8888
                 failureThreshold: 40
                 periodSeconds: 10
-                timeoutSeconds: 2
+                timeoutSeconds: 5
               resources:
                 requests:
                   cpu: '2'
@@ -222,3 +299,47 @@ objects:
                   cpu: '32'
                   memory: 200Gi
                   ephemeral-storage: 50Gi
+
+            - name: oauth-proxy
+              image: "${OAUTH_PROXY_IMAGE}"
+              imagePullPolicy: IfNotPresent
+              ports:
+                - containerPort: 4180
+                  name: proxy-http
+                  protocol: TCP
+              env:
+                - name: POD_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+              args:
+                - --http-address=:4180
+                - --https-address=
+                - --provider=openshift
+                - --openshift-service-account=${APPLICATION_NAME}-oauth
+                - --upstream=http://127.0.0.1:8888
+                - --cookie-secret-file=/cookie/secret
+                # Only users who can get pods in this project are let through
+                - --openshift-sar={"namespace":"$(POD_NAMESPACE)","resource":"pods","verb":"get"}
+              volumeMounts:
+                - name: oauth-sa
+                  mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+                  readOnly: true
+                - name: cookie-secret
+                  mountPath: /cookie
+                  readOnly: true
+              readinessProbe:
+                tcpSocket:
+                  port: 4180
+              livenessProbe:
+                tcpSocket:
+                  port: 4180
+                initialDelaySeconds: 10
+                periodSeconds: 10
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+                limits:
+                  cpu: 200m
+                  memory: 256Mi
