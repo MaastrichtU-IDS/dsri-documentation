@@ -112,6 +112,7 @@
       "items": [
         "anatomy-of-an-application",
         "guide-dockerfile-to-openshift",
+        "guide-jobs-on-openshift",
         "deploy-from-docker",
         "deploy-on-gpu",
         "helm",
