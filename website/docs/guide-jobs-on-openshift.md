@@ -193,7 +193,7 @@ $ oc logs -f -l batch.kubernetes.io/job-completion-index=2 --prefix --tail=-1
 [pod/indexed-test-2-zdjvm/run] run 25: deliberate failure
 ```
 
-This is the actual "work", which here is simulated with 2 seconds of waiting. In a real workload you would put something like python `run.py --run-id $i > /results/logs/$i.log 2>&1` here.
+This is the actual "work", which here is simulated with 2 seconds of waiting. In a real workload you would put something like `python run.py --run-id $i > /results/logs/$i.log 2>&1` here.
 
 ```bash
   echo "run $i start" > /results/logs/$i.log
@@ -209,7 +209,7 @@ Place the checkmark for this run and move on to the next one. After the last run
 done
 ```
 
-In conclusion, we have two things here that enables us run our script 60 times. We have the indices, 0-5, 6 in total. And in each pod (index) we run the script 10 times. This jobs only deploys 6 pods which in the end gives you 60 results. This is more effictive compared to running 60 separate jobs. Additionally the job is removed automatically after finishing, which cleans up your project, while your results are saved for later.
+In conclusion, we have two things here that enable us to run our script 60 times. We have the indices, 0-5, 6 in total. And in each pod (index) we run the script 10 times. This job only deploys 6 pods, which in the end gives you 60 results. This is more efficient than running 60 separate jobs. Additionally the job is removed automatically after finishing, which cleans up your project, while your results are saved for later.
 
 ### Running the test job
 
