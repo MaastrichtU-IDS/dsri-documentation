@@ -1,4 +1,12 @@
 ---
+# RStudio with OpenShift login (oauth-proxy)
+#
+# Route -> Service :4180 -> oauth-proxy -> RStudio 127.0.0.1:8787
+# The proxy sends users to the OpenShift login, checks they have access to
+# this project, then forwards them to RStudio. No username or password.
+# Shiny (3838) is not behind the proxy and stays public, as before.
+#
+# Changes for the oauth-proxy are marked with [oauth-proxy].
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
@@ -6,8 +14,9 @@ metadata:
   annotations:
     openshift.io/display-name: RStudio
     description: |-
-      Start RStudio with the 'rstudio' user, which has root permissions (sudo).
-      Login is handled by your DSRI (OpenShift) account: no username or password needed.
+      Start RStudio as the 'root' user, with root permissions to install anything you need.
+      🔑 Login is handled by your DSRI (OpenShift) account: no username or password needed.
+      The first time you open a new workspace, OpenShift asks you to "Authorize Access": click "Allow selected permissions".
 
       🐳 Available images with this template:
       bioconductor/bioconductor_docker:devel
@@ -21,7 +30,7 @@ metadata:
       📂 Use the /root/persistent folder to store your data in a persistent storage automatically created.
       You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
 
-      ⚠️ POC VERSION: RStudio is fronted by an OpenShift oauth-proxy sidecar instead of the built-in login (RCS-1046).
+      ⚠️ RStudio is fronted by an OpenShift oauth-proxy sidecar instead of the built-in login (RCS-1046).
     iconClass: icon-play
     tags: R,rstudio,root,persistent
     openshift.io/provider-display-name: Institute of Data Science, UM
@@ -52,10 +61,13 @@ parameters:
     value: "1"
     required: false
 
-  # oauth-proxy parameters
+  # [oauth-proxy] TODO before prod: pin this instead of using :latest.
+  # Get the cluster's own oauth-proxy image with:
+  #   oc adm release info --image-for=oauth-proxy
+  # (dev, OKD 4.19.0-okd-scos.7: quay.io/okd/scos-content@sha256:def78a66ff1dc8214db7120c84745399eb47d3c329b5b2fe9931d3db787c518e)
   - name: OAUTH_PROXY_IMAGE
     displayName: oauth-proxy image
-    description: Pin this to a tag matching the cluster version instead of latest.
+    description: Image used for the login proxy. Leave as is.
     value: quay.io/openshift/origin-oauth-proxy:latest
     required: true
 
@@ -74,8 +86,8 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # Dedicated per-workspace OAuth client identity.
-  # Only used by the oauth-proxy container; the pod itself still runs as "anyuid".
+  # [oauth-proxy] Login identity used by the proxy, one per workspace.
+  # The annotation tells OpenShift where to send users back after login.
   - kind: ServiceAccount
     apiVersion: v1
     metadata:
@@ -85,7 +97,7 @@ objects:
       annotations:
         serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"${APPLICATION_NAME}"}}'
 
-  # Token for the OAuth client SA above, filled in by the token controller.
+  # [oauth-proxy] Token for the service account above. OpenShift fills it in.
   - kind: Secret
     apiVersion: v1
     type: kubernetes.io/service-account-token
@@ -96,6 +108,7 @@ objects:
       annotations:
         kubernetes.io/service-account.name: "${APPLICATION_NAME}-oauth"
 
+  # [oauth-proxy] Points to the proxy (4180) instead of RStudio (8787).
   - kind: Service
     apiVersion: v1
     metadata:
@@ -124,7 +137,7 @@ objects:
         kind: Service
         name: "${APPLICATION_NAME}"
       port:
-        targetPort: "oauth-proxy"
+        targetPort: "oauth-proxy"   # [oauth-proxy]
       tls:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
@@ -153,8 +166,8 @@ objects:
         spec:
           runtimeClassName: selinux
           serviceAccountName: anyuid
-          # Unchanged from the original: no token in the RStudio container.
-          automountServiceAccountToken: false
+          automountServiceAccountToken: false   # no token in the user's container
+
           volumes:
             - name: data
               persistentVolumeClaim:
@@ -165,8 +178,7 @@ objects:
                 items:
                 - key: rserver.conf
                   path: rserver.conf
-            # Same layout as an automounted SA volume, but with the OAuth SA's token,
-            # and only mounted into the oauth-proxy container.
+            # [oauth-proxy] Token + CA certificates for the proxy only.
             - name: oauth-sa
               projected:
                 sources:
@@ -187,14 +199,16 @@ objects:
                       items:
                         - key: service-ca.crt
                           path: service-ca.crt
-            # In-memory cookie secret for oauth-proxy, generated fresh at each pod start.
+            # [oauth-proxy] In-memory storage for the cookie secret.
             - name: cookie-secret
               emptyDir:
                 medium: Memory
                 sizeLimit: 1Mi
+
+          # [oauth-proxy] Generates a random key to sign login cookies.
+          # New on every pod start; users just pass the OpenShift login again.
+          # Uses only basic shell tools: RStudio images don't always have python3.
           initContainers:
-            # Writes a random 32-character hex cookie secret using only coreutils,
-            # since RStudio images don't necessarily have python3.
             - name: generate-cookie-secret
               image: ${APPLICATION_IMAGE}
               imagePullPolicy: IfNotPresent
@@ -212,12 +226,14 @@ objects:
                 limits:
                   cpu: 200m
                   memory: 128Mi
+
           containers:
+            # ---------------- RStudio ----------------
             - name: ${APPLICATION_NAME}
               image: ${APPLICATION_IMAGE}
               imagePullPolicy: Always
               ports:
-                - containerPort: 3838
+                - containerPort: 3838   # Shiny
                   protocol: TCP
               volumeMounts:
                 - name: data
@@ -226,11 +242,12 @@ objects:
                   subPath: rserver.conf
                   name: rserver-config
               env:
+                # [oauth-proxy] User the R session runs as, now that login is off.
+                # Was "rstudio", which doesn't exist in our image.
                 - name: USER
-                  value: "rstudio"
-                # Login is disabled (auth-none in rserver.conf), but the image's startup
-                # script still expects a password for the local user. Use the pod's UID:
-                # random, unique per pod, and never shown in the template form.
+                  value: "root"
+                # [oauth-proxy] The image still expects a password at startup.
+                # Pod UID: random, never shown in the form, never needed by users.
                 - name: PASSWORD
                   valueFrom:
                     fieldRef:
@@ -251,6 +268,7 @@ objects:
                   memory: 200Gi
                   ephemeral-storage: 50Gi
 
+            # ---------------- [oauth-proxy] Login proxy ----------------
             - name: oauth-proxy
               image: "${OAUTH_PROXY_IMAGE}"
               imagePullPolicy: IfNotPresent
@@ -264,13 +282,15 @@ objects:
                     fieldRef:
                       fieldPath: metadata.namespace
               args:
-                - --http-address=:4180
+                - --http-address=:4180                                   # TLS is done by the Route
                 - --https-address=
-                - --provider=openshift
-                - --openshift-service-account=${APPLICATION_NAME}-oauth
-                - --upstream=http://127.0.0.1:8787
+                - --provider=openshift                                   # log in with OpenShift
+                - --openshift-service-account=${APPLICATION_NAME}-oauth  # login identity
+                - --upstream=http://127.0.0.1:8787                       # RStudio
                 - --cookie-secret-file=/cookie/secret
-                # Only users who can get pods in this project are let through
+                - --cookie-expire=24h                                    # same as the OpenShift token lifetime; 
+                                                                         # access is re-checked at each login
+                # Only users who can view pods in this project get in
                 - --openshift-sar={"namespace":"$(POD_NAMESPACE)","resource":"pods","verb":"get"}
               volumeMounts:
                 - name: oauth-sa
@@ -295,7 +315,7 @@ objects:
                   cpu: 200m
                   memory: 256Mi
 
-  # ConfigMap for rserver.conf: session timeout, plus oauth-proxy settings
+  # RStudio server configuration
   - kind: ConfigMap
     apiVersion: v1
     metadata:
@@ -304,20 +324,20 @@ objects:
         app: "${APPLICATION_NAME}"
     data:
       rserver.conf: |
-        # Existing content:
         rsession-which-r=/usr/local/bin/R
         auth-minimum-user-id=0
 
-        # Fix for the timeout issue (300s)
+        # Fix for the session timeout issue (300s)
         rsession-proxy-max-wait-secs=300
 
-        # oauth-proxy POC: login is handled by the proxy, so RStudio's own login is off.
-        # Sessions run as the user in the USER env var (rstudio).
+        # [oauth-proxy] RStudio login off, the proxy handles it.
+        # Set here, not with DISABLE_AUTH=true: that would try to write to this read-only file.
         auth-none=1
-        # Only reachable from inside the pod (the proxy), not from the cluster network
+
+        # [oauth-proxy] Only reachable via the proxy.
         www-address=127.0.0.1
 
-  #  Shiny Server: unchanged, NOT behind the proxy (public, same as before)
+  # Shiny Server: unchanged, not behind the proxy (public, as before)
   - kind: Service
     apiVersion: v1
     metadata:
