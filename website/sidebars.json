@@ -124,7 +124,6 @@
       "type": "category",
       "label": "Advanced Topics",
       "items": [
-        "access-um-servers",
         "guide-publish-image",
         "guide-workshop",
         "login-docker-registry",
