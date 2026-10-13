@@ -41,4 +41,3 @@ Make sure you **upload the data to a folder mounted on a persistent storage** in
 
 Use the `oc cp` command to copy data from a server to your application pod. See the [Load data](/docs/openshift-load-data) page for more information.
 
-If the server is hosted at Maastricht University, you may need to request access first — see the section below.
