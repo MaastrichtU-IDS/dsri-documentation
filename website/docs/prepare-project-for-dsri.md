@@ -42,11 +42,3 @@ Make sure you **upload the data to a folder mounted on a persistent storage** in
 Use the `oc cp` command to copy data from a server to your application pod. See the [Load data](/docs/openshift-load-data) page for more information.
 
 If the server is hosted at Maastricht University, you may need to request access first — see the section below.
-
-### Request access to internal UM servers
-
-In certain cases, UM servers are not accessible by default from the DSRI, even servers that are normally publicly accessible. To open the connection, please let us know the server name and port, or the URL (e.g. `um-vm0057.unimaas.nl` on port `443` or `https://gitlab.maastrichtuniversity.nl`). You can reach out via the [Topdesk Form](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) or by email.
-
-The procedure is described in the diagram below:
-
-<img src="/img/request-access-um-servers.svg" alt="Access procedure UM servers" style={{maxWidth: '100%', maxHeight: '100%'}} />
