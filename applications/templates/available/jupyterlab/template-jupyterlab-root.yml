@@ -330,6 +330,8 @@ objects:
                 - --openshift-service-account=${APPLICATION_NAME}-oauth  # login identity
                 - --upstream=http://127.0.0.1:8888                       # JupyterLab
                 - --cookie-secret-file=/cookie/secret
+                - --cookie-expire=24h                                    # same as the OpenShift token lifetime; 
+                                                                         # access is re-checked at each login
                 # Only users who can view pods in this project get in
                 - --openshift-sar={"namespace":"$(POD_NAMESPACE)","resource":"pods","verb":"get"}
               volumeMounts:
