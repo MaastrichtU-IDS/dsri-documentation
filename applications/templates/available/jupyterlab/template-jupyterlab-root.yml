@@ -1,4 +1,11 @@
 ---
+# JupyterLab with OpenShift login (oauth-proxy)
+#
+# Route -> Service :4180 -> oauth-proxy -> JupyterLab 127.0.0.1:8888
+# The proxy sends users to the OpenShift login, checks they have access to
+# this project, then forwards them to JupyterLab. No token or password.
+#
+# Changes for the oauth-proxy are marked with [oauth-proxy].
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
@@ -7,7 +14,8 @@ metadata:
     openshift.io/display-name: JupyterLab
     description: |-
       Start JupyterLab images based on the official Docker stack, as the `jovyan` user, with sudo privileges to install anything you need.
-      Login is handled by your DSRI (OpenShift) account: no token or password needed.
+      🔑 Login is handled by your DSRI (OpenShift) account: no token or password needed.
+      The first time you open a new workspace, OpenShift asks you to "Authorize Access": click "Allow selected permissions".
 
       🐳 You can use any image based on the official Jupyter docker stack:
       - ghcr.io/maastrichtu-ids/jupyterlab (with VSCode, Java and SPARQL kernels)
@@ -37,7 +45,7 @@ metadata:
       🗑️ Use this command with your application name to delete completely your application and its persistent volumes:
       oc delete all,pvc,secret,configmaps,serviceaccount,rolebinding --selector app=$APPLICATION_NAME
 
-      ⚠️ POC VERSION: JupyterLab is fronted by an OpenShift oauth-proxy sidecar instead of the built-in token (RCS-1046).
+      ⚠️ JupyterLab is fronted by an OpenShift oauth-proxy sidecar instead of the built-in token.
     iconClass: icon-python
     tags: python,jupyter,notebook
     openshift.io/provider-display-name: Research Computing Support, UM
@@ -63,10 +71,13 @@ parameters:
     value: 5Gi
     required: true
 
-  # oauth-proxy parameters
+  # [oauth-proxy] TODO before prod: pin this instead of using :latest.
+  # Get the cluster's own oauth-proxy image with:
+  #   oc adm release info --image-for=oauth-proxy
+  # (dev, OKD 4.19.0-okd-scos.7: quay.io/okd/scos-content@sha256:def78a66ff1dc8214db7120c84745399eb47d3c329b5b2fe9931d3db787c518e)
   - name: OAUTH_PROXY_IMAGE
     displayName: oauth-proxy image
-    description: Pin this to a tag matching the cluster version instead of latest.
+    description: Image used for the login proxy
     value: quay.io/openshift/origin-oauth-proxy:latest
     required: true
 
@@ -102,9 +113,8 @@ objects:
           storage: ${STORAGE_SIZE}
       storageClassName: ocs-storagecluster-cephfs
 
-  # Dedicated per-workspace OAuth client identity.
-  # Only used by the oauth-proxy container; the pod itself still runs as "anyuid".
-  # Created by the template, so the redirect annotation needs no manual/Kyverno step.
+  # [oauth-proxy] Login identity used by the proxy
+  # The annotation tells OpenShift where to send users back after login.
   - kind: ServiceAccount
     apiVersion: v1
     metadata:
@@ -115,7 +125,7 @@ objects:
       annotations:
         serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"${APPLICATION_NAME}"}}'
 
-  # Token for the OAuth client SA above, filled in by the token controller.
+  # [oauth-proxy] Token for the service account above. OpenShift fills it in.
   - kind: Secret
     apiVersion: v1
     type: kubernetes.io/service-account-token
@@ -127,6 +137,7 @@ objects:
       annotations:
         kubernetes.io/service-account.name: "${APPLICATION_NAME}-oauth"
 
+  # [oauth-proxy] Points to the proxy (4180) instead of JupyterLab (8888).
   - kind: Service
     apiVersion: v1
     metadata:
@@ -156,7 +167,7 @@ objects:
         kind: Service
         name: "${APPLICATION_NAME}"
       port:
-        targetPort: "oauth-proxy"
+        targetPort: "oauth-proxy"   # [oauth-proxy]
       tls:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
@@ -185,17 +196,16 @@ objects:
         spec:
           runtimeClassName: selinux
           serviceAccountName: "anyuid"
-          # Unchanged from the original: no token in the JupyterLab container.
-          automountServiceAccountToken: false
+          automountServiceAccountToken: false   # no token in the user's container
           securityContext:
             runAsUser: 0
             fsGroup: 100
+
           volumes:
             - name: data
               persistentVolumeClaim:
                 claimName: "${APPLICATION_NAME}"
-            # Same layout as an automounted SA volume, but with the OAuth SA's token,
-            # and only mounted into the oauth-proxy container.
+            # [oauth-proxy] Token + CA certificates for the proxy only.
             - name: oauth-sa
               projected:
                 sources:
@@ -216,14 +226,15 @@ objects:
                       items:
                         - key: service-ca.crt
                           path: service-ca.crt
-            # In-memory cookie secret for oauth-proxy, generated fresh at each pod start.
+            # [oauth-proxy] In-memory storage for the cookie secret.
             - name: cookie-secret
               emptyDir:
                 medium: Memory
                 sizeLimit: 1Mi
+
+          # [oauth-proxy] Generates a random key to sign login cookies.
+          # New on every pod start; users just pass the OpenShift login again.
           initContainers:
-            # Writes a random 32-character cookie secret. Reuses the JupyterLab image,
-            # which is already pulled on the node.
             - name: generate-cookie-secret
               image: "${APPLICATION_IMAGE}"
               imagePullPolicy: IfNotPresent
@@ -241,24 +252,23 @@ objects:
                 limits:
                   cpu: 200m
                   memory: 128Mi
+
           containers:
+            # ---------------- JupyterLab ----------------
             - name: "${APPLICATION_NAME}"
               image: "${APPLICATION_IMAGE}"
               imagePullPolicy: IfNotPresent
               workingDir: /home/jovyan/work
-              # Same as the image's default Cmd (start-notebook.sh --no-browser --config=...),
-              # with --ip=0.0.0.0 replaced by 127.0.0.1 and the token/password disabled.
-              # The image's Entrypoint (start.sh) still runs and drops to jovyan with sudo.
+              # [oauth-proxy] Image's default command plus flags below.
+              # start.sh still runs first and switches to jovyan (with sudo).
               args:
                 - start-notebook.sh
                 - --no-browser
                 - --config=/etc/jupyter/jupyter_notebook_config.py
-                - --ServerApp.token=
+                - --ServerApp.token=                    # login handled by the proxy
                 - --ServerApp.password=
-                # Only reachable from inside the pod (the proxy), not from the cluster network
-                - --ServerApp.ip=127.0.0.1
-                # Accept the route hostname forwarded by the proxy
-                - --ServerApp.allow_remote_access=True
+                - --ServerApp.ip=127.0.0.1              # only reachable via the proxy
+                - --ServerApp.allow_remote_access=True  # accept the Route hostname
               ports:
                 - containerPort: 4040
                   protocol: TCP
@@ -278,7 +288,7 @@ objects:
                   value: "${GIT_NAME}"
                 - name: GIT_EMAIL
                   value: "${GIT_EMAIL}"
-              # tcpSocket probes can't reach 127.0.0.1, so check from inside the container
+              # [oauth-proxy] Checked from inside the container (app listens on 127.0.0.1).
               readinessProbe:
                 exec:
                   command: ["python3", "-c", "import socket; socket.create_connection(('127.0.0.1', 8888), 2)"]
@@ -300,6 +310,7 @@ objects:
                   memory: 200Gi
                   ephemeral-storage: 50Gi
 
+            # ---------------- [oauth-proxy] Login proxy ----------------
             - name: oauth-proxy
               image: "${OAUTH_PROXY_IMAGE}"
               imagePullPolicy: IfNotPresent
@@ -313,13 +324,13 @@ objects:
                     fieldRef:
                       fieldPath: metadata.namespace
               args:
-                - --http-address=:4180
+                - --http-address=:4180                                   # TLS is done by the Route
                 - --https-address=
-                - --provider=openshift
-                - --openshift-service-account=${APPLICATION_NAME}-oauth
-                - --upstream=http://127.0.0.1:8888
+                - --provider=openshift                                   # log in with OpenShift
+                - --openshift-service-account=${APPLICATION_NAME}-oauth  # login identity
+                - --upstream=http://127.0.0.1:8888                       # JupyterLab
                 - --cookie-secret-file=/cookie/secret
-                # Only users who can get pods in this project are let through
+                # Only users who can view pods in this project get in
                 - --openshift-sar={"namespace":"$(POD_NAMESPACE)","resource":"pods","verb":"get"}
               volumeMounts:
                 - name: oauth-sa
