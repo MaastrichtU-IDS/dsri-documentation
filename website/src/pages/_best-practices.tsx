@@ -88,7 +88,19 @@ const tips: Tip[] = [
   {
     id: 12, cat: 'data',
     title: 'Handle sensitive data responsibly',
-    body: 'Sensitive or personal data must be handled in accordance with UM data management policies. If you are unsure whether your data can be processed on the DSRI, contact us before uploading it.',
+    body: (
+  <>
+    Sensitive or personal data must be handled in accordance with the{' '}
+    <a href="https://library.maastrichtuniversity.nl/research/rdm/rdm-policies/research-data-management-code-of-conduct/">
+      UM Research Data Management Code of Conduct
+    </a>
+    . If you are unsure whether your data can be processed on the DSRI, contact your faculty’s{' '}
+    <a href="https://library.maastrichtuniversity.nl/research/rdm/data-stewards-contacts/">
+      information manager and/or data steward
+    </a>{' '}
+    before uploading it.
+  </>
+),
   },
 ];
 
