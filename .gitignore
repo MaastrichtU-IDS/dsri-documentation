@@ -2,6 +2,8 @@ data/
 backup/
 .env
 
+nginx/vhost/
+
 node_modules
 
 lib/core/metadata.js
