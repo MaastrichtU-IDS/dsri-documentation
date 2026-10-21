@@ -89,7 +89,7 @@ services:
         ipv4_address: 172.19.0.6
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
+    image: phpmyadmin:latest
     container_name: phpmyadmin
     depends_on:
       - mysql
