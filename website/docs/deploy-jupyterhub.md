@@ -13,7 +13,51 @@ Configuring and deploying JupyterHub can be complex. Feel free to [submit a tick
 
 ## Deploy
 
-Download the preconfigured `config-basic.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-basic.yaml). The default config provided by JupyterHub will not work on the DSRI.
+JupyterHub is deployed using a Helm Chart. You can do this either via the DSRI web UI or the CLI.
+
+Start withb downloading the preconfigured `config-basic.yaml` from our [GitHub repository](https://raw.githubusercontent.com/MaastrichtU-IDS/dsri-documentation/refs/heads/master/applications/jupyterhub/config-basic.yaml). The default config provided by JupyterHub Helm Chart will not work on the DSRI.
+
+### Via the DSRI web UI
+
+1. In the left navigation menu, go to **Helm**, click **Create** and choose **Helm Release**.
+2. Search for `jupyterhub` and select the **JupyterHub** Helm Chart.
+3. Click **Create**, then open the **Chart version** dropdown and select version `4.4.4 / App Version 5.5.4 (Provided by JupyterHub)`. This is the only version currently supported on the DSRI.
+4. Replace the default config with the content of the `config-basic.yaml` you downloaded, and click **Create**.
+
+Once deployed, create a secured route with TLS edge termination:
+
+- In the side panel, click **Routes** > **Create Route**.
+- Fill in a **Name**, choose **Service**: `proxy-public`, **Target Port**: `80 -> http (TCP)`, tick **Secure Route**, and set **TLS Termination** to **Edge**. Click **Create**.
+
+### Via the CLI
+
+The JupyterHub Helm Chart repository is already added to the DSRI cluster.
+
+Install the Helm Chart using your downloaded `config-basic.yaml`:
+
+```bash
+helm upgrade --cleanup-on-fail \
+  --install jupyterhub jupyterhub/jupyterhub \
+  --version=4.4.4 \
+  --namespace=<project-name> \
+  --values config-basic.yaml
+```
+
+Create a secured route:
+
+```bash
+oc create route edge <route-name> --namespace <project-name> --service=proxy-public --port=http
+```
+
+### Upgrading the config
+
+To apply changes to your config, run the same `helm upgrade` command with the updated `config-basic.yaml`. In the web UI, go to **Helm** > click your Helm Release > **Actions** > **Upgrade**, edit the config, and click **Upgrade**.
+
+:::caution
+
+In some cases, users who authenticated with an old method will retain access after you change the authentication config. Set your preferred authentication method before allowing users in.
+
+:::
 
 ## Persistent storage
 
@@ -26,8 +70,6 @@ singleuser:
   storage:
     capacity: 2Gi
 ```
-
-## Particularities
 
 ### Authentication
 
@@ -48,15 +90,16 @@ hub:
 ```yaml
 hub:
   config:
+    JupyterHub:
+      authenticator_class: shared-password
+    SharedPasswordAuthenticator:
+      user_password: a-shared-secret-password                 # min. 8 characters
+      admin_password: a-different-admin-password-of-32-chars  # min. 32 chars; admins MUST log in with this
     Authenticator:
       admin_users:
         - admin
       allowed_users:
         - user1
-    DummyAuthenticator:
-      password: a-shared-secret-password
-    JupyterHub:
-      authenticator_class: dummy
 ```
 
 **GitHub OAuth** (recommended for groups) - users log in with their GitHub account. Requires creating a [GitHub OAuth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). Replace `<route-name>` and `<project-name>` with your values:
@@ -64,6 +107,8 @@ hub:
 ```yaml
 hub:
   config:
+    JupyterHub:
+      authenticator_class: github
     GitHubOAuthenticator:
       client_id: your-client-id
       client_secret: your-client-secret
@@ -75,8 +120,6 @@ hub:
         - username2
       scope:
         - read:org
-    JupyterHub:
-      authenticator_class: github
 ```
 
 You can also grant access based on GitHub organization membership or specific teams:
@@ -96,7 +139,7 @@ It is possible to enable UM SSO login for your JupyterHub instance. Contact [rcs
 
 ### Notebook image
 
-The default image is `quay.io/jupyterhub/k8s-singleuser-sample:3.3.8`. You can change it in `config-basic.yaml` to any Jupyter docker stack image. For example, to use the TensorFlow image:
+The default image is `quay.io/jupyterhub/k8s-singleuser-sample:4.4.4`. You can change it in `config-basic.yaml` to any Jupyter docker stack image. For example, to use the TensorFlow image:
 
 ```yaml
 singleuser:
@@ -117,8 +160,8 @@ If sessions fail to start with a timeout error, increase the timeouts in your co
 hub:
   config:
     KubeSpawner:
-      start_timeout: 300
-      http_timeout: 300
+      start_timeout: 600
+      http_timeout: 600
 ```
 
 ### API access
