@@ -7,21 +7,28 @@ title: Run Nextflow Workflows
 
 Nextflow has been developed by the genomic research scientific community and is built to run bioinformatics pipeline.
 
-Define your workflow in a Bash script fashion, providing input, output and the command to run. Without the need to create and use Docker container for pipelines.
-
 :::info Official documentation
 
-See the [Nextflow documentation](https://docs.seqera.io/nextflow/).
+See the [Nextflow documentation](https://docs.seqera.io/nextflow/) and the [Kubernetes executor documentation](https://docs.seqera.io/nextflow/reference/executor/kubernetes).
 
 :::
 
-## Install Nextflow
+## How it works on the DSRI
 
-Install the `nextflow` client on your local device:
+A Nextflow run consists of two parts:
+ 
+- **The head job**: the Nextflow process itself, which reads your pipeline and submits the tasks. You run it as a Kubernetes **Job** in your project.
+- **The task pods**: one pod per pipeline task, created by the head job through a service account.
 
-```shell
-wget -qO- https://get.nextflow.io | bash
-```
+:::caution Do not use `nextflow kuberun`
+ 
+`kuberun` is deprecated by Nextflow and does not allow certain settings to be set to be able to run on the DSRI. Submissions made with `kuberun` will be rejected.
+
+:::
+
+## Prerequisites
+ 
+You only need the `oc` CLI, logged in to the DSRI. You do **not** need to install Nextflow on your local device anymore.
 
 ## Log into the DSRI with OC CLI
 
@@ -100,40 +107,140 @@ In the directory where you have installed Nextflow on your local computer, you w
 In this configuration file you will need to state the correct serviceaccount which we created in the previous step. Additionally for the namespace fill in the project you want to run your Nextflow pipeline in.
 
 ```bash
+process {
+    executor = 'k8s'
+ 
+    // Default resources for every task. Pipelines may override cpus/memory per process.
+    cpus   = 1
+    memory = '2 GB'
+    disk   = '10 GB'   // sets the ephemeral-storage request and limit.
+}
+ 
 k8s {
-    serviceAccount = 'nextflow-sa'
-    namespace      = '<project name>'
+    namespace        = '<project name>'
+    serviceAccount   = 'nextflow-sa'
+    storageClaimName = '<pvc name>'
+    storageMountPath = '/data'
+    cpuLimits        = true   // required: also sets a CPU limit, not only a request
 }
 ```
 
 Make sure to set the serviceaccount to you created in the previous step, as this is the correct serviceaccount to use! Change the `project name` accordingly to match your project you want to run your Nextflow workflow in.
 
-### Advanced Nextflow configuration file
+Store it in your project as a ConfigMap, so the head job can read it.
+ 
+```bash
+oc create configmap nextflow-config --from-file=nextflow.config -n <project name>
+```
 
-Note that sometimes you will need to set more configuration options to make the Nextflow pipeline work. For example it might be needed to specify the home and nextflow home directories as in the example below: 
+To change the configuration later, delete, edit, and recreate the ConfigMap:
+ 
+```bash
+oc delete configmap nextflow-config -n <project name>
+oc create configmap nextflow-config --from-file=nextflow.config -n <project name>
+```
+
+### Tourbleshooting the config. 
+
+Note that sometimes you will need to set more configuration options to make the Nextflow pipeline work. 
+
+For example it might be needed to specify the home and nextflow home directories for task pods which run with a random user ID, resulting in their home directory not being writable. If a pipeline step fails with "permission denied" errors pointing at the home
+directory, add the following to your `nextflow.config`:
 
 ```bash
-k8s {
-    serviceAccount = 'nextflow-sa'
-    namespace      = '<project name>'
-
-    pod = [
-        [env: 'HOME',     value: '/data'],
-        [env: 'NXF_HOME', value: '/data/.nextflow']
-    ]
+process {
+...
+    pod = [[env: 'HOME', value: '/tmp']]
+...
 }
 ```
 
-The `/data` folder is equal to the `/data` directoryyou specify when initiating the Nextflow pipeline shown in the nexst step.
+Note that setting the HOME to /tmp counts against the task pod's ephemeral-storage limit. A tool that caches heavily in HOME can get the pod evicted, so raise disk for that process if it happens.
 
-## Run workflow
-
-Try the hello world workflow from Nextflow:
-
-```shell
-nextflow kuberun https://github.com/nextflow-io/hello -v pvc-name:/data
+## Create the head job
+ 
+Save the following as `nextflow-job.yaml`. Fill in your PVC name and the correct `version` of Nextflow you would like to use. The available tags are on [Docker Hub](https://hub.docker.com/r/nextflow/nextflow/tags). Choose either the latest or one of the latest versions to pin a version number for reproducibility!
+ 
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: nextflow-
+spec:
+  ttlSecondsAfterFinished: 172800   # remove the finished job after 2 days.
+  backoffLimit: 0
+  template:
+    spec:
+      serviceAccountName: nextflow-sa
+      restartPolicy: Never
+      containers:
+        - name: nextflow
+          image: docker.io/nextflow/nextflow:<version>
+          command: ["bash", "-c"]
+          args:
+            - |
+              mkdir -p /data/runs/hello && cd /data/runs/hello
+              nextflow run nextflow-io/hello \
+                -c /config/nextflow.config \
+                -w /data/work
+          env:
+            - name: HOME
+              value: /data
+            - name: NXF_HOME
+              value: /data/.nextflow
+          resources:
+            requests:
+              cpu: "1"
+              memory: 4Gi
+              ephemeral-storage: 1Gi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+              ephemeral-storage: 5Gi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: <pvc name>
+        - name: config
+          configMap:
+            name: nextflow-config
 ```
 
-This will map the `/data` directory in your Nextflow workflow pod(s) to the PVC you have created for this workflow.
+Use a separate launch directory per analysis, such as /data/runs/hello above, when running two sequantial runs within the same job. Nextflow keeps its cache and logs there. Two runs cannot run in the same directory at the same time.
+
+## Run the workflow
+ 
+Submit the head job:
+ 
+```bash
+oc create -f nextflow-job.yaml -n <project name>
+```
+
+Follow the pipeline output with:
+ 
+```bash
+oc get jobs -n <project name>
+
+oc logs -f job/<job-name> -n <project name>
+```
+ 
+You can close the terminal at any time. The pipeline keeps running in the cluster.
+ 
+To resume a failed or interrupted run, add `-resume` to the `nextflow run` line and submit the job again. Keep the same launch directory.
+ 
+To stop a running pipeline, delete the job:
+ 
+```bash
+oc delete job <job-name> -n <project name>
+```
+ 
+Check afterwards with `oc get pods` for any task pods that were left behind.
+ 
+The pipeline log `.nextflow.log` and the results are kept on your PVC under the launch directory.
 
 To read more about how to use Nextflow on a Kubernetes cluster please refer to their [documentation](https://www.nextflow.io/docs/latest/kubernetes.html).
