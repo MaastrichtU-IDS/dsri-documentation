@@ -144,8 +144,8 @@ The default image is `quay.io/jupyterhub/k8s-singleuser-sample:4.4.4`. You can c
 ```yaml
 singleuser:
   image:
-    name: quay.io/jupyter/tensorflow-notebook
-    tag: 87b37b4fd818
+    name: quay.io/jupyter/pytorch-notebook
+    tag: 215d859fd637
 ```
 
 Find available images and tags at [quay.io/organization/jupyter](https://quay.io/organization/jupyter). See the [Jupyter documentation](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html) for more details.
