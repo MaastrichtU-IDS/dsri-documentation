@@ -106,6 +106,12 @@ In the directory where you have installed Nextflow on your local computer, you w
 
 In this configuration file you will need to state the correct serviceaccount which we created in the previous step. Additionally for the namespace fill in the project you want to run your Nextflow pipeline in.
 
+:::info Setting 'computeResourceType'
+
+If you do not set 'computeResourceType' to 'Pod', Nextflow will default to 'Job'! Please read the documentation at the end of the page if you would like to use 'Jobs' instead of 'Pods'. We always advise to explicitly state either 'Pod' or 'Job' for 'computeResourceType'!
+
+:::
+
 ```bash
 process {
     executor = 'k8s'
@@ -113,15 +119,16 @@ process {
     // Default resources for every task. Pipelines may override cpus/memory per process.
     cpus   = 1
     memory = '2 GB'
-    disk   = '10 GB'   // sets the ephemeral-storage request and limit.
+    disk   = '10 GB'                        // sets the ephemeral-storage request and limit.
 }
  
 k8s {
-    namespace        = '<project name>'
-    serviceAccount   = 'nextflow-sa'
-    storageClaimName = '<pvc name>'
-    storageMountPath = '/data'
-    cpuLimits        = true   // required: also sets a CPU limit, not only a request
+    computeResourceType = 'Pod'             // For 'Job' please read the documentation at the end of this page!
+    namespace           = '<project name>'
+    serviceAccount      = 'nextflow-sa'
+    storageClaimName    = '<pvc name>'
+    storageMountPath    = '/data'
+    cpuLimits           = true              // required: also sets a CPU limit, not only a request
 }
 ```
 
@@ -244,3 +251,29 @@ Check afterwards with `oc get pods` for any task pods that were left behind.
 The pipeline log `.nextflow.log` and the results are kept on your PVC under the launch directory.
 
 To read more about how to use Nextflow on a Kubernetes cluster please refer to their [documentation](https://www.nextflow.io/docs/latest/kubernetes.html).
+
+## Using Nextflow at scale - using Jobs
+
+When using Nextflow on a larger scale it is important to note that it might be of benefit to use `Jobs` instead of `Pods`. As of Nextflow version 26.10, the default resource used is a Job when nothing is specified in the Nextflow configuration file.
+
+To make `Jobs` work on the DSRI you need to include permissions to the `nextflow-pod-manager` role for the serviceaccount to be able to deploy `Jobs` on the cluster.
+
+To do so, add the following to the role underneath the `rules` section:
+
+```yaml
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+```
+
+Note that in the Nextflow configuration file shown earlier in this documentation we specify the `computeResourceType` as `Pod`. It is important to change this to `Job`
+Additionally, a TTL should be set as it is mandatory on the DSRI for the resource type `Jobs`.
+
+In the Nextflow configuration file add the following line `pod = [[ttlSecondsAfterFinished: 86400]]` to the `process` section:
+
+```bash
+process {
+...
+    pod = [[ttlSecondsAfterFinished: 86400]]
+}
+```
