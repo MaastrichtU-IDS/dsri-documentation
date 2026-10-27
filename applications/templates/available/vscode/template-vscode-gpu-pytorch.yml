@@ -29,7 +29,7 @@ parameters:
   - name: APPLICATION_IMAGE
     displayName: Docker image for the application
     description: See https://github.com/MaastrichtU-IDS/code-server for more details and to customize the image
-    value: ghcr.io/maastrichtu-ids/code-server:gpu-pytorch
+    value: ghcr.io/maastrichtu-ids/code-server:gpu-pytorch-13-2
     required: true
   - name: STORAGE_SIZE
     displayName: Storage size
