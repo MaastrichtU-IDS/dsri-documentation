@@ -143,6 +143,7 @@ objects:
             - name: rstudio-prefs
               configMap:
                 name: ${APPLICATION_NAME}-rstudio-prefs
+          # Create the persistent directories before RStudio starts
           initContainers:
             - name: init-persistent-dirs
               image: ${APPLICATION_IMAGE}
@@ -203,7 +204,6 @@ objects:
                   memory: 200Gi
                   ephemeral-storage: 50Gi
 
-  # ConfigMap to increase the RStudio servers session timeout to 5 mins (300s)
   - kind: ConfigMap 
     apiVersion: v1
     metadata:
