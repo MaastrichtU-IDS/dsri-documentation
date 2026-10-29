@@ -7,7 +7,7 @@ metadata:
     openshift.io/display-name: RStudio with Bioconductor
     description: |-
       RStudio IDE with Bioconductor package installed for R-based bioinformatics analysis.
-      
+
       This template provides the Bioconductor 3.21 suite with R 4.5.2, suitable for genomics workflows including single-cell RNA sequencing analysis.
       You can install packages like Seurat as needed.
 
@@ -15,18 +15,9 @@ metadata:
       - login: root
       - password: $user_password
 
-      🐳 Available images with this template:
-      ghcr.io/maastrichtu-ids/bioconductor-rstudio:3.21
-      bioconductor/bioconductor_docker:devel
-      rocker/rstudio
-      rocker/tidyverse
-      ghcr.io/maastrichtu-ids/rstudio
-
       📂 Use the /root/persistent folder to store your data in a persistent storage automatically created.
-      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume
-
-      📖 Documentation: https://maastrichtu-ids.github.io/dsri-documentation/docs/deploy-rstudio
-
+      R packages, temporary files and RStudio session state are also stored there.
+      You can find the persistent storage in the DSRI web UI, go to Administrator view > Storage > Persistent Volume Claims
     iconClass: icon-play
     tags: bioconductor,R,rstudio,root,persistent
     openshift.io/provider-display-name: Research Computing Support, UM
@@ -52,14 +43,14 @@ parameters:
   required: true
 - name: PASSWORD
   displayName: RStudio password
-  description: The password of the RStudio user. 
+  description: The password of the RStudio user.
   required: true
 
 objects:
 - kind: PersistentVolumeClaim
   apiVersion: v1
   metadata:
-    name: ${APPLICATION_NAME}
+    name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
   spec:
@@ -92,6 +83,8 @@ objects:
     name: "${APPLICATION_NAME}"
     labels:
       app: "${APPLICATION_NAME}"
+    annotations:
+      haproxy.router.openshift.io/timeout: 10m
   spec:
     host: ''
     to:
@@ -104,7 +97,7 @@ objects:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
 
-- kind: Secret 
+- kind: Secret
   apiVersion: v1
   metadata:
     name: "${APPLICATION_NAME}"
@@ -112,6 +105,35 @@ objects:
       app: "${APPLICATION_NAME}"
   stringData:
     application-password: "${PASSWORD}"
+
+- kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-config"
+    labels:
+      app: "${APPLICATION_NAME}"
+  data:
+    rserver.conf: |
+      rsession-which-r=/usr/local/bin/R
+      auth-minimum-user-id=0
+      rsession-proxy-max-wait-secs=300
+
+# ConfigMap to change directories used to store session state
+- kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-rstudio-prefs"
+    labels:
+      app: "${APPLICATION_NAME}"
+  data:
+    rstudio-prefs.json: |
+      {
+        "initial_working_directory": "/root/persistent",
+        "default_project_location": "/root/persistent",
+        "default_open_project_location": "/root/persistent",
+        "save_workspace": "always",
+        "load_workspace": true
+      }
 
 - kind: Deployment
   apiVersion: apps/v1
@@ -131,16 +153,38 @@ objects:
       metadata:
         annotations:
           io.kubernetes.cri-o.TrySkipVolumeSELinuxLabel: 'true'
+          alpha.image.policy.openshift.io/resolve-names: "*"
         labels:
           app: "${APPLICATION_NAME}"
           deployment: "${APPLICATION_NAME}"
       spec:
         runtimeClassName: selinux
         serviceAccountName: anyuid
+        automountServiceAccountToken: false
         volumes:
         - name: data
           persistentVolumeClaim:
             claimName: "${APPLICATION_NAME}"
+        - name: rserver-config
+          configMap:
+            name: "${APPLICATION_NAME}-config"
+            items:
+            - key: rserver.conf
+              path: rserver.conf
+        - name: rstudio-prefs
+          configMap:
+            name: "${APPLICATION_NAME}-rstudio-prefs"
+        # Create the persistent directories before RStudio starts
+        initContainers:
+        - name: init-persistent-dirs
+          image: ${APPLICATION_IMAGE}
+          command:
+          - sh
+          - -c
+          - mkdir -p /root/persistent/tmp /root/persistent/.rstudio-data /root/persistent/.cache /root/persistent/R/library
+          volumeMounts:
+          - name: data
+            mountPath: "/root/persistent"
         containers:
         - name: "${APPLICATION_NAME}"
           image: ${APPLICATION_IMAGE}
@@ -160,6 +204,12 @@ objects:
           volumeMounts:
           - name: data
             mountPath: "/root/persistent"
+          - name: rserver-config
+            mountPath: /etc/rstudio/rserver.conf
+            subPath: rserver.conf
+          - name: rstudio-prefs
+            mountPath: /etc/rstudio/rstudio-prefs.json
+            subPath: rstudio-prefs.json
           env:
           - name: USER
             value: "root"
@@ -172,5 +222,11 @@ objects:
             value: "TRUE"
           - name: RUNROOTLESS
             value: 'true'
-        automountServiceAccountToken: false
-
+          - name: TMPDIR
+            value: /root/persistent/tmp
+          - name: R_LIBS
+            value: /root/persistent/R/library:/usr/local/lib/R/site-library:/usr/local/lib/R/library
+          - name: RSTUDIO_DATA_HOME
+            value: /root/persistent/.rstudio-data
+          - name: XDG_CACHE_HOME
+            value: /root/persistent/.cache
