@@ -176,7 +176,7 @@ objects:
                   mountPath: /cvmfs/software.eessi.io
                   mountPropagation: HostToContainer
                   readOnly: true
-                - name: home
+                - name: data
                   mountPath: /data/persistent
                 - name: config
                   mountPath: /etc/eessi
@@ -185,7 +185,7 @@ objects:
               persistentVolumeClaim:
                 claimName: ${APP_NAME}-cvmfs
                 readOnly: true
-            - name: home
+            - name: data
               persistentVolumeClaim:
                 claimName: ${APP_NAME}-home
             - name: config
