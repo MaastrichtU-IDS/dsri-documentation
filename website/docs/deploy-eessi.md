@@ -55,24 +55,25 @@ module avail
 
 The first time you run this it is slow, because the software catalogue is being fetched and cached on the node. Afterwards it is fast.
 
-The list is long, so search for what you need:
+The list is long, so search for what you need. For example, search for the `gzip` module:
 
 ```bash
-module avail GROMACS
+module avail gzip
 ```
 
-Load it:
+Load for example the `GCC` module, and test it:
 
 ```bash
-module load GROMACS
-gmx --version
+module load GCC
+
+gcc --version | head -1
 ```
 
 Some other useful commands:
 
 ```bash
 module list             # what you have loaded right now
-module unload GROMACS   # unload specific module
+module unload GCC       # unload specific module
 module purge            # unload everything
 ```
 
@@ -108,12 +109,12 @@ Below is a complete job you can copy and adapt. Save it as `eessi-job.yaml`.
 
 ```yaml
 # Persistent directory for your data and results. It stays when the job is
-# deleted. If you already have a workspace, remove this block and point
+# deleted. If you already have a workspace, remove this part and point
 # claimName further down at your own PVC.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: eessi-workspace
+  name: eessi-job-pvc
 spec:
   accessModes: [ReadWriteMany]
   storageClassName: ocs-storagecluster-cephfs
@@ -133,18 +134,35 @@ spec:
       restartPolicy: Never
       containers:
         - name: job
-          image: ghcr.io/maastrichtu-ids/eessi-terminal:latest
+          image: ghcr.io/maastrichtu-library/eessi-terminal:latest
           command: ["/bin/bash", "-c"]
           args:
             - |
-              set -euo pipefail
+              set -eo pipefail
+
+              # unset 'u' flag as it results in abortion of the script due to EESSI's init script.
+              # only set it after initializing EESSI.
+              set +u
               source /cvmfs/software.eessi.io/versions/2026.06/init/bash
+              set -u
 
               # ----- your work starts here -----------------------------
-              module load GROMACS
+              echo "Loading module GCC..." 
 
+              module load GCC
+
+              module list
+
+              echo "Creating directory /data/persistent/my-analysis"
+
+              mkdir -p "$HOME/my-analysis"
               cd "$HOME/my-analysis"
-              gmx mdrun -deffnm run -nt "$OMP_NUM_THREADS"
+
+              echo "Saving results..." 
+
+              echo "$(date -Is) $(gcc --version | head -1)" >> results.txt
+
+              echo "Finished saving results..." 
               # ----- your work ends here -------------------------------
           env:
             - name: HOME
