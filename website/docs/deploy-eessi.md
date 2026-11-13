@@ -195,7 +195,7 @@ spec:
                     storage: 1Gi
         - name: data
           persistentVolumeClaim:
-            claimName: eessi-workspace
+            claimName: eessi-job-pvc
 ```
 
 ### What to change
