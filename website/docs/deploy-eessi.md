@@ -1,5 +1,5 @@
 ---
-id: eessi-software-stack
+id: deploy-eessi
 title: Scientific software with EESSI
 ---
 
