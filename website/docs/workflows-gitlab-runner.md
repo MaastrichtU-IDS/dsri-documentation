@@ -19,7 +19,7 @@ For more information about GitLab CI/CD, go to https://docs.gitlab.com/ee/ci/
 
 :::info Request access first
 
-Before deploying a GitLab runner, contact us via the [Topdesk Form](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=09acae9cdf454968bc94ad125b1f8e76&from=436967a9-738c-4112-b3f6-240a9847118e&openedFromService=true) or by emailing the [RCS team](mailto:rcs-ub@maastrichtuniversity.nl) team. We will prepare your DSRI project for a runner and let you know when it's ready.
+Before deploying a GitLab runner, contact us via the [Topdesk Form](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=09acae9cdf454968bc94ad125b1f8e76&from=436967a9-738c-4112-b3f6-240a9847118e&openedFromService=true) or by emailing the [RCS team](mailto:rcs-ub@maastrichtuniversity.nl). We will prepare your DSRI project for a runner and let you know when it's ready.
 
 :::
 
@@ -98,7 +98,7 @@ spec:
   token: gitlab-runner-secret
   config: custom-config-toml
   tags: openshift
-  serviceaccount: gitlab-runner-jobs
+  serviceaccount: anyuid
   buildImage: alpine
   podSpec:
     - name: resources
