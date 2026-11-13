@@ -7,8 +7,8 @@ Deploy a GitLab Runner on the DSRI to run your GitLab CI/CD pipeline jobs on the
 
 ## Why use a DSRI GitLab runner?
 
-- Run larger workloads with more CPU and memory than GitLab shared runners
-- Jobs run directly on DSRI infrastructure using the Kubernetes executor
+- Run your CI/CD jobs on DSRI infrastructure, with your own dedicated runner
+- Jobs run directly on DSRI using the Kubernetes executor
 - Define your pipeline in a simple `.gitlab-ci.yml` file in your repository
 - Use any Docker image as your job environment
 - Integrate with your existing GitLab repositories at [gitlab.maastrichtuniversity.nl](https://gitlab.maastrichtuniversity.nl/)
@@ -19,11 +19,11 @@ For more information about GitLab CI/CD, go to https://docs.gitlab.com/ee/ci/
 
 :::info Request access first
 
-Before deploying a GitLab runner, contact us via the [Topdesk Form](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=1ffa93e9ecd94d938ad46e3cb24c2392) or by emailing the [RCS](mailto:dsri-support-l@maastrichtuniversity.nl) team. 
+Before deploying a GitLab runner, contact us via the [Topdesk Form](https://servicedesk.icts.maastrichtuniversity.nl/tas/public/ssp/content/serviceflow?unid=09acae9cdf454968bc94ad125b1f8e76&from=436967a9-738c-4112-b3f6-240a9847118e&openedFromService=true) or by emailing the [RCS team](mailto:rcs-ub@maastrichtuniversity.nl) team. We will prepare your DSRI project for a runner and let you know when it's ready.
 
 :::
 
-- Access to a DSRI project (`oc project my-project`)
+- Access to a DSRI project 
 - Access to a GitLab project on [gitlab.maastrichtuniversity.nl](https://gitlab.maastrichtuniversity.nl)
 
 ## Get a GitLab Runner token
@@ -37,10 +37,16 @@ If you don't see the CI/CD option in Settings, go to **Settings → General → 
 
 :::
 
-3. Click **"New project runner"**
+3. Click **Create project runner**
 4. Add the tag `openshift`
 5. Click **Create runner**
-6. Copy the token (it starts with `glrt-`)
+6. Copy the runner authentication token (it starts with `glrt-`). It is only shown once. You can ignore the `gitlab-runner register` instructions on that page, they are not needed on DSRI.
+
+:::caution Keep your token private
+
+Anyone with this token can run jobs as your runner. Only store it in the secret below.
+
+:::
 
 ## Deploy the runner
 
@@ -92,8 +98,22 @@ spec:
   token: gitlab-runner-secret
   config: custom-config-toml
   tags: openshift
-  serviceAccount: gitlab-runner-jobs
+  serviceaccount: gitlab-runner-jobs
+  buildImage: alpine
+  podSpec:
+    - name: resources
+      patchType: strategic
+      patch: |
+        {"containers":[{"name":"runner","resources":{
+          "requests":{"cpu":"100m","memory":"128Mi","ephemeral-storage":"1Gi"},
+          "limits":{"cpu":"500m","memory":"512Mi","ephemeral-storage":"2Gi"}}}]}
 ```
+
+:::info
+
+The `podSpec` section sets CPU, memory and storage limits for the runner itself. This is required on DSRI: without it, the runner will not start.
+
+:::
 
 Apply it:
 
@@ -108,7 +128,7 @@ oc get pods
 oc get runner
 ```
 
-You should see the runner pod running. Then confirm the runner registered on GitLab by going to **Settings → CI/CD → Runners** in your GitLab project. The runner should appear with status **Online**.
+You should see the runner pod running. It can take a minute before it shows as ready (`1/1`). Then confirm the runner registered on GitLab by going to **Settings → CI/CD → Runners** in your GitLab project. The runner should appear with status **Online**.
 
 ## Use the runner in a pipeline
 
@@ -129,11 +149,12 @@ test-dsri-runner:
 
 :::tip
 
-Always specify an `image` in your job. The runner requires a Docker image to run jobs in. If no image is specified the job will fail.
+- Every job must have the tag `openshift`. Jobs without it will stay pending, because no runner picks them up.
+- Set an `image` for each job. If you don't, the job runs in `alpine`, which may not have the tools you need.
 
 :::
 
-Commit the file and GitLab will automatically trigger a pipeline. Go to **CI/CD → Pipelines** in your project to monitor the job. Once confirmed working, replace the example script with your own commands.
+Commit the file and GitLab will automatically trigger a pipeline. Go to **Build → Pipelines** in your project to monitor the job. Once confirmed working, replace the example script with your own commands.
 
 ## Clean up
 
@@ -144,6 +165,8 @@ oc delete -f gitlab-runner.yaml
 oc delete configmap custom-config-toml
 oc delete secret gitlab-runner-secret
 ```
+
+Then also delete the runner in GitLab under **Settings → CI/CD → Runners**.
 
 ## See also
 
