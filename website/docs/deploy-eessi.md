@@ -105,6 +105,8 @@ tmux protects you against losing your connection. It does **not** protect you ag
 
 A job runs without anyone connected to it. It gets its own resources, keeps its logs, and is removed automatically when it finishes. This is the right way to run anything substantial.
 
+For more information on how to run jobs on the DSRI please refer to our [guidelines for running jobs](https://dsri.maastrichtuniversity.nl/docs/guide-jobs-on-openshift).
+
 Below is a complete job you can copy and adapt. Save it as `eessi-job.yaml`.
 
 ```yaml
