@@ -1,0 +1,222 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: eessi-terminal
+  annotations:
+    openshift.io/display-name: "EESSI Terminal"
+    description: >-
+      Web terminal with the EESSI scientific software stack
+      (/cvmfs/software.eessi.io) preloaded. Run `module avail` to browse software.
+    iconClass: icon-terminal
+    tags: "eessi,hpc,terminal,science"
+    openshift.io/provider-display-name: "Research Computing Support, UM"
+labels:
+  template: eessi-terminal
+parameters:
+  - name: APP_NAME
+    description: Name of the application
+    value: eessi-terminal
+    required: true
+  - name: IMAGE
+    description: Container image (EESSI-ready shell)
+    value: ghcr.io/maastrichtu-library/eessi-terminal:latest
+    required: true
+  - name: EESSI_VERSION
+    description: EESSI version to initialize
+    value: "2026.06"
+    required: true
+  - name: TERMINAL_USER
+    description: Username for the web terminal (basic auth)
+    value: eessi
+    required: true
+  - name: TERMINAL_PASSWORD
+    description: Password for the web terminal (basic auth)
+    generate: expression
+    from: "[a-zA-Z0-9]{16}"
+    required: true
+  - name: WORKSPACE_SIZE
+    description: Size of the persistent directory
+    value: 10Gi
+    required: true
+  - name: CPU_REQUEST
+    description: CPU cores requested
+    value: "1"
+    required: true
+  - name: CPU_LIMIT
+    description: CPU cores limit
+    value: "4"
+    required: true
+  - name: MEMORY_REQUEST
+    description: Memory requested
+    value: 2Gi
+    required: true
+  - name: MEMORY_LIMIT
+    description: Memory limit
+    value: 8Gi
+    required: true
+  - name: EPHEMERAL_REQUEST
+    description: Ephemeral storage requested
+    value: 1Gi
+    required: true
+  - name: EPHEMERAL_LIMIT
+    description: Ephemeral storage limit
+    value: 4Gi
+    required: true
+objects:
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: ${APP_NAME}-cvmfs
+    spec:
+      accessModes: [ReadOnlyMany]
+      storageClassName: software-eessi-io
+      resources:
+        requests:
+          storage: 1Gi
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: ${APP_NAME}-home
+    spec:
+      accessModes: [ReadWriteMany]
+      storageClassName: ocs-storagecluster-cephfs
+      resources:
+        requests:
+          storage: ${WORKSPACE_SIZE}
+
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: ${APP_NAME}-auth
+    stringData:
+      credential: "${TERMINAL_USER}:${TERMINAL_PASSWORD}"
+
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: ${APP_NAME}-config
+    data:
+      bashrc: |
+        if [ -f /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash ]; then
+          source /cvmfs/software.eessi.io/versions/${EESSI_VERSION}/init/bash
+          echo "EESSI ${EESSI_VERSION} loaded. Try: module avail"
+        else
+          echo "WARNING: EESSI not reachable under /cvmfs - contact the DSRI team."
+        fi
+        # User customizations last, so they can use `module load` and override defaults
+        [ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc"
+      tmux.conf: |
+        set -g default-command "bash --rcfile /etc/eessi/bashrc"
+        set -g mouse on
+        set -g history-limit 50000
+        set -g status-right " EESSI ${EESSI_VERSION} "
+
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: ${APP_NAME}
+      labels:
+        app: ${APP_NAME}
+        eessi.io/enabled: "true"
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: ${APP_NAME}
+      template:
+        metadata:
+          labels:
+            app: ${APP_NAME}
+            eessi.io/enabled: "true"
+        spec:
+          containers:
+            - name: terminal
+              image: ${IMAGE}
+              args:
+                - /bin/sh
+                - -c
+                - >-
+                  exec ttyd -W -p 7681 -c "$TTYD_CREDENTIAL"
+                  tmux -f /etc/eessi/tmux.conf new-session -A -s main
+              workingDir: /data/persistent
+              env:
+                - name: HOME
+                  value: /data/persistent
+                - name: TTYD_CREDENTIAL
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${APP_NAME}-auth
+                      key: credential
+              ports:
+                - containerPort: 7681
+                  name: http
+              resources:
+                requests:
+                  cpu: ${CPU_REQUEST}
+                  memory: ${MEMORY_REQUEST}
+                  ephemeral-storage: ${EPHEMERAL_REQUEST}
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
+                  ephemeral-storage: ${EPHEMERAL_LIMIT}
+              readinessProbe:
+                tcpSocket:
+                  port: 7681
+                initialDelaySeconds: 3
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: [ALL]
+              volumeMounts:
+                - name: cvmfs
+                  mountPath: /cvmfs/software.eessi.io
+                  mountPropagation: HostToContainer
+                  readOnly: true
+                - name: data
+                  mountPath: /data/persistent
+                - name: config
+                  mountPath: /etc/eessi
+          volumes:
+            - name: cvmfs
+              persistentVolumeClaim:
+                claimName: ${APP_NAME}-cvmfs
+                readOnly: true
+            - name: data
+              persistentVolumeClaim:
+                claimName: ${APP_NAME}-home
+            - name: config
+              configMap:
+                name: ${APP_NAME}-config
+
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: ${APP_NAME}
+    spec:
+      selector:
+        app: ${APP_NAME}
+      ports:
+        - name: http
+          port: 7681
+          targetPort: 7681
+
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      name: ${APP_NAME}
+      annotations:
+        haproxy.router.openshift.io/timeout: 60s
+        haproxy.router.openshift.io/timeout-tunnel: 12h
+    spec:
+      to:
+        kind: Service
+        name: ${APP_NAME}
+      port:
+        targetPort: http
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
