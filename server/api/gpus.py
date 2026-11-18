@@ -36,14 +36,14 @@ class CreateBooking(SQLModel, table=False):
     def check_email(cls, v: str) -> str:
         v = v.strip().lower()
         if not EMAIL_RE.fullmatch(v):
-            raise ValueError("Must be a @maastrichtuniversity.nl or @student.maastrichtuniversity.nl address")
+            raise ValueError("the project ID should only contain lowercase, alphanumeric characters and/or -. Cannot start or end with - and can only be max 63 chars")
         return v
 
     @validator("project_id", "app_id")
     def check_k8s_name(cls, v: str) -> str:
         v = v.strip()
         if not K8S_NAME_RE.fullmatch(v):
-            raise ValueError("Must be lowercase alphanumeric or '-', start/end alphanumeric, max 63 chars")
+            raise ValueError("the app ID should only contain lowercase, alphanumeric characters and/or -. Cannot start or end with - and can only be max 63 chars")
         return v
 
     @validator("starting_date")
@@ -51,16 +51,16 @@ class CreateBooking(SQLModel, table=False):
         today = date.today()
         # -1 day tolerance: the calendar sends local midnight as UTC (previous day)
         if v.date() < today - timedelta(days=1):
-            raise ValueError("Starting date cannot be in the past")
+            raise ValueError("starting date cannot be in the past")
         if v.date() > today + timedelta(days=MAX_DAYS_AHEAD):
-            raise ValueError(f"Starting date cannot be more than {MAX_DAYS_AHEAD} days ahead")
+            raise ValueError(f"starting date cannot be more than {MAX_DAYS_AHEAD} days ahead")
         return v
 
     @validator("ending_date")
     def check_end(cls, v: datetime, values: dict) -> datetime:
         start = values.get("starting_date")
         if start is not None and v < start:
-            raise ValueError("Ending date must be on or after starting date")
+            raise ValueError("ending date must be on or after starting date")
         return v
 
 
