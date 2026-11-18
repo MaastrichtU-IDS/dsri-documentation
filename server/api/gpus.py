@@ -36,7 +36,7 @@ class CreateBooking(SQLModel, table=False):
     def check_email(cls, v: str) -> str:
         v = v.strip().lower()
         if not EMAIL_RE.fullmatch(v):
-            raise ValueError("the project ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars")
+            raise ValueError("the email address must end with @maastrichtuniversity.nl or @student.maastrichtuniversity.nl")
         return v
 
     @validator("project_id", "app_id")
