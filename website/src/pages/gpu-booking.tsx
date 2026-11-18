@@ -106,8 +106,8 @@ function GpuBooking() {
 
     if (event.target.id === 'project_id') {
       let errorMessages = state.errorMessages
-      if (!event.target.value.match(/^[a-zA-Z0-9-]*$/)) {
-        errorMessages['project_id'] = 'The project ID should only contains alphanumeric characters and -'
+      if (!event.target.value.match(/^[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?$/)) {
+        errorMessages['project_id'] = 'The project ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars'
         updateState({ errorMessages: errorMessages})
       } else {
         errorMessages['project_id'] = null
@@ -117,8 +117,8 @@ function GpuBooking() {
 
     if (event.target.id === 'app_id') {
       let errorMessages = state.errorMessages
-      if (!event.target.value.match(/^[a-zA-Z0-9-]*$/)) {
-        errorMessages['app_id'] = 'The app ID should only contains alphanumeric characters and -'
+      if (!event.target.value.match(/^[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?$/)) {
+        errorMessages['app_id'] = 'The app ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars'
         updateState({ errorMessages: errorMessages})
       } else {
         errorMessages['app_id'] = null
@@ -126,11 +126,9 @@ function GpuBooking() {
       }
     }
 
-    if (!state.errorMessages[event.target.id]) {
-      let formObj = state.formObj
-      formObj[event.target.id] = event.target.value
-      updateState({formObj: formObj})
-    }
+    updateState({
+      formObj: { ...stateRef.current.formObj, [event.target.id]: event.target.value }
+    })
   }
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -142,6 +140,16 @@ function GpuBooking() {
       openSuccess: 'none',
       errorMessage: ''
     })
+
+    const fields = ['email', 'project_id', 'app_id']
+    if (fields.some((f) => checkError(f))) {
+      updateState({
+        openError: 'inline',
+        openSuccess: 'none',
+        errorMessage: 'Please fix the highlighted fields before submitting.',
+      })
+      return
+    }
 
     const data = {
       user_email: state.formObj['email'],
@@ -179,23 +187,27 @@ function GpuBooking() {
             openError: 'inline',
             loading: false,
           });
-          if (error.response) {
-            if (error.response.data["detail"]) {
-              const errorMsg = JSON.stringify(error.response.data["detail"]).replace(/"/g, '').replace(/{/g, '').replace(/}/g, '')
-                .replace(/\[/g, '').replace(/\]/g, '').replace(/:/g, '').replace(/,/g, '')
-                .replace(/loc/g, '').replace(/body/g, '').replace(/msg/g, ': ').replace(/type/g, '').replace(/value_error.missing/g, ' - ')
-              updateState({ errorMessage: 'Error: ' + errorMsg})
-            } else {
-              updateState({ errorMessage: JSON.stringify(error.response.data) })
-            }
-          } else if (error.request) {
-            console.log('request err');
-            console.log(error.request);
-          } else {
-            console.log('Error', error.message);
-            updateState({ errorMessage: error.message })
+        if (error.response) {
+          const fieldLabels: any = {
+            user_email: 'Email', project_id: 'Project ID', app_id: 'App ID',
+            starting_date: 'Start date', ending_date: 'End date',
           }
-        })
+          const detail = error.response.data?.detail
+          let errorMsg: string
+          if (Array.isArray(detail)) {
+            errorMsg = detail.map((d: any) => {
+              const field = Array.isArray(d.loc) ? d.loc[d.loc.length - 1] : ''
+              const msg = String(d.msg || '').replace(/^Value error,\s*/i, '')
+              return field ? `${fieldLabels[field] || field}: ${msg}` : msg
+            }).join(' • ')
+          } else if (typeof detail === 'string') {
+            errorMsg = detail
+          } else {
+            errorMsg = 'Something went wrong, please try again.'
+          }
+          updateState({ errorMessage: errorMsg })
+        }
+      })
     }
   }
 
@@ -298,6 +310,7 @@ function GpuBooking() {
   .rdrDay { overflow: visible !important; }
   .rdrDayNumber { overflow: visible !important; }
   .rdrDayNumber span { position: relative; }
+  .rdrDayPassive { visibility: hidden; }
   `}</style>
 
         <FormControl fullWidth style={{textAlign: 'center', marginTop: '30px'}}>

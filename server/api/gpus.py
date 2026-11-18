@@ -1,4 +1,6 @@
-from datetime import datetime, timedelta
+import html
+import re
+from datetime import date, datetime, timedelta
 from typing import List, Optional
 from textwrap import dedent
 
@@ -13,24 +15,60 @@ from sqlmodel import Field, Session, SQLModel, select
 NUMBER_OF_GPUS = 7
 MAX_BOOK_DAYS = 4
 MAX_BOOK_DAYS_PER_MONTH = 4  # total days allowed across ALL bookings in a calendar month
+MAX_DAYS_AHEAD = 60          # how far in the future a booking may start
+
+# Server-side validation (the frontend checks are only cosmetic)
+EMAIL_RE = re.compile(r"^[a-z0-9._-]{1,64}@(student\.)?maastrichtuniversity\.nl$")
+# Kubernetes DNS-1123 label: what OpenShift project and app names actually allow
+K8S_NAME_RE = re.compile(r"^[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?$")
 
 router = APIRouter()
 
+
 class CreateBooking(SQLModel, table=False):
-    user_email: str = Field(primary_key=True)
+    user_email: str = Field(primary_key=True, max_length=120)
     starting_date: datetime = Field(primary_key=True)
     ending_date: datetime = Field(primary_key=True)
-    project_id: str = Field(primary_key=False)
-    app_id: str = Field(primary_key=False)
+    project_id: str = Field(primary_key=False, max_length=63)
+    app_id: str = Field(primary_key=False, max_length=63)
 
-    @validator("user_email", "starting_date", "ending_date", "project_id", "app_id")
-    def reject_empty_strings(cls, v):
-        assert str(v) != ''
+    @validator("user_email")
+    def check_email(cls, v: str) -> str:
+        v = v.strip().lower()
+        if not EMAIL_RE.fullmatch(v):
+            raise ValueError("the project ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars")
         return v
+
+    @validator("project_id", "app_id")
+    def check_k8s_name(cls, v: str) -> str:
+        v = v.strip()
+        if not K8S_NAME_RE.fullmatch(v):
+            raise ValueError("the app ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars")
+        return v
+
+    @validator("starting_date")
+    def check_start(cls, v: datetime) -> datetime:
+        today = date.today()
+        # -1 day tolerance: the calendar sends local midnight as UTC (previous day)
+        if v.date() < today - timedelta(days=1):
+            raise ValueError("starting date cannot be in the past")
+        if v.date() > today + timedelta(days=MAX_DAYS_AHEAD):
+            raise ValueError(f"starting date cannot be more than {MAX_DAYS_AHEAD} days ahead")
+        return v
+
+    @validator("ending_date")
+    def check_end(cls, v: datetime, values: dict) -> datetime:
+        start = values.get("starting_date")
+        if start is not None and v < start:
+            raise ValueError("ending date must be on or after starting date")
+        return v
+
 
 class GpuBooking(CreateBooking, table=True):
     gpu_id: Optional[int] = Field(default=None, primary_key=True)
-    created_at: datetime = datetime.now()
+    # default_factory: the old `= datetime.now()` was evaluated once at import time
+    created_at: datetime = Field(default_factory=datetime.now)
+
 
 @router.get("/reservations", name="Get the list of Reservations for the DSRI GPUs",
     description="List of reservations for the DSRI GPUs",
@@ -48,6 +86,7 @@ def get_gpu_reservations() -> List[dict]:
             del resa['project_id']
             reservations.append(resa)
     return JSONResponse(reservations)
+
 
 # Get a dict with all days with GPUs booked
 def get_booked_days() -> dict:
@@ -70,6 +109,7 @@ def get_booked_days() -> dict:
                     booked_days[str(day)]['fullyBooked'] = True
     return booked_days
 
+
 @router.get("/booked-days", name="Get days when DSRI GPUs are booked",
     description="Dict of days, with which GPUs are booked for each day, and if the day is fully booked",
     response_model=dict,
@@ -78,11 +118,9 @@ def get_gpu_booked_days() -> dict:
     booked_days = get_booked_days()
     return JSONResponse(booked_days)
 
+
 # Sum how many days `user_email` has already booked in the same
-# calendar month as `reference_date`, across ALL of their bookings
-# (not just one). This is what was missing before - the old code only
-# checked the length of a single incoming booking (MAX_BOOK_DAYS above),
-# never the user's running total for the month.
+# calendar month as `reference_date`, across ALL of their bookings.
 def get_user_days_booked_this_month(session: Session, user_email: str, reference_date: datetime) -> int:
     year = reference_date.year
     month = reference_date.month
@@ -96,6 +134,7 @@ def get_user_days_booked_this_month(session: Session, user_email: str, reference
             delta = booking.ending_date - booking.starting_date
             total_days += delta.days + 1
     return total_days
+
 
 @router.post("/request", name="Request a DSRI GPU for a period",
     description="Request a DSRI GPU for a period, this will check if any GPU are available for the requested period",
@@ -165,9 +204,12 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
             session.add(booking)
             session.commit()
 
+            # Never put user input into HTML unescaped
+            project = html.escape(booking.project_id)
+
             email_msg = dedent(f"""\
-                                ✅ A GPU has been booked from {booking.starting_date.date()} to {booking.ending_date.date()} in project <b>{booking.project_id}</b><br/><br/>
-                                The GPU will be automatically enabled in your project <b>{booking.project_id}</b> on the <b>{booking.starting_date.date()}</b> at 9:00am, and disabled on the {booking.ending_date.date() + timedelta(days=1)} at 9:00am<br/><br/>
+                                ✅ A GPU has been booked from {booking.starting_date.date()} to {booking.ending_date.date()} in project <b>{project}</b><br/><br/>
+                                The GPU will be automatically enabled in your project <b>{project}</b> on the <b>{booking.starting_date.date()}</b> at 9:00am, and disabled on the {booking.ending_date.date() + timedelta(days=1)} at 9:00am<br/><br/>
                                 <b>Please note:</b> the GPU is only enabled automatically if you booked <b>before 09:00 AM</b> on your start date. If you booked after 09:00 AM, please contact us at <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a> and we will enable it manually.<br/><br/>
                                 Ideally you should start your workspace before getting the GPU enabled, to prepare your data in the persistent folder, and create a script to install your dependencies. Then you can easily enable the GPU in this workspace once your reservation starts, see the documentation for more details: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#prepare-your-gpu-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
                                 If you want to cancel your reservation please send an email to <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a>
