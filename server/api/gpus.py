@@ -43,7 +43,7 @@ class CreateBooking(SQLModel, table=False):
     def check_k8s_name(cls, v: str) -> str:
         v = v.strip()
         if not K8S_NAME_RE.fullmatch(v):
-            raise ValueError("the app ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars")
+            raise ValueError("the project and/or app ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars")
         return v
 
     @validator("starting_date")
