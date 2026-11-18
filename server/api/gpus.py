@@ -36,14 +36,14 @@ class CreateBooking(SQLModel, table=False):
     def check_email(cls, v: str) -> str:
         v = v.strip().lower()
         if not EMAIL_RE.fullmatch(v):
-            raise ValueError("the project ID should only contain lowercase, alphanumeric characters and/or -. Cannot start or end with - and can only be max 63 chars")
+            raise ValueError("the project ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars")
         return v
 
     @validator("project_id", "app_id")
     def check_k8s_name(cls, v: str) -> str:
         v = v.strip()
         if not K8S_NAME_RE.fullmatch(v):
-            raise ValueError("the app ID should only contain lowercase, alphanumeric characters and/or -. Cannot start or end with - and can only be max 63 chars")
+            raise ValueError("the app ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars")
         return v
 
     @validator("starting_date")
