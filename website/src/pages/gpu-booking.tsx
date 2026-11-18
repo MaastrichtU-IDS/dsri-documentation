@@ -107,7 +107,7 @@ function GpuBooking() {
     if (event.target.id === 'project_id') {
       let errorMessages = state.errorMessages
       if (!event.target.value.match(/^[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?$/)) {
-        errorMessages['project_id'] = 'The project ID should only contain lowercase, alphanumeric characters and/or -, max 63 chars'
+        errorMessages['project_id'] = 'The project ID should only contain lowercase, alphanumeric characters and/or -. Cannot start or end with - and can only be max 63 chars'
         updateState({ errorMessages: errorMessages})
       } else {
         errorMessages['project_id'] = null
@@ -118,7 +118,7 @@ function GpuBooking() {
     if (event.target.id === 'app_id') {
       let errorMessages = state.errorMessages
       if (!event.target.value.match(/^[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?$/)) {
-        errorMessages['app_id'] = 'The app ID should only contain lowercase, alphanumeric characters and/or -, max 63 chars'
+        errorMessages['app_id'] = 'The app ID should only contain lowercase, alphanumeric characters and/or -. Cannot start or end with - and can only be max 63 chars'
         updateState({ errorMessages: errorMessages})
       } else {
         errorMessages['app_id'] = null
@@ -310,6 +310,7 @@ function GpuBooking() {
   .rdrDay { overflow: visible !important; }
   .rdrDayNumber { overflow: visible !important; }
   .rdrDayNumber span { position: relative; }
+  .rdrDayPassive { visibility: hidden; }
   `}</style>
 
         <FormControl fullWidth style={{textAlign: 'center', marginTop: '30px'}}>
