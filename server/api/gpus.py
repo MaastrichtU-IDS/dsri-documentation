@@ -1,6 +1,8 @@
 import html
+import logging
 import re
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
+from zoneinfo import ZoneInfo
 from typing import List, Optional
 from textwrap import dedent
 
@@ -16,6 +18,7 @@ NUMBER_OF_GPUS = 7
 MAX_BOOK_DAYS = 4
 MAX_BOOK_DAYS_PER_MONTH = 4  # total days allowed across ALL bookings in a calendar month
 MAX_DAYS_AHEAD = 60          # how far in the future a booking may start
+LOCAL_TZ = ZoneInfo("Europe/Amsterdam")
 
 # Server-side validation (the frontend checks are only cosmetic)
 EMAIL_RE = re.compile(r"^[a-z0-9._-]{1,64}@(student\.)?maastrichtuniversity\.nl$")
@@ -23,6 +26,7 @@ EMAIL_RE = re.compile(r"^[a-z0-9._-]{1,64}@(student\.)?maastrichtuniversity\.nl$
 K8S_NAME_RE = re.compile(r"^[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?$")
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 
 class CreateBooking(SQLModel, table=False):
@@ -46,11 +50,17 @@ class CreateBooking(SQLModel, table=False):
             raise ValueError("the project and/or app ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars")
         return v
 
+    @validator("starting_date", "ending_date", pre=False)
+    def to_local_day(cls, v: datetime) -> datetime:
+        # keep only the Amsterdam timezone
+        if v.tzinfo is not None:
+            v = v.astimezone(LOCAL_TZ)
+        return datetime.combine(v.date(), time.min)
+
     @validator("starting_date")
     def check_start(cls, v: datetime) -> datetime:
         today = date.today()
-        # -1 day tolerance: the calendar sends local midnight as UTC (previous day)
-        if v.date() < today - timedelta(days=1):
+        if v.date() < today:
             raise ValueError("starting date cannot be in the past")
         if v.date() > today + timedelta(days=MAX_DAYS_AHEAD):
             raise ValueError(f"starting date cannot be more than {MAX_DAYS_AHEAD} days ahead")
@@ -146,9 +156,6 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     booked_gpus = []
     days_already_booked = []
     gpu_id = 1
-    # Fix issue where the date provided by the calendar are -1 day
-    schedule.starting_date += timedelta(days=1)
-    schedule.ending_date += timedelta(days=1)
     delta = schedule.ending_date - schedule.starting_date
     if delta.days + 1 > MAX_BOOK_DAYS:
         return JSONResponse({'errorMessage': f'You can book a GPU for a maximum of {str(MAX_BOOK_DAYS)} days'})
@@ -199,24 +206,36 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     booking = GpuBooking.from_orm(schedule)
     booking.gpu_id = gpu_id
 
-    with Session(engine) as session:
-        try:
+    # Read everything we need BEFORE commit: commit expires the ORM object,
+    # and reloading it afterwards can fail (tz-aware datetimes in the PK).
+    start_day = booking.starting_date.date()
+    end_day = booking.ending_date.date()
+    email_to = booking.user_email
+    # never put user input into HTML unescaped
+    project = html.escape(booking.project_id)
+
+    # 1) Save the booking
+    try:
+        with Session(engine) as session:
             session.add(booking)
             session.commit()
+    except Exception:
+        logger.exception("Failed to save GPU booking for %s", email_to)
+        return JSONResponse({'errorMessage': 'Error creating the GPU booking.'})
 
-            # Never put user input into HTML unescaped
-            project = html.escape(booking.project_id)
-
-            email_msg = dedent(f"""\
-                                ✅ A GPU has been booked from {booking.starting_date.date()} to {booking.ending_date.date()} in project <b>{project}</b><br/><br/>
-                                The GPU will be automatically enabled in your project <b>{project}</b> on the <b>{booking.starting_date.date()}</b> at 9:00am, and disabled on the {booking.ending_date.date() + timedelta(days=1)} at 9:00am<br/><br/>
+    # 2) Send the confirmation; a mail failure must not report the booking as failed
+    email_msg = dedent(f"""\
+                                ✅ A GPU has been booked from {start_day} to {end_day} in project <b>{project}</b><br/><br/>
+                                The GPU will be automatically enabled in your project <b>{project}</b> on the <b>{start_day}</b> at 9:00am, and disabled on the {end_day + timedelta(days=1)} at 9:00am<br/><br/>
                                 <b>Please note:</b> the GPU is only enabled automatically if you booked <b>before 09:00 AM</b> on your start date. If you booked after 09:00 AM, please contact us at <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a> and we will enable it manually.<br/><br/>
                                 Ideally you should start your workspace before getting the GPU enabled, to prepare your data in the persistent folder, and create a script to install your dependencies. Then you can easily enable the GPU in this workspace once your reservation starts, see the documentation for more details: <a href="https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu#prepare-your-gpu-workspace" target="_blank">https://dsri.maastrichtuniversity.nl/docs/deploy-on-gpu</a><br/><br/>
                                 If you want to cancel your reservation please send an email to <a href="mailto:rcs-ub@maastrichtuniversity.nl">rcs-ub@maastrichtuniversity.nl</a>
                                 """)
-            send_email(email_msg, to=booking.user_email, subject="📀 DSRI GPU booking registered")
+    try:
+        send_email(email_msg, to=email_to, subject="📀 DSRI GPU booking registered")
+    except Exception:
+        logger.exception("GPU booking saved but confirmation email to %s failed", email_to)
+        return JSONResponse({'message': 'GPU booking registered, but the confirmation email could not be sent. '
+                                        'Contact rcs-ub@maastrichtuniversity.nl if you have questions.'})
 
-            return JSONResponse({'message': 'GPU booking successfully submitted, you will receive an email with more details soon.'})
-        except Exception as e:
-            print(e)
-            return JSONResponse({'errorMessage': 'Error creating the GPU booking.'})
+    return JSONResponse({'message': 'GPU booking successfully submitted, you will receive an email with more details soon.'})

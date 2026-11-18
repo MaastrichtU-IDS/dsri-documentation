@@ -1,8 +1,8 @@
-fastapi==0.137.1
-uvicorn[standard]==0.49.0
-sqlmodel==0.0.38
-mysqlclient==2.2.8
+fastapi==0.164.0
+uvicorn[standard]==0.54.0
+sqlmodel==0.0.44                # 0.0.45+ changes datetime handling (UTC-aware), breaks bookings
+mysqlclient==2.3.2
 requests==2.34.2
-pydantic_settings==2.14.1
-fastapi_utilities==0.3.1
+pydantic-settings==2.16.3
+fastapi-utilities==0.3.1
 openshift==0.13.2
