@@ -1,5 +1,4 @@
-#syntax=docker/dockerfile:1.7-labs
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 RUN docker-php-ext-install mysqli
 
