@@ -1,7 +1,8 @@
 import html
 import logging
 import re
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
+from zoneinfo import ZoneInfo
 from typing import List, Optional
 from textwrap import dedent
 
@@ -17,6 +18,7 @@ NUMBER_OF_GPUS = 7
 MAX_BOOK_DAYS = 4
 MAX_BOOK_DAYS_PER_MONTH = 4  # total days allowed across ALL bookings in a calendar month
 MAX_DAYS_AHEAD = 60          # how far in the future a booking may start
+LOCAL_TZ = ZoneInfo("Europe/Amsterdam")
 
 # Server-side validation (the frontend checks are only cosmetic)
 EMAIL_RE = re.compile(r"^[a-z0-9._-]{1,64}@(student\.)?maastrichtuniversity\.nl$")
@@ -48,11 +50,17 @@ class CreateBooking(SQLModel, table=False):
             raise ValueError("the project and/or app ID should only contain lowercase, alphanumeric characters and/or -, cannot start or end with - and can only be max 63 chars")
         return v
 
+    @validator("starting_date", "ending_date", pre=False)
+    def to_local_day(cls, v: datetime) -> datetime:
+        # keep only the Amsterdam timezone
+        if v.tzinfo is not None:
+            v = v.astimezone(LOCAL_TZ)
+        return datetime.combine(v.date(), time.min)
+
     @validator("starting_date")
     def check_start(cls, v: datetime) -> datetime:
         today = date.today()
-        # -1 day tolerance: the calendar sends local midnight as UTC (previous day)
-        if v.date() < today - timedelta(days=1):
+        if v.date() < today:
             raise ValueError("starting date cannot be in the past")
         if v.date() > today + timedelta(days=MAX_DAYS_AHEAD):
             raise ValueError(f"starting date cannot be more than {MAX_DAYS_AHEAD} days ahead")
@@ -148,9 +156,6 @@ def create_gpu_schedule(schedule: CreateBooking = Body(...)) -> dict:
     booked_gpus = []
     days_already_booked = []
     gpu_id = 1
-    # Fix issue where the date provided by the calendar are -1 day
-    schedule.starting_date += timedelta(days=1)
-    schedule.ending_date += timedelta(days=1)
     delta = schedule.ending_date - schedule.starting_date
     if delta.days + 1 > MAX_BOOK_DAYS:
         return JSONResponse({'errorMessage': f'You can book a GPU for a maximum of {str(MAX_BOOK_DAYS)} days'})
