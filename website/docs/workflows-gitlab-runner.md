@@ -71,11 +71,7 @@ Create a file called `config.toml`:
 [[runners]]
     executor = "kubernetes"
     [runners.kubernetes]
-        [runners.kubernetes.volumes]
-            [[runners.kubernetes.volumes.empty_dir]]
-                name = "empty-dir"
-                mount_path = "/"
-                medium = "Memory"
+        service_account = "anyuid"
 ```
 
 Create a ConfigMap from it:
@@ -98,7 +94,6 @@ spec:
   token: gitlab-runner-secret
   config: custom-config-toml
   tags: openshift
-  serviceaccount: anyuid
   buildImage: alpine
   podSpec:
     - name: resources
@@ -109,17 +104,30 @@ spec:
           "limits":{"cpu":"500m","memory":"512Mi","ephemeral-storage":"2Gi"}}}]}
 ```
 
-:::info
-
 The `podSpec` section sets CPU, memory and storage limits for the runner itself. This is required on DSRI: without it, the runner will not start.
-
-:::
 
 Apply it:
 
 ```bash
 oc create -f gitlab-runner.yaml
 ```
+
+:::tip Working in the web terminal?
+
+You can create both files without an editor by pasting a block like this, including the `EOF` line at the end:
+
+```bash
+cat > config.toml <<'EOF'
+[[runners]]
+    executor = "kubernetes"
+    [runners.kubernetes]
+        service_account = "anyuid"
+EOF
+```
+
+Do the same for `gitlab-runner.yaml`: start with `cat > gitlab-runner.yaml <<'EOF'`, paste the YAML, and end with `EOF`.
+
+:::
 
 ### 4. Verify the deployment
 
@@ -155,6 +163,19 @@ test-dsri-runner:
 :::
 
 Commit the file and GitLab will automatically trigger a pipeline. Go to **Build → Pipelines** in your project to monitor the job. Once confirmed working, replace the example script with your own commands.
+
+## Use your runner in other projects
+
+You don't need to deploy a new runner for every GitLab project. You can enable the same runner for your other projects:
+
+1. In the other GitLab project, go to **Settings → CI/CD** and expand **Runners**
+2. Open the tab **Other available project runners**
+3. Click the link icon (**Enable for this project**) next to your runner
+4. Add the tag `openshift` to the jobs in that project's `.gitlab-ci.yml`
+
+If your runner doesn't show up in the list, open its settings in your original project (pencil icon) and uncheck **Lock to current projects**.
+
+Nothing needs to change on DSRI: your runner will pick up jobs from those projects too.
 
 ## Clean up
 
