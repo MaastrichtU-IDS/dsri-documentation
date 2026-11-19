@@ -303,8 +303,8 @@ Resource values also cannot exceed the cluster-wide maximums:
 
 | | CPU | Memory | Ephemeral storage |
 |---|---|---|---|
-| Requests | 32 cores | 128Gi | ≤ limit (50Gi) |
-| Limits | 128 cores | 512Gi | 50Gi |
+| Requests | 32 cores | 64Gi | ≤ limit (50Gi) |
+| Limits | 80 cores | 256Gi | 50Gi |
 
 If your workload requires values beyond these limits, please contact the [RCS team](/contact).
 :::
