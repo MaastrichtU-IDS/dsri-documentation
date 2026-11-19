@@ -2,10 +2,9 @@ import logging
 
 from api.config import settings
 from kubernetes import client
-from openshift.dynamic import DynamicClient
-from openshift.helper.userpassauth import OCPLoginConfiguration
+from kubernetes.dynamic import DynamicClient
 
-## Instantiate logging utility
+# Instantiate logging utility
 log = logging.getLogger("uvicorn.error")
 log.propagate = False
 log.setLevel(logging.INFO)
@@ -16,20 +15,19 @@ formatter = logging.Formatter(
 console_handler.setFormatter(formatter)
 log.addHandler(console_handler)
 
-## Login to the OpenShift cluster using https://github.com/openshift/openshift-restclient-python
-def oc_login():
-    """Login to the OpenShift cluster"""
-    kubeConfig = OCPLoginConfiguration()
 
-    kubeConfig.api_key = {"authorization": "Bearer " + settings.CLUSTER_API_KEY}
-    kubeConfig.host = settings.CLUSTER_URL
-    kubeConfig.verify_ssl = False
+# Login to the OpenShift cluster with a bearer token, using the official kubernetes client
+def oc_login() -> DynamicClient:
+    """Login to the OpenShift cluster"""
+    kube_config = client.Configuration()
+    kube_config.host = settings.CLUSTER_URL
+    kube_config.api_key = {"authorization": "Bearer " + settings.CLUSTER_API_KEY}
+    kube_config.verify_ssl = False
 
     # Disable proxy for this specific client
-    kubeConfig.proxy = None
-    kubeConfig.proxy_headers = None
+    kube_config.proxy = None
+    kube_config.proxy_headers = None
 
-    k8s_client = client.ApiClient(kubeConfig)
-    dyn_client = DynamicClient(k8s_client)
-
-    return dyn_client
+    k8s_client = client.ApiClient(kube_config)
+    
+    return DynamicClient(k8s_client)
