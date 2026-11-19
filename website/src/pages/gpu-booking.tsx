@@ -361,7 +361,7 @@ function GpuBooking() {
                   size='small'
                   required
                   error={checkError('email')}
-                  helperText={checkErrorMessage('email') ? checkErrorMessage('email') : "Must end with @maastrichtuniversity.nl or @student.maastrichtuniversity.nl"}
+                  helperText={checkErrorMessage('email') ? checkErrorMessage('email') : "Must be either a @maastrichtuniversity.nl or @student.maastrichtuniversity.nl address"}
                 />
               </Grid>
 
@@ -381,7 +381,7 @@ function GpuBooking() {
                   size='small'
                   required
                   error={checkError('project_id')}
-                  helperText={checkErrorMessage('project_id') ? checkErrorMessage('project_id') : "The project ID should only contains alphanumeric characters and -"}
+                  helperText={checkErrorMessage('project_id') ? checkErrorMessage('project_id') : "This is the name of your project, you would like to use the GPU in, on the DSRI"}
                 />
               </Grid>
 
@@ -401,7 +401,7 @@ function GpuBooking() {
                   size='small'
                   required
                   error={checkError('app_id')}
-                  helperText={checkErrorMessage('app_id') ? checkErrorMessage('app_id') : "Make sure this value is right as it will be used to automatically enable the GPU in this app. The app ID should only contains alphanumeric characters and -"}
+                  helperText={checkErrorMessage('app_id') ? checkErrorMessage('app_id') : "The name of your deployment, as shown in the Topology view or by `oc get deploy` in your project. Make sure this value is right as it will be used to automatically enable the GPU in this app"}
                 />
               </Grid>
 
