@@ -52,7 +52,7 @@ const issues: Issue[] = [
       <p style={{ margin: '8px 0 0' }}>This occurs when using a large persistent volume.</p>
     </>,
     fix: <>
-      <p style={{ margin: '0 0 8px' }}>Add the following annotation to your Deployment(Config). Pay attention to indentation:</p>
+      <p style={{ margin: '0 0 8px' }}>Add the following annotation to your Deployment(Config).</p>
       <pre style={{ margin: '0 0 8px', padding: '10px 12px', background: 'var(--ifm-color-emphasis-100)', borderRadius: 6, fontSize: 12, overflowX: 'auto' }}>
 {`spec:
   template:
@@ -74,8 +74,6 @@ const issues: Issue[] = [
     </>,
     fix: <>
       <p style={{ margin: '0 0 8px' }}>This happens when you are not using persistent storage. Make sure your application has a persistent volume attached.</p>
-      <img src="/img/persistent_storage.png" alt="Persistent storage" style={{ maxWidth: '100%', borderRadius: 6, border: '1px solid var(--ifm-color-emphasis-200)' }} />
-      <p style={{ margin: '8px 0 0' }}>Contact the RCS team to request persistent storage if you do not have one yet.</p>
     </>,
   },
   {
@@ -119,28 +117,15 @@ const issues: Issue[] = [
       <p style={{ margin: '0' }}>Make sure your terminal is using <code>bash</code> and not <code>sh</code>. Type <code>bash</code> in the terminal to switch if needed.</p>
     </>,
   },
-  {
+    {
     id: 6, cat: 'access',
-    title: 'Black screen or auth error after clicking Connect via UM account',
+    title: 'Auth error after clicking Connect via UM account',
     symptom: <>
-      <p style={{ margin: '0 0 8px' }}>After clicking "Connect via UM account", you see a black screen and the page does not load. The URL may contain something like:</p>
-      <pre style={{ margin: '0 0 8px', padding: '10px 12px', background: 'var(--ifm-color-emphasis-100)', borderRadius: 6, fontSize: 12, overflowX: 'auto', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-        {`/auth/error?error=missing_state&error_type=auth`}
-      </pre>
-      <p style={{ margin: '0 0 8px' }}>This persists even after disconnecting and reconnecting the VPN.</p>
-      <img src="/img/console-auth-error.png" alt="Console authentication error - black screen with missing_state error in URL" style={{ maxWidth: '100%', borderRadius: 6, border: '1px solid var(--ifm-color-emphasis-200)' }} />
+      <p style={{ margin: '0 0 8px' }}>After clicking "Connect via UM account", you see an authentication error page instead of the console.</p>
+      <img src="/img/console-auth-error.png" alt="Console authentication error on the new cluster" style={{ maxWidth: '100%', borderRadius: 6, border: '1px solid var(--ifm-color-emphasis-200)' }} />
     </>,
     fix: <>
-      <p style={{ margin: '0 0 8px' }}>This is most likely caused by a <strong>cached authentication token</strong> in your browser. Try the following steps in order:</p>
-      <ol style={{ margin: '0 0 8px', paddingLeft: 18 }}>
-        <li style={{ marginBottom: 4 }}>Make sure you are connected to the <strong>UM VPN</strong>. DSRI is only accessible from within the university network.</li>
-        <li style={{ marginBottom: 4 }}>Disconnect and reconnect the VPN, then try again.</li>
-        <li style={{ marginBottom: 4 }}>Open the DSRI link in an <strong>incognito or private window</strong>.</li>
-        <li style={{ marginBottom: 4 }}>Try a <strong>different browser</strong>.</li>
-        <li style={{ marginBottom: 4 }}><strong>Clear your browser cookies and cache</strong> for the DSRI site, then try again with the original link.</li>
-        <li>If you see the <code>missing_state</code> error in the URL, try removing that part from the URL and accessing the base URL directly.</li>
-      </ol>
-      <p style={{ margin: '0' }}>If none of the above works, <a href="/contact">contact the RCS team</a> and include a screenshot and the exact URL you are trying to access.</p>
+      <p style={{ margin: '0' }}>Click <strong>Try again</strong>.</p>
     </>,
   },
   {
