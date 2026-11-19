@@ -401,7 +401,7 @@ function GpuBooking() {
                   size='small'
                   required
                   error={checkError('app_id')}
-                  helperText={checkErrorMessage('app_id') ? checkErrorMessage('app_id') : "The name of your deployment, as shown in the Topology view or by `oc get deploy` in your project. Make sure this value is right as it will be used to automatically enable the GPU in this app"}
+                  helperText={checkErrorMessage('app_id') ? checkErrorMessage('app_id') : "The name of your deployment in your project. Make sure this value is right as it will be used to automatically enable the GPU"}
                 />
               </Grid>
 
