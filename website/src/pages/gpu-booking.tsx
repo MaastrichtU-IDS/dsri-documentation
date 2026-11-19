@@ -381,7 +381,7 @@ function GpuBooking() {
                   size='small'
                   required
                   error={checkError('project_id')}
-                  helperText={checkErrorMessage('project_id') ? checkErrorMessage('project_id') : "This is the name of your project, you would like to use the GPU in, on the DSRI"}
+                  helperText={checkErrorMessage('project_id') ? checkErrorMessage('project_id') : "This is the name of your project on the DSRI you would like to use the GPU in"}
                 />
               </Grid>
 
@@ -401,7 +401,7 @@ function GpuBooking() {
                   size='small'
                   required
                   error={checkError('app_id')}
-                  helperText={checkErrorMessage('app_id') ? checkErrorMessage('app_id') : "The name of your deployment in your project. Make sure this value is right as it will be used to automatically enable the GPU"}
+                  helperText={checkErrorMessage('app_id') ? checkErrorMessage('app_id') : "The name of the deployment in your project. Make sure this value is right as it will be used to automatically enable the GPU"}
                 />
               </Grid>
 
