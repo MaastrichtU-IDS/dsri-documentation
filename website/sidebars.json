@@ -129,14 +129,7 @@
         "guide-workshop",
         "login-docker-registry",
         "openshift-delete-objects",
-        {
-          "type": "category",
-          "label": "Machine Learning Tutorials",
-          "items": [           
-            "checkpointing-ml-training",
-            "dask-tutorial"
-          ]
-        }
+        "checkpointing-ml-training"
       ]
     },
         

@@ -72,9 +72,7 @@ module.exports={
           "path": "./docs",
           "sidebarPath": require.resolve('./sidebars.json')
         },
-        "blog": {
-          "path": "blog"
-        },
+        "blog": false,
         "theme": {
           "customCss": "./src/css/customTheme.css"
         }
