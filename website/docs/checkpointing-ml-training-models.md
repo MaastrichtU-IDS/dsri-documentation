@@ -2,155 +2,200 @@
 id: checkpointing-ml-training
 title: Checkpointing Machine Learning Training
 ---
-## What is Checkpointing?
-Checkpointing is periodically saving the learned model parameters and current hyperparameter values during training. It helps to resume training of a model where you left off, instead of restarting the training from the beginning.
 
-On shared DSRI cluster, you might have access to a GPU node for a limited number of time in one stretch, for example, maybe for 24 hours. 
-Therefore, whenever the training job fails (due to timelimit expiry or otherwise), many hours of training can be lost. This problem is mitigated by a frequent checkpoint saving. When the training is resumed it'll continue from the last checkpoint saved. If the failure occurred 12 hours after the last checkpoint has been saved, 12 hours of training is lost and needs to be re-done. This can be very expensive.
+## What is checkpointing?
 
-## Checkpointing fequency?
-In theory one could save a checkpoint every 10 minutes and only ever lose 10 minutes of training time, but this too would dramatically delay the reaching of the finish line because large models can't be saved quickly and if the saving time starts to create a bottleneck for the training this approach becomes counterproductive.
+Checkpointing means saving the state of your model at regular intervals during training: the learned weights and, optionally, the optimizer state and the current epoch. If training stops, you can resume from the last checkpoint instead of starting again from the beginning.
 
-Depending on your checkpointing methodology and the speed of your IO storage partition the saving of a large model can take from dozens of seconds to several minutes. Therefore, the optimal approach to saving frequency lies somewhere in the middle.
+On the DSRI, GPUs are shared and booked for a limited time slot through the [GPU booking calendar](/gpu-booking). When your booking ends or your pod restarts, any training progress that was not saved is lost. If your last checkpoint was saved 12 hours ago, you lose 12 hours of training.
 
-The math is quite simple - measure the amount of time it takes to save the checkpoint, multiply it by how many times you'd want to save it and see how much of an additional delay the checkpoint saving will contribute to the total training time.
+:::caution Save checkpoints to persistent storage
+Always write your checkpoints to the persistent volume of your workspace. Files saved anywhere else in the container are deleted when the pod restarts. See [Data storage](/docs/openshift-storage) for more information.
+:::
 
-For instance, Let suppose, 
+## How often should you save?
 
-1) Training Time (TT), i.e. allocated time on cluster : x days
-2) Time needed to save every checkpoint: y seconds
-3) Checkpoint fequencty: every z hours
+Saving too rarely means you lose a lot of work when training stops. Saving too often slows down training, because writing a large model to disk can take from a few seconds to several minutes.
 
-=> Then, Total Number of Checkpoints during the complete training time (NCP) = (x *24)/ z
+To find a good balance, measure how long one save takes and calculate how much of your training time goes to checkpointing:
 
-=> Total Time Spent on Checkpointing (TTSC) [in hours] = NCP * y/3600 
+| What | How to calculate |
+|---|---|
+| Number of checkpoints | training time (hours) ÷ save interval (hours) |
+| Time spent saving (hours) | number of checkpoints × time per save (seconds) ÷ 3600 |
+| Share of training time | time spent saving ÷ training time (hours) × 100 |
 
-=> % of Training time spent on checkpointing = (TTSC/TT*24) * 100
+**Example:** 7 days of training (168 hours), one save takes 20 seconds, and you save every 30 minutes (0.5 hours):
 
-------------------Example calculations------------------------------------
+- Number of checkpoints: 168 ÷ 0.5 = **336**
+- Time spent saving: 336 × 20 ÷ 3600 ≈ **1.9 hours**
+- Share of training time: 1.9 ÷ 168 × 100 ≈ **1.1%**
 
-Training Time (TT or x): 7 days
+Spending about 1% of your training time on saving, so that you never lose more than 30 minutes of work, is usually a good trade-off.
 
-Time needed to save every checkpoint (y): 20 secs
+## TensorFlow / Keras
 
-Checkpoint fequency (z): every 30 minutes, i.e., 0.5 hours
+Keras saves checkpoints with the `ModelCheckpoint` callback, which you pass to `model.fit()`.
 
-Then, 
+:::info File extensions
+Since TensorFlow 2.16 (Keras 3), full models are saved with the `.keras` extension and weights-only files must end in `.weights.h5`. Older examples that use `.h5` for full models are outdated.
+:::
 
-NCP = 7*24/0.5 = 336
-
-TTSC = 336* 20/3600 = 1.87 hours
-
-% of Training time spent on checkpointing = (1.87/7*24)*100 ~ 1.2 %     
-
-
-## Support for Checkpointing in Tensorflow/Keras and PyTorch ?
-
-Both PyTorch and TensorFlow/Keras support checkpointing. The follwoing sections provide an example of how Checkpointing can be done in these libraries.
-
-## Example of Tensorflow/Keras based checkpointing:
+### Save a checkpoint every epoch
 
 ```python
+import os
+import numpy as np
 import tensorflow as tf
-
-#Imports the ModelCheckpoint class
 from tensorflow.keras.callbacks import ModelCheckpoint
 
-# Create your model as you normally would and compile it:
-model = tf.keras.models.Sequential([
-    tf.keras.layers.Dense(64, activation='relu', input_shape=(32,)),
-    tf.keras.layers.Dense(10, activation='softmax')
-])
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+# Folder on your persistent volume
+checkpoint_dir = "checkpoints"
+os.makedirs(checkpoint_dir, exist_ok=True)
 
-# Create a Checkpoint Callback
+# Dummy data for testing, replace with your own data
+x_train = np.random.rand(1000, 32)
+y_train = tf.keras.utils.to_categorical(np.random.randint(10, size=1000), 10)
+x_val = np.random.rand(200, 32)
+y_val = tf.keras.utils.to_categorical(np.random.randint(10, size=200), 10)
+
+# Create and compile your model as you normally would
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(32,)),
+    tf.keras.layers.Dense(64, activation="relu"),
+    tf.keras.layers.Dense(10, activation="softmax"),
+])
+model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
+
+# Save the full model at the end of every epoch
 checkpoint_callback = ModelCheckpoint(
-#filepath should be a path to your persistent volume. Example, /home/jovyan path in your JupyterLab pod.
-    filepath='model_checkpoint.h5',  # You can use formats like .hdf5 or .ckpt. 
-    save_best_only=True,
-    monitor='val_loss',
-    mode='min',
-    verbose=1
+    filepath=os.path.join(checkpoint_dir, "model_epoch_{epoch:02d}.keras"),
+    save_freq="epoch",
+    verbose=1,
 )
 
-# Train the Model with the Checkpoint Callback
-history = model.fit(
+model.fit(
     x_train, y_train,
     validation_data=(x_val, y_val),
     epochs=10,
-    callbacks=[checkpoint_callback]
+    callbacks=[checkpoint_callback],
 )
-
-# Loading a Saved Checkpoint
-# Load the model architecture + weights if you saved the full model
-model = tf.keras.models.load_model('model_checkpoint.h5')
-
-# If you saved only the weights, you would need to create the model architecture first, then load weights:
-model.load_weights('model_checkpoint.h5')
-
-# Optional Parameters for Checkpointing, Example with Custom Save Intervals
-checkpoint_callback = ModelCheckpoint(
-    filepath='model_checkpoint_epoch_{epoch:02d}.h5',
-    save_freq='epoch',
-    save_weights_only=True,
-    verbose=1
-)
-
-
 ```
 
+To save every N batches instead of every epoch, set `save_freq` to a number, for example `save_freq=500`.
 
-## Example of PyTorch based checkpointing:
+### Resume training from a checkpoint
+
+A `.keras` file contains the model architecture, the weights and the optimizer state, so training continues exactly where it stopped. Use `initial_epoch` to tell Keras which epoch to continue from:
 
 ```python
-import torch
+model = tf.keras.models.load_model(os.path.join(checkpoint_dir, "model_epoch_05.keras"))
 
-# Example model
-model = torch.nn.Linear(10, 2)
-
-# Save the entire model
-torch.save(model, 'model.pth')
-
-# Loading the Entire Model
-model = torch.load('model.pth')
-
-# Saving and Loading Optimizer State, i.e., To continue training exactly as before, you may want to save the optimizer state as well.
-
-optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
-
-# Save model and optimizer state_dicts
-checkpoint = {
-    'epoch': 5,
-    'model_state_dict': model.state_dict(),
-    'optimizer_state_dict': optimizer.state_dict(),
-    'loss': 0.5,
-}
-torch.save(checkpoint, 'checkpoint.pth')
-
-# Load checkpoint
-checkpoint = torch.load('checkpoint.pth')
-model.load_state_dict(checkpoint['model_state_dict'])
-optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-epoch = checkpoint['epoch']
-loss = checkpoint['loss']
-model.train()  # Ensure model is in training mode if needed
-
-
-
-
-
+model.fit(
+    x_train, y_train,
+    validation_data=(x_val, y_val),
+    epochs=10,
+    initial_epoch=5,  # continues with epoch 6
+    callbacks=[checkpoint_callback],
+)
 ```
 
-## External Resources
+### Keep only the best model
 
-* PyTorch Documentation: https://pytorch.org/tutorials/beginner/saving_loading_models.html#save-on-gpu-load-on-cpu
-* Tensorflow/Keras Documentation:
-  
-  https://www.digitalocean.com/community/tutorials/checkpointing-in-tensorflow
-  
-  https://keras.io/api/callbacks/model_checkpoint/
+To keep only the model with the lowest validation loss, use `save_best_only`:
 
-* Machine Learning Engineering by stas bekman:
-  https://stasosphere.com/machine-learning/
-  
- 
+```python
+best_callback = ModelCheckpoint(
+    filepath=os.path.join(checkpoint_dir, "best_model.keras"),
+    monitor="val_loss",
+    mode="min",
+    save_best_only=True,
+    verbose=1,
+)
+```
+
+### Save only the weights
+
+Weights-only files are smaller, but you need to create the same model architecture again before loading them:
+
+```python
+weights_callback = ModelCheckpoint(
+    filepath=os.path.join(checkpoint_dir, "weights_epoch_{epoch:02d}.weights.h5"),
+    save_weights_only=True,
+    verbose=1,
+)
+
+# Later: create the model again, then load the weights
+model.load_weights(os.path.join(checkpoint_dir, "weights_epoch_05.weights.h5"))
+```
+
+## PyTorch
+
+In PyTorch you save a checkpoint yourself with `torch.save()`. Save the `state_dict` of the model and the optimizer, together with the current epoch, so you can continue training exactly where you left off.
+
+The example below saves a checkpoint after every epoch. When you run it again, it finds the checkpoint and resumes from there:
+
+```python
+import os
+import torch
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+# Folder on your persistent volume
+checkpoint_dir = "checkpoints"
+os.makedirs(checkpoint_dir, exist_ok=True)
+checkpoint_path = os.path.join(checkpoint_dir, "checkpoint.pth")
+
+# Example model, optimizer and dummy data, replace with your own
+model = torch.nn.Linear(10, 2).to(device)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
+loss_fn = torch.nn.MSELoss()
+x = torch.randn(100, 10, device=device)
+y = torch.randn(100, 2, device=device)
+
+# Resume from the last checkpoint if it exists
+start_epoch = 0
+if os.path.exists(checkpoint_path):
+    checkpoint = torch.load(checkpoint_path, map_location=device)
+    model.load_state_dict(checkpoint["model_state_dict"])
+    optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+    start_epoch = checkpoint["epoch"] + 1
+    print(f"Resuming from epoch {start_epoch}")
+
+num_epochs = 10
+for epoch in range(start_epoch, num_epochs):
+    model.train()
+    optimizer.zero_grad()
+    loss = loss_fn(model(x), y)
+    loss.backward()
+    optimizer.step()
+
+    # Save the checkpoint at the end of every epoch
+    torch.save({
+        "epoch": epoch,
+        "model_state_dict": model.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "loss": loss.item(),
+    }, checkpoint_path)
+    print(f"Epoch {epoch}: loss {loss.item():.4f}, checkpoint saved")
+```
+
+:::info Don't save the whole model object
+Avoid `torch.save(model, ...)`. Since PyTorch 2.6, `torch.load()` only loads weights and other safe data by default, so loading a full saved model fails unless you set `weights_only=False`. A full model file can also break when your code changes. Saving the `state_dict`, as in the example above, avoids both problems.
+:::
+
+:::tip Avoid corrupted checkpoints
+If your pod stops while a checkpoint is being written, the file can be left incomplete. To avoid this, save to a temporary file first and then rename it:
+
+```python
+torch.save(checkpoint_data, checkpoint_path + ".tmp")
+os.replace(checkpoint_path + ".tmp", checkpoint_path)
+```
+:::
+
+## External resources
+
+- [PyTorch: Saving and loading models](https://pytorch.org/tutorials/beginner/saving_loading_models.html)
+- [Keras: ModelCheckpoint](https://keras.io/api/callbacks/model_checkpoint/)
+- [TensorFlow checkpointing tutorial (DigitalOcean)](https://www.digitalocean.com/community/tutorials/checkpointing-in-tensorflow)
+- [Machine Learning Engineering by Stas Bekman](https://stasosphere.com/machine-learning/)
