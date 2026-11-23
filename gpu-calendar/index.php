@@ -1,7 +1,23 @@
 <?php
 require_once('includes/config.php');
 #print_r($attributes);
-if(isset($_GET['week']) && !is_numeric($_GET['week'])){echo "<img src=\"images/bobby.png\">"; exit;}
+
+// Week navigation: users may view the current week, the previous week, and any future week.
+$currweek = strtotime('monday this week');
+$minweek  = strtotime('monday last week');   // earliest week allowed
+
+$weekstart = $currweek;
+if (isset($_GET['week'])) {
+    $w = filter_var($_GET['week'], FILTER_VALIDATE_INT);
+    if ($w === false) { echo "<img src=\"images/bobby.png\">"; exit; }
+    $weekstart = strtotime('monday this week', $w);  // snap to Monday 00:00 (avoids DST drift)
+}
+if ($weekstart < $minweek) {
+    $weekstart = $minweek;
+}
+
+$prevweek = strtotime('monday last week', $weekstart);
+$nextweek = strtotime('monday next week', $weekstart);
 ?>
 
 <!doctype html>
@@ -43,29 +59,29 @@ if(isset($_GET['week']) && !is_numeric($_GET['week'])){echo "<img src=\"images/b
 }
     </style>
 
-    
+
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-2.1.3.min.js" integrity="sha256-ivk71nXhz9nsyFDoYoGf2sbjrR9ddh+XDkCcfZxjvcM=" crossorigin="anonymous"></script>
-    
+
   </head>
   <body>
-  
+
   <script>
-      var table = $("#table");    
+      var table = $("#table");
 
 var isMouseDown = false;
 var startRowIndex = null;
 var startCellIndex = null;
 
 function selectTo(cell) {
-    
-    var row = cell.parent();    
+
+    var row = cell.parent();
     var cellIndex = cell.index();
     var rowIndex = row.index();
-    
+
     var rowStart, rowEnd, cellStart, cellEnd;
-    
+
     if (rowIndex < startRowIndex) {
         rowStart = rowIndex;
         rowEnd = startRowIndex;
@@ -73,20 +89,20 @@ function selectTo(cell) {
         rowStart = startRowIndex;
         rowEnd = rowIndex;
     }
-    
+
     if (cellIndex < startCellIndex) {
         cellStart = cellIndex;
         cellEnd = startCellIndex;
     } else {
         cellStart = startCellIndex;
         cellEnd = cellIndex;
-    }        
-    
+    }
+
     for (var i = rowStart; i <= rowEnd; i++) {
         var rowCells = table.find("tr").eq(i).find("td");
         for (var j = cellStart; j <= cellEnd; j++) {
             rowCells.eq(j).addClass("selected");
-        }        
+        }
     }
 }
 
@@ -95,9 +111,9 @@ table.find("td").mousedown(function (e) {
     var cell = $(this);
 
     table.find(".selected").removeClass("selected"); // deselect everything
-    
+
     if (e.shiftKey) {
-        selectTo(cell);                
+        selectTo(cell);
     } else {
         cell.addClass("selected");
         startCellIndex = cell.index();
@@ -106,7 +122,7 @@ table.find("td").mousedown(function (e) {
     return false; // prevent text selection
 })
 .mouseover(function () {
-  
+
     if (!isMouseDown) return;
     table.find(".selected").removeClass("selected");
     selectTo($(this));
@@ -137,15 +153,6 @@ $(document).mouseup(function () {
 <div class="container-fluid">
   <div class="row"><!--
 <?php include('includes/menu.php'); ?>
-<?php
-  $currweek = strtotime( 'monday this week' );
-if(isset($_GET['week'])) {
-  $weekstart = $_GET['week'];
-}
-  else {
-    $weekstart = $currweek;
-  }
-?>
 -->
 
     <main class="col-md-9 col-lg-10 px-md-4">
@@ -153,31 +160,37 @@ if(isset($_GET['week'])) {
         <h1 class="h2">Agenda</h1>
       </div>
       <div class="col-md-3">
-      
+
       <div class="dropdown">
       <p>Select week</p>
-        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo ($weekstart - 604800) ?>';">
-      <<<  
+      <?php if ($weekstart > $minweek): ?>
+        <button class="btn btn-secondary" type="button" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo $prevweek ?>';">
+      &lt;&lt;&lt;
       </button>
-      <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo ($currweek) ?>';">
-      <?php echo date( 'Y-m-d',$weekstart) . " to ". date( 'Y-m-d',$weekstart + 86400*6)?>
+      <?php else: ?>
+        <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
+      &lt;&lt;&lt;
       </button>
-      <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo ($weekstart + 604800) ?>';">
-      >>>  
-      </button> 
+      <?php endif; ?>
+      <button class="btn btn-secondary" type="button" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo $currweek ?>';">
+      <?php echo date( 'Y-m-d',$weekstart) . " to ". date( 'Y-m-d', strtotime('+6 days', $weekstart))?>
+      </button>
+      <button class="btn btn-secondary" type="button" aria-expanded="false" onclick="window.location.href='index.php?week=<?php echo $nextweek ?>';">
+      &gt;&gt;&gt;
+      </button>
       </div>
       <br />
 
       <?php
-      $weekend = $weekstart + 604800;
+      $weekend = $nextweek;
 
-      $monday = date( 'Y-m-d', $weekstart );
-      $tuesday    = date( 'Y-m-d', $weekstart + 86400 );
-      $wednesday = date( 'Y-m-d', $weekstart + 86400*2);
-      $thursday = date( 'Y-m-d', $weekstart + 86400*3);
-      $friday = date( 'Y-m-d', $weekstart + 86400*4);
-      $saturday = date( 'Y-m-d', $weekstart + 86400*5);
-      $sunday = date( 'Y-m-d', $weekstart + 86400*6);
+      $monday    = date( 'Y-m-d', $weekstart );
+      $tuesday   = date( 'Y-m-d', strtotime('+1 day',  $weekstart) );
+      $wednesday = date( 'Y-m-d', strtotime('+2 days', $weekstart) );
+      $thursday  = date( 'Y-m-d', strtotime('+3 days', $weekstart) );
+      $friday    = date( 'Y-m-d', strtotime('+4 days', $weekstart) );
+      $saturday  = date( 'Y-m-d', strtotime('+5 days', $weekstart) );
+      $sunday    = date( 'Y-m-d', strtotime('+6 days', $weekstart) );
 
       ?>
       <table class="table table-bordered table-sm" id="table">
@@ -197,10 +210,10 @@ if(isset($_GET['week'])) {
         <?php
         $sql = "SELECT * FROM gpus";
         $result = $conn->query($sql);
-        
+
         if ($result->num_rows > 0) {
           while($row = $result->fetch_assoc()) {
-            $gpuid = $row['gpuid'];
+            $gpuid = (int)$row['gpuid'];
             echo "<tr><td>" . $row["short_description"] . "</td>";
             $previousend = 0;
             $previousbegin = 0;
@@ -237,9 +250,8 @@ if(isset($_GET['week'])) {
 
                   echo "<td colspan=" . $colspan . " style=\"background-color: " . $color . "\"data-bs-toggle=\"tooltip\"data-bs-html=\"true\" title=\"begin reservation: " . date('Y-m-d', strtotime($row2['starting_date'])) . "
 end reservation: " . date('Y-m-d', strtotime($row2['ending_date'])) . "
-project: " . $row2['project_id'] . "
-reserved by: " . $row2['user_email'] . "\"><p style=\"font-size: 12px;\">" . $row2['project_id'] . "</p></td>";
-                  
+project: " . $row2['project_id'] . " \"><p style=\"font-size: 12px;\">" . $row2['project_id'] . "</p></td>";
+
                   if($colspan > 1){
                   $x += $colspan - 1;
                   }
@@ -251,8 +263,8 @@ reserved by: " . $row2['user_email'] . "\"><p style=\"font-size: 12px;\">" . $ro
               }
 
               if($reservation==0){echo "<td></td>";}
-            } 
-            
+            }
+
           echo "</tr>";
 
           }
@@ -279,4 +291,3 @@ reserved by: " . $row2['user_email'] . "\"><p style=\"font-size: 12px;\">" . $ro
 <script src="js/dashboard.js"></script>
   </body>
 </html>
-
