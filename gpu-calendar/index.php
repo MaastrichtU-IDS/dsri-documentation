@@ -237,8 +237,7 @@ if(isset($_GET['week'])) {
 
                   echo "<td colspan=" . $colspan . " style=\"background-color: " . $color . "\"data-bs-toggle=\"tooltip\"data-bs-html=\"true\" title=\"begin reservation: " . date('Y-m-d', strtotime($row2['starting_date'])) . "
 end reservation: " . date('Y-m-d', strtotime($row2['ending_date'])) . "
-project: " . $row2['project_id'] . "
-reserved by: " . $row2['user_email'] . "\"><p style=\"font-size: 12px;\">" . $row2['project_id'] . "</p></td>";
+project: " . $row2['project_id'] . " \"><p style=\"font-size: 12px;\">" . $row2['project_id'] . "</p></td>";
                   
                   if($colspan > 1){
                   $x += $colspan - 1;
