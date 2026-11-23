@@ -1,6 +1,10 @@
 <?php
 require_once('includes/config.php');
-#print_r($attributes);
+
+// Escape any value before printing it into HTML (text or attribute).
+function e($value) {
+    return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
 
 // Week navigation: users may view the current week, the previous week, and any future week.
 $currweek = strtotime('monday this week');
@@ -28,7 +32,7 @@ $nextweek = strtotime('monday next week', $weekstart);
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.88.1">
-    <title><?php echo $app_title; ?></title>
+    <title><?php echo e($app_title); ?></title>
 
 
     <!-- Bootstrap core CSS -->
@@ -137,19 +141,6 @@ $(document).mouseup(function () {
 });
       </script>
 
-<!--<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#"><?php echo $app_title; ?></a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="navbar-nav">
-    <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
-    </div>
-  </div>
-</header>-->
-
 <div class="container-fluid">
   <div class="row"><!--
 <?php include('includes/menu.php'); ?>
@@ -214,7 +205,7 @@ $(document).mouseup(function () {
         if ($result->num_rows > 0) {
           while($row = $result->fetch_assoc()) {
             $gpuid = (int)$row['gpuid'];
-            echo "<tr><td>" . $row["short_description"] . "</td>";
+            echo "<tr><td>" . e($row["short_description"]) . "</td>";
             $previousend = 0;
             $previousbegin = 0;
             $days = 7;
@@ -248,9 +239,10 @@ $(document).mouseup(function () {
                     $color = "#ff0000;";
                   }
 
-                  echo "<td colspan=" . $colspan . " style=\"background-color: " . $color . "\"data-bs-toggle=\"tooltip\"data-bs-html=\"true\" title=\"begin reservation: " . date('Y-m-d', strtotime($row2['starting_date'])) . "
+                  $pid = e($row2['project_id']);
+                  echo "<td colspan=\"" . (int)$colspan . "\" style=\"background-color: " . $color . "\" data-bs-toggle=\"tooltip\" title=\"begin reservation: " . date('Y-m-d', strtotime($row2['starting_date'])) . "
 end reservation: " . date('Y-m-d', strtotime($row2['ending_date'])) . "
-project: " . $row2['project_id'] . " \"><p style=\"font-size: 12px;\">" . $row2['project_id'] . "</p></td>";
+project: " . $pid . "\"><p style=\"font-size: 12px;\">" . $pid . "</p></td>";
 
                   if($colspan > 1){
                   $x += $colspan - 1;
